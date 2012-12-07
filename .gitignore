@@ -22,5 +22,5 @@ local.properties
 .settings
 
 # Dependent Projects
-SlidingMenu
+#SlidingMenu
 jInstagram
