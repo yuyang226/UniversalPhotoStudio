@@ -1,0 +1,41 @@
+<resources>
+
+    <string name="app_name">Beyond Flickr</string>
+    <string name="no_network_connection_toast">No network connection found</string>
+    <string name="imageview_description">Image Thumbnail</string>
+    <string name="f_interesting_photos">Interesting Photos</string>
+    <string name="f_login">Login</string>
+    <string name="f_my_photos">My Photos</string>
+    <string name="f_my_fav">My Favorites</string>
+    <string name="f_my_contacts">My Contact Photos</string>
+    <string name="f_my_popular">My Populars</string>
+    
+    <string name="menu_header_flickr">Flickr</string>
+    <string name="menu_header_flickr_sets">Photo Sets</string>
+    <string name="menu_header_flickr_groups">Photo Groups</string>
+    <string name="menu_header_flickr_gallery">Galleries</string>
+    <string name="ig_popular">Popular Photos</string>
+    <string name="menu_header_ig">Instagram</string>
+
+    <!-- auth process -->
+    <string name="fail_to_oauth">Failed to access your flickr account, please try
+		again</string>
+    <string name="auth_gen_req_token">Generating the authorization request.</string>
+
+    <!-- option menu items -->
+    <string name="action_bar_share_with">Share With...</string>
+
+    <!-- messages -->
+    <string name="wait_for_image_loading">Image loading, please wait...</string>
+    <string name="share_via">share from</string>
+    <string name="loading_photos">Loading...</string>
+    <string name="already_first_page">Already at the first page.</string>
+    <string name="already_last_page">No more pages.</string>
+    <string name="msg_wallpaper_changed">Wallpaper changed.</string>
+    <string name="like_photo_done">Like!</string>
+    
+    <!-- menu items -->
+	<string name="menu_item_back">Previous</string>
+	<string name="menu_item_forward">Next</string>
+	<string name="menu_item_wallpaper">Set Wallpaper</string>
+</resources>
