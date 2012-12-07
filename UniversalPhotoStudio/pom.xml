@@ -1,28 +1,134 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.github.yuyang226</groupId>
-    <artifactId>UniversalPhotoStudio</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>UniversalPhotoStudio</name>
-    <description>An Android Photo Viewer for Flickr/Instagram/Facebook</description>
-    <url>https://github.com/yuyang226/UniversalPhotoStudio/</url>
-	
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.github.yuyang226</groupId>
+	<artifactId>UniversalPhotoStudio</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>apk</packaging>
+	<name>UniversalPhotoStudio</name>
+	<description>An Android Photo Viewer for Flickr/Instagram/Facebook</description>
+	<url>https://github.com/yuyang226/UniversalPhotoStudio/</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<scm>
+		<url>https://github.com/yuyang226/UniversalPhotoStudio/</url>
+		<connection>scm:git:https://github.com/yuyang226/UniversalPhotoStudio.git/</connection>
+		<developerConnection>scm:git:https://github.com/yuyang226/UniversalPhotoStudio.git/</developerConnection>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>charlesyq</id>
+			<name>Charles Zhang</name>
+			<email>charleszq@gmail.com</email>
+		</developer>
+		<developer>
+			<id>yuyang226</id>
+			<name>Toby Yu</name>
+			<email>yuyang226@gmail.com</email>
+		</developer>
+	</developers>
+
 	<build>
+		<finalName>${project.artifactId}</finalName>
 		<sourceDirectory>src</sourceDirectory>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.6</source>
+						<target>1.6</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+					<artifactId>android-maven-plugin</artifactId>
+					<version>3.4.1</version>
+					<configuration>
+						<sdk>
+							<platform>14</platform>
+						</sdk>
+						<undeployBeforeDeploy>true</undeployBeforeDeploy>
+					</configuration>
+					<extensions>true</extensions>
+				</plugin>
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+										<artifactId>android-maven-plugin</artifactId>
+										<versionRange>[1.0.0,)</versionRange>
+										<goals>
+											<goal>proguard</goal>
+											<goal>generate-sources</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore />
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
 	</build>
-    
-	 <dependencies>
-	 <dependency>
-    <groupId>com.google.android</groupId>
-    <artifactId>android</artifactId>
-    <version>4.0.1.2</version>
-    <scope>provided</scope>
-  </dependency>
-        <dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.2.2</version>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.1.1.4</version>
+			<scope>provided</scope>
 		</dependency>
-    </dependencies>
-    
+		<dependency>
+			<groupId>com.slidingmenu.lib</groupId>
+			<artifactId>SlidingMenu</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>annotations</artifactId>
+			<version>4.1.1.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.flickrj-android</groupId>
+			<artifactId>flickrj-android</artifactId>
+			<version>2.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jinstagram</groupId>
+			<artifactId>jInstagram</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-android</artifactId>
+			<version>1.6.1-RC1</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>support-v4</artifactId>
+			<version>r7</version>
+		</dependency>
+	</dependencies>
+
 </project>
