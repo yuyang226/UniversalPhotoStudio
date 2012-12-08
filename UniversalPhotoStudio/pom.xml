@@ -103,9 +103,16 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.google.android.maps</groupId>
+			<artifactId>maps</artifactId>
+			<version>17_r1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.slidingmenu.lib</groupId>
 			<artifactId>SlidingMenu</artifactId>
 			<version>1.0.0</version>
+			<type>apklib</type>
 		</dependency>
 		<dependency>
 			<groupId>com.google.android</groupId>
@@ -127,10 +134,12 @@
 			<artifactId>slf4j-android</artifactId>
 			<version>1.6.1-RC1</version>
 		</dependency>
+		<!-- <dependency> <groupId>com.google.android</groupId> <artifactId>support-v4</artifactId> 
+			<version>r7</version> </dependency> -->
 		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>support-v4</artifactId>
-			<version>r7</version>
+			<groupId>android.support</groupId>
+			<artifactId>compatibility-v13</artifactId>
+			<version>11</version>
 		</dependency>
 	</dependencies>
 
