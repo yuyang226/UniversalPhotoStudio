@@ -15,6 +15,10 @@ Development Environment
 * Maven Eclipse Plugin: search "Maven" in the Eclipse marketplace
 * ADT
 
+Install SlidingMenu apklib and jInstagram via:
+
+    setup_deps.sh
+
 Install the followings to your Maven local repo via https://github.com/mosabua/maven-android-sdk-deployer
 
     git clone git@github.com:mosabua/maven-android-sdk-deployer.git
