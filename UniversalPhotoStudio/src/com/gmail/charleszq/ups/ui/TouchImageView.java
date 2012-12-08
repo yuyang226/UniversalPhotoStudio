@@ -15,13 +15,10 @@ import android.graphics.PointF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.gmail.charleszq.ups.model.IDoubleTapListener;
 
 public class TouchImageView extends ImageView {
 
@@ -48,26 +45,6 @@ public class TouchImageView extends ImageView {
 	float right, bottom, origWidth, origHeight, bmWidth, bmHeight;
 
 	ScaleGestureDetector mScaleDetector;
-	GestureDetector mGestureDector;
-	private IDoubleTapListener mModelDoubleTapListener;
-
-	GestureDetector.OnDoubleTapListener mDoubleTapListener = new GestureDetector.OnDoubleTapListener() {
-
-		@Override
-		public boolean onSingleTapConfirmed(MotionEvent e) {
-			return false;
-		}
-
-		@Override
-		public boolean onDoubleTapEvent(MotionEvent e) {
-			return false;
-		}
-
-		@Override
-		public boolean onDoubleTap(MotionEvent e) {
-			return TouchImageView.this.onDoubleTap(e);
-		}
-	};
 
 	Context context;
 
@@ -81,16 +58,6 @@ public class TouchImageView extends ImageView {
 		sharedConstructing(context);
 	}
 
-	public boolean onDoubleTap(MotionEvent e) {
-		if (mModelDoubleTapListener == null)
-			return false;
-		return mModelDoubleTapListener.onDoubleTap(e);
-	}
-
-	public void setOnDoubleTapListener(IDoubleTapListener listener) {
-		this.mModelDoubleTapListener = listener;
-	}
-
 	private void sharedConstructing(Context context) {
 		super.setClickable(true);
 		this.context = context;
@@ -100,16 +67,11 @@ public class TouchImageView extends ImageView {
 		setImageMatrix(matrix);
 		setScaleType(ScaleType.MATRIX);
 
-		mGestureDector = new GestureDetector(context,
-				new GestureDetector.SimpleOnGestureListener());
-		mGestureDector.setOnDoubleTapListener(mDoubleTapListener);
-
 		setOnTouchListener(new OnTouchListener() {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				mScaleDetector.onTouchEvent(event);
-				mGestureDector.onTouchEvent(event);
 
 				matrix.getValues(m);
 				float x = m[Matrix.MTRANS_X];

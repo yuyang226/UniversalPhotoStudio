@@ -32,10 +32,11 @@
     <string name="already_first_page">Already at the first page.</string>
     <string name="already_last_page">No more pages.</string>
     <string name="msg_wallpaper_changed">Wallpaper changed.</string>
-    <string name="like_photo_done">Like!</string>
+    <string name="like_photo_done">Liked!</string>
     
     <!-- menu items -->
 	<string name="menu_item_back">Previous</string>
 	<string name="menu_item_forward">Next</string>
+	<string name="menu_item_like_photo">Like</string>
 	<string name="menu_item_wallpaper">Set Wallpaper</string>
 </resources>
