@@ -89,7 +89,16 @@ public class MainMenuFragment extends Fragment {
 		public void onCommandDone(ICommand<Object> command, Object t) {
 			MainSlideMenuActivity act = (MainSlideMenuActivity) MainMenuFragment.this
 					.getActivity();
-			act.onCommandDone(command, t);
+			if (act == null) {
+				//when configuration changed, the activity of this fragement might be null,
+				//then try to get it from the command.
+				Context ctx = (Context) command.getAdapter(Context.class);
+				if (ctx != null && ctx instanceof MainSlideMenuActivity) {
+					act = (MainSlideMenuActivity) ctx;
+				}
+			}
+			if (act != null)
+				act.onCommandDone(command, t);
 			if (mProgressDialog != null && mProgressDialog.isShowing()) {
 				mProgressDialog.dismiss();
 			}

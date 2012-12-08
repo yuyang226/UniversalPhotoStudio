@@ -19,6 +19,7 @@ package com.gmail.charleszq.ups.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -80,26 +81,6 @@ public class PhotoGridFragment extends Fragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
-
-		mImageThumbSize = getResources().getDimensionPixelSize(
-				R.dimen.image_thumbnail_size);
-		mImageThumbSpacing = getResources().getDimensionPixelSize(
-				R.dimen.image_thumbnail_spacing);
-
-		mAdapter = new ImageAdapter(getActivity(), mPhotosProvider);
-
-		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(),
-				IMAGE_CACHE_DIR);
-
-		// Set memory cache to 25% of mem class
-		cacheParams.setMemCacheSizePercent(getActivity(), 0.25f);
-
-		// The ImageFetcher takes care of loading images into our ImageView
-		// children asynchronously
-		mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
-		mImageFetcher.setLoadingImage(R.drawable.empty_photo);
-		mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(),
-				cacheParams);
 	}
 
 	@Override
@@ -199,6 +180,42 @@ public class PhotoGridFragment extends Fragment implements
 	public void onDestroy() {
 		mImageFetcher.closeCache();
 		super.onDestroy();
+	}
+
+	@Override
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		mImageThumbSize = getResources().getDimensionPixelSize(
+				R.dimen.image_thumbnail_size);
+		mImageThumbSpacing = getResources().getDimensionPixelSize(
+				R.dimen.image_thumbnail_spacing);
+
+		mAdapter = new ImageAdapter(getActivity(), mPhotosProvider);
+
+		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(),
+				IMAGE_CACHE_DIR);
+
+		// Set memory cache to 25% of mem class
+		cacheParams.setMemCacheSizePercent(getActivity(), 0.25f);
+
+		// The ImageFetcher takes care of loading images into our ImageView
+		// children asynchronously
+		mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
+		mImageFetcher.setLoadingImage(R.drawable.empty_photo);
+		mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(),
+				cacheParams);
+		
+		if( mCurrentCommand != null ) {
+			mCurrentCommand.attacheContext(getActivity());
+		}
+		
+		this.setRetainInstance(true);
+	}
+
+	@Override
+	public void onDetach() {
+		mImageFetcher.closeCache();
+		super.onDetach();
 	}
 
 	@Override

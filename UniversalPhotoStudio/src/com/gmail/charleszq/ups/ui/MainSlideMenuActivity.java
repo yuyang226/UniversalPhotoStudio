@@ -42,11 +42,14 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		customizeSlideMenu();
 
 		// set the Above View
+		boolean retained = true;
 		if (savedInstanceState != null)
 			mContent = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mContent"); //$NON-NLS-1$
-		if (mContent == null)
+		if (mContent == null) {
 			mContent = new PhotoGridFragment();
+			retained = false;
+		}
 
 		// set the Above View
 		setContentView(R.layout.content_frame);
@@ -61,7 +64,8 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		// customize the SlidingMenu
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-		loadDefaultPhotoList();
+		if (!retained)
+			loadDefaultPhotoList();
 	}
 
 	/**
@@ -70,16 +74,16 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	 */
 	private void loadDefaultPhotoList() {
 		mCommand = new FlickrIntestringCommand(this);
-		final ProgressDialog dialog = ProgressDialog.show(this, "", getString(R.string.loading_photos)); //$NON-NLS-1$
+		final ProgressDialog dialog = ProgressDialog.show(this,
+				"", getString(R.string.loading_photos)); //$NON-NLS-1$
 		dialog.setCancelable(true);
 		mCommand.addCommndDoneListener(new ICommandDoneListener<MediaObjectCollection>() {
 
 			@Override
-			public void onCommandDone(
-					ICommand<MediaObjectCollection> command,
+			public void onCommandDone(ICommand<MediaObjectCollection> command,
 					MediaObjectCollection t) {
 				MainSlideMenuActivity.this.onCommandDone(command, t);
-				if( dialog.isShowing() ) {
+				if (dialog.isShowing()) {
 					dialog.dismiss();
 				}
 			}
@@ -131,8 +135,9 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 			break;
 		}
 	}
-	
+
 	void closeMenu() {
 		this.getSlidingMenu().toggle();
 	}
+
 }

@@ -35,6 +35,9 @@ public abstract class AbstractCommand<T> implements ICommand<T> {
 
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
+		if (adapterClass == Context.class) {
+			return mContext;
+		}
 		return null;
 	}
 
@@ -78,4 +81,10 @@ public abstract class AbstractCommand<T> implements ICommand<T> {
 	public void cancel() {
 
 	}
+
+	@Override
+	public void attacheContext(Context ctx) {
+		this.mContext = ctx;
+	}
+
 }
