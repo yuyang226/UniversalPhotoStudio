@@ -3,6 +3,10 @@
  */
 package com.gmail.charleszq.ups.ui.command;
 
+import android.content.Context;
+
+import com.gmail.charleszq.ups.utils.IConstants;
+
 /**
  * Represents the command to initiate an action from UI. Usually, it should know
  * the <code>Context</code>, should have an icon and a text, it may also contain
@@ -41,6 +45,7 @@ public interface ICommand<T> {
 	 * <li>Integer.class, return the page size, default to that defined in {@link IConstants};</li>
 	 * <li>AbstractFetchIconUrlTask.class, return the task to get the url of this command.</li>
 	 * <li>Boolean.class, return <code>false</code> to say don't show navigation menu items;</li>
+	 * <li>Context.class, return <code>mContext</code>.
 	 * </ul>
 	 * @param adapterClass
 	 * @return
@@ -69,5 +74,11 @@ public interface ICommand<T> {
 	 * Cancels the execution of this command.
 	 */
 	void cancel();
+	
+	/**
+	 * 
+	 * @param ctx
+	 */
+	void attacheContext(Context ctx);
 
 }
