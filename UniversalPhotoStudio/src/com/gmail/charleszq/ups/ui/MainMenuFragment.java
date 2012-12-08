@@ -154,9 +154,14 @@ public class MainMenuFragment extends Fragment {
 						.getItem(pos);
 				command.addCommndDoneListener(mCommandDoneListener);
 				command.execute();
-				mProgressDialog = ProgressDialog.show(parent.getContext(), "", //$NON-NLS-1$
-						parent.getContext().getString(R.string.loading_photos));
-				mProgressDialog.setCancelable(true);
+				if (!(command instanceof FlickrLoginCommand)) {
+					mProgressDialog = ProgressDialog.show(
+							parent.getContext(),
+							"", //$NON-NLS-1$
+							parent.getContext().getString(
+									R.string.loading_photos));
+					mProgressDialog.setCancelable(true);
+				}
 				if (!(command instanceof FlickrLoginCommand)) {
 					MainSlideMenuActivity act = (MainSlideMenuActivity) MainMenuFragment.this
 							.getActivity();

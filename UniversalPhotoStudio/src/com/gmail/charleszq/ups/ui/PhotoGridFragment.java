@@ -23,7 +23,6 @@ import android.annotation.TargetApi;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -181,6 +180,8 @@ public class PhotoGridFragment extends Fragment implements
 		if (this.isAdded()) {
 			getActivity().invalidateOptionsMenu();
 		}
+		UPSApplication app = (UPSApplication) getActivity().getApplication();
+		app.setPhotosProvider(this.mPhotosProvider);
 	}
 
 	@Override
@@ -203,10 +204,9 @@ public class PhotoGridFragment extends Fragment implements
 		super.onDestroy();
 	}
 
+	@TargetApi(16)
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-		UPSApplication app = (UPSApplication) getActivity().getApplication();
-		app.setPhotosProvider(this.mPhotosProvider);
 		final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
 		i.putExtra(ImageDetailActivity.EXTRA_IMAGE, (int) id);
 		// makeThumbnailScaleUpAnimation() looks kind of ugly here as the
@@ -214,17 +214,15 @@ public class PhotoGridFragment extends Fragment implements
 		// show plus the thumbnail image in GridView is cropped. so using
 		// makeScaleUpAnimation() instead.
 		if (Utils.hasJellyBean()) {
-			loadDetailPage(i, v);
-		} else {
-			getActivity().startActivity(i);
-		}
-	}
-
-	@TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void loadDetailPage(Intent intent, View v) {
-		ActivityOptions options = ActivityOptions.makeScaleUpAnimation(v, 0, 0,
-				v.getWidth(), v.getHeight());
-		getActivity().startActivity(intent, options.toBundle());
+            // makeThumbnailScaleUpAnimation() looks kind of ugly here as the loading spinner may
+            // show plus the thumbnail image in GridView is cropped. so using
+            // makeScaleUpAnimation() instead.
+            ActivityOptions options =
+                    ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight());
+            getActivity().startActivity(i, options.toBundle());
+        } else {
+            startActivity(i);
+        }
 	}
 
 	@Override

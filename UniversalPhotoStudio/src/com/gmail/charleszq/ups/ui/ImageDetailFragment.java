@@ -32,7 +32,6 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -43,7 +42,6 @@ import android.widget.Toast;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
-import com.gmail.charleszq.ups.model.IDoubleTapListener;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.ICommandDoneListener;
@@ -116,24 +114,11 @@ public class ImageDetailFragment extends Fragment implements
 		final View v = inflater.inflate(R.layout.image_detail_fragment,
 				container, false);
 		mImageView = (ImageView) v.findViewById(R.id.imageView);
-		if (mImageView instanceof TouchImageView) {
-			((TouchImageView) mImageView)
-					.setOnDoubleTapListener(new IDoubleTapListener() {
-
-						@Override
-						public boolean onDoubleTap(MotionEvent e) {
-							return ImageDetailFragment.this.likePhoto();
-						}
-					});
-		}
 		return v;
 	}
 
 	private boolean likePhoto() {
-		UPSApplication app = (UPSApplication) getActivity().getApplication();
-		if (app.getUserId() == null) {
-			return false; // user not log in
-		}
+		
 		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
 		if (bmp == null) {
 			return false; // image not loaded yet.
@@ -179,15 +164,12 @@ public class ImageDetailFragment extends Fragment implements
 			// Cancel any pending image work
 			ImageWorker.cancelWork(mImageView);
 			mImageView.setImageDrawable(null);
-			if (mImageView instanceof TouchImageView) {
-				((TouchImageView) mImageView).setOnDoubleTapListener(null);
-			}
 		}
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.action_bar_share_action_provider, menu);
+		inflater.inflate(R.menu.menu_photo_detail, menu);
 		MenuItem actionItem = menu
 				.findItem(R.id.menu_item_share_action_provider_action_bar);
 		ShareActionProvider actionProvider = (ShareActionProvider) actionItem
@@ -202,12 +184,18 @@ public class ImageDetailFragment extends Fragment implements
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
+		
+		UPSApplication app = (UPSApplication) getActivity().getApplication();
+		
 		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
-		MenuItem item = menu.findItem(R.id.menu_item_wallpaper);
+		MenuItem wallPaperItem = menu.findItem(R.id.menu_item_wallpaper);
+		MenuItem likeItem = menu.findItem(R.id.menu_item_like_photo);
 		if (bmp == null) {
-			item.setEnabled(false);
+			wallPaperItem.setEnabled(false);
+			likeItem.setEnabled(false);
 		} else {
-			item.setEnabled(true);
+			wallPaperItem.setEnabled(true);
+			likeItem.setEnabled(app.getUserId() != null);
 		}
 		getActivity().invalidateOptionsMenu();
 	}
@@ -217,6 +205,9 @@ public class ImageDetailFragment extends Fragment implements
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			getActivity().finish();
+			return true;
+		case R.id.menu_item_like_photo:
+			likePhoto();
 			return true;
 		case R.id.menu_item_wallpaper:
 			Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
