@@ -19,8 +19,6 @@ package com.gmail.charleszq.ups.ui;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import android.annotation.TargetApi;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -49,7 +47,6 @@ import com.gmail.charleszq.ups.model.MediaObjectCollection;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.utils.ImageCache.ImageCacheParams;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
-import com.gmail.charleszq.ups.utils.Utils;
 
 /**
  * The main fragment that powers the ImageGridActivity screen. Fairly straight
@@ -204,25 +201,11 @@ public class PhotoGridFragment extends Fragment implements
 		super.onDestroy();
 	}
 
-	@TargetApi(16)
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
 		i.putExtra(ImageDetailActivity.EXTRA_IMAGE, (int) id);
-		// makeThumbnailScaleUpAnimation() looks kind of ugly here as the
-		// loading spinner may
-		// show plus the thumbnail image in GridView is cropped. so using
-		// makeScaleUpAnimation() instead.
-		if (Utils.hasJellyBean()) {
-            // makeThumbnailScaleUpAnimation() looks kind of ugly here as the loading spinner may
-            // show plus the thumbnail image in GridView is cropped. so using
-            // makeScaleUpAnimation() instead.
-            ActivityOptions options =
-                    ActivityOptions.makeScaleUpAnimation(v, 0, 0, v.getWidth(), v.getHeight());
-            getActivity().startActivity(i, options.toBundle());
-        } else {
-            startActivity(i);
-        }
+		startActivity(i);
 	}
 
 	@Override
