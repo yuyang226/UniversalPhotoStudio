@@ -134,8 +134,6 @@
 			<artifactId>slf4j-android</artifactId>
 			<version>1.6.1-RC1</version>
 		</dependency>
-		<!-- <dependency> <groupId>com.google.android</groupId> <artifactId>support-v4</artifactId> 
-			<version>r7</version> </dependency> -->
 		<dependency>
 			<groupId>android.support</groupId>
 			<artifactId>compatibility-v13</artifactId>
