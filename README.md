@@ -15,14 +15,13 @@ Development Environment
 * Maven Eclipse Plugin: search "Maven" in the Eclipse marketplace
 * ADT
 
-install the followings to your Maven local repo via https://github.com/mosabua/maven-android-sdk-deployer
+Install the followings to your Maven local repo via https://github.com/mosabua/maven-android-sdk-deployer
 
-git clone git@github.com:mosabua/maven-android-sdk-deployer.git
-cd add-ons\google-apis-17
-mvn clean install
-cd ../../extras/compatibility-v13
-mvn clean install
-
+    git clone git@github.com:mosabua/maven-android-sdk-deployer.git
+    cd add-ons\google-apis-17
+    mvn clean install
+    cd ../../extras/compatibility-v13
+    mvn clean install
 
 To build your apk, simply:
 
