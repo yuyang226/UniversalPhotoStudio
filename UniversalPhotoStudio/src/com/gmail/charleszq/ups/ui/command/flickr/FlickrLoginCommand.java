@@ -38,7 +38,7 @@ public class FlickrLoginCommand extends AbstractCommand<Object> {
 	 */
 	@Override
 	public String getLabel() {
-		return mContext.getResources().getString(R.string.f_login);
+		return mContext.getString(R.string.f_login);
 	}
 
 	@Override

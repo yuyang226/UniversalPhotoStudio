@@ -28,14 +28,10 @@ import java.net.URL;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Build;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.gmail.charleszq.ups.BuildConfig;
-import com.gmail.charleszq.ups.R;
 
 /**
  * A simple subclass of {@link ImageResizer} that fetches and resizes images fetched from a URL.

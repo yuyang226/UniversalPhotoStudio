@@ -35,6 +35,7 @@ import com.gmail.charleszq.ups.ui.adapter.CommandSectionListAdapter;
 import com.gmail.charleszq.ups.ui.command.DummyCommand;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.ICommandDoneListener;
+import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.FlickrGalleryPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.FlickrIntestringCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.FlickrLoginCommand;
@@ -44,6 +45,7 @@ import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrContactPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrFavsCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrPopularPhotosCommand;
+import com.gmail.charleszq.ups.ui.command.ig.InstagramLoginCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramPopularsCommand;
 import com.gmail.charleszq.ups.utils.FlickrHelper;
 import com.gmail.charleszq.ups.utils.IConstants;
@@ -159,11 +161,12 @@ public class MainMenuFragment extends Fragment {
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
 					long itemId) {
 				ListAdapter adapter = ((ListView) parent).getAdapter();
+				@SuppressWarnings("unchecked")
 				ICommand<Object> command = (ICommand<Object>) adapter
 						.getItem(pos);
 				command.addCommndDoneListener(mCommandDoneListener);
 				command.execute();
-				if (!(command instanceof FlickrLoginCommand)) {
+				if ( PhotoListCommand.class.isInstance(command) ) {
 					mProgressDialog = ProgressDialog.show(
 							parent.getContext(),
 							"", //$NON-NLS-1$
@@ -202,7 +205,7 @@ public class MainMenuFragment extends Fragment {
 		mSectionAdapter.notifyDataSetChanged();
 
 		// get photo sets.
-		if (isUserAuthed()) {
+		if (isUserAuthedFlickr()) {
 			FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
 					this.getActivity());
 			task.addTaskDoneListener(mPhotoSetsListener);
@@ -270,10 +273,16 @@ public class MainMenuFragment extends Fragment {
 		mSectionAdapter.notifyDataSetChanged();
 	}
 
-	private boolean isUserAuthed() {
+	private boolean isUserAuthedFlickr() {
 		UPSApplication app = (UPSApplication) this.getActivity()
 				.getApplication();
 		return app.getUserId() != null;
+	}
+	
+	private boolean isUserAuthedInstagram() {
+		UPSApplication app = (UPSApplication) this.getActivity()
+				.getApplication();
+		return app.getInstagramUserId() != null;
 	}
 
 	private List<ICommand<?>> createInstagramMenuItems() {
@@ -285,6 +294,13 @@ public class MainMenuFragment extends Fragment {
 
 		command = new InstagramPopularsCommand(ctx);
 		commands.add(command);
+		
+		if( isUserAuthedInstagram() ) {
+			
+		} else {
+			command = new InstagramLoginCommand(ctx);
+			commands.add(command);
+		}
 		return commands;
 	}
 
@@ -301,7 +317,7 @@ public class MainMenuFragment extends Fragment {
 		command = new FlickrIntestringCommand(this.getActivity());
 		commands.add(command);
 
-		if (!isUserAuthed()) {
+		if (!isUserAuthedFlickr()) {
 			command = new FlickrLoginCommand(ctx);
 			commands.add(command);
 		} else {
@@ -329,6 +345,13 @@ public class MainMenuFragment extends Fragment {
 		Intent intent = getActivity().getIntent();
 		String schema = intent.getScheme();
 		if (IConstants.ID_SCHEME.equals(schema)) {
+			
+			//if user already login, just return
+			UPSApplication app= (UPSApplication) getActivity().getApplication();
+			if( app.getUserId() != null ) {
+				return;
+			}
+			
 			Uri uri = intent.getData();
 			String query = uri.getQuery();
 			logger.debug("Returned Query: {}", query); //$NON-NLS-1$
@@ -346,6 +369,9 @@ public class MainMenuFragment extends Fragment {
 					task.execute(oauthToken, secret, oauthVerifier);
 				}
 			}
+		}
+		else if( IConstants.ID_IG_SCHEME.equals(schema)) {
+			//instagram
 		}
 	}
 
