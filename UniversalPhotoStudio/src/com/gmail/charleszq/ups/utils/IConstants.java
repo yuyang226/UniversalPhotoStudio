@@ -24,6 +24,15 @@ public interface IConstants {
 	static final String ID_SCHEME = "ups-flickr-oauth"; //$NON-NLS-1$
 	static final String DEF_PREF_NAME = "ups_flickr"; //$NON-NLS-1$
 	
+	/**
+	 * Instagram oauth scheme, these constants cannot be modified, they are defined in the
+	 * client app of instagram.
+	 */
+	static final String ID_IG_SCHEME = "schema"; //$NON-NLS-1$
+	static final String IG_AUTHORITY = "upsigoauth"; //$NON-NLS-1$
+	static final String IG_CALL_BACK_STR = "schema://upsigoauth"; //$NON-NLS-1$
+	static final String IG_USER_ID = "ig.user.id"; //$NON-NLS-1$
+	
 	//flickr
 	static final String FLICKR_TOKEN_SECRENT = "token.secret"; //$NON-NLS-1$
 	static final String FLICKR_TOKEN = "flickr.token"; //$NON-NLS-1$

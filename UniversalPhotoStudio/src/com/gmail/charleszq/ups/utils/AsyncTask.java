@@ -657,10 +657,11 @@ public abstract class AsyncTask<Params, Progress, Result> {
     }
 
     private static class InternalHandler extends Handler {
-        @SuppressWarnings({"unchecked", "RawUseOfParameterizedType"})
+        @SuppressWarnings({"unchecked"})
         @Override
         public void handleMessage(Message msg) {
-            AsyncTaskResult result = (AsyncTaskResult) msg.obj;
+            @SuppressWarnings("rawtypes")
+			AsyncTaskResult result = (AsyncTaskResult) msg.obj;
             switch (msg.what) {
                 case MESSAGE_POST_RESULT:
                     // There is only one result
@@ -677,12 +678,13 @@ public abstract class AsyncTask<Params, Progress, Result> {
         Params[] mParams;
     }
 
-    @SuppressWarnings({"RawUseOfParameterizedType"})
     private static class AsyncTaskResult<Data> {
-        final AsyncTask mTask;
+        @SuppressWarnings("rawtypes")
+		final AsyncTask mTask;
         final Data[] mData;
 
-        AsyncTaskResult(AsyncTask task, Data... data) {
+        @SuppressWarnings("rawtypes")
+		AsyncTaskResult(AsyncTask task, Data... data) {
             mTask = task;
             mData = data;
         }

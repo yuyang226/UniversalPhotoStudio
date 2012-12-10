@@ -131,4 +131,8 @@ public class UPSApplication extends Application {
 		this.mPhotosProvider = mPhotosProvider;
 	}
 
+	public Object getInstagramUserId() {
+		return null;
+	}
+
 }
