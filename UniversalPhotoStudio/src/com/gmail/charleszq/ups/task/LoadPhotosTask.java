@@ -60,6 +60,9 @@ public class LoadPhotosTask extends
 
 	@Override
 	protected void onPostExecute(MediaObjectCollection result) {
+		if( result == null ) {
+			return;
+		}
 		logger.debug(result.getPhotos().size() + " of " //$NON-NLS-1$
 				+ result.getTotalCount() + " photos laoded, current page: " //$NON-NLS-1$
 				+ (result.getCurrentPage()));

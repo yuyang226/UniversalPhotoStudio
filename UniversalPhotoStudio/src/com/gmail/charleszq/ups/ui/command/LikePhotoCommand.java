@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.task.flickr.FlickrLikeTask;
+import com.gmail.charleszq.ups.task.ig.InstagramLikeTask;
 
 /**
  * @author Charles(charleszq@gmail.com)
@@ -34,6 +35,8 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 			task.execute(photo.getId());
 			break;
 		case INSTAGRAM:
+			InstagramLikeTask igLikeTask = new InstagramLikeTask( mContext, this.mTaskDoneListner);
+			igLikeTask.execute(photo.getId());
 			break;
 		}
 		return true;

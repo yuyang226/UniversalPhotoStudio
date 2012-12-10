@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.jinstagram.auth.model.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +32,7 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserPhotoCollectionTask;
+import com.gmail.charleszq.ups.task.ig.InstagramOAuthTask;
 import com.gmail.charleszq.ups.ui.adapter.CommandSectionListAdapter;
 import com.gmail.charleszq.ups.ui.command.DummyCommand;
 import com.gmail.charleszq.ups.ui.command.ICommand;
@@ -46,6 +48,7 @@ import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrFavsCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrPopularPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramLoginCommand;
+import com.gmail.charleszq.ups.ui.command.ig.InstagramMyFeedsCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramPopularsCommand;
 import com.gmail.charleszq.ups.utils.FlickrHelper;
 import com.gmail.charleszq.ups.utils.IConstants;
@@ -92,8 +95,9 @@ public class MainMenuFragment extends Fragment {
 			MainSlideMenuActivity act = (MainSlideMenuActivity) MainMenuFragment.this
 					.getActivity();
 			if (act == null) {
-				//when configuration changed, the activity of this fragement might be null,
-				//then try to get it from the command.
+				// when configuration changed, the activity of this fragement
+				// might be null,
+				// then try to get it from the command.
 				Context ctx = (Context) command.getAdapter(Context.class);
 				if (ctx != null && ctx instanceof MainSlideMenuActivity) {
 					act = (MainSlideMenuActivity) ctx;
@@ -166,7 +170,7 @@ public class MainMenuFragment extends Fragment {
 						.getItem(pos);
 				command.addCommndDoneListener(mCommandDoneListener);
 				command.execute();
-				if ( PhotoListCommand.class.isInstance(command) ) {
+				if (PhotoListCommand.class.isInstance(command)) {
 					mProgressDialog = ProgressDialog.show(
 							parent.getContext(),
 							"", //$NON-NLS-1$
@@ -278,11 +282,11 @@ public class MainMenuFragment extends Fragment {
 				.getApplication();
 		return app.getUserId() != null;
 	}
-	
+
 	private boolean isUserAuthedInstagram() {
 		UPSApplication app = (UPSApplication) this.getActivity()
 				.getApplication();
-		return app.getInstagramUserId() != null;
+		return app.getInstagramAuthToken() != null;
 	}
 
 	private List<ICommand<?>> createInstagramMenuItems() {
@@ -294,9 +298,10 @@ public class MainMenuFragment extends Fragment {
 
 		command = new InstagramPopularsCommand(ctx);
 		commands.add(command);
-		
-		if( isUserAuthedInstagram() ) {
-			
+
+		if (isUserAuthedInstagram()) {
+			command = new InstagramMyFeedsCommand(ctx);
+			commands.add(command);
 		} else {
 			command = new InstagramLoginCommand(ctx);
 			commands.add(command);
@@ -345,13 +350,14 @@ public class MainMenuFragment extends Fragment {
 		Intent intent = getActivity().getIntent();
 		String schema = intent.getScheme();
 		if (IConstants.ID_SCHEME.equals(schema)) {
-			
-			//if user already login, just return
-			UPSApplication app= (UPSApplication) getActivity().getApplication();
-			if( app.getUserId() != null ) {
+
+			// if user already login, just return
+			UPSApplication app = (UPSApplication) getActivity()
+					.getApplication();
+			if (app.getUserId() != null) {
 				return;
 			}
-			
+
 			Uri uri = intent.getData();
 			String query = uri.getQuery();
 			logger.debug("Returned Query: {}", query); //$NON-NLS-1$
@@ -369,9 +375,45 @@ public class MainMenuFragment extends Fragment {
 					task.execute(oauthToken, secret, oauthVerifier);
 				}
 			}
+		} else if (IConstants.ID_IG_SCHEME.equals(schema)) {
+			Uri uri = intent.getData();
+			instagramAuth(uri);
 		}
-		else if( IConstants.ID_IG_SCHEME.equals(schema)) {
-			//instagram
+	}
+
+	/**
+	 * After recieves the auth token of instagram.
+	 * 
+	 * @param uri
+	 */
+	private void instagramAuth(Uri uri) {
+		String authority = uri.getAuthority();
+		if (IConstants.IG_AUTHORITY.equals(authority)) {
+			// instagram
+			String query = uri.getQuery();
+			int index = query.indexOf("="); //$NON-NLS-1$
+			if (index != -1) {
+				String code = query.substring(index + 1);
+				InstagramOAuthTask task = new InstagramOAuthTask(getActivity());
+				task.addTaskDoneListener(new IGeneralTaskDoneListener<Token>() {
+
+					@Override
+					public void onTaskDone(Token result) {
+						MainMenuFragment.this.onInstagramAuthDone(result);
+					}
+				});
+				task.execute(code);
+			} else {
+				logger.error("Instagram request token code not returned."); //$NON-NLS-1$
+			}
+		}
+	}
+
+	private void onInstagramAuthDone(Token result) {
+		if( result == null ) {
+			
+		} else {
+			prepareSections();
 		}
 	}
 

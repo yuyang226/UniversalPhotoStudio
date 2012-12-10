@@ -6,6 +6,8 @@ package com.gmail.charleszq.ups;
 
 import java.io.File;
 
+import org.jinstagram.auth.model.Token;
+
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -132,7 +134,33 @@ public class UPSApplication extends Application {
 	}
 
 	public Object getInstagramUserId() {
-		return null;
+		return getSharedPreferenceValue(IConstants.IG_USER_ID, null);
+	}
+
+	public Token getInstagramAuthToken() {
+		String token = getSharedPreferenceValue(IConstants.IG_AUTH_TOKEN, null);
+		if (token == null) {
+			return null;
+		}
+		String secret = getSharedPreferenceValue(
+				IConstants.IG_AUTH_TOKEN_SECRET, null);
+		String rawResponse = getSharedPreferenceValue(
+				IConstants.IG_AUTH_TOKEN_RAW_RES, null);
+		Token t = new Token(token, secret, rawResponse);
+		return t;
+	}
+
+	public void saveInstagramAuthToken(long userId, String token,
+			String secret, String rawResponse) {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		editor.putLong(IConstants.IG_USER_ID, userId);
+		editor.putString(IConstants.IG_AUTH_TOKEN, token);
+		editor.putString(IConstants.IG_AUTH_TOKEN_SECRET, secret);
+		editor.putString(IConstants.IG_AUTH_TOKEN_RAW_RES, rawResponse);
+		editor.commit();
+
 	}
 
 }
