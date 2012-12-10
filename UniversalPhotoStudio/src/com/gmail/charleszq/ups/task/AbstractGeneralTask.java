@@ -6,6 +6,9 @@ package com.gmail.charleszq.ups.task;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import android.os.AsyncTask;
 
 /**
@@ -14,6 +17,8 @@ import android.os.AsyncTask;
  */
 public abstract class AbstractGeneralTask<Params, Progress, Result> extends
 		AsyncTask<Params, Progress, Result> {
+	
+	protected Logger logger = LoggerFactory.getLogger(getClass());
 
 	protected Set<IGeneralTaskDoneListener<Result>> mListeners;
 

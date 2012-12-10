@@ -10,6 +10,8 @@
     <string name="f_my_contacts">My Contact Photos</string>
     <string name="f_my_popular">My Populars</string>
     
+    <string name="ig_my_feeds">My Feeds</string>
+    
     <string name="menu_header_flickr">Flickr</string>
     <string name="menu_header_flickr_sets">Photo Sets</string>
     <string name="menu_header_flickr_groups">Photo Groups</string>

@@ -32,6 +32,9 @@ public interface IConstants {
 	static final String IG_AUTHORITY = "upsigoauth"; //$NON-NLS-1$
 	static final String IG_CALL_BACK_STR = "schema://upsigoauth"; //$NON-NLS-1$
 	static final String IG_USER_ID = "ig.user.id"; //$NON-NLS-1$
+	static final String IG_AUTH_TOKEN = "ig.auth.token"; //$NON-NLS-1$
+	static final String IG_AUTH_TOKEN_SECRET = "ig.auth.token.secret"; //$NON-NLS-1$
+	static final String IG_AUTH_TOKEN_RAW_RES = "ig.auth.token.raw.response"; //$NON-NLS-1$
 	
 	//flickr
 	static final String FLICKR_TOKEN_SECRENT = "token.secret"; //$NON-NLS-1$

@@ -118,7 +118,7 @@ public class ImageDetailFragment extends Fragment implements
 	}
 
 	private boolean likePhoto() {
-		
+
 		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
 		if (bmp == null) {
 			return false; // image not loaded yet.
@@ -184,9 +184,9 @@ public class ImageDetailFragment extends Fragment implements
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
-		
+
 		UPSApplication app = (UPSApplication) getActivity().getApplication();
-		
+
 		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
 		MenuItem wallPaperItem = menu.findItem(R.id.menu_item_wallpaper);
 		MenuItem likeItem = menu.findItem(R.id.menu_item_like_photo);
@@ -195,7 +195,19 @@ public class ImageDetailFragment extends Fragment implements
 			likeItem.setEnabled(false);
 		} else {
 			wallPaperItem.setEnabled(true);
-			likeItem.setEnabled(app.getUserId() != null);
+			if (this.mPhoto != null) {
+
+				switch( mPhoto.getMediaSource() ) {
+				case FLICKR:
+					likeItem.setEnabled(app.getUserId() != null);
+					break;
+				case INSTAGRAM:
+					likeItem.setEnabled(app.getInstagramAuthToken()!=null);
+					break;
+				}
+			} else {
+				likeItem.setEnabled(false);
+			}
 		}
 		getActivity().invalidateOptionsMenu();
 	}
