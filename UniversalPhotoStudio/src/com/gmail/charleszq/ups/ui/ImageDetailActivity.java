@@ -16,6 +16,9 @@
 
 package com.gmail.charleszq.ups.ui;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,6 +46,8 @@ public class ImageDetailActivity extends FragmentActivity implements
 	private ImagePagerAdapter mAdapter;
 	private ImageFetcher mImageFetcher;
 	private ViewPager mPager;
+	
+	private Set<IActionBarVisibleListener> mActionBarListeners;
 
 	private IPhotosProvider mPhotosProvider;
 
@@ -109,10 +114,18 @@ public class ImageDetailActivity extends FragmentActivity implements
 			mPager.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
 				@Override
 				public void onSystemUiVisibilityChange(int vis) {
+					boolean shown = true;
 					if ((vis & View.SYSTEM_UI_FLAG_LOW_PROFILE) != 0) {
 						actionBar.hide();
+						shown = false;
 					} else {
 						actionBar.show();
+					}
+					
+					if(mActionBarListeners != null ) {
+						for( IActionBarVisibleListener lis : mActionBarListeners ) {
+							lis.onActionBarShown(shown);
+						}
 					}
 				}
 			});
@@ -181,9 +194,10 @@ public class ImageDetailActivity extends FragmentActivity implements
 		@Override
 		public Fragment getItem(int position) {
 			MediaObject obj = mProvider.getMediaObject(position);
-			return ImageDetailFragment
+			ImageDetailFragment frg = ImageDetailFragment
 					.newInstance(obj.getLargeUrl() == null ? obj.getThumbUrl()
 							: obj.getLargeUrl(), position);
+			return frg;
 		}
 	}
 
@@ -199,5 +213,26 @@ public class ImageDetailActivity extends FragmentActivity implements
 		} else {
 			mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		}
+	}
+	
+	void addActionBarListener( IActionBarVisibleListener lis ) {
+		if( mActionBarListeners == null ) {
+			mActionBarListeners = new HashSet<IActionBarVisibleListener>();
+		}
+		mActionBarListeners.add(lis);
+	}
+	
+	void removeActionBarListener( IActionBarVisibleListener lis ) {
+		if( mActionBarListeners != null ) {
+			mActionBarListeners.remove(lis);
+		}
+	}
+	
+	/**
+	 * @author charles(charleszq@gmail.com)
+	 *
+	 */
+	static interface IActionBarVisibleListener {
+		void onActionBarShown( boolean show );
 	}
 }
