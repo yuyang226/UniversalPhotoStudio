@@ -62,6 +62,7 @@ public class ImageDetailFragment extends Fragment implements
 	
 	private static final int MENU_ITEM_LIKE = 1001;
 	private static final int MENU_ITEM_WALLPAPER = 1002;
+	private static final int MENU_ITEM_DETAIL = 1003;
 
 	private static final String IMAGE_DATA_EXTRA = "extra_image_data"; //$NON-NLS-1$
 	private static final String MEDIA_OBJ_POS = "media_object"; //$NON-NLS-1$
@@ -185,6 +186,11 @@ public class ImageDetailFragment extends Fragment implements
 		v1.setTag(MENU_ITEM_WALLPAPER);
 		v1.setImageResource(android.R.drawable.ic_menu_gallery);
 		mArcMenu.addItem(v1, lis);
+		
+		ImageView v2 = new ImageView(getActivity());
+		v2.setTag(MENU_ITEM_DETAIL);
+		v2.setImageResource(R.drawable.ic_menu_find);
+		mArcMenu.addItem(v2,lis);
 	}
 
 	private boolean likePhoto() {
@@ -274,6 +280,8 @@ public class ImageDetailFragment extends Fragment implements
 		switch (itemid) {
 		case android.R.id.home:
 			getActivity().finish();
+			return true;
+		case MENU_ITEM_DETAIL:
 			return true;
 		case MENU_ITEM_LIKE:
 			likePhoto();
