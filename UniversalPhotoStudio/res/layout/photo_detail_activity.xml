@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" xmlns:app1="http://schemas.android.com/apk/res/com.gmail.charleszq.ups">
+
+    <ImageView
+        android:id="@+id/imageThumb"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        android:src="@drawable/empty_photo" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager_photo_detail"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4" />
+
+    <com.viewpagerindicator.TitlePageIndicator
+        android:id="@+id/indicator_photo_detail"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/photo_detail_vp_indicator_bg"
+        android:padding="10dip"
+        android:textColor="@color/photo_detail_vp_indicator"
+        app:footerIndicatorHeight="3dp"
+        app:footerIndicatorStyle="underline"
+        app:footerLineHeight="1dp"
+        app:linePosition="top"
+        app:selectedBold="true" />
+
+</LinearLayout>

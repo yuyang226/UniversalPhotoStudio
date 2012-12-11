@@ -46,6 +46,7 @@
             android:name=".ui.ImageDetailActivity"
             android:theme="@style/AppTheme.Black" >
         </activity>
+        <activity android:name=".ui.PhotoDetailActivity"></activity>
     </application>
 
 </manifest>

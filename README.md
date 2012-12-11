@@ -8,6 +8,7 @@ Please also download the following projects and import into your Eclipse workspa
 * jInstagram:	https://github.com/sachin-handiekar/jInstagram
 * SlidingMenu:	https://github.com/jfeinstein10/SlidingMenu
 * ArcMenu:		https://github.com/daCapricorn/ArcMenu
+* Android-ViewPagerIndicator: https://github.com/JakeWharton/Android-ViewPagerIndicator
 
 Development Environment
 * JDK 1.6+
