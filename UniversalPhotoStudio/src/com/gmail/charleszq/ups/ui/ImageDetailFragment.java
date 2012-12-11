@@ -59,6 +59,9 @@ import com.gmail.charleszq.ups.utils.ImageWorker;
  */
 public class ImageDetailFragment extends Fragment implements
 		OnShareTargetSelectedListener {
+	
+	private static final int MENU_ITEM_LIKE = 1001;
+	private static final int MENU_ITEM_WALLPAPER = 1002;
 
 	private static final String IMAGE_DATA_EXTRA = "extra_image_data"; //$NON-NLS-1$
 	private static final String MEDIA_OBJ_POS = "media_object"; //$NON-NLS-1$
@@ -174,12 +177,12 @@ public class ImageDetailFragment extends Fragment implements
 		mArcMenu.addItem(v0, lis);
 
 		ImageView v = new ImageView(getActivity());
-		v.setTag(R.id.menu_item_like_photo);
+		v.setTag(MENU_ITEM_LIKE);
 		v.setImageResource(R.drawable.ic_menu_star);
 		mArcMenu.addItem(v, lis);
 
 		ImageView v1 = new ImageView(getActivity());
-		v1.setTag(R.id.menu_item_wallpaper);
+		v1.setTag(MENU_ITEM_WALLPAPER);
 		v1.setImageResource(android.R.drawable.ic_menu_gallery);
 		mArcMenu.addItem(v1, lis);
 	}
@@ -260,36 +263,6 @@ public class ImageDetailFragment extends Fragment implements
 	}
 
 	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-
-		UPSApplication app = (UPSApplication) getActivity().getApplication();
-
-		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
-		MenuItem wallPaperItem = menu.findItem(R.id.menu_item_wallpaper);
-		MenuItem likeItem = menu.findItem(R.id.menu_item_like_photo);
-		if (bmp == null) {
-			wallPaperItem.setEnabled(false);
-			likeItem.setEnabled(false);
-		} else {
-			wallPaperItem.setEnabled(true);
-			if (this.mPhoto != null) {
-
-				switch (mPhoto.getMediaSource()) {
-				case FLICKR:
-					likeItem.setEnabled(app.getUserId() != null);
-					break;
-				case INSTAGRAM:
-					likeItem.setEnabled(app.getInstagramAuthToken() != null);
-					break;
-				}
-			} else {
-				likeItem.setEnabled(false);
-			}
-		}
-		getActivity().invalidateOptionsMenu();
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (!menuItemClicked(item.getItemId())) {
 			return super.onOptionsItemSelected(item);
@@ -302,10 +275,10 @@ public class ImageDetailFragment extends Fragment implements
 		case android.R.id.home:
 			getActivity().finish();
 			return true;
-		case R.id.menu_item_like_photo:
+		case MENU_ITEM_LIKE:
 			likePhoto();
 			return true;
-		case R.id.menu_item_wallpaper:
+		case MENU_ITEM_WALLPAPER:
 			Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
 			saveBitmapToShare(bmp);
 			WallpaperManager wm = WallpaperManager.getInstance(getActivity());
