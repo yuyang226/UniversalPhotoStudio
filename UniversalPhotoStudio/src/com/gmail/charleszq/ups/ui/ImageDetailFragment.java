@@ -71,6 +71,11 @@ public class ImageDetailFragment extends Fragment implements
 	private ImageView mImageView;
 	private ImageFetcher mImageFetcher;
 	private ArcMenu mArcMenu;
+	
+	/**
+	 * The current pos of the image in the photo list.
+	 */
+	private int mCurrentPos;
 
 	private IActionBarVisibleListener mActionBarListener = new IActionBarVisibleListener() {
 
@@ -125,6 +130,7 @@ public class ImageDetailFragment extends Fragment implements
 				IMAGE_DATA_EXTRA) : null;
 		int pos = (getArguments() != null ? getArguments()
 				.getInt(MEDIA_OBJ_POS) : -1);
+		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		UPSApplication app = (UPSApplication) act.getApplication();
 		mPhoto = app.getPhotosProvider().getMediaObject(pos);
@@ -160,8 +166,8 @@ public class ImageDetailFragment extends Fragment implements
 
 				Integer tag = (Integer) v.getTag();
 				if (tag != null) {
+					saveBitmapToShare(bmp);
 					if (tag == R.id.menu_item_share_action_provider_action_bar) {
-						saveBitmapToShare(bmp);
 						Intent i = createShareIntent();
 						getActivity().startActivity(i);
 					} else {
@@ -282,6 +288,9 @@ public class ImageDetailFragment extends Fragment implements
 			getActivity().finish();
 			return true;
 		case MENU_ITEM_DETAIL:
+			Intent i = new Intent(getActivity(), PhotoDetailActivity.class);
+			i.putExtra(ImageDetailActivity.EXTRA_IMAGE, mCurrentPos);
+			startActivity(i);
 			return true;
 		case MENU_ITEM_LIKE:
 			likePhoto();
