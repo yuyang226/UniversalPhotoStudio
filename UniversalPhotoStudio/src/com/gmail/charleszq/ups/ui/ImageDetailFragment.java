@@ -175,12 +175,12 @@ public class ImageDetailFragment extends Fragment implements
 
 		ImageView v = new ImageView(getActivity());
 		v.setTag(R.id.menu_item_like_photo);
-		v.setImageResource(R.drawable.ic_action_my_favorite);
+		v.setImageResource(R.drawable.ic_menu_star);
 		mArcMenu.addItem(v, lis);
 
 		ImageView v1 = new ImageView(getActivity());
 		v1.setTag(R.id.menu_item_wallpaper);
-		v1.setImageResource(R.drawable.f_gallery);
+		v1.setImageResource(android.R.drawable.ic_menu_gallery);
 		mArcMenu.addItem(v1, lis);
 	}
 
