@@ -6,14 +6,5 @@
         android:actionProviderClass="android.widget.ShareActionProvider"
         android:showAsAction="always"
         android:title="@string/action_bar_share_with"/>
-    <item
-        android:id="@+id/menu_item_like_photo"
-        android:showAsAction="never"
-        android:title="@string/menu_item_like_photo"/>
-    <item
-        android:id="@+id/menu_item_wallpaper"
-        android:showAsAction="never"
-        android:title="@string/menu_item_wallpaper">
-    </item>
 
 </menu>
