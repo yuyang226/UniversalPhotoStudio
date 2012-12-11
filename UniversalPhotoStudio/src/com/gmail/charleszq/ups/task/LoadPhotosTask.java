@@ -53,7 +53,6 @@ public class LoadPhotosTask extends
 		try {
 			return service.getPhotos(total, pageNo);
 		} catch (Exception e) {
-			logger.error(e.getMessage());
 			return null;
 		}
 	}

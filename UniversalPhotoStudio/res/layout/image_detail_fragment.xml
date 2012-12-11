@@ -30,5 +30,13 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:contentDescription="@string/imageview_description" />
+    
+    <com.capricorn.ArcMenu
+        android:id="@+id/arc_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|bottom"
+        android:visibility="invisible"
+         />
 
 </FrameLayout>

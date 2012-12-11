@@ -40,9 +40,11 @@ import android.widget.ShareActionProvider;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.widget.Toast;
 
+import com.capricorn.ArcMenu;
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.model.MediaObject;
+import com.gmail.charleszq.ups.ui.ImageDetailActivity.IActionBarVisibleListener;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.ups.ui.command.LikePhotoCommand;
@@ -64,6 +66,16 @@ public class ImageDetailFragment extends Fragment implements
 	private MediaObject mPhoto;
 	private ImageView mImageView;
 	private ImageFetcher mImageFetcher;
+	private ArcMenu mArcMenu;
+
+	private IActionBarVisibleListener mActionBarListener = new IActionBarVisibleListener() {
+
+		@Override
+		public void onActionBarShown(boolean show) {
+			ImageDetailFragment.this.onActionBarShown(show);
+
+		}
+	};
 
 	/**
 	 * Factory method to generate a new instance of the fragment given an image
@@ -84,10 +96,17 @@ public class ImageDetailFragment extends Fragment implements
 		return f;
 	}
 
+	private void onActionBarShown(boolean show) {
+		if (mArcMenu != null) {
+			mArcMenu.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+		}
+	}
+
 	/**
 	 * Empty constructor as per the Fragment documentation
 	 */
 	public ImageDetailFragment() {
+
 	}
 
 	/**
@@ -102,9 +121,12 @@ public class ImageDetailFragment extends Fragment implements
 				IMAGE_DATA_EXTRA) : null;
 		int pos = (getArguments() != null ? getArguments()
 				.getInt(MEDIA_OBJ_POS) : -1);
-		UPSApplication app = (UPSApplication) getActivity().getApplication();
+		ImageDetailActivity act = (ImageDetailActivity) getActivity();
+		UPSApplication app = (UPSApplication) act.getApplication();
 		mPhoto = app.getPhotosProvider().getMediaObject(pos);
 		setHasOptionsMenu(true);
+
+		act.addActionBarListener(mActionBarListener);
 	}
 
 	@Override
@@ -114,7 +136,52 @@ public class ImageDetailFragment extends Fragment implements
 		final View v = inflater.inflate(R.layout.image_detail_fragment,
 				container, false);
 		mImageView = (ImageView) v.findViewById(R.id.imageView);
+		mArcMenu = (ArcMenu) v.findViewById(R.id.arc_menu);
+		initArcMenu();
 		return v;
+	}
+
+	private void initArcMenu() {
+		OnClickListener lis = new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
+				if (bmp == null) {
+					Toast.makeText(getActivity(),
+							R.string.wait_for_image_loading, Toast.LENGTH_SHORT)
+							.show();
+					return;
+				}
+
+				Integer tag = (Integer) v.getTag();
+				if (tag != null) {
+					if (tag == R.id.menu_item_share_action_provider_action_bar) {
+						saveBitmapToShare(bmp);
+						Intent i = createShareIntent();
+						getActivity().startActivity(i);
+					} else {
+						menuItemClicked(tag);
+					}
+				}
+
+			}
+		};
+
+		ImageView v0 = new ImageView(getActivity());
+		v0.setTag(R.id.menu_item_share_action_provider_action_bar);
+		v0.setImageResource(android.R.drawable.ic_menu_share);
+		mArcMenu.addItem(v0, lis);
+
+		ImageView v = new ImageView(getActivity());
+		v.setTag(R.id.menu_item_like_photo);
+		v.setImageResource(R.drawable.ic_action_my_favorite);
+		mArcMenu.addItem(v, lis);
+
+		ImageView v1 = new ImageView(getActivity());
+		v1.setTag(R.id.menu_item_wallpaper);
+		v1.setImageResource(R.drawable.f_gallery);
+		mArcMenu.addItem(v1, lis);
 	}
 
 	private boolean likePhoto() {
@@ -159,12 +226,22 @@ public class ImageDetailFragment extends Fragment implements
 
 	@Override
 	public void onDestroy() {
-		super.onDestroy();
 		if (mImageView != null) {
 			// Cancel any pending image work
 			ImageWorker.cancelWork(mImageView);
 			mImageView.setImageDrawable(null);
 		}
+		ImageDetailActivity act = (ImageDetailActivity) getActivity();
+		if (act != null)
+			act.removeActionBarListener(mActionBarListener);
+		super.onDestroy();
+	}
+
+	@Override
+	public void onDetach() {
+		ImageDetailActivity act = (ImageDetailActivity) getActivity();
+		act.removeActionBarListener(mActionBarListener);
+		super.onDetach();
 	}
 
 	@Override
@@ -197,12 +274,12 @@ public class ImageDetailFragment extends Fragment implements
 			wallPaperItem.setEnabled(true);
 			if (this.mPhoto != null) {
 
-				switch( mPhoto.getMediaSource() ) {
+				switch (mPhoto.getMediaSource()) {
 				case FLICKR:
 					likeItem.setEnabled(app.getUserId() != null);
 					break;
 				case INSTAGRAM:
-					likeItem.setEnabled(app.getInstagramAuthToken()!=null);
+					likeItem.setEnabled(app.getInstagramAuthToken() != null);
 					break;
 				}
 			} else {
@@ -214,7 +291,14 @@ public class ImageDetailFragment extends Fragment implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		if (!menuItemClicked(item.getItemId())) {
+			return super.onOptionsItemSelected(item);
+		}
+		return true;
+	}
+
+	private boolean menuItemClicked(int itemid) {
+		switch (itemid) {
 		case android.R.id.home:
 			getActivity().finish();
 			return true;
@@ -245,7 +329,7 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			return true;
 		}
-		return super.onOptionsItemSelected(item);
+		return false;
 	}
 
 	private File getShareImageFile() {
