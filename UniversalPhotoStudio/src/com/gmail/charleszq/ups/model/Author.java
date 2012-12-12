@@ -18,6 +18,14 @@ public class Author implements Serializable {
 	
 	private String userId;
 	private String userName;
+	private String buddyIconUrl;
+	
+	public String getBuddyIconUrl() {
+		return buddyIconUrl;
+	}
+	public void setBuddyIconUrl(String buddyIconUrl) {
+		this.buddyIconUrl = buddyIconUrl;
+	}
 	public String getUserId() {
 		return userId;
 	}

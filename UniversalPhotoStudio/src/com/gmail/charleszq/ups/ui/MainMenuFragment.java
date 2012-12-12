@@ -73,8 +73,6 @@ public class MainMenuFragment extends Fragment {
 	private static Logger logger = LoggerFactory
 			.getLogger(MainMenuFragment.class);
 
-	private static final String IMAGE_CACHE_DIR = "cmdicon"; //$NON-NLS-1$
-
 	private CommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
 	private ImageFetcher mImageFetcher;
@@ -120,7 +118,7 @@ public class MainMenuFragment extends Fragment {
 				R.dimen.cmd_icon_size);
 
 		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(),
-				IMAGE_CACHE_DIR);
+				IConstants.IMAGE_CACHE_DIR);
 
 		// Set memory cache to 25% of mem class
 		cacheParams.setMemCacheSizePercent(getActivity(), 0.25f);

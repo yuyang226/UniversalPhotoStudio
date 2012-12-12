@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.gmail.charleszq.ups.R;
@@ -22,6 +23,7 @@ import com.gmail.charleszq.ups.utils.IConstants;
 import com.viewpagerindicator.TitlePageIndicator;
 
 /**
+ * Represents the activity to show all detail information of a photo.
  * @author charles(charleszq@gmail.com)
  * 
  */
@@ -52,6 +54,8 @@ public class PhotoDetailActivity extends FragmentActivity {
 		mIndicator = (TitlePageIndicator) findViewById(R.id.indicator_photo_detail);
 		mIndicator.setViewPager(mViewPager);
 		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		
 		loadImage();
 
 	}
@@ -71,5 +75,16 @@ public class PhotoDetailActivity extends FragmentActivity {
 		} catch (Exception e) {
 		}
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if( item.getItemId() == android.R.id.home ) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
 
 }

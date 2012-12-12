@@ -24,5 +24,7 @@
     
     <color name="photo_detail_vp_indicator">#FFFFFF</color>
     <color name="photo_detail_vp_indicator_bg">#383838</color>
+    
+    <color name="color_trans">#80000000</color>
 
 </resources>
