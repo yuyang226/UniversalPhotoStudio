@@ -16,18 +16,21 @@ import android.widget.TextView;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
+import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.ups.task.flickr.FlickrGetUserInfoTask;
 import com.gmail.charleszq.ups.utils.IConstants;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
 import com.gmail.charleszq.ups.utils.ImageCache.ImageCacheParams;
+import com.gmail.charleszq.ups.utils.ImageFetcher;
+import com.googlecode.flickrjandroid.people.User;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
 public class FlickrDetailGeneralFragment extends Fragment {
-	
-	private static Logger logger = LoggerFactory.getLogger(FlickrDetailGeneralFragment.class);
-	
+
+	private static Logger logger = LoggerFactory
+			.getLogger(FlickrDetailGeneralFragment.class);
 
 	static final String PHOTO_ARG_KEY = "photo.frg.arg"; //$NON-NLS-1$
 
@@ -61,7 +64,7 @@ public class FlickrDetailGeneralFragment extends Fragment {
 		// children asynchronously
 		mImageFetcher = new ImageFetcher(getActivity(), thumbSize);
 		mImageFetcher.setLoadingImage(R.drawable.empty_photo);
-		
+
 		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(),
 				IConstants.BUDDY_ICON_DIR);
 
@@ -81,7 +84,7 @@ public class FlickrDetailGeneralFragment extends Fragment {
 				.findViewById(R.id.flickr_detail_general_photo_title);
 		TextView author = (TextView) v
 				.findViewById(R.id.flickr_detail_general_photo_author);
-		ImageView image = (ImageView) v
+		final ImageView image = (ImageView) v
 				.findViewById(R.id.flickr_detail_general_author_image);
 		if (mCurrentPhoto != null) {
 			title.setText(mCurrentPhoto.getTitle());
@@ -93,12 +96,20 @@ public class FlickrDetailGeneralFragment extends Fragment {
 					name = mCurrentPhoto.getAuthor().getUserId();
 				}
 
-				String iconUrl = mCurrentPhoto.getAuthor().getBuddyIconUrl();
-				if (iconUrl != null) {
-					logger.debug("author buddy icon url: " + iconUrl ); //$NON-NLS-1$
-					mImageFetcher.setLoadingImage(R.drawable.empty_photo);
-					mImageFetcher.loadImage(iconUrl, image);
-				}
+				// try loading the buddy icon
+				FlickrGetUserInfoTask task = new FlickrGetUserInfoTask();
+				task.addTaskDoneListener(new IGeneralTaskDoneListener<User>() {
+
+					@Override
+					public void onTaskDone(User result) {
+						if (result != null) {
+							logger.debug("author buddy icon url: " + result.getBuddyIconUrl() ); //$NON-NLS-1$
+							mImageFetcher.loadImage(result.getBuddyIconUrl(),
+									image);
+						}
+					}
+				});
+				task.execute(mCurrentPhoto.getAuthor().getUserId());
 			}
 			if (name != null) {
 				author.setText(name);
@@ -107,13 +118,13 @@ public class FlickrDetailGeneralFragment extends Fragment {
 
 		return v;
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		mImageFetcher.closeCache();
 		super.onDestroy();
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
