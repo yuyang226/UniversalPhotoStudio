@@ -17,8 +17,8 @@ import android.widget.TextView;
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.utils.IConstants;
-import com.gmail.charleszq.ups.utils.ImageCache.ImageCacheParams;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
+import com.gmail.charleszq.ups.utils.ImageCache.ImageCacheParams;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -57,22 +57,19 @@ public class FlickrDetailGeneralFragment extends Fragment {
 		int thumbSize = getResources().getDimensionPixelSize(
 				R.dimen.cmd_icon_size);
 
-		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(),
-				IConstants.IMAGE_CACHE_DIR);
-
-		// Set memory cache to 25% of mem class
-		cacheParams.setMemCacheSizePercent(getActivity(), 0.25f);
-
 		// The ImageFetcher takes care of loading images into our ImageView
 		// children asynchronously
 		mImageFetcher = new ImageFetcher(getActivity(), thumbSize);
 		mImageFetcher.setLoadingImage(R.drawable.empty_photo);
+		
+		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(),
+				IConstants.BUDDY_ICON_DIR);
+
+		// Set memory cache to 25% of mem class
+		cacheParams.setMemCacheSizePercent(getActivity(), 0.25f);
 		mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(),
 				cacheParams);
 
-		mImageFetcher = new ImageFetcher(getActivity(), thumbSize);
-		mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(),
-				cacheParams);
 	}
 
 	@Override
@@ -109,6 +106,25 @@ public class FlickrDetailGeneralFragment extends Fragment {
 		}
 
 		return v;
+	}
+	
+	@Override
+	public void onDestroy() {
+		mImageFetcher.closeCache();
+		super.onDestroy();
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		mImageFetcher.setExitTasksEarly(false);
+	}
+
+	@Override
+	public void onPause() {
+		mImageFetcher.setExitTasksEarly(true);
+		mImageFetcher.flushCache();
+		super.onPause();
 	}
 
 }
