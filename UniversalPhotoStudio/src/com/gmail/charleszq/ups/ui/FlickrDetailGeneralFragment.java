@@ -36,7 +36,7 @@ public class FlickrDetailGeneralFragment extends Fragment {
 				false);
 		TextView title = (TextView) v
 				.findViewById(R.id.flickr_detail_general_photo_title);
-		title.setText("Hello world");
+		title.setText("Hello world"); //$NON-NLS-1$
 		return v;
 	}
 
