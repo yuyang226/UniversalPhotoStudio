@@ -9,10 +9,13 @@
         android:minSdkVersion="14"
         android:targetSdkVersion="17" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <permission android:protectionLevel="signature" android:name="com.gmail.charleszq.ups.permission.MAPS_RECEIVE"></permission><uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.SET_WALLPAPER"/>
+    
+    <uses-permission android:name="com.gmail.charleszq.ups.permission.MAPS_RECEIVE"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
     <application
         android:name="com.gmail.charleszq.ups.UPSApplication"
@@ -47,6 +50,7 @@
             android:theme="@style/AppTheme.Black" >
         </activity>
         <activity android:name=".ui.PhotoDetailActivity"></activity>
+        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyBNE-g4i9-7ruguehwgiOxHa2FUBbOZ58s"/>
     </application>
 
 </manifest>
