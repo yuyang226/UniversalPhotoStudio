@@ -14,5 +14,7 @@
     <dimen name="slidingmenu_offset">100dp</dimen>
     <dimen name="list_padding">10dp</dimen>
     <dimen name="shadow_width">15dp</dimen>
+    
+    <dimen name="detail_page_control_space">30dp</dimen>
 
 </resources>

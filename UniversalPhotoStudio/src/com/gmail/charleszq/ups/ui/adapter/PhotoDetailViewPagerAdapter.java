@@ -22,7 +22,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int pos) {
-		FlickrDetailGeneralFragment f = FlickrDetailGeneralFragment.newInstance(mPhoto.getId());
+		FlickrDetailGeneralFragment f = FlickrDetailGeneralFragment.newInstance(mPhoto);
 		return f;
 	}
 

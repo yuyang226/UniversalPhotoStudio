@@ -15,31 +15,31 @@ public class GeoLocation implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -6259542352108432358L;
-	private String longitude;
-	private String latitude;
-	private String accuracy;
+	private double longitude;
+	private double latitude;
+	private double accuracy;
 
-	public String getLongitude() {
+	public double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(String longitude) {
+	public void setLongitude(double longitude) {
 		this.longitude = longitude;
 	}
 
-	public String getLatitude() {
+	public double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(String latitude) {
+	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
 
-	public String getAccuracy() {
+	public double getAccuracy() {
 		return accuracy;
 	}
 
-	public void setAccuracy(String accuracy) {
+	public void setAccuracy(double accuracy) {
 		this.accuracy = accuracy;
 	}
 

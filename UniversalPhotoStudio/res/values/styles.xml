@@ -1,6 +1,12 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme" parent="android:Theme" />
+    <style name="AppTheme" parent="android:Theme">
+        <item name="android:actionBarStyle">@style/MyActionBar</item>
+    </style>
+
+    <style name="MyActionBar" parent="@android:style/Widget.Holo.ActionBar">
+         <item name="android:textStyle">bold</item>
+    </style>
 
     <style name="MenuTheme" parent="android:Theme.NoTitleBar" />
 
@@ -21,6 +27,10 @@
         <item name="android:height">40dp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">10dp</item>
+    </style>
+    
+    <style name="PhotoDetailSection" parent="MenuListHeader">
+        <item name="android:height">30dp</item>
     </style>
 
 </resources>

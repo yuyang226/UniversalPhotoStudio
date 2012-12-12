@@ -24,6 +24,8 @@ public interface IConstants {
 	static final String ID_SCHEME = "ups-flickr-oauth"; //$NON-NLS-1$
 	static final String DEF_PREF_NAME = "ups_flickr"; //$NON-NLS-1$
 	
+	static final String IMAGE_CACHE_DIR = "cmdicon"; //$NON-NLS-1$
+	
 	/**
 	 * Instagram oauth scheme, these constants cannot be modified, they are defined in the
 	 * client app of instagram.
