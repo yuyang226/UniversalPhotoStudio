@@ -4,6 +4,9 @@
 package com.gmail.charleszq.ups.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Represents the model for either photos or videos.
@@ -17,12 +20,33 @@ public final class MediaObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -3467986522217462235L;
-	
+
 	private String mId;
 	private String mTitle;
 	private String mDescription;
 	private String mThumbUrl;
 	private String mLargeUrl;
+
+	private GeoLocation mLocation;
+	private List<String> mTags;
+	private Author mAuthor;
+
+	public Author getAuthor() {
+		return mAuthor;
+	}
+
+	public void setAuthor(Author mAuthor) {
+		this.mAuthor = mAuthor;
+	}
+
+	public GeoLocation getLocation() {
+		return mLocation;
+	}
+
+	public void setLocation(GeoLocation mLocation) {
+		this.mLocation = mLocation;
+	}
+
 	private MediaObjectType mMediaType = MediaObjectType.PHOTO;
 	private MediaSourceType mMediaSource = MediaSourceType.FLICKR;
 
@@ -80,6 +104,21 @@ public final class MediaObject implements Serializable {
 
 	public void setId(String id) {
 		mId = id;
+	}
+
+	public void addTag(String tag) {
+		if (mTags == null) {
+			mTags = new ArrayList<String>();
+		}
+		mTags.add(tag);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getTags() {
+		if (mTags == null) {
+			return Collections.EMPTY_LIST;
+		}
+		return mTags;
 	}
 
 }
