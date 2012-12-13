@@ -138,9 +138,11 @@ public class PhotoDetailGeneralFragment extends
 
 					@Override
 					public void onTaskDone(Photo result) {
-						mCurrentPhoto.setViews(result.getViews());
-						mCurrentPhoto.setComments(result.getComments());
-						mCurrentPhoto.setFavorites(result.getFavorites());
+						if (result != null) {
+							mCurrentPhoto.setViews(result.getViews());
+							mCurrentPhoto.setComments(result.getComments());
+							mCurrentPhoto.setFavorites(result.getFavorites());
+						}
 						photoViews.setText(String.valueOf(mCurrentPhoto
 								.getViews() == -1 ? 0 : mCurrentPhoto
 								.getViews()));
