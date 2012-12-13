@@ -41,6 +41,9 @@ public final class ModelUtils {
 		uPhoto.setId(photo.getId());
 		uPhoto.setThumbUrl(photo.getSmallUrl());
 		uPhoto.setLargeUrl(photo.getLargeUrl());
+		uPhoto.setViews(photo.getViews());
+		uPhoto.setComments(photo.getComments());
+		uPhoto.setFavorites(photo.getFavorites());
 		
 		GeoData geo = photo.getGeoData();
 		if( geo != null ) {
@@ -123,6 +126,9 @@ public final class ModelUtils {
 			author.setBuddyIconUrl( u.getProfilePictureUrl() );
 			photo.setAuthor( author );
 		}
+		
+		photo.setComments( feed.getComments().getCount());
+		photo.setFavorites( feed.getLikes().getCount() );
 		return photo;
 	}
 }

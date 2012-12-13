@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/scrollView1"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
@@ -10,6 +11,59 @@
         android:orientation="vertical"
         android:padding="@dimen/padding_large" >
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/views" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/flickr_detail_gen_views"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/comments" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/flickr_detail_gen_comments"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/favourites" />
+
+            <TextView
+                android:layout_marginLeft="5dp"
+                android:id="@+id/flickr_detail_gen_favs"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/flickr_detail_general_photo_author_header"
             style="@style/PhotoDetailSection"
@@ -19,11 +73,12 @@
             android:text="@string/detail_gen_author_section" />
 
         <LinearLayout
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
+            tools:ignore="UseCompoundDrawables" >
 
             <ImageView
                 android:id="@+id/flickr_detail_general_author_image"
@@ -33,11 +88,11 @@
                 android:src="@drawable/empty_photo" />
 
             <TextView
-                android:layout_marginLeft="20dp"
                 android:id="@+id/flickr_detail_general_photo_author"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp" />
         </LinearLayout>
 
         <TextView
@@ -51,7 +106,25 @@
         <TextView
             android:id="@+id/flickr_detail_general_photo_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/photo_no_title" />
+
+        <TextView
+            android:id="@+id/flickr_detail_general_photo_desc_header"
+            style="@style/PhotoDetailSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="left|center"
+            android:text="@string/detail_gen_description_section" />
+
+        <TextView
+            android:id="@+id/flickr_detail_general_photo_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/photo_no_desc" />
     </LinearLayout>
 
 </ScrollView>

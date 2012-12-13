@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name">BEYOND FLICKR</string>
     <string name="no_network_connection_toast">No network connection found</string>
@@ -25,12 +25,12 @@
     <string name="auth_gen_req_token">Generating the authorization request.</string>
 
     <!-- option menu items -->
-    <string name="action_bar_share_with">Share With...</string>
+    <string name="action_bar_share_with" tools:ignore="TypographyEllipsis">Share With...</string>
 
     <!-- messages -->
-    <string name="wait_for_image_loading">Image loading, please wait...</string>
+    <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
     <string name="share_via">share from</string>
-    <string name="loading_photos">Loading...</string>
+    <string name="loading_photos" tools:ignore="TypographyEllipsis">Loading...</string>
     <string name="already_first_page">Already at the first page.</string>
     <string name="already_last_page">No more pages.</string>
     <string name="msg_wallpaper_changed">Wallpaper changed.</string>
@@ -52,4 +52,7 @@
 	<string name="detail_gen_title_section">Title</string>
 	<string name="detail_gen_author_section">Author</string>
 	<string name="detail_gen_description_section">Description</string>
+	
+	<string name="photo_no_title">NO TITLE</string>
+	<string name="photo_no_desc">NO DESCRIPTION</string>
 </resources>
