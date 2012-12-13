@@ -8,5 +8,5 @@ package com.gmail.charleszq.ups.ui.command;
  *
  */
 public enum CommandType {
-	PHOTO_LIST_CMD, GENERAL_CMD
+	PHOTO_LIST_CMD, GENERAL_CMD, MENU_HEADER_CMD
 }

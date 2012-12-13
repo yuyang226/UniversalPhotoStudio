@@ -8,8 +8,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jinstagram.auth.model.Token;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -17,7 +15,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,9 +31,10 @@ import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserPhotoCollectionTask;
 import com.gmail.charleszq.ups.task.ig.InstagramOAuthTask;
 import com.gmail.charleszq.ups.ui.adapter.CommandSectionListAdapter;
-import com.gmail.charleszq.ups.ui.command.DummyCommand;
+import com.gmail.charleszq.ups.ui.command.CommandType;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.ICommandDoneListener;
+import com.gmail.charleszq.ups.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.FlickrGalleryPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.FlickrIntestringCommand;
@@ -52,8 +50,6 @@ import com.gmail.charleszq.ups.ui.command.ig.InstagramMyFeedsCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramPopularsCommand;
 import com.gmail.charleszq.ups.utils.FlickrHelper;
 import com.gmail.charleszq.ups.utils.IConstants;
-import com.gmail.charleszq.ups.utils.ImageCache.ImageCacheParams;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.galleries.Gallery;
 import com.googlecode.flickrjandroid.groups.Group;
@@ -68,14 +64,10 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
  * @author Charles(charleszq@gmail.com)
  * 
  */
-public class MainMenuFragment extends Fragment {
-
-	private static Logger logger = LoggerFactory
-			.getLogger(MainMenuFragment.class);
+public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 	private CommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
-	private ImageFetcher mImageFetcher;
 
 	private IGeneralTaskDoneListener<Collection<?>> mPhotoSetsListener = new IGeneralTaskDoneListener<Collection<?>>() {
 
@@ -117,18 +109,8 @@ public class MainMenuFragment extends Fragment {
 		int thumbSize = getResources().getDimensionPixelSize(
 				R.dimen.cmd_icon_size);
 
-		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(),
-				IConstants.IMAGE_CACHE_DIR);
-
-		// Set memory cache to 25% of mem class
-		cacheParams.setMemCacheSizePercent(getActivity(), 0.25f);
-
-		// The ImageFetcher takes care of loading images into our ImageView
-		// children asynchronously
-		mImageFetcher = new ImageFetcher(getActivity(), thumbSize);
+		initializeImageFetcher(IConstants.CMD_ICON_CACHE_DIR, thumbSize);
 		mImageFetcher.setLoadingImage(R.drawable.icon);
-		mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(),
-				cacheParams);
 
 		View v = inflater.inflate(R.layout.main_menu, null);
 		ListView lv = (ListView) v.findViewById(R.id.listView1);
@@ -166,8 +148,12 @@ public class MainMenuFragment extends Fragment {
 				@SuppressWarnings("unchecked")
 				ICommand<Object> command = (ICommand<Object>) adapter
 						.getItem(pos);
-				command.addCommndDoneListener(mCommandDoneListener);
-				command.execute();
+				if (command.getCommandType() == CommandType.MENU_HEADER_CMD) {
+					command.execute(adapter);
+				} else {
+					command.addCommndDoneListener(mCommandDoneListener);
+					command.execute();
+				}
 				if (PhotoListCommand.class.isInstance(command)) {
 					mProgressDialog = ProgressDialog.show(
 							parent.getContext(),
@@ -176,7 +162,9 @@ public class MainMenuFragment extends Fragment {
 									R.string.loading_photos));
 					mProgressDialog.setCancelable(true);
 				}
-				if (!(command instanceof FlickrLoginCommand)) {
+				if (!(command instanceof FlickrLoginCommand)
+						&& !CommandType.MENU_HEADER_CMD.equals(command
+								.getCommandType())) {
 					MainSlideMenuActivity act = (MainSlideMenuActivity) MainMenuFragment.this
 							.getActivity();
 					act.closeMenu();
@@ -184,19 +172,6 @@ public class MainMenuFragment extends Fragment {
 			}
 		});
 		return v;
-	}
-
-	@Override
-	public void onDestroy() {
-		mImageFetcher.closeCache();
-		super.onDestroy();
-	}
-
-	@Override
-	public void onPause() {
-		mImageFetcher.setExitTasksEarly(true);
-		mImageFetcher.flushCache();
-		super.onPause();
 	}
 
 	private void prepareSections() {
@@ -230,45 +205,51 @@ public class MainMenuFragment extends Fragment {
 		final List<ICommand<?>> groupCommands = new ArrayList<ICommand<?>>();
 		final List<ICommand<?>> galleryCommands = new ArrayList<ICommand<?>>();
 
+		String photoSetHeaderName = getActivity().getString(
+				R.string.menu_header_flickr_sets);
+		String groupHeaderName = getActivity().getString(
+				R.string.menu_header_flickr_groups);
+		String galleryHeaderName = getActivity().getString(
+				R.string.menu_header_flickr_gallery);
 		for (Object obj : list) {
 			if (obj instanceof Photoset) {
 				ICommand<?> cmd = new FlickrUserPhotoSetCommand(
 						this.getActivity(), (Photoset) obj);
+				cmd.setCommandCategory(photoSetHeaderName);
 				photosetCommands.add(cmd);
 			}
 
 			if (obj instanceof Group) {
 				ICommand<?> cmd = new FlickrUserGroupCommand(
 						this.getActivity(), (Group) obj);
+				cmd.setCommandCategory(groupHeaderName);
 				groupCommands.add(cmd);
 			}
 
 			if (obj instanceof Gallery) {
 				ICommand<?> cmd = new FlickrGalleryPhotosCommand(getActivity(),
 						(Gallery) obj);
+				cmd.setCommandCategory(galleryHeaderName);
 				galleryCommands.add(cmd);
 			}
 		}
 		if (!photosetCommands.isEmpty()) {
-			ICommand<?> sectionCommand = new DummyCommand(getActivity(),
-					getActivity().getResources().getString(
-							R.string.menu_header_flickr_sets));
+			ICommand<?> sectionCommand = new MenuSectionHeaderCommand(
+					getActivity(), photoSetHeaderName);
 			photosetCommands.add(0, sectionCommand);
 			mSectionAdapter.addCommands(photosetCommands);
 		}
 
 		if (!groupCommands.isEmpty()) {
-			ICommand<?> groupCommand = new DummyCommand(getActivity(),
-					getActivity().getResources().getString(
-							R.string.menu_header_flickr_groups));
+			ICommand<?> groupCommand = new MenuSectionHeaderCommand(
+					getActivity(), groupHeaderName);
 			groupCommands.add(0, groupCommand);
 			mSectionAdapter.addCommands(groupCommands);
 		}
 
 		if (!galleryCommands.isEmpty()) {
-			ICommand<?> galleryCommand = new DummyCommand(getActivity(),
-					getActivity()
-							.getString(R.string.menu_header_flickr_gallery));
+			ICommand<?> galleryCommand = new MenuSectionHeaderCommand(
+					getActivity(), galleryHeaderName);
 			galleryCommands.add(0, galleryCommand);
 			mSectionAdapter.addCommands(galleryCommands);
 		}
@@ -290,18 +271,22 @@ public class MainMenuFragment extends Fragment {
 	private List<ICommand<?>> createInstagramMenuItems() {
 		List<ICommand<?>> commands = new ArrayList<ICommand<?>>();
 		Context ctx = getActivity();
-		ICommand<?> command = new DummyCommand(ctx,
-				ctx.getString(R.string.menu_header_ig));
+
+		String headerName = ctx.getString(R.string.menu_header_ig);
+		ICommand<?> command = new MenuSectionHeaderCommand(ctx, headerName);
 		commands.add(command);
 
 		command = new InstagramPopularsCommand(ctx);
+		command.setCommandCategory(headerName);
 		commands.add(command);
 
 		if (isUserAuthedInstagram()) {
 			command = new InstagramMyFeedsCommand(ctx);
+			command.setCommandCategory(headerName);
 			commands.add(command);
 		} else {
 			command = new InstagramLoginCommand(ctx);
+			command.setCommandCategory(headerName);
 			commands.add(command);
 		}
 		return commands;
@@ -312,28 +297,34 @@ public class MainMenuFragment extends Fragment {
 		Context ctx = getActivity();
 
 		// section header.
-		ICommand<?> command = new DummyCommand(ctx, ctx.getResources()
-				.getString(R.string.menu_header_flickr));
+		String headerName = ctx.getString(R.string.menu_header_flickr);
+		ICommand<?> command = new MenuSectionHeaderCommand(ctx, headerName);
 		commands.add(command);
 
 		// real commands
 		command = new FlickrIntestringCommand(this.getActivity());
+		command.setCommandCategory(headerName);
 		commands.add(command);
 
 		if (!isUserAuthedFlickr()) {
 			command = new FlickrLoginCommand(ctx);
+			command.setCommandCategory(headerName);
 			commands.add(command);
 		} else {
 			command = new MyFlickrPhotosCommand(ctx);
+			command.setCommandCategory(headerName);
 			commands.add(command);
 
 			command = new MyFlickrFavsCommand(ctx);
+			command.setCommandCategory(headerName);
 			commands.add(command);
 
 			command = new MyFlickrPopularPhotosCommand(ctx);
+			command.setCommandCategory(headerName);
 			commands.add(command);
 
 			command = new MyFlickrContactPhotosCommand(ctx);
+			command.setCommandCategory(headerName);
 			commands.add(command);
 
 		}
@@ -344,7 +335,6 @@ public class MainMenuFragment extends Fragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		mImageFetcher.setExitTasksEarly(false);
 		Intent intent = getActivity().getIntent();
 		String schema = intent.getScheme();
 		if (IConstants.ID_SCHEME.equals(schema)) {
@@ -408,8 +398,8 @@ public class MainMenuFragment extends Fragment {
 	}
 
 	private void onInstagramAuthDone(Token result) {
-		if( result == null ) {
-			
+		if (result == null) {
+			// TODO revisit here, what to do if auth failed?
 		} else {
 			prepareSections();
 		}
@@ -445,7 +435,6 @@ public class MainMenuFragment extends Fragment {
 				return oauthApi.getAccessToken(oauthToken, oauthTokenSecret,
 						verifier);
 			} catch (Exception e) {
-				logger.error(e.getMessage());
 				return null;
 			}
 

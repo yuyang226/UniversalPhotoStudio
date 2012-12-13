@@ -20,6 +20,12 @@ public abstract class AbstractCommand<T> implements ICommand<T> {
 
 	protected Set<ICommandDoneListener<T>> mListeners;
 
+	/**
+	 * the command section header title, used to identify which group this
+	 * command belongs to.
+	 */
+	protected String mCommandCategory;
+
 	protected IGeneralTaskDoneListener<T> mTaskDoneListner = new IGeneralTaskDoneListener<T>() {
 
 		@Override
@@ -85,6 +91,17 @@ public abstract class AbstractCommand<T> implements ICommand<T> {
 	@Override
 	public void attacheContext(Context ctx) {
 		this.mContext = ctx;
+	}
+
+	@Override
+	public void setCommandCategory(String category) {
+		this.mCommandCategory = category;
+
+	}
+
+	@Override
+	public String getCommandCategory() {
+		return mCommandCategory;
 	}
 
 }

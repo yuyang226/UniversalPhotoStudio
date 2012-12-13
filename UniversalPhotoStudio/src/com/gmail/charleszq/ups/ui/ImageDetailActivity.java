@@ -35,12 +35,12 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.dp.IPhotosProvider;
 import com.gmail.charleszq.ups.model.MediaObject;
+import com.gmail.charleszq.ups.utils.IConstants;
 import com.gmail.charleszq.ups.utils.ImageCache;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
 
 public class ImageDetailActivity extends FragmentActivity implements
 		OnClickListener {
-	private static final String IMAGE_CACHE_DIR = "images"; //$NON-NLS-1$
 	public static final String EXTRA_IMAGE = "extra_image"; //$NON-NLS-1$
 
 	private ImagePagerAdapter mAdapter;
@@ -76,7 +76,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 		final int longest = (height > width ? height : width) / 2;
 
 		ImageCache.ImageCacheParams cacheParams = new ImageCache.ImageCacheParams(
-				this, IMAGE_CACHE_DIR);
+				this, IConstants.IMAGE_CACHE_DIR);
 		cacheParams.setMemCacheSizePercent(this, 0.25f); // Set memory cache to
 															// 25% of mem class
 

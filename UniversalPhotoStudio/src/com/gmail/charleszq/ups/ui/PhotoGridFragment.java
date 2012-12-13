@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -46,8 +45,7 @@ import com.gmail.charleszq.ups.dp.SinglePagePhotosProvider;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
 import com.gmail.charleszq.ups.ui.command.ICommand;
-import com.gmail.charleszq.ups.utils.ImageCache.ImageCacheParams;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
+import com.gmail.charleszq.ups.utils.IConstants;
 
 /**
  * The main fragment that powers the ImageGridActivity screen. Fairly straight
@@ -57,14 +55,12 @@ import com.gmail.charleszq.ups.utils.ImageFetcher;
  * configuration changes like orientation change so the images are populated
  * quickly if, for example, the user rotates the device.
  */
-public class PhotoGridFragment extends Fragment implements
+public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implements
 		AdapterView.OnItemClickListener {
-	private static final String IMAGE_CACHE_DIR = "thumbs"; //$NON-NLS-1$
 
 	private int mImageThumbSize;
 	private int mImageThumbSpacing;
 	private ImageAdapter mAdapter;
-	private ImageFetcher mImageFetcher;
 	private GridView mGridView = null;
 
 	private IPhotosProvider mPhotosProvider = new SinglePagePhotosProvider(
@@ -165,21 +161,7 @@ public class PhotoGridFragment extends Fragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
-		mImageFetcher.setExitTasksEarly(false);
 		mAdapter.notifyDataSetChanged();
-	}
-
-	@Override
-	public void onPause() {
-		super.onPause();
-		mImageFetcher.setExitTasksEarly(true);
-		mImageFetcher.flushCache();
-	}
-
-	@Override
-	public void onDestroy() {
-		mImageFetcher.closeCache();
-		super.onDestroy();
 	}
 
 	@Override
@@ -191,31 +173,13 @@ public class PhotoGridFragment extends Fragment implements
 				R.dimen.image_thumbnail_spacing);
 
 		mAdapter = new ImageAdapter(getActivity(), mPhotosProvider);
+		initializeImageFetcher(IConstants.IMAGE_THUMBS_CACHE_DIR, mImageThumbSize);
 
-		ImageCacheParams cacheParams = new ImageCacheParams(getActivity(),
-				IMAGE_CACHE_DIR);
-
-		// Set memory cache to 25% of mem class
-		cacheParams.setMemCacheSizePercent(getActivity(), 0.25f);
-
-		// The ImageFetcher takes care of loading images into our ImageView
-		// children asynchronously
-		mImageFetcher = new ImageFetcher(getActivity(), mImageThumbSize);
-		mImageFetcher.setLoadingImage(R.drawable.empty_photo);
-		mImageFetcher.addImageCache(getActivity().getSupportFragmentManager(),
-				cacheParams);
-		
 		if( mCurrentCommand != null ) {
 			mCurrentCommand.attacheContext(getActivity());
 		}
 		
 		this.setRetainInstance(true);
-	}
-
-	@Override
-	public void onDetach() {
-		mImageFetcher.closeCache();
-		super.onDetach();
 	}
 
 	@Override

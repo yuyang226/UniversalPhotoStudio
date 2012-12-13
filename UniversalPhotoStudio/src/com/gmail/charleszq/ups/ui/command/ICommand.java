@@ -80,5 +80,8 @@ public interface ICommand<T> {
 	 * @param ctx
 	 */
 	void attacheContext(Context ctx);
+	
+	void setCommandCategory(String category);
+	String getCommandCategory();
 
 }
