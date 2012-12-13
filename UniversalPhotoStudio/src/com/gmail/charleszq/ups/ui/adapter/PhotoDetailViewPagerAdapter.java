@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
-import com.gmail.charleszq.ups.ui.flickr.FlickrDetailGeneralFragment;
+import com.gmail.charleszq.ups.ui.PhotoDetailGeneralFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 	
@@ -22,7 +22,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int pos) {
-		FlickrDetailGeneralFragment f = FlickrDetailGeneralFragment.newInstance(mPhoto);
+		PhotoDetailGeneralFragment f = PhotoDetailGeneralFragment.newInstance(mPhoto);
 		return f;
 	}
 

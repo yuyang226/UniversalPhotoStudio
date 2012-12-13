@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gmail.charleszq.ups.ui.flickr;
+package com.gmail.charleszq.ups.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,16 +16,18 @@ import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.FlickrGetPhotoGeneralInfoTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrGetUserInfoTask;
-import com.gmail.charleszq.ups.ui.AbstractFragmentWithImageFetcher;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 /**
+ * Represents the fragment to show the detail information of photo, currently
+ * for both flickr photo and instagram photo
+ * 
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class FlickrDetailGeneralFragment extends
+public class PhotoDetailGeneralFragment extends
 		AbstractFragmentWithImageFetcher {
 
 	private static final String PHOTO_ARG_KEY = "photo.frg.arg"; //$NON-NLS-1$
@@ -35,11 +37,11 @@ public class FlickrDetailGeneralFragment extends
 	/**
 	 * Must have this according the android document.
 	 */
-	public FlickrDetailGeneralFragment() {
+	public PhotoDetailGeneralFragment() {
 	}
 
-	public static FlickrDetailGeneralFragment newInstance(MediaObject photo) {
-		FlickrDetailGeneralFragment f = new FlickrDetailGeneralFragment();
+	public static PhotoDetailGeneralFragment newInstance(MediaObject photo) {
+		PhotoDetailGeneralFragment f = new PhotoDetailGeneralFragment();
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(PHOTO_ARG_KEY, photo);
 		f.setArguments(bundle);
@@ -130,17 +132,27 @@ public class FlickrDetailGeneralFragment extends
 								.valueOf(mCurrentPhoto.getFavorites() == -1 ? 0
 										: mCurrentPhoto.getFavorites()));
 			} else {
-				//flickr
+				// flickr
 				FlickrGetPhotoGeneralInfoTask ptask = new FlickrGetPhotoGeneralInfoTask();
-				ptask.addTaskDoneListener( new IGeneralTaskDoneListener<Photo>() {
+				ptask.addTaskDoneListener(new IGeneralTaskDoneListener<Photo>() {
 
 					@Override
 					public void onTaskDone(Photo result) {
+						mCurrentPhoto.setViews(result.getViews());
 						mCurrentPhoto.setComments(result.getComments());
 						mCurrentPhoto.setFavorites(result.getFavorites());
-						photoComments.setText(String.valueOf(mCurrentPhoto.getComments()));
-						photoFavs.setText(String.valueOf(mCurrentPhoto.getFavorites()));
-					}} );
+						photoViews.setText(String.valueOf(mCurrentPhoto
+								.getViews() == -1 ? 0 : mCurrentPhoto
+								.getViews()));
+						photoComments.setText(String.valueOf(mCurrentPhoto
+								.getComments() == -1 ? 0 : mCurrentPhoto
+								.getComments()));
+						photoFavs.setText(String.valueOf(mCurrentPhoto
+								.getFavorites() == -1 ? 0 : mCurrentPhoto
+								.getFavorites()));
+					}
+				});
+				ptask.execute(mCurrentPhoto.getId());
 			}
 
 			String desc = mCurrentPhoto.getDescription();
