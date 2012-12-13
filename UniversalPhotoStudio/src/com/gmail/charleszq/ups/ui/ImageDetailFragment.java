@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import android.app.ActionBar;
 import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -59,7 +60,7 @@ import com.gmail.charleszq.ups.utils.ImageWorker;
  */
 public class ImageDetailFragment extends Fragment implements
 		OnShareTargetSelectedListener {
-	
+
 	private static final int MENU_ITEM_LIKE = 1001;
 	private static final int MENU_ITEM_WALLPAPER = 1002;
 	private static final int MENU_ITEM_DETAIL = 1003;
@@ -71,7 +72,7 @@ public class ImageDetailFragment extends Fragment implements
 	private ImageView mImageView;
 	private ImageFetcher mImageFetcher;
 	private ArcMenu mArcMenu;
-	
+
 	/**
 	 * The current pos of the image in the photo list.
 	 */
@@ -192,11 +193,14 @@ public class ImageDetailFragment extends Fragment implements
 		v1.setTag(MENU_ITEM_WALLPAPER);
 		v1.setImageResource(android.R.drawable.ic_menu_gallery);
 		mArcMenu.addItem(v1, lis);
-		
+
 		ImageView v2 = new ImageView(getActivity());
 		v2.setTag(MENU_ITEM_DETAIL);
 		v2.setImageResource(R.drawable.ic_menu_find);
-		mArcMenu.addItem(v2,lis);
+		mArcMenu.addItem(v2, lis);
+
+		ActionBar bar = getActivity().getActionBar();
+		mArcMenu.setVisibility(bar.isShowing() ? View.VISIBLE : View.INVISIBLE);
 	}
 
 	private boolean likePhoto() {

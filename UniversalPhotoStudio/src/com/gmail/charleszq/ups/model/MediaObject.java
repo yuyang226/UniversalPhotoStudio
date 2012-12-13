@@ -26,6 +26,7 @@ public final class MediaObject implements Serializable {
 	private String mDescription;
 	private String mThumbUrl;
 	private String mLargeUrl;
+	private int mViews = -1, mComments = -1, mFavorites = -1;
 
 	private GeoLocation mLocation;
 	private List<String> mTags;
@@ -120,5 +121,31 @@ public final class MediaObject implements Serializable {
 		}
 		return mTags;
 	}
+
+	public int getViews() {
+		return mViews;
+	}
+
+	public void setViews(int mViews) {
+		this.mViews = mViews;
+	}
+
+	public int getComments() {
+		return mComments;
+	}
+
+	public void setComments(int mComments) {
+		this.mComments = mComments;
+	}
+
+	public int getFavorites() {
+		return mFavorites;
+	}
+
+	public void setFavorites(int mFavorites) {
+		this.mFavorites = mFavorites;
+	}
+	
+	
 
 }

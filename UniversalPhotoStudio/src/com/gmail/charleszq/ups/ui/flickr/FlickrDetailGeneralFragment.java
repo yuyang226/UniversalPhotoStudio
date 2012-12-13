@@ -12,11 +12,14 @@ import android.widget.TextView;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
+import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.ups.task.flickr.FlickrGetPhotoGeneralInfoTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrGetUserInfoTask;
 import com.gmail.charleszq.ups.ui.AbstractFragmentWithImageFetcher;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.Photo;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -25,12 +28,12 @@ import com.googlecode.flickrjandroid.people.User;
 public class FlickrDetailGeneralFragment extends
 		AbstractFragmentWithImageFetcher {
 
-	static final String PHOTO_ARG_KEY = "photo.frg.arg"; //$NON-NLS-1$
+	private static final String PHOTO_ARG_KEY = "photo.frg.arg"; //$NON-NLS-1$
 
 	private MediaObject mCurrentPhoto;
 
 	/**
-	 * 
+	 * Must have this according the android document.
 	 */
 	public FlickrDetailGeneralFragment() {
 	}
@@ -66,9 +69,22 @@ public class FlickrDetailGeneralFragment extends
 				.findViewById(R.id.flickr_detail_general_photo_author);
 		final ImageView image = (ImageView) v
 				.findViewById(R.id.flickr_detail_general_author_image);
-		if (mCurrentPhoto != null) {
-			title.setText(mCurrentPhoto.getTitle());
 
+		final TextView photoViews = (TextView) v
+				.findViewById(R.id.flickr_detail_gen_views);
+		final TextView photoComments = (TextView) v
+				.findViewById(R.id.flickr_detail_gen_comments);
+		final TextView photoFavs = (TextView) v
+				.findViewById(R.id.flickr_detail_gen_favs);
+		TextView description = (TextView) v
+				.findViewById(R.id.flickr_detail_general_photo_desc);
+		if (mCurrentPhoto != null) {
+			// title
+			if (mCurrentPhoto.getTitle() != null
+					&& mCurrentPhoto.getTitle().trim().length() > 0)
+				title.setText(mCurrentPhoto.getTitle());
+
+			// author name.
 			String name = null;
 			if (mCurrentPhoto.getAuthor() != null) {
 				name = mCurrentPhoto.getAuthor().getUserName();
@@ -77,22 +93,59 @@ public class FlickrDetailGeneralFragment extends
 				}
 
 				// try loading the buddy icon
-				FlickrGetUserInfoTask task = new FlickrGetUserInfoTask();
-				task.addTaskDoneListener(new IGeneralTaskDoneListener<User>() {
+				if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
+					mImageFetcher.loadImage(mCurrentPhoto.getAuthor()
+							.getBuddyIconUrl(), image);
+				} else {
+					FlickrGetUserInfoTask task = new FlickrGetUserInfoTask();
+					task.addTaskDoneListener(new IGeneralTaskDoneListener<User>() {
 
-					@Override
-					public void onTaskDone(User result) {
-						if (result != null) {
-							logger.debug("author buddy icon url: " + result.getBuddyIconUrl()); //$NON-NLS-1$
-							mImageFetcher.loadImage(result.getBuddyIconUrl(),
-									image);
+						@Override
+						public void onTaskDone(User result) {
+							if (result != null) {
+								logger.debug("author buddy icon url: " + result.getBuddyIconUrl()); //$NON-NLS-1$
+								mImageFetcher.loadImage(
+										result.getBuddyIconUrl(), image);
+							}
 						}
-					}
-				});
-				task.execute(mCurrentPhoto.getAuthor().getUserId());
+					});
+					task.execute(mCurrentPhoto.getAuthor().getUserId());
+				}
 			}
 			if (name != null) {
 				author.setText(name);
+			}
+
+			// photo views
+			int comments = mCurrentPhoto.getComments();
+			if (comments != -1
+					|| mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
+				photoViews
+						.setText(String.valueOf(mCurrentPhoto.getViews() == -1 ? 0
+								: mCurrentPhoto.getViews()));
+				photoComments.setText(String.valueOf(comments == -1 ? 0
+						: comments));
+				photoFavs
+						.setText(String
+								.valueOf(mCurrentPhoto.getFavorites() == -1 ? 0
+										: mCurrentPhoto.getFavorites()));
+			} else {
+				//flickr
+				FlickrGetPhotoGeneralInfoTask ptask = new FlickrGetPhotoGeneralInfoTask();
+				ptask.addTaskDoneListener( new IGeneralTaskDoneListener<Photo>() {
+
+					@Override
+					public void onTaskDone(Photo result) {
+						mCurrentPhoto.setComments(result.getComments());
+						mCurrentPhoto.setFavorites(result.getFavorites());
+						photoComments.setText(String.valueOf(mCurrentPhoto.getComments()));
+						photoFavs.setText(String.valueOf(mCurrentPhoto.getFavorites()));
+					}} );
+			}
+
+			String desc = mCurrentPhoto.getDescription();
+			if (desc != null && desc.trim().length() > 0) {
+				description.setText(desc);
 			}
 		}
 
