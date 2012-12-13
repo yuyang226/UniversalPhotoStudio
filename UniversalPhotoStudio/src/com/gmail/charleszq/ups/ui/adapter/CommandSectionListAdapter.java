@@ -17,8 +17,8 @@ import android.widget.TextView;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.task.AbstractFetchIconUrlTask;
-import com.gmail.charleszq.ups.ui.command.DummyCommand;
 import com.gmail.charleszq.ups.ui.command.ICommand;
+import com.gmail.charleszq.ups.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
 
 /**
@@ -30,7 +30,16 @@ public class CommandSectionListAdapter extends BaseAdapter {
 	public static final int ITEM_HEADER = 0;
 	public static final int ITEM_COMMAND = 1;
 
-	private List<ICommand<?>> mCommands;
+	/**
+	 * The current filtered commands
+	 */
+	List<ICommand<?>> mCommands;
+
+	/**
+	 * All commands.
+	 */
+	List<ICommand<?>> mAllCommands;
+
 	private Context mContext;
 	private ImageFetcher mImageFetcher;
 
@@ -41,10 +50,12 @@ public class CommandSectionListAdapter extends BaseAdapter {
 		mContext = ctx;
 		mImageFetcher = fetcher;
 		mCommands = new ArrayList<ICommand<?>>();
+		mAllCommands = new ArrayList<ICommand<?>>();
 	}
 
 	public void addCommands(Collection<ICommand<?>> commands) {
 		mCommands.addAll(commands);
+		mAllCommands.addAll(commands);
 	}
 
 	/*
@@ -85,7 +96,7 @@ public class CommandSectionListAdapter extends BaseAdapter {
 	@Override
 	public int getItemViewType(int position) {
 		Object obj = getItem(position);
-		if (obj instanceof DummyCommand) {
+		if (obj instanceof MenuSectionHeaderCommand) {
 			return ITEM_HEADER;
 		} else {
 			return ITEM_COMMAND;
@@ -99,12 +110,7 @@ public class CommandSectionListAdapter extends BaseAdapter {
 
 	@Override
 	public boolean isEnabled(int position) {
-		Object obj = getItem(position);
-		if (obj instanceof DummyCommand) {
-			return false;
-		} else {
-			return true;
-		}
+		return true;
 	}
 
 	/*
@@ -119,34 +125,25 @@ public class CommandSectionListAdapter extends BaseAdapter {
 		View view = convertView;
 		ICommand<?> command = (ICommand<?>) getItem(position);
 		if (getItemViewType(position) == ITEM_HEADER) {
-			if (view == null) {
-				view = LayoutInflater.from(mContext).inflate(
-						R.layout.section_header, null);
-			}
+			view = LayoutInflater.from(mContext).inflate(
+					R.layout.section_header, null);
 			((TextView) view).setText(command.getLabel());
+			boolean isFiltering = (Boolean) command.getAdapter(Boolean.class);
+			TextView t = (TextView) view;
+			if( isFiltering ) {
+				t.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.plus_48,0);
+			} else {
+				t.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.minus_48,0);
+			}
 			return view;
 		}
 
 		// command items
-		if (view == null) {
-			view = LayoutInflater.from(mContext).inflate(
-					R.layout.main_menu_item, null);
-		}
+		view = LayoutInflater.from(mContext).inflate(R.layout.main_menu_item,
+				null);
 
-		ViewHolder holder = (ViewHolder) view.getTag();
-		TextView text;
-		ImageView image;
-		if (holder == null) {
-			text = (TextView) view.findViewById(R.id.nav_item_title);
-			image = (ImageView) view.findViewById(R.id.nav_item_image);
-			holder = new ViewHolder();
-			holder.image = image;
-			holder.title = text;
-			view.setTag(holder);
-		} else {
-			text = holder.title;
-			image = holder.image;
-		}
+		TextView text = (TextView) view.findViewById(R.id.nav_item_title);
+		ImageView image = (ImageView) view.findViewById(R.id.nav_item_image);
 		text.setText(command.getLabel());
 		int iconId = command.getIconResourceId();
 		if (iconId != -1) {
@@ -165,13 +162,21 @@ public class CommandSectionListAdapter extends BaseAdapter {
 		return view;
 	}
 
-	class ViewHolder {
-		ImageView image;
-		TextView title;
-	}
-
 	public void clearSections() {
 		mCommands.clear();
+		mAllCommands.clear();
+	}
+
+	/**
+	 * 
+	 * @param filterString
+	 * @param count
+	 * @param commands
+	 */
+	void publishFilterResult(CharSequence filterString, int count,
+			List<ICommand<?>> commands) {
+		mCommands = commands;
+		notifyDataSetChanged();
 	}
 
 }

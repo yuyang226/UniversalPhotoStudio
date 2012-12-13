@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
-import com.gmail.charleszq.ups.ui.FlickrDetailGeneralFragment;
+import com.gmail.charleszq.ups.ui.flickr.FlickrDetailGeneralFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 	
