@@ -93,7 +93,6 @@ public final class ModelUtils {
 		if( feed.getCaption() != null ) {
 			title = feed.getCaption().getText();
 		}
-		photo.setDescription(title);
 		photo.setMediaType("image".equals(feed.getType()) ? MediaObjectType.PHOTO //$NON-NLS-1$
 				: MediaObjectType.VIDEO);
 		photo.setTitle(title);
