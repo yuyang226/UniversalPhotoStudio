@@ -170,6 +170,8 @@ public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implemen
 		mAdapter = new ImageAdapter(getActivity(), mPhotosProvider);
 		initializeImageFetcher(IConstants.IMAGE_THUMBS_CACHE_DIR, mImageThumbSize);
 
+		//when configuration changes, mCurrentCommand will be saved, at this time, we
+		//need to attach the current context to it, otherwise, there will be NPEs.
 		if( mCurrentCommand != null ) {
 			mCurrentCommand.attacheContext(getActivity());
 		}
