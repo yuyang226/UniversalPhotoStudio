@@ -31,11 +31,13 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 		MediaObject photo = (MediaObject) params[0];
 		switch (photo.getMediaSource()) {
 		case FLICKR:
-			FlickrLikeTask task = new FlickrLikeTask(mContext, this.mTaskDoneListner);
+			FlickrLikeTask task = new FlickrLikeTask(mContext,
+					this.mTaskDoneListner);
 			task.execute(photo.getId());
 			break;
 		case INSTAGRAM:
-			InstagramLikePhotoTask igLikeTask = new InstagramLikePhotoTask( mContext, this.mTaskDoneListner);
+			InstagramLikePhotoTask igLikeTask = new InstagramLikePhotoTask(
+					mContext, this.mTaskDoneListner);
 			igLikeTask.execute(photo.getId());
 			break;
 		}

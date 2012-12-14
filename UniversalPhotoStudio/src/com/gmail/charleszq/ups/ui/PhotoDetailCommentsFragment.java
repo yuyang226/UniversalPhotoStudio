@@ -75,7 +75,7 @@ public class PhotoDetailCommentsFragment extends
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		v.setLayoutParams(params);
 		CommentListAdapter adapter = new CommentListAdapter(getActivity(),
-				mCurrentPhoto,mCurrentPhoto.getCommentList(), mImageFetcher);
+				mCurrentPhoto, mCurrentPhoto.getCommentList(), mImageFetcher);
 		v.setAdapter(adapter);
 		loadComments(adapter);
 		return v;
@@ -124,8 +124,8 @@ public class PhotoDetailCommentsFragment extends
 		private ImageFetcher mFetcher;
 		private MediaObject mPhoto;
 
-		CommentListAdapter(Context context, MediaObject photo, List<MediaObjectComment> comments,
-				ImageFetcher fetcher) {
+		CommentListAdapter(Context context, MediaObject photo,
+				List<MediaObjectComment> comments, ImageFetcher fetcher) {
 			mContext = context;
 			mComments = comments;
 			mFetcher = fetcher;
@@ -196,7 +196,7 @@ public class PhotoDetailCommentsFragment extends
 				break;
 			}
 		}
-		
+
 		void populateComments(List<MediaObjectComment> comments) {
 			mComments.clear();
 			mComments.addAll(comments);

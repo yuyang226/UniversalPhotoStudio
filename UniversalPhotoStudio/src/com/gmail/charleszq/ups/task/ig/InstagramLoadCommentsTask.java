@@ -17,8 +17,11 @@ import com.gmail.charleszq.ups.utils.InstagramHelper;
 import com.gmail.charleszq.ups.utils.ModelUtils;
 
 /**
+<<<<<<< HEAD
  * Represents the task to load comments of a given photo.
  * 
+=======
+>>>>>>> 4d8981d2dade917d7848ff11fd4ffe76115428b4
  * @author charles(charleszq@gmail.com)
  * 
  */

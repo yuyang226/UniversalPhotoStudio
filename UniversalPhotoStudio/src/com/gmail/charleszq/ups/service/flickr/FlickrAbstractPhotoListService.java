@@ -25,7 +25,7 @@ public abstract class FlickrAbstractPhotoListService implements IPhotoService {
 		mExtras.add(Extras.GEO);
 		mExtras.add(Extras.TAGS);
 		mExtras.add(Extras.VIEWS);
-		mExtras.add("description"); //$NON-NLS-1$
+		mExtras.add(Extras.DESCRIPTION);
 	}
 
 }
