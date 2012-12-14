@@ -45,6 +45,7 @@ import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrContactPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrFavsCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrPopularPhotosCommand;
+import com.gmail.charleszq.ups.ui.command.ig.InstagramLikesCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramLoginCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramMyFeedsCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramPopularsCommand;
@@ -283,6 +284,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		if (isUserAuthedInstagram()) {
 			command = new InstagramMyFeedsCommand(ctx);
+			command.setCommandCategory(headerName);
+			commands.add(command);
+			
+			command = new InstagramLikesCommand(ctx);
 			command.setCommandCategory(headerName);
 			commands.add(command);
 		} else {
