@@ -68,5 +68,8 @@ public interface IConstants {
 	// instagram
 	static final String INSTAGRAM_CLIENT_ID = "2588f081b4c2432cbfcc5d27aef4fecb"; //$NON-NLS-1$
 	static final String INSTAGRAM_CLIENT_SECRET = "76ab8f0afb954671bf28ec80fca75ad6"; //$NON-NLS-1$
+	
+	//
+	static final String DETAIL_PAGE_PHOTO_ARG_KEY = "photo.frg.arg"; //$NON-NLS-1$
 
 }

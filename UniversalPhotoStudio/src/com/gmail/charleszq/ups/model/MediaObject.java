@@ -28,6 +28,8 @@ public final class MediaObject implements Serializable {
 	private String mLargeUrl;
 	private int mViews = -1, mComments = -1, mFavorites = -1;
 
+	private List<MediaObjectComment> commentList;
+
 	private GeoLocation mLocation;
 	private List<String> mTags;
 	private Author mAuthor;
@@ -145,7 +147,20 @@ public final class MediaObject implements Serializable {
 	public void setFavorites(int mFavorites) {
 		this.mFavorites = mFavorites;
 	}
+
+	@SuppressWarnings("unchecked")
+	public List<MediaObjectComment> getCommentList() {
+		if (commentList == null) {
+			return Collections.EMPTY_LIST;
+		}
+		return commentList;
+	}
 	
-	
+	public void addComment( MediaObjectComment comment ) {
+		if( commentList == null ) {
+			commentList = new ArrayList<MediaObjectComment>();
+		}
+		commentList.add(comment);
+	}
 
 }
