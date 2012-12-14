@@ -7,14 +7,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
+import com.gmail.charleszq.ups.ui.PhotoDetailCommentsFragment;
 import com.gmail.charleszq.ups.ui.PhotoDetailGeneralFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
-	
+
 	private MediaObject mPhoto;
 	private Context mContext;
 
-	public PhotoDetailViewPagerAdapter(FragmentManager fragmentManager, MediaObject photo, Context context) {
+	public PhotoDetailViewPagerAdapter(FragmentManager fragmentManager,
+			MediaObject photo, Context context) {
 		super(fragmentManager);
 		mPhoto = photo;
 		mContext = context;
@@ -22,13 +24,21 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int pos) {
-		PhotoDetailGeneralFragment f = PhotoDetailGeneralFragment.newInstance(mPhoto);
-		return f;
+		switch (pos) {
+		case 1:
+			PhotoDetailCommentsFragment commentsFrag = PhotoDetailCommentsFragment
+					.newInstance(mPhoto);
+			return commentsFrag;
+		default:
+			PhotoDetailGeneralFragment f = PhotoDetailGeneralFragment
+					.newInstance(mPhoto);
+			return f;
+		}
 	}
 
 	@Override
 	public int getCount() {
-		switch( mPhoto.getMediaSource()) {
+		switch (mPhoto.getMediaSource()) {
 		case FLICKR:
 			return 5;
 		case INSTAGRAM:
@@ -39,7 +49,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		switch(position) {
+		switch (position) {
 		case 0:
 			return mContext.getString(R.string.flickr_detail_general_title);
 		case 1:
@@ -53,7 +63,5 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 		}
 		return super.getPageTitle(position);
 	}
-	
-	
 
 }

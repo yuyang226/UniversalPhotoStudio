@@ -14,10 +14,9 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserIconUrlTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrGetPhotoGeneralInfoTask;
-import com.gmail.charleszq.ups.task.flickr.FlickrGetUserInfoTask;
 import com.gmail.charleszq.ups.utils.IConstants;
-import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 /**
@@ -30,8 +29,6 @@ import com.googlecode.flickrjandroid.photos.Photo;
 public class PhotoDetailGeneralFragment extends
 		AbstractFragmentWithImageFetcher {
 
-	private static final String PHOTO_ARG_KEY = "photo.frg.arg"; //$NON-NLS-1$
-
 	private MediaObject mCurrentPhoto;
 
 	/**
@@ -43,7 +40,7 @@ public class PhotoDetailGeneralFragment extends
 	public static PhotoDetailGeneralFragment newInstance(MediaObject photo) {
 		PhotoDetailGeneralFragment f = new PhotoDetailGeneralFragment();
 		final Bundle bundle = new Bundle();
-		bundle.putSerializable(PHOTO_ARG_KEY, photo);
+		bundle.putSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY, photo);
 		f.setArguments(bundle);
 		return f;
 	}
@@ -52,7 +49,8 @@ public class PhotoDetailGeneralFragment extends
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Bundle bundle = this.getArguments();
-		mCurrentPhoto = (MediaObject) bundle.getSerializable(PHOTO_ARG_KEY);
+		mCurrentPhoto = (MediaObject) bundle
+				.getSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY);
 
 		int thumbSize = getResources().getDimensionPixelSize(
 				R.dimen.cmd_icon_size);
@@ -99,19 +97,10 @@ public class PhotoDetailGeneralFragment extends
 					mImageFetcher.loadImage(mCurrentPhoto.getAuthor()
 							.getBuddyIconUrl(), image);
 				} else {
-					FlickrGetUserInfoTask task = new FlickrGetUserInfoTask();
-					task.addTaskDoneListener(new IGeneralTaskDoneListener<User>() {
-
-						@Override
-						public void onTaskDone(User result) {
-							if (result != null) {
-								logger.debug("author buddy icon url: " + result.getBuddyIconUrl()); //$NON-NLS-1$
-								mImageFetcher.loadImage(
-										result.getBuddyIconUrl(), image);
-							}
-						}
-					});
-					task.execute(mCurrentPhoto.getAuthor().getUserId());
+					FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
+							getActivity(), mCurrentPhoto.getAuthor()
+									.getUserId());
+					task.execute(mImageFetcher, image);
 				}
 			}
 			if (name != null) {
