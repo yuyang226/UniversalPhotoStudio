@@ -64,9 +64,6 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 			return new FlickrPhotoSetPhotosService(app.getUserId(),
 					app.getFlickrToken(), app.getFlickrTokenSecret(), mPhotoSet);
 		}
-		if( adapterClass == Integer.class ) {
-			return 200;
-		}
 		return super.getAdapter(adapterClass);
 	}
 

@@ -50,9 +50,6 @@ public class MyFlickrPhotosCommand extends PhotoListCommand {
 					app.getFlickrTokenSecret());
 			return service;
 		}
-		if( adapterClass == Integer.class ) {
-			return 200;
-		}
 		return super.getAdapter(adapterClass);
 	}
 

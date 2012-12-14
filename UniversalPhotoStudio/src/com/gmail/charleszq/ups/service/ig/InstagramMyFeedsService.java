@@ -3,7 +3,7 @@
  */
 package com.gmail.charleszq.ups.service.ig;
 
-import org.jinstagram.Instagram;
+import org.jinstagram.AdvancedInstagram;
 import org.jinstagram.auth.model.Token;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
@@ -36,8 +36,8 @@ public class InstagramMyFeedsService implements IPhotoService {
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
-		Instagram ig = InstagramHelper.getInstance().getAuthedInstagram(mToken);
-		MediaFeed mf = ig.getUserFeeds();
+		AdvancedInstagram ig = InstagramHelper.getInstance().getAuthedInstagram(mToken);
+		MediaFeed mf = ig.getUserFeeds(pageSize);
 
 		MediaObjectCollection pc = new MediaObjectCollection();
 		if (mf == null) {
@@ -46,9 +46,20 @@ public class InstagramMyFeedsService implements IPhotoService {
 		for (MediaFeedData feed : mf.getData()) {
 			pc.addPhoto(ModelUtils.convertInstagramPhoto(feed));
 		}
+		
+		int returnCount = mf.getData().size();
+		while( returnCount < pageSize ) {
+			mf = ig.getNextPage( mf.getPagination(), pageSize - returnCount );
+			returnCount += mf.getData().size();
+			if(mf != null ) {
+				for (MediaFeedData feed : mf.getData()) {
+					pc.addPhoto(ModelUtils.convertInstagramPhoto(feed));
+				}
+			}
+		}
 
-		pc.setPageSize(mf.getData().size());
-		pc.setTotalCount(mf.getData().size());
+		pc.setPageSize(pageSize);
+		pc.setTotalCount(returnCount);
 		return pc;
 	}
 

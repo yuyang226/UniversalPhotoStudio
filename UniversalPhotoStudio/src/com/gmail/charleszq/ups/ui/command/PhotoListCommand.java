@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
 import com.gmail.charleszq.ups.task.LoadPhotosTask;
+import com.gmail.charleszq.ups.utils.IConstants;
 
 /**
  * @author Charles(charleszq@gmail.com)
@@ -45,5 +46,15 @@ public abstract class PhotoListCommand extends
 	public void cancel() {
 		mTask.cancel(true);
 	}
+
+	@Override
+	public Object getAdapter(Class<?> adapterClass) {
+		if( adapterClass == Integer.class ) {
+			return IConstants.DEF_FLICKR_PAGE_SIZE;
+		}
+		return super.getAdapter(adapterClass);
+	}
+	
+	
 
 }
