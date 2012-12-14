@@ -3,7 +3,7 @@
  */
 package com.gmail.charleszq.ups.utils;
 
-import org.jinstagram.Instagram;
+import org.jinstagram.AdvancedInstagram;
 import org.jinstagram.auth.model.Token;
 
 /**
@@ -25,13 +25,14 @@ public final class InstagramHelper {
 
 	}
 
-	public Instagram getInstagram() {
-		Instagram ig = new Instagram(IConstants.INSTAGRAM_CLIENT_ID);
+	public AdvancedInstagram getInstagram() {
+		AdvancedInstagram ig = new AdvancedInstagram(
+				IConstants.INSTAGRAM_CLIENT_ID);
 		return ig;
 	}
 
-	public Instagram getAuthedInstagram(Token token) {
-		Instagram ig = new Instagram(token);
+	public AdvancedInstagram getAuthedInstagram(Token token) {
+		AdvancedInstagram ig = new AdvancedInstagram(token);
 		return ig;
 	}
 }

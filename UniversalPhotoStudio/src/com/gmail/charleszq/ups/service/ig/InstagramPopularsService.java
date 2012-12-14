@@ -3,7 +3,7 @@
  */
 package com.gmail.charleszq.ups.service.ig;
 
-import org.jinstagram.Instagram;
+import org.jinstagram.AdvancedInstagram;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 
@@ -26,11 +26,11 @@ public class InstagramPopularsService implements IPhotoService {
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
-		Instagram ig = InstagramHelper.getInstance().getInstagram();
+		AdvancedInstagram ig = InstagramHelper.getInstance().getInstagram();
 
 		MediaObjectCollection pc = new MediaObjectCollection();
 
-		MediaFeed mf = ig.getPopularMedia();
+		MediaFeed mf = ig.getPopularMedia(pageSize);
 		if( mf == null ) {
 			return pc;
 		}
