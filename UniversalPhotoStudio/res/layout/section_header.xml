@@ -5,6 +5,5 @@
     android:layout_height="wrap_content"
     android:drawablePadding="10dp"
     android:padding="10dp"
-    android:drawableRight="@drawable/minus_48"
     android:gravity="center|left" />
 

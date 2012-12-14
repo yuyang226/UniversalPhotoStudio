@@ -62,6 +62,9 @@ public class FlickrUserGroupCommand extends PhotoListCommand {
 					app.getFlickrToken(), app.getFlickrTokenSecret(),
 					mGroup.getId());
 		}
+		if( adapterClass == Integer.class ) {
+			return 200;
+		}
 		return super.getAdapter(adapterClass);
 	}
 

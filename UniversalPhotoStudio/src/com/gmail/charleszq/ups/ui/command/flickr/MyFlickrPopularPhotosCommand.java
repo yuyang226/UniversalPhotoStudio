@@ -55,6 +55,9 @@ public class MyFlickrPopularPhotosCommand extends PhotoListCommand {
 					app.getFlickrTokenSecret());
 			return service;
 		}
+		if( adapterClass == Integer.class ) {
+			return 100; //the maximum value of flickr service.
+		}
 		return super.getAdapter(adapterClass);
 	}
 

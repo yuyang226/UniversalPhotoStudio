@@ -62,7 +62,10 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 			Activity act = (Activity) mContext;
 			UPSApplication app = (UPSApplication) act.getApplication();
 			return new FlickrPhotoSetPhotosService(app.getUserId(),
-					app.getFlickrToken(), app.getFlickrTokenSecret(), mPhotoSet.getId());
+					app.getFlickrToken(), app.getFlickrTokenSecret(), mPhotoSet);
+		}
+		if( adapterClass == Integer.class ) {
+			return 200;
 		}
 		return super.getAdapter(adapterClass);
 	}
