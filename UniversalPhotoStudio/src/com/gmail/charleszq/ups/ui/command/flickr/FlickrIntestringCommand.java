@@ -40,6 +40,9 @@ public class FlickrIntestringCommand extends
 		if (adapterClass == IPhotoService.class) {
 			return new FlickrInterestingPhotosService();
 		}
+		if( adapterClass == Integer.class ) {
+			return 200;
+		}
 		return super.getAdapter(adapterClass);
 	}
 	

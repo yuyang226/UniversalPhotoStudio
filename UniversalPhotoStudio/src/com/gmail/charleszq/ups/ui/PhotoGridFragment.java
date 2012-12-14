@@ -24,8 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -151,9 +149,6 @@ public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implemen
 		if (mGridView != null) {
 			mGridView.smoothScrollToPositionFromTop(0, 0);
 		}
-		if (this.isAdded()) {
-			getActivity().invalidateOptionsMenu();
-		}
 		UPSApplication app = (UPSApplication) getActivity().getApplication();
 		app.setPhotosProvider(this.mPhotosProvider);
 	}
@@ -190,11 +185,6 @@ public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implemen
 	}
 
 	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		inflater.inflate(R.menu.menu_photo_grid, menu);
-	}
-
-	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case R.id.menu_item_back:
@@ -223,24 +213,6 @@ public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implemen
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
-	}
-
-	@Override
-	public void onPrepareOptionsMenu(Menu menu) {
-		boolean showNavItems = true;
-		if (mCurrentCommand == null) {
-			showNavItems = false;
-		} else {
-			Object obj = mCurrentCommand.getAdapter(Boolean.class);
-			if (obj != null) {
-				showNavItems = (Boolean) obj;
-			}
-		}
-
-		MenuItem itemBack = menu.findItem(R.id.menu_item_back);
-		MenuItem itemNext = menu.findItem(R.id.menu_item_forward);
-		itemBack.setVisible(showNavItems);
-		itemNext.setVisible(showNavItems);
 	}
 
 	/**

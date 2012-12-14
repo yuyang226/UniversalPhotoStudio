@@ -6,6 +6,7 @@ package com.gmail.charleszq.ups.model;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.gmail.charleszq.ups.utils.IConstants;
 
@@ -19,7 +20,7 @@ public final class MediaObjectCollection {
 	private int mTotalCount = 0;
 	private int mPageSize = IConstants.SERVICE_PAGE_SIZE;
 	
-	private Collection<MediaObject> mPhotos;
+	private List<MediaObject> mPhotos;
 
 	public int getCurrentPage() {
 		return mCurrentPage;
@@ -55,6 +56,13 @@ public final class MediaObjectCollection {
 			mPhotos = new ArrayList<MediaObject>();
 		}
 		mPhotos.add(photo);
+	}
+	
+	public void addPhoto(MediaObject photo, int pos ) {
+		if( mPhotos == null ) {
+			mPhotos = new ArrayList<MediaObject>();
+		}
+		mPhotos.add(pos, photo);
 	}
 
 }

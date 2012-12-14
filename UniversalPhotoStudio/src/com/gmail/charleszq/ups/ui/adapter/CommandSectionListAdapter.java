@@ -128,13 +128,6 @@ public class CommandSectionListAdapter extends BaseAdapter {
 			view = LayoutInflater.from(mContext).inflate(
 					R.layout.section_header, null);
 			((TextView) view).setText(command.getLabel());
-			boolean isFiltering = (Boolean) command.getAdapter(Boolean.class);
-			TextView t = (TextView) view;
-			if( isFiltering ) {
-				t.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.plus_48,0);
-			} else {
-				t.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.minus_48,0);
-			}
 			return view;
 		}
 
