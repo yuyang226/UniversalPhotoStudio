@@ -9,6 +9,7 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.ui.PhotoDetailCommentsFragment;
 import com.gmail.charleszq.ups.ui.PhotoDetailGeneralFragment;
+import com.gmail.charleszq.ups.ui.ig.PhotoDetailLikesFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -29,6 +30,13 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			PhotoDetailCommentsFragment commentsFrag = PhotoDetailCommentsFragment
 					.newInstance(mPhoto);
 			return commentsFrag;
+		case 2:
+			switch (mPhoto.getMediaSource()) {
+			case INSTAGRAM:
+				return PhotoDetailLikesFragment.newInstance(mPhoto);
+			case FLICKR:
+				return PhotoDetailGeneralFragment.newInstance(mPhoto);
+			}
 		default:
 			PhotoDetailGeneralFragment f = PhotoDetailGeneralFragment
 					.newInstance(mPhoto);
@@ -42,7 +50,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 		case FLICKR:
 			return 5;
 		case INSTAGRAM:
-			return 2;
+			return 3;
 		}
 		return 0;
 	}
@@ -55,7 +63,12 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 		case 1:
 			return mContext.getString(R.string.flickr_detail_comments_title);
 		case 2:
-			return mContext.getString(R.string.flickr_detail_exif_title);
+			switch (mPhoto.getMediaSource()) {
+			case FLICKR:
+				return mContext.getString(R.string.flickr_detail_exif_title);
+			case INSTAGRAM:
+				return mContext.getString(R.string.ig_like_users);
+			}
 		case 3:
 			return mContext.getString(R.string.flickr_detail_in_sets);
 		case 4:

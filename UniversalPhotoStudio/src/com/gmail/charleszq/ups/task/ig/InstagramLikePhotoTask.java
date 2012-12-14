@@ -17,10 +17,10 @@ import com.gmail.charleszq.ups.utils.InstagramHelper;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class InstagramLikeTask extends
+public class InstagramLikePhotoTask extends
 		AbstractContextAwareTask<String, Integer, Boolean> {
 
-	public InstagramLikeTask(Context ctx, IGeneralTaskDoneListener<Boolean> lis) {
+	public InstagramLikePhotoTask(Context ctx, IGeneralTaskDoneListener<Boolean> lis) {
 		super(ctx);
 		addTaskDoneListener(lis);
 	}

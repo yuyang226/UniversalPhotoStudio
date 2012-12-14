@@ -12,6 +12,7 @@ import org.jinstagram.entity.comments.MediaCommentsFeed;
 import org.jinstagram.entity.common.Comments;
 import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.common.Location;
+import org.jinstagram.entity.likes.LikesFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 
 import com.gmail.charleszq.ups.model.Author;
@@ -184,5 +185,22 @@ public final class ModelUtils {
 			comments.add(convertFlickrComment(c));
 		}
 		return comments;
+	}
+
+	public static List<Author> convertInstagramLikesFeed(LikesFeed feed) {
+		List<Author> users = new ArrayList<Author>();
+		for (org.jinstagram.entity.common.User u : feed.getUserList()) {
+			users.add(convertInstagramUser(u));
+		}
+		return users;
+	}
+
+	public static Author convertInstagramUser(
+			org.jinstagram.entity.common.User u) {
+		Author a = new Author();
+		a.setBuddyIconUrl(u.getProfilePictureUrl());
+		a.setUserId(String.valueOf(u.getId()));
+		a.setUserName(u.getUserName());
+		return a;
 	}
 }

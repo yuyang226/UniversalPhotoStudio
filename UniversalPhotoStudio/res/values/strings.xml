@@ -49,6 +49,7 @@
 	<string name="flickr_detail_exif_title">Exif</string>
 	<string name="flickr_detail_in_sets">Sets/Groups</string>
 	<string name="flickr_detail_map">Map</string>
+	<string name="ig_like_users">Like Users</string>
 	
 	<string name="detail_gen_title_section">Title</string>
 	<string name="detail_gen_author_section">Author</string>

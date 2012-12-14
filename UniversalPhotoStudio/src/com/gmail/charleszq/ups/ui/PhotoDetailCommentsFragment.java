@@ -75,7 +75,7 @@ public class PhotoDetailCommentsFragment extends
 				FrameLayout.LayoutParams.MATCH_PARENT);
 		v.setLayoutParams(params);
 		CommentListAdapter adapter = new CommentListAdapter(getActivity(),
-				mCurrentPhoto, mImageFetcher);
+				mCurrentPhoto,mCurrentPhoto.getCommentList(), mImageFetcher);
 		v.setAdapter(adapter);
 		loadComments(adapter);
 		return v;
@@ -89,9 +89,7 @@ public class PhotoDetailCommentsFragment extends
 			public void onTaskDone(List<MediaObjectComment> result) {
 				if (result == null)
 					return;
-				mCurrentPhoto.getCommentList().clear();
-				mCurrentPhoto.getCommentList().addAll(result);
-				// then
+				adapter.populateComments(result);
 				adapter.notifyDataSetChanged();
 			}
 
@@ -121,30 +119,37 @@ public class PhotoDetailCommentsFragment extends
 	@SuppressLint("SimpleDateFormat")
 	private static class CommentListAdapter extends BaseAdapter {
 
-		private MediaObject mPhoto;
+		private List<MediaObjectComment> mComments;
 		private Context mContext;
 		private ImageFetcher mFetcher;
+		private MediaObject mPhoto;
 
-		CommentListAdapter(Context context, MediaObject photo,
+		CommentListAdapter(Context context, MediaObject photo, List<MediaObjectComment> comments,
 				ImageFetcher fetcher) {
 			mContext = context;
-			mPhoto = photo;
+			mComments = comments;
 			mFetcher = fetcher;
+			mPhoto = photo;
 		}
 
 		@Override
 		public int getCount() {
-			return mPhoto.getCommentList().size();
+			return mComments.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return mPhoto.getCommentList().get(position);
+			return mComments.get(position);
 		}
 
 		@Override
 		public long getItemId(int position) {
 			return position;
+		}
+
+		@Override
+		public boolean isEnabled(int position) {
+			return false;
 		}
 
 		@Override
@@ -190,6 +195,11 @@ public class PhotoDetailCommentsFragment extends
 				}
 				break;
 			}
+		}
+		
+		void populateComments(List<MediaObjectComment> comments) {
+			mComments.clear();
+			mComments.addAll(comments);
 		}
 
 	}

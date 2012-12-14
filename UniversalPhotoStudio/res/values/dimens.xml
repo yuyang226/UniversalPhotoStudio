@@ -16,5 +16,6 @@
     <dimen name="shadow_width">15dp</dimen>
     
     <dimen name="detail_page_control_space">30dp</dimen>
+    <dimen name="ig_like_user_grid_item_size">160dp</dimen>
 
 </resources>

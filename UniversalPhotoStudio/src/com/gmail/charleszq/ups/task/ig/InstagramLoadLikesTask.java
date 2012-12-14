@@ -5,33 +5,30 @@ package com.gmail.charleszq.ups.task.ig;
 
 import java.util.List;
 
-import org.jinstagram.AdvancedInstagram;
-import org.jinstagram.entity.comments.MediaCommentsFeed;
+import org.jinstagram.Instagram;
+import org.jinstagram.entity.likes.LikesFeed;
 import org.jinstagram.exceptions.InstagramException;
 
 import android.content.Context;
 
-import com.gmail.charleszq.ups.model.MediaObjectComment;
+import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.task.AbstractContextAwareTask;
 import com.gmail.charleszq.ups.utils.InstagramHelper;
 import com.gmail.charleszq.ups.utils.ModelUtils;
 
 /**
- * Represents the task to load comments of a given photo.
- * 
  * @author charles(charleszq@gmail.com)
- * 
+ *
  */
-public class InstagramLoadCommentsTask extends
-		AbstractContextAwareTask<String, Integer, List<MediaObjectComment>> {
+public class InstagramLoadLikesTask extends
+		AbstractContextAwareTask<String, Integer, List<Author>> {
 
-	public InstagramLoadCommentsTask(Context ctx) {
+	public InstagramLoadLikesTask(Context ctx) {
 		super(ctx);
 	}
 
 	@Override
-	protected List<MediaObjectComment> doInBackground(String... params) {
-		
+	protected List<Author> doInBackground(String... params) {
 		String id = params[0];
 		int index = id.indexOf("_"); //$NON-NLS-1$
 		if( index != -1 ) {
@@ -39,10 +36,10 @@ public class InstagramLoadCommentsTask extends
 			logger.debug("instagram media id: " + id); //$NON-NLS-1$
 		}
 		long photoId = Long.parseLong(id);
-		AdvancedInstagram ig = InstagramHelper.getInstance().getInstagram();
+		Instagram ig = InstagramHelper.getInstance().getInstagram();
 		try {
-			MediaCommentsFeed feed = ig.getMediaComments(photoId);
-			return ModelUtils.convertInstagramComments(feed);
+			LikesFeed feed = ig.getUserLikes(photoId);
+			return ModelUtils.convertInstagramLikesFeed( feed );
 		} catch (InstagramException e) {
 		}
 		return null;

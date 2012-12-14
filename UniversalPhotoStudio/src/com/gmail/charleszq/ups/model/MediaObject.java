@@ -5,7 +5,6 @@ package com.gmail.charleszq.ups.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -116,10 +115,9 @@ public final class MediaObject implements Serializable {
 		mTags.add(tag);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<String> getTags() {
 		if (mTags == null) {
-			return Collections.EMPTY_LIST;
+			mTags = new ArrayList<String>();
 		}
 		return mTags;
 	}
@@ -148,10 +146,9 @@ public final class MediaObject implements Serializable {
 		this.mFavorites = mFavorites;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<MediaObjectComment> getCommentList() {
 		if (commentList == null) {
-			return Collections.EMPTY_LIST;
+			commentList = new ArrayList<MediaObjectComment>();
 		}
 		return commentList;
 	}
