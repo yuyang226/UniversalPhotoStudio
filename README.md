@@ -5,7 +5,7 @@ An Android photo viewer program for Flickr, Instagram and Facebook.
 Dependencies
 ====================
 Please also download the following projects and import into your Eclipse workspace:
-* jInstagram:	https://github.com/sachin-handiekar/jInstagram
+* jInstagram:	https://github.com/charleszq/jInstagram (this is forked from https://github.com/sachin-handiekar/jInstagram with some minor changes)
 * SlidingMenu:	https://github.com/jfeinstein10/SlidingMenu
 * ArcMenu:		https://github.com/daCapricorn/ArcMenu
 * Android-ViewPagerIndicator: https://github.com/JakeWharton/Android-ViewPagerIndicator
