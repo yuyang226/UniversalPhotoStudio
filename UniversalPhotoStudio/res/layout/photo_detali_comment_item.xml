@@ -5,30 +5,41 @@
     android:padding="10dp" >
 
     <ImageView
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:id="@+id/detail_author_avator"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
         android:contentDescription="@string/app_name"
         android:src="@drawable/empty_photo" />
 
     <TextView
-        android:layout_marginLeft="5dp"
-        android:id="@+id/detail_comment_time"
+        android:id="@+id/detail_author_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="left|center"
         android:layout_alignBottom="@id/detail_author_avator"
+        android:layout_alignParentRight="true"
         android:layout_alignTop="@id/detail_author_avator"
-        android:layout_toRightOf="@id/detail_author_avator" />
+        android:layout_toRightOf="@id/detail_author_avator"
+        android:gravity="left|center"
+        android:paddingLeft="5dp" />
+
+    <TextView
+        android:id="@+id/detail_comment_time"
+        android:paddingLeft="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detail_author_name"
+        android:layout_alignLeft="@id/detail_author_name"
+        android:gravity="left|center" />
 
     <TextView
         android:id="@+id/detail_comment_text"
+        android:paddingLeft="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/detail_comment_time"
+        android:layout_alignLeft="@id/detail_author_name"
         android:layout_below="@id/detail_comment_time"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

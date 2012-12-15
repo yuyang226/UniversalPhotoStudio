@@ -5,7 +5,7 @@ package com.gmail.charleszq.ups.task.ig;
 
 import java.util.List;
 
-import org.jinstagram.Instagram;
+import org.jinstagram.AdvancedInstagram;
 import org.jinstagram.entity.likes.LikesFeed;
 import org.jinstagram.exceptions.InstagramException;
 
@@ -26,7 +26,7 @@ public class InstagramLoadLikesTask extends
 	public InstagramLoadLikesTask(Context ctx) {
 		super(ctx);
 	}
-
+	
 	@Override
 	protected List<Author> doInBackground(String... params) {
 		String id = params[0];
@@ -36,9 +36,10 @@ public class InstagramLoadLikesTask extends
 			logger.debug("instagram media id: " + id); //$NON-NLS-1$
 		}
 		long photoId = Long.parseLong(id);
-		Instagram ig = InstagramHelper.getInstance().getInstagram();
+		AdvancedInstagram ig = InstagramHelper.getInstance().getInstagram();
 		try {
 			LikesFeed feed = ig.getUserLikes(photoId);
+			logger.debug( "instagram likes returned: " + feed.getUserList().size()); //$NON-NLS-1$
 			return ModelUtils.convertInstagramLikesFeed( feed );
 		} catch (InstagramException e) {
 		}

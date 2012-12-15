@@ -166,11 +166,18 @@ public class PhotoDetailCommentsFragment extends
 					.findViewById(R.id.detail_comment_time);
 			TextView txtCommentText = (TextView) v
 					.findViewById(R.id.detail_comment_text);
+			TextView txtAuthorName = (TextView) v.findViewById(R.id.detail_author_name);
 			MediaObjectComment comment = (MediaObjectComment) getItem(position);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm"); //$NON-NLS-1$
 			txtCreateTime.setText(format.format(new Date(comment
 					.getCreationTime())));
 			txtCommentText.setText(comment.getText());
+			
+			String userName = comment.getAuthor().getUserName();
+			if( userName == null ) {
+				userName = comment.getAuthor().getUserId();
+			}
+			txtAuthorName.setText(userName);
 
 			loadAvator(mPhoto, comment, avatorImage);
 			return v;
