@@ -3,8 +3,10 @@
  */
 package com.gmail.charleszq.ups.task.flickr;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -39,14 +41,37 @@ public class FetchFlickrPhotoExifTask extends
 				app.getFlickrToken(), app.getFlickrTokenSecret());
 		PhotosInterface pi = f.getPhotosInterface();
 		try {
-			Collection<Exif> exifs = pi.getExif(photoId, app.getFlickrTokenSecret());
-			return ModelUtils.convertFlickrExifs(exifs);
+			Collection<Exif> exifs = pi.getExif(photoId,
+					app.getFlickrTokenSecret());
+			List<ExifData> data = ModelUtils.convertFlickrExifs(exifs);
+			return postProcess(data);
 		} catch (Exception e) {
 			logger.warn("Error to get exif information of a photo: " //$NON-NLS-1$
 					+ e.getMessage());
 		}
 
 		return null;
+	}
+
+	/**
+	 * 
+	 * @param data
+	 * @return
+	 */
+	private List<ExifData> postProcess(List<ExifData> data) {
+		if( data.isEmpty() ) {
+			return null;
+		}
+		
+		Map<String, ExifData> map = ExifData.getPredefinedExifList();
+		for (ExifData exif : data) {
+			if (exif.label == null) {
+				continue;
+			}
+
+			map.put(exif.label, exif);
+		}
+		return new ArrayList<ExifData>(map.values());
 	}
 
 }
