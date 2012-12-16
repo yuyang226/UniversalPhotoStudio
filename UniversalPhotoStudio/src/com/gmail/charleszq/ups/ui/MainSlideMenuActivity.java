@@ -83,8 +83,12 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 			public void onCommandDone(ICommand<MediaObjectCollection> command,
 					MediaObjectCollection t) {
 				MainSlideMenuActivity.this.onCommandDone(command, t);
-				if (dialog.isShowing()) {
-					dialog.dismiss();
+				if (dialog != null && dialog.isShowing()) {
+					try {
+						dialog.dismiss();
+					} catch (Exception ex) {
+
+					}
 				}
 			}
 		});

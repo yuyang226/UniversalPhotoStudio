@@ -48,6 +48,7 @@ public class InstagramMyFeedsService implements IPhotoService {
 		}
 		
 		int returnCount = mf.getData().size();
+		//FIXME: what if no next page?
 		while( returnCount < pageSize ) {
 			mf = ig.getNextPage( mf.getPagination(), pageSize - returnCount );
 			returnCount += mf.getData().size();

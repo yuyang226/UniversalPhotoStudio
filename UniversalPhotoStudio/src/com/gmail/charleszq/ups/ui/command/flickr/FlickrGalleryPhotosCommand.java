@@ -52,7 +52,7 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 			Activity act = (Activity) mContext;
 			UPSApplication app = (UPSApplication) act.getApplication();
 			IPhotoService service = new FlickrGalleryPhotosService(
-					app.getUserId(), app.getFlickrToken(),
+					app.getFlickrUserId(), app.getFlickrToken(),
 					app.getFlickrTokenSecret(), mGallery.getGalleryId());
 			return service;
 		}

@@ -54,7 +54,7 @@ public class MyFlickrContactPhotosCommand extends PhotoListCommand {
 			Activity act = (Activity) mContext;
 			UPSApplication app = (UPSApplication) act.getApplication();
 			IPhotoService service = new FlickrContactPhotosService(
-					app.getUserId(), app.getFlickrToken(),
+					app.getFlickrUserId(), app.getFlickrToken(),
 					app.getFlickrTokenSecret());
 			return service;
 		}

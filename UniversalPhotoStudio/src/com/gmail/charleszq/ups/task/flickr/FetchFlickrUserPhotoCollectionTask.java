@@ -45,7 +45,7 @@ public class FetchFlickrUserPhotoCollectionTask extends
 		UPSApplication app = (UPSApplication) mActivity.getApplication();
 		mToken = app.getFlickrToken();
 		mSecret = app.getFlickrTokenSecret();
-		mUserId = app.getUserId();
+		mUserId = app.getFlickrUserId();
 	}
 
 	@Override

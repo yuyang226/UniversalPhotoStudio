@@ -50,7 +50,7 @@ public class MyFlickrFavsCommand extends PhotoListCommand {
 		if (adapterClass == IPhotoService.class) {
 			Activity act = (Activity) mContext;
 			UPSApplication app = (UPSApplication) act.getApplication();
-			return new FlickrMyFavoritesService(app.getUserId(),
+			return new FlickrMyFavoritesService(app.getFlickrUserId(),
 					app.getFlickrToken(), app.getFlickrTokenSecret());
 		}
 		if( adapterClass == Integer.class ) {

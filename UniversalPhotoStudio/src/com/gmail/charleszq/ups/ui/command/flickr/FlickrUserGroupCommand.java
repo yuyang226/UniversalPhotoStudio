@@ -58,7 +58,7 @@ public class FlickrUserGroupCommand extends PhotoListCommand {
 		if (adapterClass == IPhotoService.class) {
 			Activity act = (Activity) mContext;
 			UPSApplication app = (UPSApplication) act.getApplication();
-			return new FlickrPhotoGroupPhotosService(app.getUserId(),
+			return new FlickrPhotoGroupPhotosService(app.getFlickrUserId(),
 					app.getFlickrToken(), app.getFlickrTokenSecret(),
 					mGroup.getId());
 		}

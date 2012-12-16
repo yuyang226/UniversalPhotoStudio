@@ -106,7 +106,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		this.setRetainInstance(true);
+		
 		int thumbSize = getResources().getDimensionPixelSize(
 				R.dimen.cmd_icon_size);
 
@@ -261,7 +262,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	private boolean isUserAuthedFlickr() {
 		UPSApplication app = (UPSApplication) this.getActivity()
 				.getApplication();
-		return app.getUserId() != null;
+		return app.getFlickrUserId() != null;
 	}
 
 	private boolean isUserAuthedInstagram() {
@@ -341,6 +342,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	@Override
 	public void onResume() {
 		super.onResume();
+		this.mProgressDialog = null;
+		
 		Intent intent = getActivity().getIntent();
 		String schema = intent.getScheme();
 		if (IConstants.ID_SCHEME.equals(schema)) {
@@ -348,7 +351,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			// if user already login, just return
 			UPSApplication app = (UPSApplication) getActivity()
 					.getApplication();
-			if (app.getUserId() != null) {
+			if (app.getFlickrUserId() != null) {
 				return;
 			}
 

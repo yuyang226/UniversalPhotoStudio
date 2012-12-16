@@ -46,7 +46,7 @@ public class MyFlickrPhotosCommand extends PhotoListCommand {
 			Activity act = (Activity) mContext;
 			UPSApplication app = (UPSApplication) act.getApplication();
 			IPhotoService service = new FlickrMyPhotoStreamService(
-					app.getUserId(), app.getFlickrToken(),
+					app.getFlickrUserId(), app.getFlickrToken(),
 					app.getFlickrTokenSecret());
 			return service;
 		}

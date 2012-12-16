@@ -36,8 +36,8 @@ public class UPSApplication extends Application {
 	}
 
 	public OAuth loadSavedOAuth() {
-		String userId = getUserId();
-		String userName = getUserName();
+		String userId = getFlickrUserId();
+		String userName = getFlickrUserName();
 		String token = getFlickrToken();
 		String tokenSecret = getFlickrTokenSecret();
 		if (userId == null || token == null || tokenSecret == null) {
@@ -86,11 +86,11 @@ public class UPSApplication extends Application {
 		return getSharedPreferenceValue(IConstants.FLICKR_TOKEN_SECRENT, null);
 	}
 
-	public String getUserName() {
+	public String getFlickrUserName() {
 		return getSharedPreferenceValue(IConstants.FLICKR_USER_NAME, null);
 	}
 
-	public String getUserId() {
+	public String getFlickrUserId() {
 		return getSharedPreferenceValue(IConstants.FLICKR_USER_ID, null);
 	}
 
@@ -137,6 +137,10 @@ public class UPSApplication extends Application {
 		return getSharedPreferenceValue(IConstants.IG_USER_ID, null);
 	}
 
+	public String getInstagramUserBuddyIconUrl() {
+		return getSharedPreferenceValue(IConstants.IG_USER_BUDDY_ICON_URL, null);
+	}
+
 	public Token getInstagramAuthToken() {
 		String token = getSharedPreferenceValue(IConstants.IG_AUTH_TOKEN, null);
 		if (token == null) {
@@ -151,14 +155,15 @@ public class UPSApplication extends Application {
 	}
 
 	public void saveInstagramAuthToken(long userId, String token,
-			String secret, String rawResponse) {
+			String secret, String rawResponse, String url) {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_PRIVATE);
 		Editor editor = sp.edit();
-		editor.putLong(IConstants.IG_USER_ID, userId);
+		editor.putString(IConstants.IG_USER_ID, String.valueOf(userId));
 		editor.putString(IConstants.IG_AUTH_TOKEN, token);
 		editor.putString(IConstants.IG_AUTH_TOKEN_SECRET, secret);
 		editor.putString(IConstants.IG_AUTH_TOKEN_RAW_RES, rawResponse);
+		editor.putString(IConstants.IG_USER_BUDDY_ICON_URL, url);
 		editor.commit();
 
 	}

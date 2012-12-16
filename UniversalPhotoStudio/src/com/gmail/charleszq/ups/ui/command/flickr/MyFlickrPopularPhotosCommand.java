@@ -51,7 +51,7 @@ public class MyFlickrPopularPhotosCommand extends PhotoListCommand {
 			Activity act = (Activity) mContext;
 			UPSApplication app = (UPSApplication) act.getApplication();
 			IPhotoService service = new FlickrMyPopularPhotosService(
-					app.getUserId(), app.getFlickrToken(),
+					app.getFlickrUserId(), app.getFlickrToken(),
 					app.getFlickrTokenSecret());
 			return service;
 		}

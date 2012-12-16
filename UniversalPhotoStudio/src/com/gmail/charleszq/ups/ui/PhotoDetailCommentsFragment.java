@@ -10,22 +10,31 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
+import android.widget.Toast;
 
 import com.gmail.charleszq.ups.R;
+import com.gmail.charleszq.ups.UPSApplication;
+import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaObjectComment;
 import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserIconUrlTask;
+import com.gmail.charleszq.ups.task.flickr.FlickrAddPhotoCommentTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrLoadCommentsTask;
+import com.gmail.charleszq.ups.task.ig.InstagramAddPhotoCommentTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLoadCommentsTask;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
@@ -38,6 +47,12 @@ public class PhotoDetailCommentsFragment extends
 		AbstractFragmentWithImageFetcher {
 
 	private MediaObject mCurrentPhoto;
+
+	private ProgressBar mProgressBar;
+	private TextView mNoCommentText;
+	private ListView mCommentListView;
+	private EditText mSendComment;
+	private CommentListAdapter mAdapter;
 
 	/**
 	 * 
@@ -69,28 +84,134 @@ public class PhotoDetailCommentsFragment extends
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		ListView v = new ListView(getActivity());
-		FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
-				FrameLayout.LayoutParams.MATCH_PARENT,
-				FrameLayout.LayoutParams.MATCH_PARENT);
-		v.setLayoutParams(params);
-		CommentListAdapter adapter = new CommentListAdapter(getActivity(),
-				mCurrentPhoto, mCurrentPhoto.getCommentList(), mImageFetcher);
-		v.setAdapter(adapter);
-		loadComments(adapter);
-		return v;
+		View view = inflater.inflate(R.layout.photo_detail_comment_frg, null);
+
+		mProgressBar = (ProgressBar) view.findViewById(R.id.progressBar1);
+		mNoCommentText = (TextView) view.findViewById(R.id.txt_no_comment);
+
+		mCommentListView = (ListView) view.findViewById(R.id.photo_detail_list);
+		mAdapter = new CommentListAdapter(getActivity(), mCurrentPhoto,
+				mCurrentPhoto.getCommentList(), mImageFetcher);
+		mCommentListView.setAdapter(mAdapter);
+		loadComments();
+
+		mSendComment = (EditText) view.findViewById(R.id.edit_comment);
+		mSendComment.setOnEditorActionListener(new OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEND) {
+					CharSequence commentText = v.getText();
+					logger.debug("Comment: " + commentText); //$NON-NLS-1$
+					sendComment(commentText);
+				}
+				return false;
+			}
+		});
+		mSendComment.setVisibility(isUserLoggedIn() ? View.VISIBLE : View.GONE);
+
+		return view;
 	}
 
-	private void loadComments(final CommentListAdapter adapter) {
+	private MediaObjectComment makeDummyComment(String comment) {
+		UPSApplication app = (UPSApplication) getActivity().getApplication();
+
+		MediaObjectComment c = new MediaObjectComment();
+		c.setText(comment);
+		c.setCreationTime(System.currentTimeMillis());
+
+		Author a = new Author();
+		c.setAuthor(a);
+
+		switch (mCurrentPhoto.getMediaSource()) {
+		case FLICKR:
+			a.setUserId(app.getFlickrUserId());
+			a.setUserName(app.getFlickrUserName());
+			break;
+		case INSTAGRAM:
+			a.setUserId(String.valueOf(app.getInstagramUserId()));
+			a.setBuddyIconUrl(app.getInstagramUserBuddyIconUrl());
+			break;
+		}
+
+		return c;
+	}
+
+	private void sendComment(final CharSequence commentText) {
+		IGeneralTaskDoneListener<Boolean> lis = new IGeneralTaskDoneListener<Boolean>() {
+
+			@Override
+			public void onTaskDone(Boolean result) {
+				if (result) {
+					MediaObjectComment c = makeDummyComment(commentText
+							.toString());
+					mCurrentPhoto.getCommentList().add(c);
+					mAdapter.notifyDataSetChanged();
+					mProgressBar.setVisibility(View.INVISIBLE);
+					mNoCommentText.setVisibility(View.INVISIBLE);
+					Toast.makeText(
+							getActivity(),
+							getActivity().getString(R.string.msg_comment_added),
+							Toast.LENGTH_SHORT).show();
+					mSendComment.setText(""); //$NON-NLS-1$
+				}
+			}
+		};
+
+		switch (mCurrentPhoto.getMediaSource()) {
+		case FLICKR:
+			FlickrAddPhotoCommentTask ft = new FlickrAddPhotoCommentTask(
+					getActivity());
+			ft.addTaskDoneListener(lis);
+			ft.execute(mCurrentPhoto.getId(), commentText.toString());
+			break;
+		case INSTAGRAM:
+			InstagramAddPhotoCommentTask it = new InstagramAddPhotoCommentTask(
+					getActivity());
+			it.addTaskDoneListener(lis);
+			it.execute(mCurrentPhoto.getId(), commentText.toString());
+			break;
+		}
+
+	}
+
+	private boolean isUserLoggedIn() {
+		boolean result = false;
+		UPSApplication app = (UPSApplication) getActivity().getApplication();
+		switch (mCurrentPhoto.getMediaSource()) {
+		case FLICKR:
+			result = app.getFlickrUserId() != null;
+			break;
+		case INSTAGRAM:
+			result = app.getInstagramUserId() != null;
+			break;
+		}
+		return result;
+	}
+
+	private void loadComments() {
+
+		this.mProgressBar.setVisibility(View.VISIBLE);
+		this.mNoCommentText.setVisibility(View.INVISIBLE);
 
 		IGeneralTaskDoneListener<List<MediaObjectComment>> lis = new IGeneralTaskDoneListener<List<MediaObjectComment>>() {
 
 			@Override
 			public void onTaskDone(List<MediaObjectComment> result) {
-				if (result == null)
+				PhotoDetailCommentsFragment.this.mProgressBar
+						.setVisibility(View.INVISIBLE);
+				if (result == null) {
 					return;
-				adapter.populateComments(result);
-				adapter.notifyDataSetChanged();
+				}
+
+				if (result.isEmpty()) {
+					mNoCommentText.setVisibility(View.VISIBLE);
+					mCommentListView.setVisibility(View.INVISIBLE);
+				}
+				mAdapter.populateComments(result);
+				mAdapter.notifyDataSetChanged();
+
 			}
 
 		};
@@ -166,15 +287,16 @@ public class PhotoDetailCommentsFragment extends
 					.findViewById(R.id.detail_comment_time);
 			TextView txtCommentText = (TextView) v
 					.findViewById(R.id.detail_comment_text);
-			TextView txtAuthorName = (TextView) v.findViewById(R.id.detail_author_name);
+			TextView txtAuthorName = (TextView) v
+					.findViewById(R.id.detail_author_name);
 			MediaObjectComment comment = (MediaObjectComment) getItem(position);
 			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm"); //$NON-NLS-1$
 			txtCreateTime.setText(format.format(new Date(comment
 					.getCreationTime())));
 			txtCommentText.setText(comment.getText());
-			
+
 			String userName = comment.getAuthor().getUserName();
-			if( userName == null ) {
+			if (userName == null) {
 				userName = comment.getAuthor().getUserId();
 			}
 			txtAuthorName.setText(userName);
