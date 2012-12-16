@@ -6,6 +6,8 @@ package com.gmail.charleszq.ups.utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jinstagram.entity.comments.CommentData;
 import org.jinstagram.entity.comments.MediaCommentsFeed;
@@ -14,8 +16,12 @@ import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.common.Location;
 import org.jinstagram.entity.likes.LikesFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import android.text.Html;
+import android.text.util.Linkify;
+import android.text.util.Linkify.MatchFilter;
+import android.text.util.Linkify.TransformFilter;
+import android.widget.TextView;
 
 import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.model.ExifData;
@@ -38,9 +44,6 @@ import com.googlecode.flickrjandroid.tags.Tag;
  * 
  */
 public final class ModelUtils {
-
-	private static final Logger logger = LoggerFactory
-			.getLogger(ModelUtils.class);
 
 	/**
 	 * Converts the flickrj api <code>Photo</code>.
@@ -215,9 +218,6 @@ public final class ModelUtils {
 		ExifData data = new ExifData();
 		data.label = exif.getLabel();
 		data.value = exif.getRaw();
-		logger.debug("exif label: " + exif.getLabel()); //$NON-NLS-1$
-		logger.debug("exif clean: " + exif.getClean()); //$NON-NLS-1$
-		logger.debug("exif raw: " + exif.getRaw()); //$NON-NLS-1$
 		return data;
 	}
 
@@ -227,5 +227,35 @@ public final class ModelUtils {
 			es.add(convertFlickrExif(exif));
 		}
 		return es;
+	}
+	
+	/**
+	 * Example: [http://www.flickr.com/photos/example/2910192942/]
+	 */
+	private static final String FILICK_URL_EXPRESSION = "(\\[http){1}+(s)?+(://){1}+.*\\]{1}+"; //$NON-NLS-1$
+
+	public static void formatHtmlString(String string, TextView textView) {
+
+		textView.setText(Html.fromHtml(string));
+		Linkify.addLinks(textView, Pattern.compile(FILICK_URL_EXPRESSION),
+				"http://", new MatchFilter() { //$NON-NLS-1$
+
+					@Override
+					public boolean acceptMatch(CharSequence s, int start,
+							int end) {
+						return true;
+					}
+
+				}, new TransformFilter() {
+
+					@Override
+					public String transformUrl(Matcher matcher, String data) {
+						if (data.length() > 2) {
+							return data.substring(1, data.length() - 1);
+						}
+						return data;
+					}
+
+				});
 	}
 }

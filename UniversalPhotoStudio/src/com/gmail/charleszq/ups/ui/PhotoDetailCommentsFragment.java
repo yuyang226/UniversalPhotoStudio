@@ -38,6 +38,7 @@ import com.gmail.charleszq.ups.task.ig.InstagramAddPhotoCommentTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLoadCommentsTask;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
+import com.gmail.charleszq.ups.utils.ModelUtils;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -293,7 +294,8 @@ public class PhotoDetailCommentsFragment extends
 			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm"); //$NON-NLS-1$
 			txtCreateTime.setText(format.format(new Date(comment
 					.getCreationTime())));
-			txtCommentText.setText(comment.getText());
+			// txtCommentText.setText(comment.getText());
+			ModelUtils.formatHtmlString(comment.getText(), txtCommentText);
 
 			String userName = comment.getAuthor().getUserName();
 			if (userName == null) {

@@ -30,18 +30,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </FrameLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@drawable/sep" />
-
     <EditText
         android:id="@+id/edit_comment"
-        android:hint="@string/hint_add_comment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/comment_bg_color"
+        android:hint="@string/hint_add_comment"
+        android:textColor="@android:color/white"
+        android:textColorHint="@color/comment_hint_color"
         android:imeOptions="actionSend"
-        android:inputType="textImeMultiLine" />
-
+        android:inputType="textImeMultiLine"
+        android:padding="5dp" />
 </LinearLayout>

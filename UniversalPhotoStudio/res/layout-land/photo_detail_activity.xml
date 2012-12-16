@@ -21,11 +21,11 @@
         android:orientation="vertical" >
 
         <com.viewpagerindicator.TitlePageIndicator
-            android:layout_alignParentBottom="true"
+            android:layout_alignParentTop="true"
             android:id="@+id/indicator_photo_detail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/photo_detail_vp_indicator_bg"
+            android:background="@color/comment_bg_color"
             android:padding="10dip"
             android:textColor="@color/photo_detail_vp_indicator"
             app:footerIndicatorHeight="3dp"
@@ -35,7 +35,7 @@
             app:selectedBold="true" />
 
         <android.support.v4.view.ViewPager
-            android:layout_above="@id/indicator_photo_detail"
+            android:layout_below="@id/indicator_photo_detail"
             android:id="@+id/pager_photo_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

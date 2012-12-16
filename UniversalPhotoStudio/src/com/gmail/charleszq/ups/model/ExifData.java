@@ -34,25 +34,33 @@ public final class ExifData implements Serializable {
 
 	public String label;
 	public String value;
+	
+	public ExifData() {
+		
+	}
+	
+	public ExifData(String label) {
+		this.label = label;
+	}
 
 	/**
 	 * 
 	 */
 	public static Map<String, ExifData> getPredefinedExifList() {
 		Map<String, ExifData> map = new LinkedHashMap<String, ExifData>();
-		map.put(LABEL_MAKE, new ExifData());
-		map.put(LABEL_MODEL, new ExifData());
-		map.put(LABEL_LEN, new ExifData());
-		map.put(LABEL_FOCAL_LEN, new ExifData());
-		map.put(LABEL_SOFTWARE, new ExifData());
-		map.put(LABEL_EXPOSURE, new ExifData());
-		map.put(LABEL_EXP_BIAS, new ExifData());
-		map.put(LABEL_EXP_PRG, new ExifData());
-		map.put(LABEL_METERING_METHOD, new ExifData());
-		map.put(LABEL_ISO, new ExifData());
-		map.put(LABEL_WB, new ExifData());
-		map.put(LABEL_APERTURE, new ExifData());
-		map.put(LABEL_CRT_TIME, new ExifData());
+		map.put(LABEL_MAKE, new ExifData(LABEL_MAKE));
+		map.put(LABEL_MODEL, new ExifData(LABEL_MODEL));
+		map.put(LABEL_LEN, new ExifData(LABEL_LEN));
+		map.put(LABEL_FOCAL_LEN, new ExifData(LABEL_FOCAL_LEN));
+		map.put(LABEL_SOFTWARE, new ExifData(LABEL_SOFTWARE));
+		map.put(LABEL_EXPOSURE, new ExifData(LABEL_EXPOSURE));
+		map.put(LABEL_EXP_BIAS, new ExifData(LABEL_EXP_BIAS));
+		map.put(LABEL_EXP_PRG, new ExifData(LABEL_EXP_PRG));
+		map.put(LABEL_METERING_METHOD, new ExifData(LABEL_METERING_METHOD));
+		map.put(LABEL_ISO, new ExifData(LABEL_ISO));
+		map.put(LABEL_WB, new ExifData(LABEL_WB));
+		map.put(LABEL_APERTURE, new ExifData(LABEL_APERTURE));
+		map.put(LABEL_CRT_TIME, new ExifData(LABEL_CRT_TIME));
 		return map;
 	}
 

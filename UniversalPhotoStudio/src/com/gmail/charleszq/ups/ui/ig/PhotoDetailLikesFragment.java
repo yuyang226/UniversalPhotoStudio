@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.gmail.charleszq.ups.R;
@@ -36,6 +37,10 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 
 	private MediaObject mCurrentPhoto;
 	private List<Author> mAuthors = new ArrayList<Author>();
+	
+	//UI controls
+	private ProgressBar mProgressBar;
+	private TextView mNoLikesText;
 
 	/**
 	 * 
@@ -68,11 +73,17 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		GridView v = (GridView) inflater.inflate(R.layout.ig_like_users, null);
+		View v = inflater.inflate(R.layout.ig_like_users, null);
+		
+		mProgressBar = (ProgressBar) v.findViewById(R.id.ig_like_progress_bar);
+		mNoLikesText = (TextView) v.findViewById(R.id.ig_no_like_text);
+		
+		GridView grid = (GridView) v.findViewById(R.id.ig_like_grid);
 		LikesListAdapter adapter = new LikesListAdapter(getActivity(), mAuthors,
 				mImageFetcher);
-		v.setAdapter(adapter);
+		grid.setAdapter(adapter);
 		loadComments(adapter);
+		
 		return v;
 	}
 
@@ -82,8 +93,11 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 
 			@Override
 			public void onTaskDone(List<Author> result) {
-				if (result == null)
+				mProgressBar.setVisibility(View.INVISIBLE);
+				if (result == null || result.isEmpty()) {
+					mNoLikesText.setVisibility(View.VISIBLE);
 					return;
+				}
 				mAuthors.clear();
 				mAuthors.addAll(result);
 				adapter.notifyDataSetChanged();
