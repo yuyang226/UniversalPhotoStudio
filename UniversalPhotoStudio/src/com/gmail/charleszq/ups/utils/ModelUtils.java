@@ -14,8 +14,11 @@ import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.common.Location;
 import org.jinstagram.entity.likes.LikesFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.gmail.charleszq.ups.model.Author;
+import com.gmail.charleszq.ups.model.ExifData;
 import com.gmail.charleszq.ups.model.GeoLocation;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
@@ -23,6 +26,7 @@ import com.gmail.charleszq.ups.model.MediaObjectComment;
 import com.gmail.charleszq.ups.model.MediaObjectType;
 import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.googlecode.flickrjandroid.people.User;
+import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.GeoData;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
@@ -34,6 +38,9 @@ import com.googlecode.flickrjandroid.tags.Tag;
  * 
  */
 public final class ModelUtils {
+
+	private static final Logger logger = LoggerFactory
+			.getLogger(ModelUtils.class);
 
 	/**
 	 * Converts the flickrj api <code>Photo</code>.
@@ -202,5 +209,23 @@ public final class ModelUtils {
 		a.setUserId(String.valueOf(u.getId()));
 		a.setUserName(u.getUserName());
 		return a;
+	}
+
+	public static ExifData convertFlickrExif(Exif exif) {
+		ExifData data = new ExifData();
+		data.label = exif.getLabel();
+		data.value = exif.getRaw();
+		logger.debug("exif label: " + exif.getLabel()); //$NON-NLS-1$
+		logger.debug("exif clean: " + exif.getClean()); //$NON-NLS-1$
+		logger.debug("exif raw: " + exif.getRaw()); //$NON-NLS-1$
+		return data;
+	}
+
+	public static List<ExifData> convertFlickrExifs(Collection<Exif> exifs) {
+		List<ExifData> es = new ArrayList<ExifData>();
+		for (Exif exif : exifs) {
+			es.add(convertFlickrExif(exif));
+		}
+		return es;
 	}
 }

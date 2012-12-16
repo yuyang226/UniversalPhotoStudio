@@ -58,6 +58,7 @@
 	<string name="photo_no_title">NO TITLE</string>
 	<string name="photo_no_desc">NO DESCRIPTION</string>
 	<string name="photo_no_comments">No comment</string>
+	<string name="photo_no_exif">No EXIF Information</string>
 	<string name="msg_comment_added">Comment added.</string>
 	<string name="hint_add_comment">Input comment.</string>
 	

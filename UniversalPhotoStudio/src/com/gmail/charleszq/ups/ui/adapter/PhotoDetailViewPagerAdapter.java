@@ -9,6 +9,7 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.ui.PhotoDetailCommentsFragment;
 import com.gmail.charleszq.ups.ui.PhotoDetailGeneralFragment;
+import com.gmail.charleszq.ups.ui.flickr.FlickrExifDataFragment;
 import com.gmail.charleszq.ups.ui.ig.PhotoDetailLikesFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
@@ -35,7 +36,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			case INSTAGRAM:
 				return PhotoDetailLikesFragment.newInstance(mPhoto);
 			case FLICKR:
-				return PhotoDetailGeneralFragment.newInstance(mPhoto);
+				return FlickrExifDataFragment.newInstance(mPhoto);
 			}
 		default:
 			PhotoDetailGeneralFragment f = PhotoDetailGeneralFragment
