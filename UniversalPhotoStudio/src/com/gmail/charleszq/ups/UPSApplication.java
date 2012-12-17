@@ -133,7 +133,7 @@ public class UPSApplication extends Application {
 		this.mPhotosProvider = mPhotosProvider;
 	}
 
-	public Object getInstagramUserId() {
+	public String getInstagramUserId() {
 		return getSharedPreferenceValue(IConstants.IG_USER_ID, null);
 	}
 

@@ -17,15 +17,14 @@ import com.gmail.charleszq.ups.utils.ModelUtils;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class InstagramMyLikesService implements IPhotoService {
+public class InstagramMyPhotosService implements IPhotoService {
 
 	private Token mToken;
+	private long mUserId;
 
-	/**
-	 * 
-	 */
-	public InstagramMyLikesService(Token token) {
-		mToken = token;
+	public InstagramMyPhotosService(long userId, Token token) {
+		this.mToken = token;
+		this.mUserId = userId;
 	}
 
 	/*
@@ -38,7 +37,7 @@ public class InstagramMyLikesService implements IPhotoService {
 			throws Exception {
 		AdvancedInstagram ig = InstagramHelper.getInstance()
 				.getAuthedInstagram(mToken);
-		MediaFeed mf = ig.getUserLikedMediaFeed(pageSize);
+		MediaFeed mf = ig.getRecentMediaFeed(mUserId, pageSize);
 
 		MediaObjectCollection pc = new MediaObjectCollection();
 		if (mf == null) {
@@ -51,7 +50,8 @@ public class InstagramMyLikesService implements IPhotoService {
 		int returnCount = mf.getData().size();
 		while (returnCount < pageSize) {
 			mf = ig.getNextPage(mf.getPagination(), pageSize - returnCount);
-			if( mf == null ) break;
+			if (mf == null)
+				break;
 			returnCount += mf.getData().size();
 			if (mf != null) {
 				for (MediaFeedData feed : mf.getData()) {
