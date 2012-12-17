@@ -22,5 +22,7 @@ local.properties
 .settings
 
 # Dependent Projects
-#SlidingMenu
-jInstagram
+SlidingMenu/
+jInstagram/
+view.pager.indicator.lib/
+google-play-services_lib/
