@@ -183,14 +183,9 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 				mFetcher.loadImage(buddyIcon, image);
 				break;
 			case FLICKR:
-				String url = user.getBuddyIconUrl();
-				if (url != null) {
-					mFetcher.loadImage(url, image);
-				} else {
-					FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
-							mContext, user.getUserId());
-					task.execute(mFetcher, image);
-				}
+				FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
+						mContext, user.getUserId());
+				task.execute(mFetcher, image);
 				break;
 			}
 		}

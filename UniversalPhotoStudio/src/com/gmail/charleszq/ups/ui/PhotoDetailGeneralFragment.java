@@ -168,6 +168,7 @@ public class PhotoDetailGeneralFragment extends
 			@Override
 			public void onTaskDone(Integer result) {
 				text.setText(String.valueOf(result));
+				mCurrentPhoto.setFavorites(result);
 			}
 		});
 		task.execute(photoId);

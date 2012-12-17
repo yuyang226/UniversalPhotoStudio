@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -34,7 +33,6 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
@@ -184,37 +182,6 @@ public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implemen
 		final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
 		i.putExtra(ImageDetailActivity.EXTRA_IMAGE, (int) id);
 		startActivity(i);
-	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_item_back:
-			if (mPhotosProvider.getCurrentPage() == 0) {
-				Toast.makeText(getActivity(),
-						this.getString(R.string.already_first_page),
-						Toast.LENGTH_SHORT).show();
-			} else {
-				if (mCurrentCommand != null) {
-					mCurrentCommand
-							.execute(mPhotosProvider.getCurrentPage() - 1);
-				}
-			}
-			return true;
-		case R.id.menu_item_forward:
-			if (!mPhotosProvider.hasMorePage()) {
-				Toast.makeText(getActivity(),
-						this.getString(R.string.already_last_page),
-						Toast.LENGTH_SHORT).show();
-			} else {
-				if (mCurrentCommand != null) {
-					mCurrentCommand
-							.execute(mPhotosProvider.getCurrentPage() + 1);
-				}
-			}
-			return true;
-		}
-		return super.onOptionsItemSelected(item);
 	}
 
 	/**

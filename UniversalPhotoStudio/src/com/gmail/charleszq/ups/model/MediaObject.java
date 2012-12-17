@@ -26,6 +26,19 @@ public final class MediaObject implements Serializable {
 	private String mThumbUrl;
 	private String mLargeUrl;
 	private int mViews = -1, mComments = -1, mFavorites = -1;
+	
+	/**
+	 * Used for flickr photo
+	 */
+	private String mSecret;
+
+	public String getSecret() {
+		return mSecret;
+	}
+
+	public void setSecret(String mSecret) {
+		this.mSecret = mSecret;
+	}
 
 	private List<MediaObjectComment> commentList;
 

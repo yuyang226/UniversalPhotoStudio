@@ -276,11 +276,8 @@ public class PhotoDetailCommentsFragment extends
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View v = convertView;
-			if (v == null) {
-				v = LayoutInflater.from(mContext).inflate(
-						R.layout.photo_detali_comment_item, null);
-			}
+			View v = LayoutInflater.from(mContext).inflate(
+					R.layout.photo_detali_comment_item, null);
 
 			ImageView avatorImage = (ImageView) v
 					.findViewById(R.id.detail_author_avator);

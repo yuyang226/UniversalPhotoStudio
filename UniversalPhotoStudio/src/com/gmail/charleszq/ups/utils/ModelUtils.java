@@ -62,6 +62,7 @@ public final class ModelUtils {
 		uPhoto.setViews(photo.getViews());
 		uPhoto.setComments(photo.getComments());
 		uPhoto.setFavorites(photo.getFavorites());
+		uPhoto.setSecret(photo.getSecret());
 
 		GeoData geo = photo.getGeoData();
 		if (geo != null) {

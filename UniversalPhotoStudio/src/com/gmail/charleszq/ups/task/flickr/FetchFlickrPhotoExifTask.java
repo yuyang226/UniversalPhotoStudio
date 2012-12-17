@@ -34,6 +34,10 @@ public class FetchFlickrPhotoExifTask extends
 	@Override
 	protected List<ExifData> doInBackground(String... params) {
 		String photoId = params[0];
+		String photoSecret = null;
+		if (params.length > 1) {
+			photoSecret = params[1];
+		}
 
 		UPSApplication app = (UPSApplication) ((Activity) mContext)
 				.getApplication();
@@ -41,8 +45,7 @@ public class FetchFlickrPhotoExifTask extends
 				app.getFlickrToken(), app.getFlickrTokenSecret());
 		PhotosInterface pi = f.getPhotosInterface();
 		try {
-			Collection<Exif> exifs = pi.getExif(photoId,
-					app.getFlickrTokenSecret());
+			Collection<Exif> exifs = pi.getExif(photoId, photoSecret);
 			List<ExifData> data = ModelUtils.convertFlickrExifs(exifs);
 			return postProcess(data);
 		} catch (Exception e) {
@@ -59,10 +62,10 @@ public class FetchFlickrPhotoExifTask extends
 	 * @return
 	 */
 	private List<ExifData> postProcess(List<ExifData> data) {
-		if( data.isEmpty() ) {
+		if (data.isEmpty()) {
 			return null;
 		}
-		
+
 		Map<String, ExifData> map = ExifData.getPredefinedExifList();
 		for (ExifData exif : data) {
 			if (exif.label == null) {

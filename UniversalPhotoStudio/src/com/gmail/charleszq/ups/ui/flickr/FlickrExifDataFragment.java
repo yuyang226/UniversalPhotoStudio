@@ -91,7 +91,7 @@ public class FlickrExifDataFragment extends Fragment {
 
 			}
 		});
-		task.execute(mCurrentPhoto.getId());
+		task.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());
 		return v;
 	}
 

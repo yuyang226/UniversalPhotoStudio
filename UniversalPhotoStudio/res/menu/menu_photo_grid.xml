@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/menu_item_back" android:icon="@drawable/ic_menu_back" android:title="@string/menu_item_back" android:showAsAction="always"></item>
-    <item android:id="@+id/menu_item_forward" android:title="@string/menu_item_forward" android:icon="@drawable/ic_menu_forward" android:showAsAction="always"></item>
-    
-
-</menu>

@@ -11,6 +11,7 @@
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/app_name"
         android:paddingLeft="5dp"
+        android:src="@drawable/empty_photo"
         android:scaleType="centerCrop" />
 
     <TextView

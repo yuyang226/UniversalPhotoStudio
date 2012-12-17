@@ -75,7 +75,7 @@ public class PhotoDetailMapFragment extends SupportMapFragment {
 			if (loc != null) {
 				LatLng pos = new LatLng(loc.getLatitude(), loc.getLongitude());
 				map.addMarker(new MarkerOptions().position(pos));
-				map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 5));
+				map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 8));
 			} else {
 				Toast.makeText(getActivity(),
 						getActivity().getString(R.string.photo_no_geo_info),
