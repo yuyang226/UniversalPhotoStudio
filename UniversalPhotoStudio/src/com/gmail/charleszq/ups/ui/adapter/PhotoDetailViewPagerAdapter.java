@@ -10,6 +10,7 @@ import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.ui.PhotoDetailCommentsFragment;
 import com.gmail.charleszq.ups.ui.PhotoDetailGeneralFragment;
 import com.gmail.charleszq.ups.ui.PhotoDetailLikesFragment;
+import com.gmail.charleszq.ups.ui.PhotoDetailMapFragment;
 import com.gmail.charleszq.ups.ui.flickr.FlickrExifDataFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
@@ -41,10 +42,12 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 		case 3:
 			switch (mPhoto.getMediaSource()) {
 			case INSTAGRAM:
-				return PhotoDetailGeneralFragment.newInstance(mPhoto);
+				return PhotoDetailMapFragment.newMyInstance(mPhoto);
 			case FLICKR:
 				return PhotoDetailLikesFragment.newInstance(mPhoto);
 			}
+		case 4:
+			return PhotoDetailMapFragment.newMyInstance(mPhoto);
 		default:
 			PhotoDetailGeneralFragment f = PhotoDetailGeneralFragment
 					.newInstance(mPhoto);
@@ -56,9 +59,9 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 	public int getCount() {
 		switch (mPhoto.getMediaSource()) {
 		case INSTAGRAM:
-			return 4;
+			return mPhoto.getLocation() != null ? 4 : 3;
 		case FLICKR:
-			return 5;
+			return mPhoto.getLocation() != null ? 5 : 4;
 		}
 		return 0;
 	}

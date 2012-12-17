@@ -18,7 +18,7 @@ import com.gmail.charleszq.ups.utils.ModelUtils;
 
 /**
  * @author charles(charleszq@gmail.com)
- *
+ * 
  */
 public class InstagramLoadLikesTask extends
 		AbstractContextAwareTask<String, Integer, List<Author>> {
@@ -26,21 +26,22 @@ public class InstagramLoadLikesTask extends
 	public InstagramLoadLikesTask(Context ctx) {
 		super(ctx);
 	}
-	
+
 	@Override
 	protected List<Author> doInBackground(String... params) {
 		String id = params[0];
 		int index = id.indexOf("_"); //$NON-NLS-1$
-		if( index != -1 ) {
-			id = id.substring(0,index);
+		if (index != -1) {
+			id = id.substring(0, index);
 			logger.debug("instagram media id: " + id); //$NON-NLS-1$
 		}
 		long photoId = Long.parseLong(id);
 		AdvancedInstagram ig = InstagramHelper.getInstance().getInstagram();
 		try {
 			LikesFeed feed = ig.getUserLikes(photoId);
-			logger.debug( "instagram likes returned: " + feed.getUserList().size()); //$NON-NLS-1$
-			return ModelUtils.convertInstagramLikesFeed( feed );
+			if (feed != null)
+				logger.debug("instagram likes returned: " + feed.getUserList().size()); //$NON-NLS-1$
+			return ModelUtils.convertInstagramLikesFeed(feed);
 		} catch (InstagramException e) {
 		}
 		return null;

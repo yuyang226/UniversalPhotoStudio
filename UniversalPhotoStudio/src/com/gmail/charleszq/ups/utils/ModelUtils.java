@@ -182,26 +182,29 @@ public final class ModelUtils {
 	public static List<MediaObjectComment> convertInstagramComments(
 			MediaCommentsFeed feed) {
 		List<MediaObjectComment> comments = new ArrayList<MediaObjectComment>();
-		for (CommentData data : feed.getCommentDataList()) {
-			comments.add(convertInstagramComment(data));
-		}
+		if (feed != null)
+			for (CommentData data : feed.getCommentDataList()) {
+				comments.add(convertInstagramComment(data));
+			}
 		return comments;
 	}
 
 	public static List<MediaObjectComment> convertFlickrComments(
 			List<Comment> flickrComments) {
 		List<MediaObjectComment> comments = new ArrayList<MediaObjectComment>();
-		for (Comment c : flickrComments) {
-			comments.add(convertFlickrComment(c));
-		}
+		if (flickrComments != null)
+			for (Comment c : flickrComments) {
+				comments.add(convertFlickrComment(c));
+			}
 		return comments;
 	}
 
 	public static List<Author> convertInstagramLikesFeed(LikesFeed feed) {
 		List<Author> users = new ArrayList<Author>();
-		for (org.jinstagram.entity.common.User u : feed.getUserList()) {
-			users.add(convertInstagramUser(u));
-		}
+		if (feed != null)
+			for (org.jinstagram.entity.common.User u : feed.getUserList()) {
+				users.add(convertInstagramUser(u));
+			}
 		return users;
 	}
 
@@ -221,12 +224,13 @@ public final class ModelUtils {
 		a.setBuddyIconUrl(user.getBuddyIconUrl());
 		return a;
 	}
-	
-	public static List<Author> convertFlickrUsers(Collection<User> users ) {
+
+	public static List<Author> convertFlickrUsers(Collection<User> users) {
 		List<Author> as = new ArrayList<Author>();
-		for( User u : users ) {
-			as.add(convertFlickrUser(u));
-		}
+		if (users != null)
+			for (User u : users) {
+				as.add(convertFlickrUser(u));
+			}
 		return as;
 	}
 
@@ -239,9 +243,10 @@ public final class ModelUtils {
 
 	public static List<ExifData> convertFlickrExifs(Collection<Exif> exifs) {
 		List<ExifData> es = new ArrayList<ExifData>();
-		for (Exif exif : exifs) {
-			es.add(convertFlickrExif(exif));
-		}
+		if (exifs != null)
+			for (Exif exif : exifs) {
+				es.add(convertFlickrExif(exif));
+			}
 		return es;
 	}
 

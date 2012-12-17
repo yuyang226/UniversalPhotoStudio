@@ -18,6 +18,7 @@ import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserIconUrlTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrGetPhotoFavCountTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrGetPhotoGeneralInfoTask;
 import com.gmail.charleszq.ups.utils.IConstants;
+import com.gmail.charleszq.ups.utils.ModelUtils;
 import com.googlecode.flickrjandroid.photos.Photo;
 
 /**
@@ -153,7 +154,7 @@ public class PhotoDetailGeneralFragment extends
 
 			String desc = mCurrentPhoto.getDescription();
 			if (desc != null && desc.trim().length() > 0) {
-				description.setText(desc);
+				ModelUtils.formatHtmlString(desc, description);
 			}
 		}
 
