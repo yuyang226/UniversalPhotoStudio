@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gmail.charleszq.ups.ui.ig;
+package com.gmail.charleszq.ups.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,6 @@ import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserIconUrlTask;
 import com.gmail.charleszq.ups.task.flickr.GetFlickrPhotoFavUsersTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLoadLikesTask;
-import com.gmail.charleszq.ups.ui.AbstractFragmentWithImageFetcher;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
 
