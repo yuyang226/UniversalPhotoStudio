@@ -214,6 +214,22 @@ public final class ModelUtils {
 		return a;
 	}
 
+	public static Author convertFlickrUser(User user) {
+		Author a = new Author();
+		a.setUserId(user.getId());
+		a.setUserName(user.getUsername());
+		a.setBuddyIconUrl(user.getBuddyIconUrl());
+		return a;
+	}
+	
+	public static List<Author> convertFlickrUsers(Collection<User> users ) {
+		List<Author> as = new ArrayList<Author>();
+		for( User u : users ) {
+			as.add(convertFlickrUser(u));
+		}
+		return as;
+	}
+
 	public static ExifData convertFlickrExif(Exif exif) {
 		ExifData data = new ExifData();
 		data.label = exif.getLabel();
@@ -228,7 +244,7 @@ public final class ModelUtils {
 		}
 		return es;
 	}
-	
+
 	/**
 	 * Example: [http://www.flickr.com/photos/example/2910192942/]
 	 */

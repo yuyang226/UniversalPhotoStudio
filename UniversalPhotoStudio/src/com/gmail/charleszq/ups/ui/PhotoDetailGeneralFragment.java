@@ -15,6 +15,7 @@ import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserIconUrlTask;
+import com.gmail.charleszq.ups.task.flickr.FlickrGetPhotoFavCountTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrGetPhotoGeneralInfoTask;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.googlecode.flickrjandroid.photos.Photo;
@@ -76,6 +77,7 @@ public class PhotoDetailGeneralFragment extends
 				.findViewById(R.id.flickr_detail_gen_comments);
 		final TextView photoFavs = (TextView) v
 				.findViewById(R.id.flickr_detail_gen_favs);
+
 		TextView description = (TextView) v
 				.findViewById(R.id.flickr_detail_general_photo_desc);
 		if (mCurrentPhoto != null) {
@@ -144,6 +146,9 @@ public class PhotoDetailGeneralFragment extends
 					}
 				});
 				ptask.execute(mCurrentPhoto.getId());
+
+				if (mCurrentPhoto.getMediaSource() == MediaSourceType.FLICKR)
+					loadFlickrFavs(mCurrentPhoto.getId(), photoFavs);
 			}
 
 			String desc = mCurrentPhoto.getDescription();
@@ -153,5 +158,17 @@ public class PhotoDetailGeneralFragment extends
 		}
 
 		return v;
+	}
+
+	private void loadFlickrFavs(String photoId, final TextView text) {
+		FlickrGetPhotoFavCountTask task = new FlickrGetPhotoFavCountTask();
+		task.addTaskDoneListener(new IGeneralTaskDoneListener<Integer>() {
+
+			@Override
+			public void onTaskDone(Integer result) {
+				text.setText(String.valueOf(result));
+			}
+		});
+		task.execute(photoId);
 	}
 }

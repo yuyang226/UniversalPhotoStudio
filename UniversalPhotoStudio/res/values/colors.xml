@@ -26,7 +26,9 @@
     <color name="photo_detail_vp_indicator_bg">#383838</color>
     
     <color name="color_trans">#80000000</color>
-    <color name="comment_bg_color">#C2493f</color>
+    <color name="comment_bg_color">#C0C0C0</color>
     <color name="comment_hint_color">#AFAFAF</color>
+    
+    <color name="view_pageer_bg_color">#C2493f</color>
 
 </resources>

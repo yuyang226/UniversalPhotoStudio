@@ -18,7 +18,7 @@
         android:id="@+id/indicator_photo_detail"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/comment_bg_color"
+        android:background="@color/view_pageer_bg_color"
         android:padding="10dip"
         android:textColor="@color/photo_detail_vp_indicator"
         app:footerIndicatorHeight="3dp"

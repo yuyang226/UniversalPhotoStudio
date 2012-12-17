@@ -21,7 +21,11 @@ import android.widget.TextView;
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.model.MediaObject;
+import com.gmail.charleszq.ups.model.MediaSourceType;
+import com.gmail.charleszq.ups.task.AbstractGeneralTask;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserIconUrlTask;
+import com.gmail.charleszq.ups.task.flickr.GetFlickrPhotoFavUsersTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLoadLikesTask;
 import com.gmail.charleszq.ups.ui.AbstractFragmentWithImageFetcher;
 import com.gmail.charleszq.ups.utils.IConstants;
@@ -37,8 +41,8 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 
 	private MediaObject mCurrentPhoto;
 	private List<Author> mAuthors = new ArrayList<Author>();
-	
-	//UI controls
+
+	// UI controls
 	private ProgressBar mProgressBar;
 	private TextView mNoLikesText;
 
@@ -74,20 +78,20 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.ig_like_users, null);
-		
+
 		mProgressBar = (ProgressBar) v.findViewById(R.id.ig_like_progress_bar);
 		mNoLikesText = (TextView) v.findViewById(R.id.ig_no_like_text);
-		
+
 		GridView grid = (GridView) v.findViewById(R.id.ig_like_grid);
-		LikesListAdapter adapter = new LikesListAdapter(getActivity(), mAuthors,
-				mImageFetcher);
+		LikesListAdapter adapter = new LikesListAdapter(getActivity(),
+				mCurrentPhoto, mAuthors, mImageFetcher);
 		grid.setAdapter(adapter);
-		loadComments(adapter);
-		
+		loadLikes(adapter);
+
 		return v;
 	}
 
-	private void loadComments(final LikesListAdapter adapter) {
+	private void loadLikes(final LikesListAdapter adapter) {
 
 		IGeneralTaskDoneListener<List<Author>> lis = new IGeneralTaskDoneListener<List<Author>>() {
 
@@ -107,7 +111,15 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 
 		String photoId = mCurrentPhoto.getId();
 
-		InstagramLoadLikesTask task = new InstagramLoadLikesTask(getActivity());
+		AbstractGeneralTask<String, Integer, List<Author>> task = null;
+		switch (mCurrentPhoto.getMediaSource()) {
+		case INSTAGRAM:
+			task = new InstagramLoadLikesTask(getActivity());
+			break;
+		case FLICKR:
+			task = new GetFlickrPhotoFavUsersTask();
+			break;
+		}
 		task.addTaskDoneListener(lis);
 		task.execute(photoId);
 
@@ -119,11 +131,14 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 		private Context mContext;
 		private ImageFetcher mFetcher;
 		private List<Author> mLikeUsers;
+		private MediaObject mCurrentPhoto;
 
-		LikesListAdapter(Context context, List<Author> mAuthors, ImageFetcher fetcher) {
+		LikesListAdapter(Context context, MediaObject photo,
+				List<Author> mAuthors, ImageFetcher fetcher) {
 			mContext = context;
 			mFetcher = fetcher;
 			mLikeUsers = mAuthors;
+			this.mCurrentPhoto = photo;
 		}
 
 		@Override
@@ -157,8 +172,29 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 			txtUserName.setText(user.getUserName() == null ? user
 					.getBuddyIconUrl() : user.getUserName());
 
-			mFetcher.loadImage(user.getBuddyIconUrl(), avatorImage);
+			loadAvator(mCurrentPhoto, user, avatorImage);
 			return v;
 		}
+
+		private void loadAvator(MediaObject photo, Author user, ImageView image) {
+			MediaSourceType type = photo.getMediaSource();
+			switch (type) {
+			case INSTAGRAM:
+				String buddyIcon = user.getBuddyIconUrl();
+				mFetcher.loadImage(buddyIcon, image);
+				break;
+			case FLICKR:
+				String url = user.getBuddyIconUrl();
+				if (url != null) {
+					mFetcher.loadImage(url, image);
+				} else {
+					FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
+							mContext, user.getUserId());
+					task.execute(mFetcher, image);
+				}
+				break;
+			}
+		}
+
 	}
 }

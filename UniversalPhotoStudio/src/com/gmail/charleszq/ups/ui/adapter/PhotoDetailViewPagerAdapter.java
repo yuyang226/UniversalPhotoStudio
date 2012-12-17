@@ -38,6 +38,13 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			case FLICKR:
 				return FlickrExifDataFragment.newInstance(mPhoto);
 			}
+		case 3:
+			switch (mPhoto.getMediaSource()) {
+			case INSTAGRAM:
+				return PhotoDetailGeneralFragment.newInstance(mPhoto);
+			case FLICKR:
+				return PhotoDetailLikesFragment.newInstance(mPhoto);
+			}
 		default:
 			PhotoDetailGeneralFragment f = PhotoDetailGeneralFragment
 					.newInstance(mPhoto);
@@ -48,10 +55,10 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 	@Override
 	public int getCount() {
 		switch (mPhoto.getMediaSource()) {
+		case INSTAGRAM:
+			return 4;
 		case FLICKR:
 			return 5;
-		case INSTAGRAM:
-			return 3;
 		}
 		return 0;
 	}
@@ -71,7 +78,12 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 				return mContext.getString(R.string.ig_like_users);
 			}
 		case 3:
-			return mContext.getString(R.string.flickr_detail_in_sets);
+			switch (mPhoto.getMediaSource()) {
+			case FLICKR:
+				return mContext.getString(R.string.ig_like_users);
+			case INSTAGRAM:
+				return mContext.getString(R.string.flickr_detail_map);
+			}
 		case 4:
 			return mContext.getString(R.string.flickr_detail_map);
 		}
