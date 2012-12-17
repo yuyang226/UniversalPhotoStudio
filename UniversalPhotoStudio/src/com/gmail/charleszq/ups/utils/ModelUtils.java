@@ -120,6 +120,7 @@ public final class ModelUtils {
 		photo.setThumbUrl(imgs.getThumbnail().getImageUrl());
 		photo.setLargeUrl(imgs.getStandardResolution().getImageUrl());
 		photo.setMediaSource(MediaSourceType.INSTAGRAM);
+		photo.setUserLiked( feed.isUserHasLiked());
 
 		Location location = feed.getLocation();
 		if (location != null) {

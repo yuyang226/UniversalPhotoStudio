@@ -5,14 +5,29 @@
     android:layout_height="match_parent"
     android:orientation="horizontal" >
 
-    <ImageView
-        android:id="@+id/imageThumb"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:contentDescription="@string/app_name"
-        android:scaleType="centerCrop"
-        android:src="@drawable/empty_photo" />
+        android:layout_weight="1" >
+
+        <ImageView
+            android:id="@+id/imageThumb"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/app_name"
+            android:scaleType="centerCrop"
+            android:src="@drawable/empty_photo" />
+
+        <ImageView
+            android:id="@+id/img_fav_or_not"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="left|top"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_fav_no" />
+    </FrameLayout>
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -21,10 +36,10 @@
         android:orientation="vertical" >
 
         <com.viewpagerindicator.TitlePageIndicator
-            android:layout_alignParentTop="true"
             android:id="@+id/indicator_photo_detail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
             android:background="@color/view_pageer_bg_color"
             android:padding="10dip"
             android:textColor="@color/photo_detail_vp_indicator"
@@ -35,10 +50,10 @@
             app:selectedBold="true" />
 
         <android.support.v4.view.ViewPager
-            android:layout_below="@id/indicator_photo_detail"
             android:id="@+id/pager_photo_detail"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_below="@id/indicator_photo_detail" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -27,6 +27,16 @@ public final class MediaObject implements Serializable {
 	private String mLargeUrl;
 	private int mViews = -1, mComments = -1, mFavorites = -1;
 	
+	private boolean isUserLiked = false;
+	
+	public boolean isUserLiked() {
+		return isUserLiked;
+	}
+
+	public void setUserLiked(boolean isUserLiked) {
+		this.isUserLiked = isUserLiked;
+	}
+
 	/**
 	 * Used for flickr photo
 	 */
