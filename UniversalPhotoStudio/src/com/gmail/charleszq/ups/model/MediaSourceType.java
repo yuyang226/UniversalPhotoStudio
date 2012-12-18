@@ -8,5 +8,5 @@ package com.gmail.charleszq.ups.model;
  * 
  */
 public enum MediaSourceType {
-	FLICKR, INSTAGRAM
+	FLICKR, INSTAGRAM, PX500
 }

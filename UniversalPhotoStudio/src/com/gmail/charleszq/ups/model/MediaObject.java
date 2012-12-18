@@ -26,9 +26,10 @@ public final class MediaObject implements Serializable {
 	private String mThumbUrl;
 	private String mLargeUrl;
 	private int mViews = -1, mComments = -1, mFavorites = -1;
-	
+	private List<ExifData> mExifs = new ArrayList<ExifData>();
+
 	private boolean isUserLiked = false;
-	
+
 	public boolean isUserLiked() {
 		return isUserLiked;
 	}
@@ -175,12 +176,20 @@ public final class MediaObject implements Serializable {
 		}
 		return commentList;
 	}
-	
-	public void addComment( MediaObjectComment comment ) {
-		if( commentList == null ) {
+
+	public void addComment(MediaObjectComment comment) {
+		if (commentList == null) {
 			commentList = new ArrayList<MediaObjectComment>();
 		}
 		commentList.add(comment);
+	}
+
+	public void addExifdata(ExifData exifItem) {
+		this.mExifs.add(exifItem);
+	}
+
+	public List<ExifData> getExifs() {
+		return mExifs;
 	}
 
 }

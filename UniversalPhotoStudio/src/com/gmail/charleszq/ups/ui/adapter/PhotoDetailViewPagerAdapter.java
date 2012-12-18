@@ -29,9 +29,14 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 	public Fragment getItem(int pos) {
 		switch (pos) {
 		case 1:
-			PhotoDetailCommentsFragment commentsFrag = PhotoDetailCommentsFragment
-					.newInstance(mPhoto);
-			return commentsFrag;
+			switch (mPhoto.getMediaSource()) {
+			case PX500:
+				return PhotoDetailMapFragment.newMyInstance(mPhoto);
+			default:
+				PhotoDetailCommentsFragment commentsFrag = PhotoDetailCommentsFragment
+						.newInstance(mPhoto);
+				return commentsFrag;
+			}
 		case 2:
 			switch (mPhoto.getMediaSource()) {
 			case INSTAGRAM:
@@ -62,6 +67,8 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			return mPhoto.getLocation() != null ? 4 : 3;
 		case FLICKR:
 			return mPhoto.getLocation() != null ? 5 : 4;
+		case PX500:
+			return mPhoto.getLocation() != null ? 2 : 1;
 		}
 		return 0;
 	}

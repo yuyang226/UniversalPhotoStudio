@@ -96,7 +96,8 @@ public class PhotoDetailGeneralFragment extends
 				}
 
 				// try loading the buddy icon
-				if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
+				if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM
+						|| mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
 					mImageFetcher.loadImage(mCurrentPhoto.getAuthor()
 							.getBuddyIconUrl(), image);
 				} else {

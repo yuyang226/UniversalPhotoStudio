@@ -120,7 +120,7 @@ public final class ModelUtils {
 		photo.setThumbUrl(imgs.getThumbnail().getImageUrl());
 		photo.setLargeUrl(imgs.getStandardResolution().getImageUrl());
 		photo.setMediaSource(MediaSourceType.INSTAGRAM);
-		photo.setUserLiked( feed.isUserHasLiked());
+		photo.setUserLiked(feed.isUserHasLiked());
 
 		Location location = feed.getLocation();
 		if (location != null) {
@@ -285,19 +285,67 @@ public final class ModelUtils {
 	public static MediaObjectCollection convertPx500Photos(
 			List<com.gmail.charleszq.px500.model.Photo> photos) {
 		MediaObjectCollection list = new MediaObjectCollection();
-		for( com.gmail.charleszq.px500.model.Photo p : photos ) {
+		for (com.gmail.charleszq.px500.model.Photo p : photos) {
 			list.addPhoto(convertPx500Photo(p));
 		}
 		list.setTotalCount(photos.size());
 		return list;
 	}
-	
-	public static MediaObject convertPx500Photo(com.gmail.charleszq.px500.model.Photo p) {
+
+	public static MediaObject convertPx500Photo(
+			com.gmail.charleszq.px500.model.Photo p) {
 		MediaObject photo = new MediaObject();
 		photo.setId(p.id);
 		photo.setThumbUrl(p.imageUrl);
 		photo.setLargeUrl(p.largeImageUrl);
 		photo.setTitle(p.name);
+
+		Author a = new Author();
+		a.setUserId(p.author.id);
+		a.setUserName(p.author.userName);
+		a.setBuddyIconUrl(p.author.buddyIconUrl);
+		photo.setAuthor(a);
+
+		// Exif
+		ExifData exif = new ExifData(ExifData.LABEL_MODEL);
+		exif.value = p.exif.camera;
+		photo.addExifdata(exif);
+
+		exif = new ExifData(ExifData.LABEL_APERTURE);
+		exif.value = p.exif.aperture;
+		photo.addExifdata(exif);
+
+		exif = new ExifData(ExifData.LABEL_CRT_TIME);
+		exif.value = p.exif.takenAt;
+		photo.addExifdata(exif);
+
+		exif = new ExifData(ExifData.LABEL_FOCAL_LEN);
+		exif.value = p.exif.focalLength;
+		photo.addExifdata(exif);
+
+		exif = new ExifData(ExifData.LABEL_ISO);
+		exif.value = p.exif.iso;
+		photo.addExifdata(exif);
+
+		exif = new ExifData(ExifData.LABEL_EXPOSURE);
+		exif.value = p.exif.shutterSpeed;
+		photo.addExifdata(exif);
+
+		exif = new ExifData(ExifData.LABEL_LEN);
+		exif.value = p.exif.lens;
+		photo.addExifdata(exif);
+
+		if (p.latitude != null && p.longitude != null) {
+			GeoLocation loc = new GeoLocation();
+			loc.setLatitude(Double.parseDouble(p.latitude));
+			loc.setLongitude(Double.parseDouble(p.longitude));
+			photo.setLocation(loc);
+		}
+
+		photo.setFavorites(p.favorites);
+		photo.setComments(p.comments);
+
+		photo.setMediaSource(MediaSourceType.PX500);
 		return photo;
 	}
 }
