@@ -20,6 +20,7 @@
     <string name="menu_header_flickr_gallery">Galleries</string>
     <string name="ig_popular">Popular Photos</string>
     <string name="menu_header_ig">Instagram</string>
+    <string name="menu_header_px500">PX500</string>
 
     <!-- auth process -->
     <string name="fail_to_oauth">Failed to access your flickr account, please try

@@ -281,4 +281,23 @@ public final class ModelUtils {
 
 				});
 	}
+
+	public static MediaObjectCollection convertPx500Photos(
+			List<com.gmail.charleszq.px500.model.Photo> photos) {
+		MediaObjectCollection list = new MediaObjectCollection();
+		for( com.gmail.charleszq.px500.model.Photo p : photos ) {
+			list.addPhoto(convertPx500Photo(p));
+		}
+		list.setTotalCount(photos.size());
+		return list;
+	}
+	
+	public static MediaObject convertPx500Photo(com.gmail.charleszq.px500.model.Photo p) {
+		MediaObject photo = new MediaObject();
+		photo.setId(p.id);
+		photo.setThumbUrl(p.imageUrl);
+		photo.setLargeUrl(p.largeImageUrl);
+		photo.setTitle(p.name);
+		return photo;
+	}
 }

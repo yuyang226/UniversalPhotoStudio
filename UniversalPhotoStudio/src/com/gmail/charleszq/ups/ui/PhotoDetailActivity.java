@@ -15,6 +15,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.gmail.charleszq.ups.R;
@@ -42,10 +45,14 @@ public class PhotoDetailActivity extends FragmentActivity {
 	private TitlePageIndicator mIndicator;
 	private PhotoDetailViewPagerAdapter mAdapter;
 	private ImageView mImageView;
-	private ImageView mImageFavOrNot;
 
 	private int mCurrentPos;
 	private MediaObject mCurrentPhoto;
+	
+	/**
+	 * the marker to invalidate the option menu.
+	 */
+	private boolean mUserLikeThePhoto = false;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -57,9 +64,9 @@ public class PhotoDetailActivity extends FragmentActivity {
 				-1);
 		UPSApplication app = (UPSApplication) getApplication();
 		mCurrentPhoto = app.getPhotosProvider().getMediaObject(mCurrentPos);
+		mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
 
 		mImageView = (ImageView) findViewById(R.id.imageThumb);
-		mImageFavOrNot = (ImageView) findViewById(R.id.img_fav_or_not);
 		mViewPager = (ViewPager) findViewById(R.id.pager_photo_detail);
 		mAdapter = new PhotoDetailViewPagerAdapter(getSupportFragmentManager(),
 				mCurrentPhoto, this);
@@ -67,10 +74,26 @@ public class PhotoDetailActivity extends FragmentActivity {
 		mIndicator = (TitlePageIndicator) findViewById(R.id.indicator_photo_detail);
 		mIndicator.setViewPager(mViewPager);
 
-		getActionBar().hide();
-
 		loadImage();
 		checkUserLikeOrNot();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_photo_detail_2, menu);
+		return true;
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem item = menu.findItem(R.id.menu_item_like);
+		if( mUserLikeThePhoto ) {
+			item.setIcon(R.drawable.ic_fav_yes);
+		} else {
+			item.setIcon(R.drawable.ic_fav_no);
+		}
+		return true;
 	}
 
 	private void loadImage() {
@@ -92,11 +115,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 	private void checkUserLikeOrNot() {
 		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
 			logger.debug("Do I like this photo? " + mCurrentPhoto.isUserLiked()); //$NON-NLS-1$
-			if (mCurrentPhoto.isUserLiked()) {
-				mImageFavOrNot.setImageResource(R.drawable.ic_fav_yes);
-			} else {
-				mImageFavOrNot.setImageResource(R.drawable.ic_fav_no);
-			}
+			mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
 			return;
 		}
 		CheckUserLikePhotoTask task = new CheckUserLikePhotoTask(this);
@@ -106,11 +125,8 @@ public class PhotoDetailActivity extends FragmentActivity {
 			public void onTaskDone(Boolean result) {
 				mCurrentPhoto.setUserLiked(result);
 				logger.debug("Do I like this photo? " + result.toString()); //$NON-NLS-1$
-				if (result) {
-					mImageFavOrNot.setImageResource(R.drawable.ic_fav_yes);
-				} else {
-					mImageFavOrNot.setImageResource(R.drawable.ic_fav_no);
-				}
+				mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
+				PhotoDetailActivity.this.invalidateOptionsMenu();
 			}
 		});
 		task.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());

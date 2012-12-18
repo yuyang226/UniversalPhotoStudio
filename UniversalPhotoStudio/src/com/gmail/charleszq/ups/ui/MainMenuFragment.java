@@ -50,6 +50,7 @@ import com.gmail.charleszq.ups.ui.command.ig.InstagramLoginCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramMyFeedsCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramMyPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramPopularsCommand;
+import com.gmail.charleszq.ups.ui.command.px500.PxPopularPhotosCommand;
 import com.gmail.charleszq.ups.utils.FlickrHelper;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.googlecode.flickrjandroid.Flickr;
@@ -181,6 +182,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	private void prepareSections() {
 
 		mSectionAdapter.clearSections();
+		mSectionAdapter.addCommands(createPx500MenuItems());
 		mSectionAdapter.addCommands(createInstagramMenuItems());
 		mSectionAdapter.addCommands(createFlickrGeneralMenuItems());
 		mSectionAdapter.notifyDataSetChanged();
@@ -301,6 +303,19 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			command.setCommandCategory(headerName);
 			commands.add(command);
 		}
+		return commands;
+	}
+	
+	private List<ICommand<?>> createPx500MenuItems() {
+		List<ICommand<?>> commands = new ArrayList<ICommand<?>>();
+		String headerName = getActivity().getString(R.string.menu_header_px500);
+		
+		ICommand<?> command = new MenuSectionHeaderCommand(getActivity(), headerName);
+		commands.add(command);
+		
+		command = new PxPopularPhotosCommand(getActivity());
+		command.setCommandCategory(headerName);
+		commands.add(command);
 		return commands;
 	}
 

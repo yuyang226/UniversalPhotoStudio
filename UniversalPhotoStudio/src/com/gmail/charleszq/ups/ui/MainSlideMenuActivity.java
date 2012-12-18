@@ -17,7 +17,7 @@ import com.gmail.charleszq.ups.model.MediaObjectCollection;
 import com.gmail.charleszq.ups.ui.command.CommandType;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.ICommandDoneListener;
-import com.gmail.charleszq.ups.ui.command.flickr.FlickrIntestringCommand;
+import com.gmail.charleszq.ups.ui.command.px500.PxPopularPhotosCommand;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -73,7 +73,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	 * flickr interesting photos.
 	 */
 	private void loadDefaultPhotoList() {
-		mCommand = new FlickrIntestringCommand(this);
+		mCommand = new PxPopularPhotosCommand(this);
 		final ProgressDialog dialog = ProgressDialog.show(this,
 				"", getString(R.string.loading_photos)); //$NON-NLS-1$
 		dialog.setCancelable(true);

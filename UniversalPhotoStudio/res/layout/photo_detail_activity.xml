@@ -17,15 +17,6 @@
             android:contentDescription="@string/app_name"
             android:scaleType="centerCrop"
             android:src="@drawable/empty_photo" />
-        
-        <ImageView android:id="@+id/img_fav_or_not"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginBottom="5dp"
-            android:layout_gravity="left|bottom"
-            android:src="@drawable/ic_fav_no"
-            android:contentDescription="@string/app_name"/>
     </FrameLayout>
 
     <com.viewpagerindicator.TitlePageIndicator
