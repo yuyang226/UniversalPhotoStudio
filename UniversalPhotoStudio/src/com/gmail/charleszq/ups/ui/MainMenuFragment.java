@@ -50,6 +50,7 @@ import com.gmail.charleszq.ups.ui.command.ig.InstagramLoginCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramMyFeedsCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramMyPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramPopularsCommand;
+import com.gmail.charleszq.ups.ui.command.px500.PxEditorsPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.px500.PxPopularPhotosCommand;
 import com.gmail.charleszq.ups.utils.FlickrHelper;
 import com.gmail.charleszq.ups.utils.IConstants;
@@ -314,6 +315,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		commands.add(command);
 		
 		command = new PxPopularPhotosCommand(getActivity());
+		command.setCommandCategory(headerName);
+		commands.add(command);
+		
+		command = new PxEditorsPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
 		return commands;

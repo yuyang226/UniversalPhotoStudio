@@ -14,6 +14,8 @@
     <string name="ig_my_likes">My Likes</string>
     <string name="ig_my_photos">My Photos</string>
     
+    <string name="px_editors">Editors\' Choice</string>
+    
     <string name="menu_header_flickr">Flickr</string>
     <string name="menu_header_flickr_sets">Photo Sets</string>
     <string name="menu_header_flickr_groups">Photo Groups</string>

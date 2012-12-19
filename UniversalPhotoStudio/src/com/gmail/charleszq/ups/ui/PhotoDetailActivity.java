@@ -48,7 +48,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 
 	private int mCurrentPos;
 	private MediaObject mCurrentPhoto;
-	
+
 	/**
 	 * the marker to invalidate the option menu.
 	 */
@@ -84,14 +84,19 @@ public class PhotoDetailActivity extends FragmentActivity {
 		inflater.inflate(R.menu.menu_photo_detail_2, menu);
 		return true;
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.menu_item_like);
-		if( mUserLikeThePhoto ) {
+		if (mUserLikeThePhoto) {
 			item.setIcon(R.drawable.ic_fav_yes);
 		} else {
 			item.setIcon(R.drawable.ic_fav_no);
+		}
+
+		if (mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
+			//disable like for px500 at this time.
+			item.setVisible(false);
 		}
 		return true;
 	}
@@ -113,7 +118,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 	}
 
 	private void checkUserLikeOrNot() {
-		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
+		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM ) {
 			logger.debug("Do I like this photo? " + mCurrentPhoto.isUserLiked()); //$NON-NLS-1$
 			mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
 			return;

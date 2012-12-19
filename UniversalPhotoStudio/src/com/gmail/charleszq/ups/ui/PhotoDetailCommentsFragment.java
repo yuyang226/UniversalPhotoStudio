@@ -3,8 +3,6 @@
  */
 package com.gmail.charleszq.ups.ui;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -36,6 +34,7 @@ import com.gmail.charleszq.ups.task.flickr.FlickrAddPhotoCommentTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrLoadCommentsTask;
 import com.gmail.charleszq.ups.task.ig.InstagramAddPhotoCommentTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLoadCommentsTask;
+import com.gmail.charleszq.ups.task.px500.PxFetchPhotoCommentsTask;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
 import com.gmail.charleszq.ups.utils.ModelUtils;
@@ -115,6 +114,11 @@ public class PhotoDetailCommentsFragment extends
 		return view;
 	}
 
+	/**
+	 * After comment sent, make a dummy comment and append to the end of the current comment list.
+	 * @param comment
+	 * @return
+	 */
 	private MediaObjectComment makeDummyComment(String comment) {
 		UPSApplication app = (UPSApplication) getActivity().getApplication();
 
@@ -224,15 +228,20 @@ public class PhotoDetailCommentsFragment extends
 		MediaSourceType type = mCurrentPhoto.getMediaSource();
 		switch (type) {
 		case FLICKR:
-			FlickrLoadCommentsTask t = new FlickrLoadCommentsTask(getActivity());
-			t.addTaskDoneListener(lis);
-			t.execute(photoId);
+			FlickrLoadCommentsTask flickrTask = new FlickrLoadCommentsTask(getActivity());
+			flickrTask.addTaskDoneListener(lis);
+			flickrTask.execute(photoId);
 			break;
 		case INSTAGRAM:
-			InstagramLoadCommentsTask task = new InstagramLoadCommentsTask(
+			InstagramLoadCommentsTask igTask = new InstagramLoadCommentsTask(
 					getActivity());
-			task.addTaskDoneListener(lis);
-			task.execute(photoId);
+			igTask.addTaskDoneListener(lis);
+			igTask.execute(photoId);
+			break;
+		case PX500:
+			PxFetchPhotoCommentsTask pxTask = new PxFetchPhotoCommentsTask();
+			pxTask.addTaskDoneListener(lis);
+			pxTask.execute(photoId);
 			break;
 		}
 
@@ -288,10 +297,7 @@ public class PhotoDetailCommentsFragment extends
 			TextView txtAuthorName = (TextView) v
 					.findViewById(R.id.detail_author_name);
 			MediaObjectComment comment = (MediaObjectComment) getItem(position);
-			SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd HH:mm"); //$NON-NLS-1$
-			txtCreateTime.setText(format.format(new Date(comment
-					.getCreationTime())));
-			// txtCommentText.setText(comment.getText());
+			txtCreateTime.setText(comment.getCreateTimeString());
 			ModelUtils.formatHtmlString(comment.getText(), txtCommentText);
 
 			String userName = comment.getAuthor().getUserName();
@@ -321,6 +327,9 @@ public class PhotoDetailCommentsFragment extends
 							mContext, comment.getAuthor().getUserId());
 					task.execute(mFetcher, image);
 				}
+				break;
+			case PX500:
+				mFetcher.loadImage(comment.getAuthor().getBuddyIconUrl(), image);
 				break;
 			}
 		}

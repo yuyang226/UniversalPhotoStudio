@@ -48,6 +48,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			break;
 		case PX500:
 			fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
+			fragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
 			fragments.add(Px500ExifDataFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailMapFragment.newMyInstance(mPhoto));
 			break;
@@ -67,9 +68,9 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			count = 5;
 			break;
 		case PX500:
-			count = 3;
+			count = 4;
 			if (mPhoto.getExifs().isEmpty()) {
-				count = 2;
+				count = 3;
 			}
 			break;
 		}
@@ -100,6 +101,8 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			break;
 		case PX500:
 			titles.add(mContext.getString(R.string.flickr_detail_general_title));
+			titles.add(mContext
+					.getString(R.string.flickr_detail_comments_title));
 			if (!mPhoto.getExifs().isEmpty())
 				titles.add(mContext
 						.getString(R.string.flickr_detail_exif_title));

@@ -307,7 +307,7 @@ public final class ModelUtils {
 		photo.setAuthor(a);
 
 		// Exif
-		handlePx500PhotoExif(photo,p);
+		handlePx500PhotoExif(photo, p);
 
 		if (p.latitude != null && p.longitude != null) {
 			GeoLocation loc = new GeoLocation();
@@ -325,7 +325,7 @@ public final class ModelUtils {
 
 	private static void handlePx500PhotoExif(MediaObject photo,
 			com.gmail.charleszq.px500.model.Photo p) {
-		if( p.exif != null ) {
+		if (p.exif != null) {
 			ExifData exif = new ExifData(ExifData.LABEL_MODEL);
 			exif.value = p.exif.camera;
 			photo.addExifdata(exif);
@@ -354,5 +354,20 @@ public final class ModelUtils {
 			exif.value = p.exif.lens;
 			photo.addExifdata(exif);
 		}
+	}
+
+	public static MediaObjectComment convertPxPhotoComment(
+			com.gmail.charleszq.px500.model.Comment pxComment) {
+		MediaObjectComment comment = new MediaObjectComment();
+		comment.setId(pxComment.id);
+		comment.setText(pxComment.body);
+		comment.setCreateTimeString(pxComment.createTime);
+
+		Author u = new Author();
+		u.setUserId(pxComment.user.id);
+		u.setUserName(pxComment.user.userName);
+		u.setBuddyIconUrl(pxComment.user.buddyIconUrl);
+		comment.setAuthor(u);
+		return comment;
 	}
 }
