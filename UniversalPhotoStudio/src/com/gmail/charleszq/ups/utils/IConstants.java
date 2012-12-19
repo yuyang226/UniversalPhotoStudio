@@ -73,8 +73,9 @@ public interface IConstants {
 	//
 	static final String DETAIL_PAGE_PHOTO_ARG_KEY = "photo.frg.arg"; //$NON-NLS-1$
 	
-	//
+	//500px related constants
 	static final String PX500_CONSUMER_KEY = "XLvGaTDTlDL7UH9njjxpc9VmpoSKYQwRHjV0Qujx"; //$NON-NLS-1$
 	static final int PX500_DEF_PAGE_SIZE = 50;
+	static final String PX500_OAUTH_CALLBACK_SCHEMA = "schemapx500"; //$NON-NLS-1$
 
 }

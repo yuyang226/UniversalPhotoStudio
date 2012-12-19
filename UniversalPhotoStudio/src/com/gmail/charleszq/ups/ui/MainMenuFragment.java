@@ -110,7 +110,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.setRetainInstance(true);
-		
+
 		int thumbSize = getResources().getDimensionPixelSize(
 				R.dimen.cmd_icon_size);
 
@@ -155,7 +155,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 						.getItem(pos);
 				if (command.getCommandType() == CommandType.MENU_HEADER_CMD) {
 					command.execute(adapter);
-					view.animate().setDuration(3000).rotationX(90).rotationX(180).rotationX(270).rotationX(360);
+					view.animate().setDuration(3000).rotationX(90)
+							.rotationX(180).rotationX(270).rotationX(360);
 				} else {
 					command.addCommndDoneListener(mCommandDoneListener);
 					command.execute();
@@ -269,6 +270,12 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		return app.getFlickrUserId() != null;
 	}
 
+	private boolean isUserAuthedPx500() {
+		UPSApplication app = (UPSApplication) this.getActivity()
+				.getApplication();
+		return app.getPx500UserId() != null;
+	}
+
 	private boolean isUserAuthedInstagram() {
 		UPSApplication app = (UPSApplication) this.getActivity()
 				.getApplication();
@@ -291,11 +298,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			command = new InstagramMyFeedsCommand(ctx);
 			command.setCommandCategory(headerName);
 			commands.add(command);
-			
+
 			command = new InstagramLikesCommand(ctx);
 			command.setCommandCategory(headerName);
 			commands.add(command);
-			
+
 			command = new InstagramMyPhotosCommand(ctx);
 			command.setCommandCategory(headerName);
 			commands.add(command);
@@ -306,18 +313,25 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		}
 		return commands;
 	}
-	
+
 	private List<ICommand<?>> createPx500MenuItems() {
 		List<ICommand<?>> commands = new ArrayList<ICommand<?>>();
 		String headerName = getActivity().getString(R.string.menu_header_px500);
-		
-		ICommand<?> command = new MenuSectionHeaderCommand(getActivity(), headerName);
+
+		ICommand<?> command = new MenuSectionHeaderCommand(getActivity(),
+				headerName);
 		commands.add(command);
-		
+
+		if (!isUserAuthedPx500()) {
+//			command = new PxSignInCommand(getActivity());
+//			command.setCommandCategory(headerName);
+//			commands.add(command);
+		}
+
 		command = new PxPopularPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
-		
+
 		command = new PxEditorsPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
@@ -368,7 +382,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	public void onResume() {
 		super.onResume();
 		this.mProgressDialog = null;
-		
+
 		Intent intent = getActivity().getIntent();
 		String schema = intent.getScheme();
 		if (IConstants.ID_SCHEME.equals(schema)) {
@@ -400,7 +414,14 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		} else if (IConstants.ID_IG_SCHEME.equals(schema)) {
 			Uri uri = intent.getData();
 			instagramAuth(uri);
+		} else if (IConstants.PX500_OAUTH_CALLBACK_SCHEMA.equals(schema)) {
+			Uri pxUri = intent.getData();
+			px500Auth(pxUri);
 		}
+	}
+
+	private void px500Auth(Uri pxUri) {
+		//TODO 500px oauth
 	}
 
 	/**

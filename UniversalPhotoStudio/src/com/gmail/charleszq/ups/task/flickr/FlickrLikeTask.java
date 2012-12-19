@@ -14,7 +14,7 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.favorites.FavoritesInterface;
 
 /**
- * Represents the task to add a photo as favorite.
+ * Represents the task to add a photo as favorite or remove a photo from my fav list.
  * 
  * @author Charles(charleszq@gmail.com)
  * 
@@ -25,7 +25,7 @@ public class FlickrLikeTask extends
 	/**
 	 * @param ctx
 	 *            should be an activity
-	 * @param lis 
+	 * @param lis
 	 */
 	public FlickrLikeTask(Context ctx, IGeneralTaskDoneListener<Boolean> lis) {
 		super(ctx);
@@ -44,6 +44,10 @@ public class FlickrLikeTask extends
 			return result;
 		}
 		String photoId = params[0];
+		boolean like = true;
+		if (params.length > 1) {
+			like = Boolean.parseBoolean(params[1]);
+		}
 		UPSApplication app = (UPSApplication) ((Activity) mContext)
 				.getApplication();
 		String token = app.getFlickrToken();
@@ -51,7 +55,11 @@ public class FlickrLikeTask extends
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(token, secret);
 		FavoritesInterface fi = f.getFavoritesInterface();
 		try {
-			fi.add(photoId);
+			if (like) {
+				fi.add(photoId);
+			} else {
+				fi.remove(photoId);
+			}
 			result = true;
 		} catch (Exception e) {
 		}

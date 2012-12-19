@@ -63,4 +63,7 @@
 	
 	<string name="btn_send_comment">Send</string>
 	<string name="pls_sing_in_first">Please sign in first.</string>
+	
+	<string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
+	<string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
 </resources>

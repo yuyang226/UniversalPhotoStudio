@@ -98,7 +98,9 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 			public void onTaskDone(List<Author> result) {
 				mProgressBar.setVisibility(View.INVISIBLE);
 				if (result == null || result.isEmpty()) {
+					mAuthors.clear();
 					mNoLikesText.setVisibility(View.VISIBLE);
+					adapter.notifyDataSetChanged();
 					return;
 				}
 				mAuthors.clear();

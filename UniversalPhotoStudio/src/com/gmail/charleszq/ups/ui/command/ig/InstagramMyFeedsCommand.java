@@ -28,7 +28,7 @@ public class InstagramMyFeedsCommand extends
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_ation_ig_login;
+		return R.drawable.ic_action_ig_myfeed;
 	}
 
 	@Override

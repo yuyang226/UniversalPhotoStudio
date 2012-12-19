@@ -43,7 +43,7 @@ public class FlickrLoginCommand extends AbstractCommand<Object> {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_login;
+		return R.drawable.ic_action_sign_in;
 	}
 
 }

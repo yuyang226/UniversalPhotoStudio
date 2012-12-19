@@ -45,7 +45,7 @@ public class InstagramLoginCommand extends AbstractCommand<Object> {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_ation_ig_login;
+		return R.drawable.ic_action_sign_in;
 	}
 
 	@Override

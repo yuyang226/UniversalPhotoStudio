@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
@@ -26,6 +28,8 @@ import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.CheckUserLikePhotoTask;
+import com.gmail.charleszq.ups.task.flickr.FlickrLikeTask;
+import com.gmail.charleszq.ups.task.ig.InstagramLikePhotoTask;
 import com.gmail.charleszq.ups.ui.adapter.PhotoDetailViewPagerAdapter;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -95,10 +99,51 @@ public class PhotoDetailActivity extends FragmentActivity {
 		}
 
 		if (mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
-			//disable like for px500 at this time.
+			// disable like for px500 at this time.
 			item.setVisible(false);
 		}
 		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(final MenuItem item) {
+		if (R.id.menu_item_like == item.getItemId()) {
+
+			final ProgressDialog dialog = ProgressDialog.show(this, "", //$NON-NLS-1$
+					getString(R.string.msg_working));
+			dialog.setCanceledOnTouchOutside(true);
+			IGeneralTaskDoneListener<Boolean> lis = new IGeneralTaskDoneListener<Boolean>() {
+				@Override
+				public void onTaskDone(Boolean result) {
+					if (dialog != null && dialog.isShowing()) {
+						dialog.dismiss();
+					}
+					if (result) {
+						mUserLikeThePhoto = !mUserLikeThePhoto;
+						item.setIcon(mUserLikeThePhoto ? R.drawable.ic_fav_yes
+								: R.drawable.ic_fav_no);
+					} else {
+						Toast.makeText(PhotoDetailActivity.this,
+								getString(R.string.msg_like_photo_fail),
+								Toast.LENGTH_SHORT).show();
+					}
+				}
+			};
+
+			String likeActionString = Boolean.toString(!mUserLikeThePhoto);
+			switch (this.mCurrentPhoto.getMediaSource()) {
+			case FLICKR:
+				FlickrLikeTask ftask = new FlickrLikeTask(this, lis);
+				ftask.execute(mCurrentPhoto.getId(), likeActionString);
+				break;
+			case INSTAGRAM:
+				InstagramLikePhotoTask igtask = new InstagramLikePhotoTask(
+						this, lis);
+				igtask.execute(mCurrentPhoto.getId(), likeActionString);
+				break;
+			}
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void loadImage() {
@@ -118,7 +163,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 	}
 
 	private void checkUserLikeOrNot() {
-		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM ) {
+		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
 			logger.debug("Do I like this photo? " + mCurrentPhoto.isUserLiked()); //$NON-NLS-1$
 			mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
 			return;
