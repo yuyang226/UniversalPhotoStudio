@@ -93,6 +93,14 @@ public class UPSApplication extends Application {
 	public String getFlickrUserId() {
 		return getSharedPreferenceValue(IConstants.FLICKR_USER_ID, null);
 	}
+	
+	/**
+	 * Used to check if user log into px500 or not, currently.
+	 * @return
+	 */
+	public String getPx500UserId() {
+		return null;
+	}
 
 	/**
 	 * Clear the user token

@@ -307,33 +307,7 @@ public final class ModelUtils {
 		photo.setAuthor(a);
 
 		// Exif
-		ExifData exif = new ExifData(ExifData.LABEL_MODEL);
-		exif.value = p.exif.camera;
-		photo.addExifdata(exif);
-
-		exif = new ExifData(ExifData.LABEL_APERTURE);
-		exif.value = p.exif.aperture;
-		photo.addExifdata(exif);
-
-		exif = new ExifData(ExifData.LABEL_CRT_TIME);
-		exif.value = p.exif.takenAt;
-		photo.addExifdata(exif);
-
-		exif = new ExifData(ExifData.LABEL_FOCAL_LEN);
-		exif.value = p.exif.focalLength;
-		photo.addExifdata(exif);
-
-		exif = new ExifData(ExifData.LABEL_ISO);
-		exif.value = p.exif.iso;
-		photo.addExifdata(exif);
-
-		exif = new ExifData(ExifData.LABEL_EXPOSURE);
-		exif.value = p.exif.shutterSpeed;
-		photo.addExifdata(exif);
-
-		exif = new ExifData(ExifData.LABEL_LEN);
-		exif.value = p.exif.lens;
-		photo.addExifdata(exif);
+		handlePx500PhotoExif(photo,p);
 
 		if (p.latitude != null && p.longitude != null) {
 			GeoLocation loc = new GeoLocation();
@@ -347,5 +321,38 @@ public final class ModelUtils {
 
 		photo.setMediaSource(MediaSourceType.PX500);
 		return photo;
+	}
+
+	private static void handlePx500PhotoExif(MediaObject photo,
+			com.gmail.charleszq.px500.model.Photo p) {
+		if( p.exif != null ) {
+			ExifData exif = new ExifData(ExifData.LABEL_MODEL);
+			exif.value = p.exif.camera;
+			photo.addExifdata(exif);
+
+			exif = new ExifData(ExifData.LABEL_APERTURE);
+			exif.value = p.exif.aperture;
+			photo.addExifdata(exif);
+
+			exif = new ExifData(ExifData.LABEL_CRT_TIME);
+			exif.value = p.exif.takenAt;
+			photo.addExifdata(exif);
+
+			exif = new ExifData(ExifData.LABEL_FOCAL_LEN);
+			exif.value = p.exif.focalLength;
+			photo.addExifdata(exif);
+
+			exif = new ExifData(ExifData.LABEL_ISO);
+			exif.value = p.exif.iso;
+			photo.addExifdata(exif);
+
+			exif = new ExifData(ExifData.LABEL_EXPOSURE);
+			exif.value = p.exif.shutterSpeed;
+			photo.addExifdata(exif);
+
+			exif = new ExifData(ExifData.LABEL_LEN);
+			exif.value = p.exif.lens;
+			photo.addExifdata(exif);
+		}
 	}
 }

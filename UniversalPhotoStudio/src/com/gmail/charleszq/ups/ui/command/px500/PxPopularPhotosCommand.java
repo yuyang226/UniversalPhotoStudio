@@ -31,7 +31,7 @@ public class PxPopularPhotosCommand extends PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.f_gallery;
+		return R.drawable.ic_action_px500_popular;
 	}
 
 	/*

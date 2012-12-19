@@ -4,7 +4,7 @@
     <string name="no_network_connection_toast">No network connection found</string>
     <string name="imageview_description">Image Thumbnail</string>
     <string name="f_interesting_photos">Interesting Photos</string>
-    <string name="f_login">Login</string>
+    <string name="f_login">Sign In</string>
     <string name="f_my_photos">My Photos</string>
     <string name="f_my_fav">My Favorites</string>
     <string name="f_my_contacts">My Contact Photos</string>
@@ -60,4 +60,5 @@
 	<string name="photo_no_geo_info">No GEO information.</string>
 	
 	<string name="btn_send_comment">Send</string>
+	<string name="pls_sing_in_first">Please sign in first.</string>
 </resources>

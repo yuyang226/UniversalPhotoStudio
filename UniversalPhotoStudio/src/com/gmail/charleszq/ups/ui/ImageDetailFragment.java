@@ -221,7 +221,13 @@ public class ImageDetailFragment extends Fragment implements
 				}
 			}
 		});
-		return cmd.execute(mPhoto);
+		boolean result = cmd.execute(mPhoto);
+		if (!result) {
+			Toast.makeText(getActivity(),
+					getActivity().getString(R.string.pls_sing_in_first),
+					Toast.LENGTH_SHORT).show();
+		}
+		return result;
 	}
 
 	@Override
