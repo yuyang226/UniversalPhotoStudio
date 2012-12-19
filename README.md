@@ -1,6 +1,6 @@
 Introduction
 ====================
-An Android photo viewer program for Flickr, Instagram and Facebook.
+An Android photo viewer program for Flickr, Instagram and 500PX.
 
 Dependencies
 ====================
