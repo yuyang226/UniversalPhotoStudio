@@ -3,9 +3,11 @@
  */
 package com.gmail.charleszq.ups.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -71,6 +73,21 @@ public class PhotoDetailGeneralFragment extends
 				.findViewById(R.id.flickr_detail_general_photo_author);
 		final ImageView image = (ImageView) v
 				.findViewById(R.id.flickr_detail_general_author_image);
+		image.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				
+				//TODO sign in required for instagram.
+				Intent i = new Intent(PhotoDetailGeneralFragment.this
+						.getActivity(), UserPhotoListActivity.class);
+				i.putExtra(UserPhotoListActivity.MD_TYPE_KEY, mCurrentPhoto
+						.getMediaSource().ordinal());
+				i.putExtra(UserPhotoListActivity.USER_KEY,
+						mCurrentPhoto.getAuthor());
+				startActivity(i);
+			}
+		});
 
 		final TextView photoViews = (TextView) v
 				.findViewById(R.id.flickr_detail_gen_views);

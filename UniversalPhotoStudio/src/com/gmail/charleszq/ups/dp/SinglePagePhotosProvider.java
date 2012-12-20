@@ -21,24 +21,29 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	 * The total number on the server side.
 	 */
 	private int mTotalOnServer;
-	
+
 	/**
 	 * Total number for the current page.
 	 */
 	private int mTotal;
-	
+
 	/**
 	 * The current page
 	 */
 	private int mCurrentPage = 0;
-	
+
 	/**
 	 * the current page size.
 	 */
 	private int mCurrentPageSize = 0;
-	
+
 	private List<MediaObject> mPhotos;
 	private Set<IDataChangedListener> mListeners;
+	
+	/**
+	 * The current source which populate photos into this, usually, the command.
+	 */
+	private Object mCurrentSource = null;
 
 	public SinglePagePhotosProvider(MediaObjectCollection photos) {
 		loadData(photos, null);
@@ -71,7 +76,7 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	 */
 	@Override
 	public int getCurrentSize() {
-		return mTotal;
+		return mPhotos.size();
 	}
 
 	/*
@@ -116,7 +121,12 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 		mCurrentPageSize = list.getPageSize();
 		mTotal = mCurrentPageSize;
 		mCurrentPage = list.getCurrentPage();
-		mPhotos = new ArrayList<MediaObject>();
+		if (mPhotos == null)
+			mPhotos = new ArrayList<MediaObject>();
+		if( source != mCurrentSource ) {
+			mPhotos.clear();
+			mCurrentSource = source;
+		}
 		mPhotos.addAll(list.getPhotos());
 		if (mPhotos.size() < mCurrentPageSize) {
 			mTotal = mPhotos.size();
@@ -125,10 +135,10 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 
 	@Override
 	public boolean hasMorePage() {
-		if( mTotal < mCurrentPageSize ) {
+		if (mTotal < mCurrentPageSize) {
 			return false;
 		} else {
-			if( mCurrentPageSize * (mCurrentPage + 1 ) <= mTotalOnServer ) {
+			if (mCurrentPageSize * (mCurrentPage + 1) <= mTotalOnServer) {
 				return true;
 			}
 		}

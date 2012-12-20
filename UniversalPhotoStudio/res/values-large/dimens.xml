@@ -1,7 +1,26 @@
 <resources>
 
     <dimen name="padding_small">8dp</dimen>
-    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_medium">12dp</dimen>
     <dimen name="padding_large">16dp</dimen>
+    
+    <!-- dimensions for the grid photo views. -->
+    <dimen name="image_thumbnail_size">130dp</dimen>
+    <dimen name="image_thumbnail_spacing">1dp</dimen>
+    <dimen name="image_detail_pager_margin">80dp</dimen>
+    
+    <dimen name="cmd_icon_size">64dp</dimen>
+    
+    <dimen name="slidingmenu_offset">100dp</dimen>
+    <dimen name="list_padding">10dp</dimen>
+    <dimen name="shadow_width">15dp</dimen>
+    
+    <dimen name="detail_page_control_space">30dp</dimen>
+    <dimen name="ig_like_user_grid_item_size">160dp</dimen>
+    
+    <dimen name="user_name_text_size">24dp</dimen>
+    
+    <!-- dimensions for photo detail pages. -->
+    <dimen name="photo_detail_user_avator_size">56dp</dimen>
 
 </resources>

@@ -8,7 +8,6 @@ import android.content.Context;
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.px500.Px500FreshTodayPhotosService;
-import com.gmail.charleszq.ups.service.px500.Px500PopularPhotosService;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 import com.gmail.charleszq.ups.utils.IConstants;
 

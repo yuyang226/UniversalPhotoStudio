@@ -82,8 +82,8 @@
 
             <ImageView
                 android:id="@+id/flickr_detail_general_author_image"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="@dimen/photo_detail_user_avator_size"
+                android:layout_height="@dimen/photo_detail_user_avator_size"
                 android:contentDescription="@string/app_name"
                 android:src="@drawable/empty_photo" />
 

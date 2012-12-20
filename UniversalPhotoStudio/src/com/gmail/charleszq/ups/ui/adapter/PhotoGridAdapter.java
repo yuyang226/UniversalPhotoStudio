@@ -1,0 +1,122 @@
+/**
+ * 
+ */
+package com.gmail.charleszq.ups.ui.adapter;
+
+import android.content.Context;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageView;
+
+import com.gmail.charleszq.ups.dp.IPhotosProvider;
+import com.gmail.charleszq.ups.model.MediaObject;
+import com.gmail.charleszq.ups.utils.ImageFetcher;
+
+/**
+ * @author charles(charleszq@gmail.com)
+ * 
+ */
+public class PhotoGridAdapter extends BaseAdapter {
+
+	private Context mContext;
+	private IPhotosProvider mPhotos;
+	private ImageFetcher mImageFetcher;
+
+	private int mNumColumns = 0;
+	private int mItemHeight;
+	private android.widget.AbsListView.LayoutParams mImageViewLayoutParams;
+
+	/**
+	 * 
+	 */
+	public PhotoGridAdapter(Context context, IPhotosProvider provider,
+			ImageFetcher fetcher) {
+		this.mContext = context;
+		this.mPhotos = provider;
+		this.mImageFetcher = fetcher;
+		mImageViewLayoutParams = new GridView.LayoutParams(
+				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getCount()
+	 */
+	@Override
+	public int getCount() {
+		return mPhotos.getCurrentSize();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getItem(int)
+	 */
+	@Override
+	public Object getItem(int position) {
+		return mPhotos.getMediaObject(position);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getItemId(int)
+	 */
+	@Override
+	public long getItemId(int position) {
+		return position;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.widget.Adapter#getView(int, android.view.View,
+	 * android.view.ViewGroup)
+	 */
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		ImageView imageView;
+		if (convertView == null) { // if it's not recycled, instantiate and
+									// initialize
+			imageView = new ImageView(mContext);
+			imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+			imageView.setLayoutParams(mImageViewLayoutParams);
+		} else { // Otherwise re-use the converted view
+			imageView = (ImageView) convertView;
+		}
+
+		// Check the height matches our calculated column width
+		if (imageView.getLayoutParams().height != mItemHeight) {
+			imageView.setLayoutParams(mImageViewLayoutParams);
+		}
+
+		MediaObject photo = mPhotos.getMediaObject(position);
+		if (photo != null)
+			mImageFetcher.loadImage(photo.getThumbUrl(), imageView);
+		return imageView;
+	}
+
+	public void setNumColumns(int numColumns) {
+		this.mNumColumns = numColumns;
+	}
+
+	public void setItemHeight(int height) {
+		if (height == mItemHeight) {
+			return;
+		}
+		mItemHeight = height;
+		mImageViewLayoutParams = new GridView.LayoutParams(
+				LayoutParams.MATCH_PARENT, mItemHeight);
+		mImageFetcher.setImageSize(height);
+		notifyDataSetChanged();
+	}
+
+	public int getNumColumns() {
+		return mNumColumns;
+	}
+
+}

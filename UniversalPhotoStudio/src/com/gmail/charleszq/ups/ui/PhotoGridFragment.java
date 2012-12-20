@@ -16,30 +16,23 @@
 
 package com.gmail.charleszq.ups.ui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.dp.IPhotosProvider;
 import com.gmail.charleszq.ups.dp.SinglePagePhotosProvider;
-import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
+import com.gmail.charleszq.ups.ui.adapter.PhotoGridAdapter;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.utils.IConstants;
 
@@ -56,7 +49,7 @@ public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implemen
 
 	private int mImageThumbSize;
 	private int mImageThumbSpacing;
-	private ImageAdapter mAdapter;
+	private PhotoGridAdapter mAdapter;
 	private GridView mGridView = null;
 
 	private IPhotosProvider mPhotosProvider = new SinglePagePhotosProvider(
@@ -165,8 +158,8 @@ public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implemen
 		mImageThumbSpacing = getResources().getDimensionPixelSize(
 				R.dimen.image_thumbnail_spacing);
 
-		mAdapter = new ImageAdapter(getActivity(), mPhotosProvider);
 		initializeImageFetcher(IConstants.IMAGE_THUMBS_CACHE_DIR, mImageThumbSize);
+		mAdapter = new PhotoGridAdapter( getActivity(), mPhotosProvider, mImageFetcher);
 
 		//when configuration changes, mCurrentCommand will be saved, at this time, we
 		//need to attach the current context to it, otherwise, there will be NPEs.
@@ -182,133 +175,5 @@ public class PhotoGridFragment extends AbstractFragmentWithImageFetcher implemen
 		final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
 		i.putExtra(ImageDetailActivity.EXTRA_IMAGE, (int) id);
 		startActivity(i);
-	}
-
-	/**
-	 * The main adapter that backs the GridView. This is fairly standard except
-	 * the number of columns in the GridView is used to create a fake top row of
-	 * empty views as we use a transparent ActionBar and don't want the real top
-	 * row of images to start off covered by it.
-	 */
-	private class ImageAdapter extends BaseAdapter {
-
-		private final Logger logger = LoggerFactory
-				.getLogger(ImageAdapter.class);
-
-		private final Context mContext;
-		private int mItemHeight = 0;
-		private int mNumColumns = 0;
-		private int mActionBarHeight = 0;
-		private GridView.LayoutParams mImageViewLayoutParams;
-
-		private IPhotosProvider mPhotosProvider;
-
-		ImageAdapter(Context context, IPhotosProvider provider) {
-			super();
-			mContext = context;
-			mPhotosProvider = provider;
-			mImageViewLayoutParams = new GridView.LayoutParams(
-					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-		}
-
-		@Override
-		public int getCount() {
-			// Size + number of columns for top empty row
-			int total = mPhotosProvider.getTotalCount();
-			return total + mNumColumns;
-		}
-
-		@Override
-		public Object getItem(int position) {
-			logger.debug("position required: " + position); //$NON-NLS-1$
-			return position < mNumColumns ? null : mPhotosProvider
-					.getMediaObject(position - mNumColumns);
-		}
-
-		@Override
-		public long getItemId(int position) {
-			return position < mNumColumns ? 0 : position - mNumColumns;
-		}
-
-		@Override
-		public int getViewTypeCount() {
-			// Two types of views, the normal ImageView and the top row of empty
-			// views
-			return 2;
-		}
-
-		@Override
-		public int getItemViewType(int position) {
-			return (position < mNumColumns) ? 1 : 0;
-		}
-
-		@Override
-		public boolean hasStableIds() {
-			return true;
-		}
-
-		@Override
-		public View getView(int position, View convertView, ViewGroup container) {
-			// First check if this is the top row
-			if (position < mNumColumns) {
-				if (convertView == null) {
-					convertView = new View(mContext);
-				}
-				// Set empty view with height of ActionBar
-				convertView.setLayoutParams(new AbsListView.LayoutParams(
-						ViewGroup.LayoutParams.MATCH_PARENT, mActionBarHeight));
-				return convertView;
-			}
-
-			// Now handle the main ImageView thumbnails
-			ImageView imageView;
-			if (convertView == null) { // if it's not recycled, instantiate and
-										// initialize
-				imageView = new ImageView(mContext);
-				imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-				imageView.setLayoutParams(mImageViewLayoutParams);
-			} else { // Otherwise re-use the converted view
-				imageView = (ImageView) convertView;
-			}
-
-			// Check the height matches our calculated column width
-			if (imageView.getLayoutParams().height != mItemHeight) {
-				imageView.setLayoutParams(mImageViewLayoutParams);
-			}
-
-			// Finally load the image asynchronously into the ImageView, this
-			// also takes care of
-			// setting a placeholder image while the background thread runs
-			MediaObject photo = mPhotosProvider.getMediaObject(position
-					- mNumColumns);
-			if (photo != null)
-				mImageFetcher.loadImage(photo.getThumbUrl(), imageView);
-			return imageView;
-		}
-
-		/**
-		 * Sets the item height. Useful for when we know the column width so the
-		 * height can be set to match.
-		 * 
-		 * @param height
-		 */
-		public void setItemHeight(int height) {
-			if (height == mItemHeight) {
-				return;
-			}
-			mItemHeight = height;
-			mImageViewLayoutParams = new GridView.LayoutParams(
-					LayoutParams.MATCH_PARENT, mItemHeight);
-			mImageFetcher.setImageSize(height);
-			notifyDataSetChanged();
-		}
-
-		public void setNumColumns(int numColumns) {
-			mNumColumns = numColumns;
-		}
-
-		public int getNumColumns() {
-			return mNumColumns;
-		}
 	}
 }
