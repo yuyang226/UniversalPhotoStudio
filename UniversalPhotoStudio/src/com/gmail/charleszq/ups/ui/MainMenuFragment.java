@@ -51,7 +51,9 @@ import com.gmail.charleszq.ups.ui.command.ig.InstagramMyFeedsCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramMyPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramPopularsCommand;
 import com.gmail.charleszq.ups.ui.command.px500.PxEditorsPhotosCommand;
+import com.gmail.charleszq.ups.ui.command.px500.PxFreshTodayPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.px500.PxPopularPhotosCommand;
+import com.gmail.charleszq.ups.ui.command.px500.PxUpcomingPhotosCommand;
 import com.gmail.charleszq.ups.utils.FlickrHelper;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.googlecode.flickrjandroid.Flickr;
@@ -333,6 +335,14 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		commands.add(command);
 
 		command = new PxEditorsPhotosCommand(getActivity());
+		command.setCommandCategory(headerName);
+		commands.add(command);
+		
+		command = new PxUpcomingPhotosCommand(getActivity());
+		command.setCommandCategory(headerName);
+		commands.add(command);
+		
+		command = new PxFreshTodayPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
 		return commands;

@@ -15,6 +15,8 @@
     <string name="ig_my_photos">My Photos</string>
     
     <string name="px_editors">Editors\' Choice</string>
+    <string name="px_upcoming">Upcoming</string>
+    <string name="px_fresh_today">Fresh Today</string>
     
     <string name="menu_header_flickr">Flickr</string>
     <string name="menu_header_flickr_sets">Photo Sets</string>
