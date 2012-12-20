@@ -107,7 +107,6 @@ public class ImageDetailActivity extends FragmentActivity implements
 			final ActionBar actionBar = getActionBar();
 
 			// Hide title text and set home as up
-			actionBar.setDisplayShowTitleEnabled(false);
 			actionBar.setDisplayHomeAsUpEnabled(true);
 
 			// Hide and show the ActionBar as the visibility changes

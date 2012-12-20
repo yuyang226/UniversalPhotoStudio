@@ -109,13 +109,17 @@ public class PhotoDetailCommentsFragment extends
 				return false;
 			}
 		});
-		mSendComment.setVisibility(isUserLoggedIn() ? View.VISIBLE : View.GONE);
+		mSendComment.setVisibility(isUserLoggedIn()
+				&& MediaSourceType.FLICKR.equals(mCurrentPhoto
+						.getMediaSource()) ? View.VISIBLE : View.GONE);
 
 		return view;
 	}
 
 	/**
-	 * After comment sent, make a dummy comment and append to the end of the current comment list.
+	 * After comment sent, make a dummy comment and append to the end of the
+	 * current comment list.
+	 * 
 	 * @param comment
 	 * @return
 	 */
@@ -228,7 +232,8 @@ public class PhotoDetailCommentsFragment extends
 		MediaSourceType type = mCurrentPhoto.getMediaSource();
 		switch (type) {
 		case FLICKR:
-			FlickrLoadCommentsTask flickrTask = new FlickrLoadCommentsTask(getActivity());
+			FlickrLoadCommentsTask flickrTask = new FlickrLoadCommentsTask(
+					getActivity());
 			flickrTask.addTaskDoneListener(lis);
 			flickrTask.execute(photoId);
 			break;
