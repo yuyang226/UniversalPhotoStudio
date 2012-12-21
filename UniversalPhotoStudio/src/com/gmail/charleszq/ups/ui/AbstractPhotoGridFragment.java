@@ -197,7 +197,14 @@ public abstract class AbstractPhotoGridFragment extends
 	 * The sub-classes need to handle that and hide/show message if any.
 	 */
 	protected void loadMoreData() {
-		if (mNoMoreData || mPhotosProvider.getCurrentSize() >= 300) {
+		
+		boolean noMoreData = mNoMoreData;
+		noMoreData = noMoreData | mPhotosProvider.getCurrentSize() >= 300;
+		if( mPhotosProvider.getCurrentSize() > 0 ) {
+			int pageSize = (Integer) mCurrentCommand.getAdapter(Integer.class);
+			noMoreData = noMoreData | mPhotosProvider.getCurrentSize() < pageSize;
+		}
+		if (noMoreData) {
 			mLoadingMessageText.setVisibility(View.GONE);
 			return;
 		}
