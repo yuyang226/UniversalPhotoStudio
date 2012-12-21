@@ -22,7 +22,7 @@ public class Px500FreshTodayPhotosService implements IPhotoService {
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
 		PX500 px = new PX500(IConstants.PX500_CONSUMER_KEY);
-		List<Photo> photos = px.getFreshTodayPhotos(pageSize);
+		List<Photo> photos = px.getFreshTodayPhotos(pageSize, pageNo+1);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 

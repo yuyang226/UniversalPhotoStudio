@@ -25,7 +25,7 @@ public class Px500EditorsPhotosService implements IPhotoService {
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
 		PX500 px = new PX500(IConstants.PX500_CONSUMER_KEY);
-		List<Photo> photos = px.getEditorsPhotos(pageSize);
+		List<Photo> photos = px.getEditorsPhotos(pageSize, pageNo+1);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 

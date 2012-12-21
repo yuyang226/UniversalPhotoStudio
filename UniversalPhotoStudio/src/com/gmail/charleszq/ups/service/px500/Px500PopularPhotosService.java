@@ -27,7 +27,7 @@ public class Px500PopularPhotosService implements IPhotoService {
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
 		PX500 px = new PX500(IConstants.PX500_CONSUMER_KEY);
-		List<Photo> photos = px.getPopularPhotos(pageSize);
+		List<Photo> photos = px.getPopularPhotos(pageSize, pageNo+1);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 
