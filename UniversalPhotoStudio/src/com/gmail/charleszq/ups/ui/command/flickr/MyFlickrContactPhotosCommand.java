@@ -50,13 +50,15 @@ public class MyFlickrContactPhotosCommand extends PhotoListCommand {
 		if (adapterClass == Boolean.class) {
 			return false;
 		}
-		if( adapterClass == IPhotoService.class ) {
-			Activity act = (Activity) mContext;
-			UPSApplication app = (UPSApplication) act.getApplication();
-			IPhotoService service = new FlickrContactPhotosService(
-					app.getFlickrUserId(), app.getFlickrToken(),
-					app.getFlickrTokenSecret());
-			return service;
+		if (adapterClass == IPhotoService.class) {
+			if (mCurrentPhotoService == null) {
+				Activity act = (Activity) mContext;
+				UPSApplication app = (UPSApplication) act.getApplication();
+				mCurrentPhotoService = new FlickrContactPhotosService(
+						app.getFlickrUserId(), app.getFlickrToken(),
+						app.getFlickrTokenSecret());
+			}
+			return mCurrentPhotoService;
 		}
 		return super.getAdapter(adapterClass);
 	}

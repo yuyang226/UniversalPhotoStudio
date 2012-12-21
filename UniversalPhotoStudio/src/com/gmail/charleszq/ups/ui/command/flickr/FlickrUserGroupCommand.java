@@ -56,11 +56,14 @@ public class FlickrUserGroupCommand extends PhotoListCommand {
 			return new FetchFlickrGroupIconUrlTask(mContext, mGroup);
 		}
 		if (adapterClass == IPhotoService.class) {
-			Activity act = (Activity) mContext;
-			UPSApplication app = (UPSApplication) act.getApplication();
-			return new FlickrPhotoGroupPhotosService(app.getFlickrUserId(),
-					app.getFlickrToken(), app.getFlickrTokenSecret(),
-					mGroup.getId());
+			if (mCurrentPhotoService == null) {
+				Activity act = (Activity) mContext;
+				UPSApplication app = (UPSApplication) act.getApplication();
+				mCurrentPhotoService = new FlickrPhotoGroupPhotosService(
+						app.getFlickrUserId(), app.getFlickrToken(),
+						app.getFlickrTokenSecret(), mGroup.getId());
+			}
+			return mCurrentPhotoService;
 		}
 		return super.getAdapter(adapterClass);
 	}

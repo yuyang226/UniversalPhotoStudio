@@ -48,13 +48,17 @@ public class MyFlickrFavsCommand extends PhotoListCommand {
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			Activity act = (Activity) mContext;
-			UPSApplication app = (UPSApplication) act.getApplication();
-			return new FlickrMyFavoritesService(app.getFlickrUserId(),
-					app.getFlickrToken(), app.getFlickrTokenSecret());
+			if (mCurrentPhotoService == null) {
+				Activity act = (Activity) mContext;
+				UPSApplication app = (UPSApplication) act.getApplication();
+				mCurrentPhotoService = new FlickrMyFavoritesService(
+						app.getFlickrUserId(), app.getFlickrToken(),
+						app.getFlickrTokenSecret());
+			}
+			return mCurrentPhotoService;
 		}
-		if( adapterClass == Integer.class ) {
-			return 50; //the max required by flickr server.
+		if (adapterClass == Integer.class) {
+			return 50; // the max required by flickr server.
 		}
 		return super.getAdapter(adapterClass);
 	}

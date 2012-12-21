@@ -39,16 +39,18 @@ public class MyFlickrPhotosCommand extends PhotoListCommand {
 	public int getIconResourceId() {
 		return R.drawable.ic_action_my_photos;
 	}
-	
+
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			Activity act = (Activity) mContext;
-			UPSApplication app = (UPSApplication) act.getApplication();
-			IPhotoService service = new FlickrMyPhotoStreamService(
-					app.getFlickrUserId(), app.getFlickrToken(),
-					app.getFlickrTokenSecret());
-			return service;
+			if (mCurrentPhotoService == null) {
+				Activity act = (Activity) mContext;
+				UPSApplication app = (UPSApplication) act.getApplication();
+				mCurrentPhotoService = new FlickrMyPhotoStreamService(
+						app.getFlickrUserId(), app.getFlickrToken(),
+						app.getFlickrTokenSecret());
+			}
+			return mCurrentPhotoService;
 		}
 		return super.getAdapter(adapterClass);
 	}

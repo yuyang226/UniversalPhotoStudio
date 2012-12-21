@@ -16,10 +16,10 @@ import com.googlecode.flickrjandroid.galleries.Gallery;
 
 /**
  * @author Charles(charleszq@gmail.com)
- *
+ * 
  */
 public class FlickrGalleryPhotosCommand extends PhotoListCommand {
-	
+
 	private Gallery mGallery;
 
 	/**
@@ -30,7 +30,9 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 		this.mGallery = g;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getIconResourceId()
 	 */
 	@Override
@@ -38,7 +40,9 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 		return -1;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getLabel()
 	 */
 	@Override
@@ -48,20 +52,20 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
-		if( adapterClass == IPhotoService.class ) {
-			Activity act = (Activity) mContext;
-			UPSApplication app = (UPSApplication) act.getApplication();
-			IPhotoService service = new FlickrGalleryPhotosService(
-					app.getFlickrUserId(), app.getFlickrToken(),
-					app.getFlickrTokenSecret(), mGallery.getGalleryId());
-			return service;
+		if (adapterClass == IPhotoService.class) {
+			if (mCurrentPhotoService == null) {
+				Activity act = (Activity) mContext;
+				UPSApplication app = (UPSApplication) act.getApplication();
+				mCurrentPhotoService = new FlickrGalleryPhotosService(
+						app.getFlickrUserId(), app.getFlickrToken(),
+						app.getFlickrTokenSecret(), mGallery.getGalleryId());
+			}
+			return mCurrentPhotoService;
 		}
-		if( adapterClass == AbstractFetchIconUrlTask.class ) {
+		if (adapterClass == AbstractFetchIconUrlTask.class) {
 			return new FetchFlickrGalleryIconUrlTask(mContext, mGallery);
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
-	
 
 }

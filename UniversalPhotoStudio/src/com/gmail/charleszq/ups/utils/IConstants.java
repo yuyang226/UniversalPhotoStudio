@@ -13,13 +13,13 @@ public interface IConstants {
 	 * For each service call, what's the page size, by default, it's 10 times of
 	 * the UI page size.
 	 */
-	static final int SERVICE_PAGE_SIZE = 100;
+	static final int SERVICE_PAGE_SIZE = 50;
 
 	static final String SD_CARD_FOLDER_NAME = "ups_flickr"; //$NON-NLS-1$
 	static final String SHARE_TEMP_FILE_NAME = "ups.share.png"; //$NON-NLS-1$
 	
 	static final int DEF_IG_PAGE_SIZE = 50;
-	static final int DEF_FLICKR_PAGE_SIZE = 100;
+	static final int DEF_FLICKR_PAGE_SIZE = 50;
 
 	/**
 	 * the flickr oauth scheme

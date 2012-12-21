@@ -58,11 +58,15 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 		if (adapterClass == AbstractFetchIconUrlTask.class) {
 			return new FetchFlickrPhotosetIconUrlTask(mContext, mPhotoSet);
 		}
-		if( adapterClass == IPhotoService.class ) {
-			Activity act = (Activity) mContext;
-			UPSApplication app = (UPSApplication) act.getApplication();
-			return new FlickrPhotoSetPhotosService(app.getFlickrUserId(),
-					app.getFlickrToken(), app.getFlickrTokenSecret(), mPhotoSet);
+		if (adapterClass == IPhotoService.class) {
+			if (mCurrentPhotoService == null) {
+				Activity act = (Activity) mContext;
+				UPSApplication app = (UPSApplication) act.getApplication();
+				mCurrentPhotoService = new FlickrPhotoSetPhotosService(
+						app.getFlickrUserId(), app.getFlickrToken(),
+						app.getFlickrTokenSecret(), mPhotoSet);
+			}
+			return mCurrentPhotoService;
 		}
 		return super.getAdapter(adapterClass);
 	}

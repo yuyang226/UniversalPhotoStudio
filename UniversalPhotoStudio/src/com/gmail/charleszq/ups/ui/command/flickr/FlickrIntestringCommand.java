@@ -15,8 +15,7 @@ import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
  * @author Charles(charleszq@gmail.com)
  * 
  */
-public class FlickrIntestringCommand extends
-		PhotoListCommand {
+public class FlickrIntestringCommand extends PhotoListCommand {
 
 	/**
 	 * @param context
@@ -38,10 +37,12 @@ public class FlickrIntestringCommand extends
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			return new FlickrInterestingPhotosService();
+			if (mCurrentPhotoService == null) {
+				mCurrentPhotoService = new FlickrInterestingPhotosService();
+			}
+			return mCurrentPhotoService;
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
-	
+
 }
