@@ -46,10 +46,13 @@ public class InstagramPopularsCommand extends PhotoListCommand {
 
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
-		if( adapterClass == IPhotoService.class ) {
-			return new InstagramPopularsService();
+		if (adapterClass == IPhotoService.class) {
+			if (mCurrentPhotoService == null) {
+				mCurrentPhotoService = new InstagramPopularsService();
+			}
+			return mCurrentPhotoService;
 		}
-		if( adapterClass == Integer.class ) {
+		if (adapterClass == Integer.class) {
 			return IConstants.DEF_IG_PAGE_SIZE;
 		}
 		return super.getAdapter(adapterClass);

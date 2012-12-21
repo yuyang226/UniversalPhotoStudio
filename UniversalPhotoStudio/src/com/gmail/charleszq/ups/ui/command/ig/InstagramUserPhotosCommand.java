@@ -8,11 +8,13 @@ import org.jinstagram.auth.model.Token;
 import android.app.Activity;
 import android.content.Context;
 
+import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.ig.InstagramUserPhotosService;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
+import com.gmail.charleszq.ups.utils.IConstants;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -37,7 +39,7 @@ public class InstagramUserPhotosCommand extends PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		return 0;
+		return R.drawable.ic_action_my_ig;
 	}
 
 	/*
@@ -47,21 +49,23 @@ public class InstagramUserPhotosCommand extends PhotoListCommand {
 	 */
 	@Override
 	public String getLabel() {
-		return null;
+		return mContext.getString(R.string.ig_my_photos);
 	}
 
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			UPSApplication app = (UPSApplication) ((Activity) mContext)
-					.getApplication();
-			Token token = app.getInstagramAuthToken();
-			return new InstagramUserPhotosService(token, Long.parseLong(mUser
-					.getUserId()));
+			if (mCurrentPhotoService == null) {
+				UPSApplication app = (UPSApplication) ((Activity) mContext)
+						.getApplication();
+				Token token = app.getInstagramAuthToken();
+				mCurrentPhotoService = new InstagramUserPhotosService(token,
+						Long.parseLong(mUser.getUserId()));
+			}
+			return mCurrentPhotoService;
 		}
 		if (adapterClass == Integer.class) {
-			return 50; 
-			//TODO test load more data with this command
+			return IConstants.DEF_IG_PAGE_SIZE;
 		}
 		return super.getAdapter(adapterClass);
 	}

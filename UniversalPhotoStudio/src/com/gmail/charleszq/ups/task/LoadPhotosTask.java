@@ -60,6 +60,7 @@ public class LoadPhotosTask extends
 	@Override
 	protected void onPostExecute(MediaObjectCollection result) {
 		if( result == null ) {
+			super.onPostExecute(result);
 			return;
 		}
 		logger.debug(result.getPhotos().size() + " of " //$NON-NLS-1$

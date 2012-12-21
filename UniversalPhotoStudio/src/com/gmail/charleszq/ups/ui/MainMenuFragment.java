@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
+import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserPhotoCollectionTask;
 import com.gmail.charleszq.ups.task.ig.InstagramOAuthTask;
@@ -48,8 +49,8 @@ import com.gmail.charleszq.ups.ui.command.flickr.MyFlickrPopularPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramLikesCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramLoginCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramMyFeedsCommand;
-import com.gmail.charleszq.ups.ui.command.ig.InstagramMyPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramPopularsCommand;
+import com.gmail.charleszq.ups.ui.command.ig.InstagramUserPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.px500.PxEditorsPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.px500.PxFreshTodayPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.px500.PxPopularPhotosCommand;
@@ -305,7 +306,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			command.setCommandCategory(headerName);
 			commands.add(command);
 
-			command = new InstagramMyPhotosCommand(ctx);
+			UPSApplication app = (UPSApplication) getActivity().getApplication();
+			String myUserId = app.getInstagramUserId();
+			Author a = new Author();
+			a.setUserId(myUserId);
+			command = new InstagramUserPhotosCommand(ctx, a);
 			command.setCommandCategory(headerName);
 			commands.add(command);
 		} else {

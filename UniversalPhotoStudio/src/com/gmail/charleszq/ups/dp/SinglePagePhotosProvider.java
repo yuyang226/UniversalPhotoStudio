@@ -39,7 +39,7 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 
 	private List<MediaObject> mPhotos;
 	private Set<IDataChangedListener> mListeners;
-	
+
 	/**
 	 * The current source which populate photos into this, usually, the command.
 	 */
@@ -117,13 +117,16 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	 */
 	@Override
 	public void loadData(MediaObjectCollection list, Object source) {
+		if (list == null) {
+			return;
+		}
 		mTotalOnServer = list.getTotalCount();
 		mCurrentPageSize = list.getPageSize();
 		mTotal = mCurrentPageSize;
 		mCurrentPage = list.getCurrentPage();
 		if (mPhotos == null)
 			mPhotos = new ArrayList<MediaObject>();
-		if( source != mCurrentSource ) {
+		if (source != mCurrentSource) {
 			mPhotos.clear();
 			mCurrentSource = source;
 		}

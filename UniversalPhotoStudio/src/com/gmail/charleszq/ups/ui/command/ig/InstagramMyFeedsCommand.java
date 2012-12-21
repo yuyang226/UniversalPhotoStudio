@@ -17,10 +17,9 @@ import com.gmail.charleszq.ups.utils.IConstants;
 
 /**
  * @author charles(charleszq@gmail.com)
- *
+ * 
  */
-public class InstagramMyFeedsCommand extends
-		PhotoListCommand {
+public class InstagramMyFeedsCommand extends PhotoListCommand {
 
 	public InstagramMyFeedsCommand(Context context) {
 		super(context);
@@ -38,17 +37,18 @@ public class InstagramMyFeedsCommand extends
 
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
-		if( adapterClass == IPhotoService.class ) {
-			UPSApplication app = (UPSApplication) ((Activity)mContext).getApplication();
-			Token token = app.getInstagramAuthToken();
-			return new InstagramMyFeedsService(token);
+		if (adapterClass == IPhotoService.class) {
+			if (mCurrentPhotoService == null) {
+				UPSApplication app = (UPSApplication) ((Activity) mContext)
+						.getApplication();
+				Token token = app.getInstagramAuthToken();
+				mCurrentPhotoService = new InstagramMyFeedsService(token);
+			}
+			return mCurrentPhotoService;
 		}
-		if( adapterClass == Integer.class ) {
+		if (adapterClass == Integer.class) {
 			return IConstants.DEF_IG_PAGE_SIZE;
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
-	
-
 }

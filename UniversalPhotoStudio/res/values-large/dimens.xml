@@ -18,7 +18,7 @@
     <dimen name="detail_page_control_space">30dp</dimen>
     <dimen name="ig_like_user_grid_item_size">160dp</dimen>
     
-    <dimen name="user_name_text_size">24dp</dimen>
+    <dimen name="user_name_text_size">56dp</dimen>
     
     <!-- dimensions for photo detail pages. -->
     <dimen name="photo_detail_user_avator_size">56dp</dimen>

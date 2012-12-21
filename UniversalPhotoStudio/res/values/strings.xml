@@ -71,6 +71,5 @@
 	
 	<string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
 	<string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
-	<string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading more photos of %s...</string>
-	<string name="msg_photos_of_user">Photos of %s</string>
+	<string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
 </resources>

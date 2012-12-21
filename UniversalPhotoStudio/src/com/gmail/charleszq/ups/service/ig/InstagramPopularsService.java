@@ -8,7 +8,6 @@ import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
-import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.utils.InstagramHelper;
 import com.gmail.charleszq.ups.utils.ModelUtils;
 
@@ -16,7 +15,7 @@ import com.gmail.charleszq.ups.utils.ModelUtils;
  * @author Charles(charleszq@gmail.com)
  * 
  */
-public class InstagramPopularsService implements IPhotoService {
+public class InstagramPopularsService extends AbstractInstagramPhotoListService {
 
 	/*
 	 * (non-Javadoc)
@@ -26,20 +25,22 @@ public class InstagramPopularsService implements IPhotoService {
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
+		MediaObjectCollection pc = new MediaObjectCollection();
 		AdvancedInstagram ig = InstagramHelper.getInstance().getInstagram();
 
-		MediaObjectCollection pc = new MediaObjectCollection();
-
-		MediaFeed mf = ig.getPopularMedia(pageSize);
-		if( mf == null ) {
-			return pc;
-		}
-		for (MediaFeedData feed : mf.getData()) {
-			pc.addPhoto(ModelUtils.convertInstagramPhoto(feed));
+		MediaFeed mf = null;
+		if (pageNo == 0 || mPagination == null) {
+			mf = ig.getPopularMedia(pageSize);
+		} else {
+			mf = ig.getNextPage(mPagination, pageSize);
 		}
 
-		pc.setPageSize(mf.getData().size());
-		pc.setTotalCount(mf.getData().size());
+		if (mf != null)
+			mPagination = mf.getPagination();
+			for (MediaFeedData feed : mf.getData()) {
+				pc.addPhoto(ModelUtils.convertInstagramPhoto(feed));
+			}
+
 		return pc;
 	}
 

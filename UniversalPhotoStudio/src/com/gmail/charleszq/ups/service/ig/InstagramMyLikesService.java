@@ -9,7 +9,6 @@ import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
-import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.utils.InstagramHelper;
 import com.gmail.charleszq.ups.utils.ModelUtils;
 
@@ -17,7 +16,7 @@ import com.gmail.charleszq.ups.utils.ModelUtils;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class InstagramMyLikesService implements IPhotoService {
+public class InstagramMyLikesService extends AbstractInstagramPhotoListService {
 
 	private Token mToken;
 
@@ -36,32 +35,22 @@ public class InstagramMyLikesService implements IPhotoService {
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
+		MediaObjectCollection pc = new MediaObjectCollection();
 		AdvancedInstagram ig = InstagramHelper.getInstance()
 				.getAuthedInstagram(mToken);
-		MediaFeed mf = ig.getUserLikedMediaFeed(pageSize);
-
-		MediaObjectCollection pc = new MediaObjectCollection();
-		if (mf == null) {
-			return pc;
-		}
-		for (MediaFeedData feed : mf.getData()) {
-			pc.addPhoto(ModelUtils.convertInstagramPhoto(feed));
+		MediaFeed mf = null;
+		if (pageNo == 0 || mPagination == null) {
+			mf = ig.getUserLikedMediaFeed(pageSize);
+		} else {
+			mf = ig.getNextPage(mPagination, pageSize);
 		}
 
-		int returnCount = mf.getData().size();
-		while (returnCount < pageSize) {
-			mf = ig.getNextPage(mf.getPagination(), pageSize - returnCount);
-			if( mf == null ) break;
-			returnCount += mf.getData().size();
-			if (mf != null) {
-				for (MediaFeedData feed : mf.getData()) {
-					pc.addPhoto(ModelUtils.convertInstagramPhoto(feed));
-				}
+		if( mf != null ) {
+			mPagination = mf.getPagination();
+			for (MediaFeedData feed : mf.getData()) {
+				pc.addPhoto(ModelUtils.convertInstagramPhoto(feed));
 			}
 		}
-
-		pc.setPageSize(pageSize);
-		pc.setTotalCount(returnCount);
 		return pc;
 	}
 

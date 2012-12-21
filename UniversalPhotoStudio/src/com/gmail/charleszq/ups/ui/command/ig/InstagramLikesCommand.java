@@ -51,10 +51,13 @@ public class InstagramLikesCommand extends PhotoListCommand {
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			UPSApplication app = (UPSApplication) ((Activity) mContext)
-					.getApplication();
-			Token token = app.getInstagramAuthToken();
-			return new InstagramMyLikesService(token);
+			if (mCurrentPhotoService == null) {
+				UPSApplication app = (UPSApplication) ((Activity) mContext)
+						.getApplication();
+				Token token = app.getInstagramAuthToken();
+				mCurrentPhotoService = new InstagramMyLikesService(token);
+			}
+			return mCurrentPhotoService;
 		}
 		if (adapterClass == Integer.class) {
 			return IConstants.DEF_IG_PAGE_SIZE;

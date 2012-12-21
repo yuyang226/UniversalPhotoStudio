@@ -17,9 +17,10 @@
     </GridView>
     
     <TextView android:id="@+id/txt_user_info"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/user_name_text_size"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
+        android:gravity="left|center"
         android:background="@color/color_trans"
         android:textColor="@color/photo_detail_vp_indicator"
         android:padding="5dp"/>

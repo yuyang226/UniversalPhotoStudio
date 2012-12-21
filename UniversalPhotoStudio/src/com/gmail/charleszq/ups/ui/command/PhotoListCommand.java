@@ -6,6 +6,7 @@ package com.gmail.charleszq.ups.ui.command;
 import android.content.Context;
 
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
+import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.task.LoadPhotosTask;
 import com.gmail.charleszq.ups.utils.IConstants;
 
@@ -15,8 +16,10 @@ import com.gmail.charleszq.ups.utils.IConstants;
  */
 public abstract class PhotoListCommand extends
 		AbstractCommand<MediaObjectCollection> {
-	
+
 	protected LoadPhotosTask mTask;
+	protected IPhotoService mCurrentPhotoService;
+	protected int mCurrentPageNo = 0;
 
 	public PhotoListCommand(Context context) {
 		super(context);
@@ -33,12 +36,11 @@ public abstract class PhotoListCommand extends
 			mTask.cancel(true);
 		}
 		mTask = new LoadPhotosTask(this, this.mTaskDoneListner);
-		
-		int page = 0;
-		if( params.length > 0 ) {
-			page = (Integer)params[0];
+
+		if (params.length > 0) {
+			mCurrentPageNo = (Integer) params[0];
 		}
-		mTask.execute(page);
+		mTask.execute(mCurrentPageNo);
 		return true;
 	}
 
@@ -49,12 +51,17 @@ public abstract class PhotoListCommand extends
 
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
-		if( adapterClass == Integer.class ) {
+		if (adapterClass == Integer.class) {
 			return IConstants.DEF_FLICKR_PAGE_SIZE;
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
-	
 
+	/**
+	 * Loads next page of photos.
+	 * @return
+	 */
+	public boolean loadNextPage() {
+		return execute(++mCurrentPageNo);
+	}
 }

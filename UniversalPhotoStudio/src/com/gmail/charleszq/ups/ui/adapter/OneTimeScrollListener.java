@@ -13,10 +13,9 @@ import android.widget.AbsListView.OnScrollListener;
 public abstract class OneTimeScrollListener implements OnScrollListener {
 
 	private int mVisibleThreshold = 5;
-//	private int mCurrentPage = 0;
 	private int mPreviousTotal = 0;
 	private boolean mLoading = true;
-
+	
 	/**
      * 
      */
@@ -56,7 +55,6 @@ public abstract class OneTimeScrollListener implements OnScrollListener {
 			if (totalItemCount > mPreviousTotal) {
 				mLoading = false;
 				mPreviousTotal = totalItemCount;
-//				mCurrentPage++;
 			}
 		}
 		if (!mLoading
@@ -66,7 +64,16 @@ public abstract class OneTimeScrollListener implements OnScrollListener {
 		}
 
 	}
-
-	abstract public void loadMoreData();
+	
+	public void reset() {
+		mPreviousTotal = 0;
+		mLoading = true;
+	}
+	
+	/**
+	 * The UI needs to implement this and load more data if any, otherwise, UI needs
+	 * to do another stuffs like hiding the messsages.
+	 */
+	abstract protected void loadMoreData();
 
 }
