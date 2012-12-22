@@ -13,13 +13,18 @@ public interface IConstants {
 	 * For each service call, what's the page size, by default, it's 10 times of
 	 * the UI page size.
 	 */
-	static final int SERVICE_PAGE_SIZE = 50;
+	static final int DEF_SERVICE_PAGE_SIZE = 50;
+	
+	/**
+	 * Use this as the marker to say there is no more data, if server returns photos less than this,
+	 * we say there is no more there.
+	 */
+	static final int DEF_MIN_PAGE_SIZE = 10;
+	
+	static final int DEF_MAX_TOTAL_PHOTOS = 300;
 
 	static final String SD_CARD_FOLDER_NAME = "ups_flickr"; //$NON-NLS-1$
 	static final String SHARE_TEMP_FILE_NAME = "ups.share.png"; //$NON-NLS-1$
-	
-	static final int DEF_IG_PAGE_SIZE = 50;
-	static final int DEF_FLICKR_PAGE_SIZE = 50;
 
 	/**
 	 * the flickr oauth scheme
@@ -75,7 +80,6 @@ public interface IConstants {
 	
 	//500px related constants
 	static final String PX500_CONSUMER_KEY = "XLvGaTDTlDL7UH9njjxpc9VmpoSKYQwRHjV0Qujx"; //$NON-NLS-1$
-	static final int PX500_DEF_PAGE_SIZE = 50;
 	static final String PX500_OAUTH_CALLBACK_SCHEMA = "schemapx500"; //$NON-NLS-1$
 
 }

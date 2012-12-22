@@ -90,7 +90,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 		UPSApplication app = (UPSApplication) this.getApplication();
 		mPhotosProvider = app.getPhotosProvider();
 		mAdapter = new ImagePagerAdapter(mPhotosProvider,
-				getSupportFragmentManager(), mPhotosProvider.getTotalCount());
+				getSupportFragmentManager(), mPhotosProvider.getCurrentSize());
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPager.setAdapter(mAdapter);
 		mPager.setPageMargin((int) getResources().getDimension(

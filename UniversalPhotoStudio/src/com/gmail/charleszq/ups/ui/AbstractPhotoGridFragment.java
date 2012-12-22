@@ -6,6 +6,7 @@ package com.gmail.charleszq.ups.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 import com.gmail.charleszq.ups.utils.IConstants;
+import com.gmail.charleszq.ups.utils.ImageFetcher;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -33,6 +35,8 @@ import com.gmail.charleszq.ups.utils.IConstants;
  */
 public abstract class AbstractPhotoGridFragment extends
 		AbstractFragmentWithImageFetcher implements OnItemClickListener {
+
+	private static String TAG = AbstractPhotoGridFragment.class.getName();
 
 	/**
 	 * UI controls
@@ -72,25 +76,8 @@ public abstract class AbstractPhotoGridFragment extends
 	 */
 	protected boolean mNoMoreData = false;
 
-	protected OneTimeScrollListener mScrollListener = new OneTimeScrollListener() {
+	protected OneTimeScrollListener mScrollListener = null;
 
-		@Override
-		public void onScrollStateChanged(AbsListView absListView,
-				int scrollState) {
-			// Pause fetcher to ensure smoother scrolling when flinging
-			if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-				mImageFetcher.setPauseWork(true);
-			} else {
-				mImageFetcher.setPauseWork(false);
-			}
-		}
-
-		@Override
-		protected void loadMoreData() {
-			AbstractPhotoGridFragment.this.loadMoreData();
-		}
-	};
-	
 	ICommandDoneListener<MediaObjectCollection> mCommandDoneListener = new ICommandDoneListener<MediaObjectCollection>() {
 		@Override
 		public void onCommandDone(ICommand<MediaObjectCollection> command,
@@ -153,6 +140,7 @@ public abstract class AbstractPhotoGridFragment extends
 		}
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnItemClickListener(this);
+		mScrollListener = new GridOnScrollListener(this, mImageFetcher);
 		mGridView.setOnScrollListener(mScrollListener);
 
 		// This listener is used to get the final width of the GridView and then
@@ -186,35 +174,90 @@ public abstract class AbstractPhotoGridFragment extends
 		}
 		return v;
 	}
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		
+
 	}
 
 	/**
 	 * The sub-classes need to handle that and hide/show message if any.
 	 */
 	protected void loadMoreData() {
-		
+
+		int currentPhotoSize = mPhotosProvider.getCurrentSize();
+		Log.d(TAG, String.format(
+				"When loading more, there are %s photos currently", //$NON-NLS-1$
+				currentPhotoSize));
 		boolean noMoreData = mNoMoreData;
-		noMoreData = noMoreData | mPhotosProvider.getCurrentSize() >= 300;
-		if( mPhotosProvider.getCurrentSize() > 0 ) {
-			int pageSize = (Integer) mCurrentCommand.getAdapter(Integer.class);
-			noMoreData = noMoreData | mPhotosProvider.getCurrentSize() < pageSize;
+		noMoreData = noMoreData
+				| currentPhotoSize > IConstants.DEF_MAX_TOTAL_PHOTOS;
+		if (currentPhotoSize > 0) {
+			noMoreData = noMoreData
+					| currentPhotoSize < IConstants.DEF_MIN_PAGE_SIZE;
 		}
 		if (noMoreData) {
+			Log.d(TAG, "There is no more data."); //$NON-NLS-1$
 			mLoadingMessageText.setVisibility(View.GONE);
 			return;
 		}
+
+		Log.d(TAG, "Loading more..."); //$NON-NLS-1$
 		mLoadingMessageText.setVisibility(View.VISIBLE);
-		mCurrentCommand.loadNextPage();
+		if (mCurrentCommand != null)
+			mCurrentCommand.loadNextPage();
 	}
-	
+
+	/**
+	 * Loads the first page
+	 */
 	abstract protected void loadFirstPage();
+
+	/**
+	 * Initializes the intent data
+	 * 
+	 * @param intent
+	 */
 	abstract protected void initialIntentData(Intent intent);
+
+	/**
+	 * Gets the load message
+	 * 
+	 * @return
+	 */
 	abstract protected String getLoadingMessage();
+
+	/**
+	 * Bind data to UI, the data usually comes from the intent
+	 */
 	abstract protected void bindData();
 
+	protected static class GridOnScrollListener extends OneTimeScrollListener {
+
+		private AbstractPhotoGridFragment mFragment;
+		private ImageFetcher mImageFetcher;
+
+		protected GridOnScrollListener(AbstractPhotoGridFragment fragment,
+				ImageFetcher fetcher) {
+			this.mFragment = fragment;
+			this.mImageFetcher = fetcher;
+		}
+
+		@Override
+		public void onScrollStateChanged(AbsListView absListView,
+				int scrollState) {
+			// Pause fetcher to ensure smoother scrolling when flinging
+			if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
+				mImageFetcher.setPauseWork(true);
+			} else {
+				mImageFetcher.setPauseWork(false);
+			}
+		}
+
+		@Override
+		protected void loadMoreData() {
+			mFragment.loadMoreData();
+		}
+	}
 }

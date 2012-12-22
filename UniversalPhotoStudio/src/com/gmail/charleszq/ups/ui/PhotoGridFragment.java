@@ -17,6 +17,7 @@
 package com.gmail.charleszq.ups.ui;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -36,6 +37,8 @@ import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
  */
 public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
+	private static final String TAG = PhotoGridFragment.class.getName();
+
 	/**
 	 * Empty constructor as per the Fragment documentation
 	 */
@@ -51,23 +54,37 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	 * @param command
 	 */
 	void populatePhotoList(MediaObjectCollection photos, ICommand<?> command) {
-		if( command == mCurrentCommand ) {
-			//make sure this method will not be called after click the main menu item.
+		if (command == mCurrentCommand) {
+			// make sure this method will not be called after click the main
+			// menu item.
+			Log.d(TAG, "command is the same, just ignore."); //$NON-NLS-1$
 			return;
 		}
+		if (this.mGridView != null) {
+			mGridView.setOnScrollListener(null);
+			mGridView.smoothScrollToPositionFromTop(0, 0);
+		}
 		this.mCurrentCommand = (PhotoListCommand) command;
-		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
+
+		// remove command done from the main menu UI, so later when load more
+		// data, this method will not called again.
+		mCurrentCommand.clearCommandDoneListener();
+		mNoMoreData = false;
+		
 		mPhotosProvider.loadData(photos, command);
 		mAdapter.notifyDataSetChanged();
-		this.mScrollListener.reset();
-		if( this.mGridView != null ) {
-			mGridView.smoothScrollToPositionFromTop(0, 0);
+		if (mGridView != null) {
+			mScrollListener = new GridOnScrollListener(this, mImageFetcher);
+			mGridView.setOnScrollListener(mScrollListener);
 		}
 		if (mLoadingMessageText != null) {
 			mLoadingMessageText.setVisibility(View.GONE);
 		}
 		
-		//TODO think about different grid share DP in app.
+		//add listener for load more, so after done, we can hide the message.
+		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
+
+		// TODO think about different grid share DP in app.
 		UPSApplication app = (UPSApplication) getActivity().getApplication();
 		app.setPhotosProvider(this.mPhotosProvider);
 	}

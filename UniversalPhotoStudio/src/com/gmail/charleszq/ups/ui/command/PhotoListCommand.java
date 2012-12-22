@@ -35,6 +35,11 @@ public abstract class PhotoListCommand extends
 		if (mTask != null) {
 			mTask.cancel(true);
 		}
+		
+		//must set this to null to clear the cache data executed before if user
+		//hit the menu item from the main menu.
+		mCurrentPhotoService = null;
+		mCurrentPageNo = 0;
 		mTask = new LoadPhotosTask(this, this.mTaskDoneListner);
 
 		if (params.length > 0) {
@@ -52,7 +57,7 @@ public abstract class PhotoListCommand extends
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == Integer.class) {
-			return IConstants.DEF_FLICKR_PAGE_SIZE;
+			return IConstants.DEF_SERVICE_PAGE_SIZE;
 		}
 		return super.getAdapter(adapterClass);
 	}
@@ -62,6 +67,12 @@ public abstract class PhotoListCommand extends
 	 * @return
 	 */
 	public boolean loadNextPage() {
-		return execute(++mCurrentPageNo);
+		if( mTask != null ) {
+			mTask.cancel(true);
+		}
+		mCurrentPageNo ++;
+		mTask = new LoadPhotosTask(this, this.mTaskDoneListner);
+		mTask.execute(mCurrentPageNo);
+		return true;
 	}
 }

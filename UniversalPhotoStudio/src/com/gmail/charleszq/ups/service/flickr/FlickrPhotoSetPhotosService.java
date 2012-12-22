@@ -3,7 +3,8 @@
  */
 package com.gmail.charleszq.ups.service.flickr;
 
-import com.gmail.charleszq.ups.model.MediaObject;
+import android.util.Log;
+
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
 import com.gmail.charleszq.ups.utils.FlickrHelper;
 import com.gmail.charleszq.ups.utils.ModelUtils;
@@ -42,30 +43,13 @@ public class FlickrPhotoSetPhotosService extends FlickrAuthPhotoService {
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
-
-		int total = mPhotoset.getPhotoCount();
-		int page = total / pageSize;
-		if (total % pageSize > 0) {
-			page++;
-		}
-
+		Log.d(TAG, String.format("page size %s and page# %s", pageSize, pageNo)); //$NON-NLS-1$
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mAuthToken,
 				mTokenSecret);
 		PhotosetsInterface psi = f.getPhotosetsInterface();
 		PhotoList list = psi.getPhotos(mPhotoset.getId(), mExtras,
-				Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, page);
+				Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, pageNo);
 		MediaObjectCollection col = ModelUtils.convertFlickrPhotoList(list);
-
-		if (page - 1 >= 1) {
-			PhotoList list2 = psi.getPhotos(mPhotoset.getId(), mExtras,
-					Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, page - 1);
-			MediaObjectCollection col2 = ModelUtils.convertFlickrPhotoList(list2);
-			int pos = 0;
-			for( MediaObject obj : col2.getPhotos() ) {
-				col.addPhoto(obj,pos++);
-			}
-		}
-
 		return col;
 	}
 

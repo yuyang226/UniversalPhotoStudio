@@ -9,7 +9,6 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.ig.InstagramPopularsService;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
-import com.gmail.charleszq.ups.utils.IConstants;
 
 /**
  * @author Charles(charleszq@gmail.com)
@@ -51,9 +50,6 @@ public class InstagramPopularsCommand extends PhotoListCommand {
 				mCurrentPhotoService = new InstagramPopularsService();
 			}
 			return mCurrentPhotoService;
-		}
-		if (adapterClass == Integer.class) {
-			return IConstants.DEF_IG_PAGE_SIZE;
 		}
 		return super.getAdapter(adapterClass);
 	}

@@ -14,12 +14,6 @@ import com.gmail.charleszq.ups.model.MediaObjectCollection;
 public interface IPhotosProvider {
 	
 	/**
-	 * Returns the total count.
-	 * @return
-	 */
-	int getTotalCount();
-
-	/**
 	 * Returns the <code>MediaObject</code> at the given index.
 	 * @param index
 	 * @return
@@ -49,17 +43,4 @@ public interface IPhotosProvider {
 	 * @param source.
 	 */
 	void loadData(MediaObjectCollection list, Object source);
-	
-	/**
-	 * Whether the provider has more pages on the server.
-	 * @return
-	 */
-	boolean hasMorePage();
-	
-	/**
-	 * Returns the current page number, start from 0
-	 * @return
-	 */
-	int getCurrentPage();
-
 }

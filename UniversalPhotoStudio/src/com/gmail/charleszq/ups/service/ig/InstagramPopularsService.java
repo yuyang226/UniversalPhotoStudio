@@ -7,6 +7,8 @@ import org.jinstagram.AdvancedInstagram;
 import org.jinstagram.entity.users.feed.MediaFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
 
+import android.util.Log;
+
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
 import com.gmail.charleszq.ups.utils.InstagramHelper;
 import com.gmail.charleszq.ups.utils.ModelUtils;
@@ -25,21 +27,23 @@ public class InstagramPopularsService extends AbstractInstagramPhotoListService 
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
+		Log.d(TAG, String.format("page size %s and page# %s", pageSize, pageNo)); //$NON-NLS-1$
 		MediaObjectCollection pc = new MediaObjectCollection();
 		AdvancedInstagram ig = InstagramHelper.getInstance().getInstagram();
 
 		MediaFeed mf = null;
-		if (pageNo == 0 || mPagination == null) {
+		if (pageNo <= 0 || mPagination == null) {
 			mf = ig.getPopularMedia(pageSize);
 		} else {
 			mf = ig.getNextPage(mPagination, pageSize);
 		}
 
-		if (mf != null)
+		if (mf != null) {
 			mPagination = mf.getPagination();
 			for (MediaFeedData feed : mf.getData()) {
 				pc.addPhoto(ModelUtils.convertInstagramPhoto(feed));
 			}
+		}
 
 		return pc;
 	}

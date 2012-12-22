@@ -70,6 +70,13 @@ public abstract class AbstractCommand<T> implements ICommand<T> {
 		}
 	}
 
+	@Override
+	public void clearCommandDoneListener() {
+		if (mListeners != null) {
+			mListeners.clear();
+		}
+	}
+
 	protected void onCommandDone(T result) {
 		if (mListeners != null) {
 			for (ICommandDoneListener<T> lis : mListeners) {

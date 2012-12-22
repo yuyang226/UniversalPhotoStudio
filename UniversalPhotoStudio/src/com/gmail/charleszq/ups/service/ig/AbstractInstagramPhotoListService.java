@@ -14,6 +14,8 @@ import com.gmail.charleszq.ups.service.IPhotoService;
 public abstract class AbstractInstagramPhotoListService implements
 		IPhotoService {
 	
+	protected String TAG = getClass().getName();
+	
 	/**
 	 * Record the pagination information so when we want to load next page, we
 	 * can do from it.

@@ -34,16 +34,6 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	}
 
 	@Override
-	protected void loadMoreData() {
-		if (mNoMoreData || mPhotosProvider.getCurrentSize() >= 300) {
-			mLoadingMessageText.setVisibility(View.GONE);
-			return;
-		}
-		mLoadingMessageText.setVisibility(View.VISIBLE);
-		mCurrentCommand.loadNextPage();
-	}
-
-	@Override
 	protected void loadFirstPage() {
 		if (mMedisSourceType == MediaSourceType.FLICKR.ordinal()) {
 

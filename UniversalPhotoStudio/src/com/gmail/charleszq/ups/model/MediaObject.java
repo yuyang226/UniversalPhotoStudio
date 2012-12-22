@@ -192,4 +192,10 @@ public final class MediaObject implements Serializable {
 		return mExifs;
 	}
 
+	@Override
+	public int hashCode() {
+		return this.mThumbUrl.hashCode();
+	}
+	
+	
 }

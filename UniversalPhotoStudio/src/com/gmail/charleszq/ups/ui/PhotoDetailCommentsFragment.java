@@ -8,6 +8,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,7 +104,7 @@ public class PhotoDetailCommentsFragment extends
 					KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEND) {
 					CharSequence commentText = v.getText();
-					logger.debug("Comment: " + commentText); //$NON-NLS-1$
+					Log.e(getClass().getName(),"Comment: " + commentText); //$NON-NLS-1$
 					sendComment(commentText);
 				}
 				return false;

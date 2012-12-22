@@ -63,6 +63,11 @@ public interface ICommand<T> {
 	 * @param mCommandDoneListener
 	 */
 	void removeCommandDoneListener(ICommandDoneListener<T> mCommandDoneListener);
+	
+	/**
+	 * Clears all command done listener
+	 */
+	void clearCommandDoneListener();
 
 	/**
 	 * 

@@ -14,10 +14,10 @@ import com.gmail.charleszq.ups.utils.IConstants;
  * 
  */
 public final class MediaObjectCollection {
-
+	
 	private int mCurrentPage = 0;
 	private int mTotalCount = 0;
-	private int mPageSize = IConstants.SERVICE_PAGE_SIZE;
+	private int mPageSize = IConstants.DEF_SERVICE_PAGE_SIZE;
 	private List<MediaObject> mPhotos;
 
 	public int getCurrentPage() {

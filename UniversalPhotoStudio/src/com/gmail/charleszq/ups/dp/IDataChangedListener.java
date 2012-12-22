@@ -6,7 +6,7 @@ package com.gmail.charleszq.ups.dp;
 /**
  * Represents the listener for data changes in a data provider.
  * 
- * @author charleszq
+ *  @author Charles(charleszq@gmail.com)
  *
  */
 public interface IDataChangedListener {

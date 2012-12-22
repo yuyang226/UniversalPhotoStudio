@@ -8,6 +8,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.util.Log;
+
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
 
@@ -17,25 +19,7 @@ import com.gmail.charleszq.ups.model.MediaObjectCollection;
  */
 public class SinglePagePhotosProvider implements IPhotosProvider {
 
-	/**
-	 * The total number on the server side.
-	 */
-	private int mTotalOnServer;
-
-	/**
-	 * Total number for the current page.
-	 */
-	private int mTotal;
-
-	/**
-	 * The current page
-	 */
-	private int mCurrentPage = 0;
-
-	/**
-	 * the current page size.
-	 */
-	private int mCurrentPageSize = 0;
+	private static final String TAG = SinglePagePhotosProvider.class.getName();
 
 	private List<MediaObject> mPhotos;
 	private Set<IDataChangedListener> mListeners;
@@ -47,16 +31,6 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 
 	public SinglePagePhotosProvider(MediaObjectCollection photos) {
 		loadData(photos, null);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.dp.IPhotosProvider#getTotalCount()
-	 */
-	@Override
-	public int getTotalCount() {
-		return mTotal;
 	}
 
 	/*
@@ -120,37 +94,22 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 		if (list == null) {
 			return;
 		}
-		mTotalOnServer = list.getTotalCount();
-		mCurrentPageSize = list.getPageSize();
-		mTotal = mCurrentPageSize;
-		mCurrentPage = list.getCurrentPage();
 		if (mPhotos == null)
 			mPhotos = new ArrayList<MediaObject>();
 		if (source != mCurrentSource) {
+			Log.d(TAG, String.format(
+					"before clear previous photos, there were %s in it", //$NON-NLS-1$
+					mPhotos.size()));
 			mPhotos.clear();
 			mCurrentSource = source;
 		}
-		mPhotos.addAll(list.getPhotos());
-		if (mPhotos.size() < mCurrentPageSize) {
-			mTotal = mPhotos.size();
-		}
-	}
-
-	@Override
-	public boolean hasMorePage() {
-		if (mTotal < mCurrentPageSize) {
-			return false;
-		} else {
-			if (mCurrentPageSize * (mCurrentPage + 1) <= mTotalOnServer) {
-				return true;
+		for( MediaObject p : list.getPhotos() ) {
+			if( mPhotos.contains(p) ) {
+				Log.w(TAG, "Duplication photo."); //$NON-NLS-1$
+				continue;
 			}
+			mPhotos.add(p);
 		}
-		return false;
+		Log.d(TAG, String.format("now there are %s photos.", mPhotos.size())); //$NON-NLS-1$
 	}
-
-	@Override
-	public int getCurrentPage() {
-		return mCurrentPage;
-	}
-
 }

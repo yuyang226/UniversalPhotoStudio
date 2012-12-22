@@ -3,8 +3,7 @@
  */
 package com.gmail.charleszq.ups.task;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import android.util.Log;
 
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
 import com.gmail.charleszq.ups.service.IPhotoService;
@@ -18,9 +17,6 @@ import com.gmail.charleszq.ups.utils.IConstants;
  */
 public class LoadPhotosTask extends
 		AbstractGeneralTask<Integer, Integer, MediaObjectCollection> {
-
-	private static final Logger logger = LoggerFactory
-			.getLogger(LoadPhotosTask.class);
 
 	private ICommand<?> mCommand;
 
@@ -47,7 +43,7 @@ public class LoadPhotosTask extends
 		IPhotoService service = (IPhotoService) mCommand
 				.getAdapter(IPhotoService.class);
 		Integer total = (Integer) mCommand.getAdapter(Integer.class);
-		total = total == null ? IConstants.SERVICE_PAGE_SIZE : total;
+		total = total == null ? IConstants.DEF_SERVICE_PAGE_SIZE : total;
 		if (service == null)
 			return null;
 		try {
@@ -59,13 +55,12 @@ public class LoadPhotosTask extends
 
 	@Override
 	protected void onPostExecute(MediaObjectCollection result) {
-		if( result == null ) {
+		if (result == null) {
 			super.onPostExecute(result);
 			return;
 		}
-		logger.debug(result.getPhotos().size() + " of " //$NON-NLS-1$
-				+ result.getTotalCount() + " photos laoded, current page: " //$NON-NLS-1$
-				+ (result.getCurrentPage()));
+		Log.d(getClass().getName(),
+				String.format("%s photos returned.", result.getPhotos().size())); //$NON-NLS-1$
 		super.onPostExecute(result);
 	}
 

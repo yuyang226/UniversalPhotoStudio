@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -161,6 +162,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 					view.animate().setDuration(3000).rotationX(90)
 							.rotationX(180).rotationX(270).rotationX(360);
 				} else {
+					command.clearCommandDoneListener();
 					command.addCommndDoneListener(mCommandDoneListener);
 					command.execute();
 				}
@@ -411,14 +413,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 			Uri uri = intent.getData();
 			String query = uri.getQuery();
-			logger.debug("Returned Query: {}", query); //$NON-NLS-1$
 			String[] data = query.split("&"); //$NON-NLS-1$
 			if (data != null && data.length == 2) {
 				String oauthToken = data[0].substring(data[0].indexOf("=") + 1); //$NON-NLS-1$
 				String oauthVerifier = data[1]
 						.substring(data[1].indexOf("=") + 1); //$NON-NLS-1$
-				logger.debug(
-						"OAuth Token: {}; OAuth Verifier: {}", oauthToken, oauthVerifier); //$NON-NLS-1$
 
 				String secret = getTokenSecret();
 				if (secret != null) {
@@ -462,7 +461,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				});
 				task.execute(code);
 			} else {
-				logger.error("Instagram request token code not returned."); //$NON-NLS-1$
+				Log.e(getClass().getName(),"Instagram request token code not returned."); //$NON-NLS-1$
 			}
 		}
 	}

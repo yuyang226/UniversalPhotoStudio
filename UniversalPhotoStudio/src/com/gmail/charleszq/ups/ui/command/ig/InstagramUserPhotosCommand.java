@@ -14,7 +14,6 @@ import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.ig.InstagramUserPhotosService;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
-import com.gmail.charleszq.ups.utils.IConstants;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -63,9 +62,6 @@ public class InstagramUserPhotosCommand extends PhotoListCommand {
 						Long.parseLong(mUser.getUserId()));
 			}
 			return mCurrentPhotoService;
-		}
-		if (adapterClass == Integer.class) {
-			return IConstants.DEF_IG_PAGE_SIZE;
 		}
 		return super.getAdapter(adapterClass);
 	}

@@ -3,6 +3,8 @@
  */
 package com.gmail.charleszq.ups.service.flickr;
 
+import android.util.Log;
+
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
 import com.gmail.charleszq.ups.utils.FlickrHelper;
 import com.gmail.charleszq.ups.utils.ModelUtils;
@@ -37,6 +39,7 @@ public class FlickrPhotoGroupPhotosService extends FlickrAuthPhotoService {
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
+		Log.d(TAG, String.format("page size %s and page# %s", pageSize, pageNo)); //$NON-NLS-1$
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mAuthToken,
 				mTokenSecret);
 		PoolsInterface pi = f.getPoolsInterface();

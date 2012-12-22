@@ -13,7 +13,6 @@ import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.ig.InstagramMyFeedsService;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
-import com.gmail.charleszq.ups.utils.IConstants;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -45,9 +44,6 @@ public class InstagramMyFeedsCommand extends PhotoListCommand {
 				mCurrentPhotoService = new InstagramMyFeedsService(token);
 			}
 			return mCurrentPhotoService;
-		}
-		if (adapterClass == Integer.class) {
-			return IConstants.DEF_IG_PAGE_SIZE;
 		}
 		return super.getAdapter(adapterClass);
 	}

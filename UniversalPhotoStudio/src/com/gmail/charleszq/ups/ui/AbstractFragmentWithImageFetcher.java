@@ -3,9 +3,6 @@
  */
 package com.gmail.charleszq.ups.ui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import android.support.v4.app.Fragment;
 
 import com.gmail.charleszq.ups.R;
@@ -18,7 +15,6 @@ import com.gmail.charleszq.ups.utils.ImageFetcher;
  */
 public abstract class AbstractFragmentWithImageFetcher extends Fragment {
 
-	protected Logger logger = LoggerFactory.getLogger(getClass());
 	protected ImageFetcher mImageFetcher;
 
 	/**
