@@ -1,4 +1,4 @@
-package com.gmail.charleszq.ups.ui.adapter;
+package com.gmail.charleszq.ups.ui.helper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +15,6 @@ import com.gmail.charleszq.ups.ui.PhotoDetailGeneralFragment;
 import com.gmail.charleszq.ups.ui.PhotoDetailLikesFragment;
 import com.gmail.charleszq.ups.ui.PhotoDetailMapFragment;
 import com.gmail.charleszq.ups.ui.flickr.FlickrExifDataFragment;
-import com.gmail.charleszq.ups.ui.px500.Px500ExifDataFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -49,7 +48,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 		case PX500:
 			fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
-			fragments.add(Px500ExifDataFragment.newInstance(mPhoto));
+			fragments.add(FlickrExifDataFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailMapFragment.newMyInstance(mPhoto));
 			break;
 		}
@@ -69,9 +68,6 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			break;
 		case PX500:
 			count = 4;
-			if (mPhoto.getExifs().isEmpty()) {
-				count = 3;
-			}
 			break;
 		}
 		if (mPhoto.getLocation() == null) {
@@ -103,9 +99,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			titles.add(mContext.getString(R.string.flickr_detail_general_title));
 			titles.add(mContext
 					.getString(R.string.flickr_detail_comments_title));
-			if (!mPhoto.getExifs().isEmpty())
-				titles.add(mContext
-						.getString(R.string.flickr_detail_exif_title));
+			titles.add(mContext.getString(R.string.flickr_detail_exif_title));
 			titles.add(mContext.getString(R.string.flickr_detail_map));
 			break;
 		}

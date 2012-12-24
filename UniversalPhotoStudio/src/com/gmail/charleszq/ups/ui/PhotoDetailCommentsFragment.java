@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,7 +47,7 @@ import com.gmail.charleszq.ups.utils.ModelUtils;
  * 
  */
 public class PhotoDetailCommentsFragment extends
-		AbstractFragmentWithImageFetcher {
+		AbstractFragmentWithImageFetcher implements OnItemClickListener {
 
 	private MediaObject mCurrentPhoto;
 
@@ -94,6 +96,7 @@ public class PhotoDetailCommentsFragment extends
 		mAdapter = new CommentListAdapter(getActivity(), mCurrentPhoto,
 				mCurrentPhoto.getCommentList(), mImageFetcher);
 		mCommentListView.setAdapter(mAdapter);
+		mCommentListView.setOnItemClickListener(this);
 		loadComments();
 
 		mSendComment = (EditText) view.findViewById(R.id.edit_comment);
@@ -285,11 +288,6 @@ public class PhotoDetailCommentsFragment extends
 		}
 
 		@Override
-		public boolean isEnabled(int position) {
-			return false;
-		}
-
-		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v = LayoutInflater.from(mContext).inflate(
 					R.layout.photo_detali_comment_item, null);
@@ -345,5 +343,13 @@ public class PhotoDetailCommentsFragment extends
 			mComments.addAll(comments);
 		}
 
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		MediaObjectComment comment = (MediaObjectComment) parent.getAdapter().getItem(position);
+		PhotoDetailActivity act = (PhotoDetailActivity) getActivity();
+		act.showUserPhotos( comment.getAuthor());
 	}
 }

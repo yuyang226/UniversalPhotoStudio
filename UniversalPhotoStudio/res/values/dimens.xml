@@ -22,4 +22,7 @@
 
     <!-- dimensions for photo detail pages. -->
     <dimen name="photo_detail_user_avator_size">48dp</dimen>
+    
+    <!-- dimension for like user grid -->
+    <dimen name="like_user_grid_spacing">5dp</dimen>
 </resources>

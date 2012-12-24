@@ -10,7 +10,9 @@ import android.view.View;
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.model.MediaSourceType;
+import com.gmail.charleszq.ups.ui.command.flickr.FlickrUserPhotosCommand;
 import com.gmail.charleszq.ups.ui.command.ig.InstagramUserPhotosCommand;
+import com.gmail.charleszq.ups.ui.command.px500.PxUserPhotosCommand;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -37,15 +39,18 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	@Override
 	protected void loadFirstPage() {
 		if (mMedisSourceType == MediaSourceType.FLICKR.ordinal()) {
-
+			mCurrentCommand = new FlickrUserPhotosCommand(getActivity(),
+					mCurrentUser.getUserId());
 		} else if (mMedisSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
 			mCurrentCommand = new InstagramUserPhotosCommand(getActivity(),
 					mCurrentUser);
-			mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
-			mCurrentCommand.execute();
 		} else {
-
-		}		
+			// 500px
+			mCurrentCommand = new PxUserPhotosCommand(getActivity(),
+					mCurrentUser.getUserId());
+		}
+		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
+		mCurrentCommand.execute();
 	}
 
 	@Override
@@ -67,8 +72,8 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 			String s = String.format(mLoadingMessage,
 					mCurrentUser.getUserName());
 			mLoadingMessageText.setText(s);
-			if( mCurrentCommand != null ) {
-				//configuraton change
+			if (mCurrentCommand != null) {
+				// configuraton change
 				mLoadingMessageText.setVisibility(View.GONE);
 			}
 		}

@@ -318,12 +318,13 @@ public final class ModelUtils {
 
 		photo.setFavorites(p.favorites);
 		photo.setComments(p.comments);
+		photo.setViews(p.views);
 
 		photo.setMediaSource(MediaSourceType.PX500);
 		return photo;
 	}
 
-	private static void handlePx500PhotoExif(MediaObject photo,
+	public static MediaObject handlePx500PhotoExif(MediaObject photo,
 			com.gmail.charleszq.px500.model.Photo p) {
 		if (p.exif != null) {
 			ExifData exif = new ExifData(ExifData.LABEL_MODEL);
@@ -354,6 +355,7 @@ public final class ModelUtils {
 			exif.value = p.exif.lens;
 			photo.addExifdata(exif);
 		}
+		return photo;
 	}
 
 	public static MediaObjectComment convertPxPhotoComment(

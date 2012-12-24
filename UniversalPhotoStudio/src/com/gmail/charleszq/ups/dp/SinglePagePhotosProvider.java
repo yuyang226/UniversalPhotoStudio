@@ -4,9 +4,7 @@
 package com.gmail.charleszq.ups.dp;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import android.util.Log;
 
@@ -22,7 +20,6 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	private static final String TAG = SinglePagePhotosProvider.class.getName();
 
 	private List<MediaObject> mPhotos;
-	private Set<IDataChangedListener> mListeners;
 
 	/**
 	 * The current source which populate photos into this, usually, the command.
@@ -51,35 +48,6 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	@Override
 	public int getCurrentSize() {
 		return mPhotos.size();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.gmail.charleszq.ups.dp.IDataProvider#addDataChangeListener(com.gmail
-	 * .charleszq.ups.dp.IDataChangedListener)
-	 */
-	@Override
-	public void addDataChangeListener(IDataChangedListener listener) {
-		if (mListeners == null) {
-			mListeners = new HashSet<IDataChangedListener>();
-		}
-		mListeners.add(listener);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.dp.IPhotosProvider#notifyDataChanged()
-	 */
-	@Override
-	public void notifyDataChanged() {
-		if (mListeners != null) {
-			for (IDataChangedListener lis : mListeners) {
-				lis.onDataChanged();
-			}
-		}
 	}
 
 	/*

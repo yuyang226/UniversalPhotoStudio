@@ -3,7 +3,6 @@
  */
 package com.gmail.charleszq.ups.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -77,15 +76,8 @@ public class PhotoDetailGeneralFragment extends
 
 			@Override
 			public void onClick(View v) {
-				
-				//TODO sign in required for instagram.
-				Intent i = new Intent(PhotoDetailGeneralFragment.this
-						.getActivity(), UserPhotoListActivity.class);
-				i.putExtra(UserPhotoListActivity.MD_TYPE_KEY, mCurrentPhoto
-						.getMediaSource().ordinal());
-				i.putExtra(UserPhotoListActivity.USER_KEY,
-						mCurrentPhoto.getAuthor());
-				startActivity(i);
+				PhotoDetailActivity act = (PhotoDetailActivity) getActivity();
+				act.showUserPhotos(mCurrentPhoto.getAuthor());
 			}
 		});
 

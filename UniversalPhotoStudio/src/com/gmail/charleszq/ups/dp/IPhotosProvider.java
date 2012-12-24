@@ -27,17 +27,6 @@ public interface IPhotosProvider {
 	int getCurrentSize();
 	
 	/**
-	 * 
-	 * @param listener
-	 */
-	void addDataChangeListener(IDataChangedListener listener);
-	
-	/**
-	 * 
-	 */
-	void notifyDataChanged();
-	
-	/**
 	 * When the service/task/command is done, this method can be called to populate the data.
 	 * @param list
 	 * @param source.

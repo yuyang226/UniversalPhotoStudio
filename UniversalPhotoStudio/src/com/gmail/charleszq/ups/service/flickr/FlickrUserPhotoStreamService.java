@@ -16,9 +16,9 @@ import com.googlecode.flickrjandroid.photos.PhotoList;
  * @author Charles(charleszq@gmail.com)
  *
  */
-public class FlickrMyPhotoStreamService extends FlickrAuthPhotoService {
+public class FlickrUserPhotoStreamService extends FlickrAuthPhotoService {
 	
-	public FlickrMyPhotoStreamService(String userId, String token, String secret) {
+	public FlickrUserPhotoStreamService(String userId, String token, String secret) {
 		super(userId, token, secret);
 	}
 

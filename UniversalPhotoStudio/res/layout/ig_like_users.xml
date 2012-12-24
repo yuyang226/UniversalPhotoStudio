@@ -22,11 +22,11 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:columnWidth="@dimen/ig_like_user_grid_item_size"
-        android:horizontalSpacing="@dimen/image_thumbnail_spacing"
+        android:horizontalSpacing="@dimen/like_user_grid_spacing"
         android:numColumns="auto_fit"
         android:padding="5dp"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="@dimen/image_thumbnail_spacing" >
+        android:verticalSpacing="@dimen/like_user_grid_spacing" >
     </GridView>
 
 </FrameLayout>

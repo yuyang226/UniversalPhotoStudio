@@ -5,8 +5,8 @@ package com.gmail.charleszq.ups.ui.command;
 
 import android.content.Context;
 
-import com.gmail.charleszq.ups.ui.adapter.CommandSectionListAdapter;
-import com.gmail.charleszq.ups.ui.adapter.CommandsSectionFilter;
+import com.gmail.charleszq.ups.ui.helper.CommandSectionListAdapter;
+import com.gmail.charleszq.ups.ui.helper.CommandsSectionFilter;
 
 /**
  * @author Charles(charleszq@gmail.com)

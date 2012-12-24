@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -24,13 +25,14 @@ import android.widget.Toast;
 
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
+import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.CheckUserLikePhotoTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrLikeTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLikePhotoTask;
-import com.gmail.charleszq.ups.ui.adapter.PhotoDetailViewPagerAdapter;
+import com.gmail.charleszq.ups.ui.helper.PhotoDetailViewPagerAdapter;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.viewpagerindicator.TitlePageIndicator;
 
@@ -185,6 +187,74 @@ public class PhotoDetailActivity extends FragmentActivity {
 			}
 		});
 		task.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());
+	}
+	
+	public void notifyDataChanged() {
+		if( mAdapter != null ) {
+			mAdapter.notifyDataSetChanged();
+		}
+	}
+	
+	void showUserPhotos(Author author) {
+		
+		boolean canClick = canClickUserAvator(author);
+		if (!canClick) {
+			return;
+		}
+		
+		Intent i = new Intent(this, UserPhotoListActivity.class);
+		i.putExtra(UserPhotoListActivity.MD_TYPE_KEY, mCurrentPhoto
+				.getMediaSource().ordinal());
+		i.putExtra(UserPhotoListActivity.USER_KEY,
+				author);
+		startActivity(i);
+	}
+	
+	/**
+	 * Before trying to show photos of a given user, check this.
+	 * @return
+	 */
+	private boolean canClickUserAvator( Author author ) {
+		boolean result = true;
+
+		UPSApplication app = (UPSApplication) getApplication();
+		switch (mCurrentPhoto.getMediaSource()) {
+		case INSTAGRAM:
+			if (app.getInstagramUserId() == null) {
+				Toast.makeText(this,
+						getString(R.string.pls_sing_in_first),
+						Toast.LENGTH_SHORT).show();
+				result = false;
+			} else {
+				if (app.getInstagramUserId().equals(
+						author.getUserId())) {
+					Toast.makeText(this,
+							getString(R.string.msg_your_own_photo),
+							Toast.LENGTH_SHORT).show();
+					result = false;
+				}
+			}
+			break;
+		case FLICKR:
+			if (app.getFlickrUserId() == null) {
+				Toast.makeText(this,
+						getString(R.string.pls_sing_in_first),
+						Toast.LENGTH_SHORT).show();
+				result = false;
+			} else {
+				if (app.getFlickrUserId().equals(
+						author.getUserId())) {
+					Toast.makeText(this,
+							getString(R.string.msg_your_own_photo),
+							Toast.LENGTH_SHORT).show();
+					result = false;
+				}
+			}
+			break;
+		case PX500:
+			break;
+		}
+		return result;
 	}
 
 }

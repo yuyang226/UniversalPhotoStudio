@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gmail.charleszq.ups.ui.adapter;
+package com.gmail.charleszq.ups.ui.helper;
 
 import java.util.List;
 

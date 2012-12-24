@@ -12,6 +12,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -36,7 +38,8 @@ import com.gmail.charleszq.ups.utils.ImageFetcher;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
+public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
+		implements OnItemClickListener {
 
 	private MediaObject mCurrentPhoto;
 	private List<Author> mAuthors = new ArrayList<Author>();
@@ -85,6 +88,7 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 		LikesListAdapter adapter = new LikesListAdapter(getActivity(),
 				mCurrentPhoto, mAuthors, mImageFetcher);
 		grid.setAdapter(adapter);
+		grid.setOnItemClickListener(this);
 		loadLikes(adapter);
 
 		return v;
@@ -191,6 +195,15 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher {
 				break;
 			}
 		}
+
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
+		Author user = (Author) parent.getAdapter().getItem(position);
+		PhotoDetailActivity act = (PhotoDetailActivity) getActivity();
+		act.showUserPhotos(user);
 
 	}
 }

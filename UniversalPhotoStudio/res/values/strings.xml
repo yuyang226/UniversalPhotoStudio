@@ -75,4 +75,5 @@
 	<string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
 	<string name="msg_not_support_yet">Not supported yet.</string>
 	<string name="msg_by_author_name">By</string>
+	<string name="msg_your_own_photo">This is your own photo.</string>
 </resources>

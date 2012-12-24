@@ -21,11 +21,11 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.dp.IPhotosProvider;
 import com.gmail.charleszq.ups.dp.SinglePagePhotosProvider;
 import com.gmail.charleszq.ups.model.MediaObjectCollection;
-import com.gmail.charleszq.ups.ui.adapter.OneTimeScrollListener;
-import com.gmail.charleszq.ups.ui.adapter.PhotoGridAdapter;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
+import com.gmail.charleszq.ups.ui.helper.OneTimeScrollListener;
+import com.gmail.charleszq.ups.ui.helper.PhotoGridAdapter;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.gmail.charleszq.ups.utils.ImageFetcher;
 
