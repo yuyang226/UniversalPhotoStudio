@@ -38,5 +38,25 @@
         android:layout_gravity="left|bottom"
         android:visibility="invisible"
          />
+    
+    <LinearLayout android:id="@+id/photo_detail_user_info"
+        android:visibility="invisible"
+        android:background="@color/color_trans"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:padding="8dp"
+        android:orientation="vertical">
+        <TextView android:id="@+id/photo_detail_photo_title"
+            android:layout_width="match_parent"
+            android:textColor="@android:color/white"
+            android:layout_height="wrap_content"/>
+        
+        <TextView android:id="@+id/photo_detail_author_name"
+            android:textColor="@android:color/white"
+            android:layout_marginTop="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 </FrameLayout>

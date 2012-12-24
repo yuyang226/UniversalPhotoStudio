@@ -80,6 +80,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 
 		loadImage();
 		checkUserLikeOrNot();
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -107,8 +108,11 @@ public class PhotoDetailActivity extends FragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(final MenuItem item) {
-		if (R.id.menu_item_like == item.getItemId()) {
-
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			return true;
+		case R.id.menu_item_like:
 			final ProgressDialog dialog = ProgressDialog.show(this, "", //$NON-NLS-1$
 					getString(R.string.msg_working));
 			dialog.setCanceledOnTouchOutside(true);
@@ -142,6 +146,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 				igtask.execute(mCurrentPhoto.getId(), likeActionString);
 				break;
 			}
+			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

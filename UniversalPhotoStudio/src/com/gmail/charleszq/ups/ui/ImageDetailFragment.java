@@ -39,6 +39,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capricorn.ArcMenu;
@@ -72,6 +73,9 @@ public class ImageDetailFragment extends Fragment implements
 	private ImageView mImageView;
 	private ImageFetcher mImageFetcher;
 	private ArcMenu mArcMenu;
+	private View mUserInfoContainer;
+	private TextView mPhotoTitle;
+	private TextView mUserName;
 
 	/**
 	 * The current pos of the image in the photo list.
@@ -110,6 +114,9 @@ public class ImageDetailFragment extends Fragment implements
 		if (mArcMenu != null) {
 			mArcMenu.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 		}
+		if( mUserInfoContainer != null ) {
+			mUserInfoContainer.setVisibility( show ? View.VISIBLE : View.INVISIBLE );
+		}
 	}
 
 	/**
@@ -147,6 +154,16 @@ public class ImageDetailFragment extends Fragment implements
 		final View v = inflater.inflate(R.layout.image_detail_fragment,
 				container, false);
 		mImageView = (ImageView) v.findViewById(R.id.imageView);
+		mUserInfoContainer = v.findViewById(R.id.photo_detail_user_info);
+		mPhotoTitle = (TextView) v.findViewById(R.id.photo_detail_photo_title);
+		mPhotoTitle.setText(mPhoto.getTitle() == null ? "" : mPhoto.getTitle()); //$NON-NLS-1$
+		mUserName = (TextView) v.findViewById(R.id.photo_detail_author_name);
+		StringBuilder sb = new StringBuilder();
+		sb.append(getString(R.string.msg_by_author_name));
+		sb.append(" "); //$NON-NLS-1$
+		sb.append(mPhoto.getAuthor().getUserName() == null ? mPhoto.getAuthor()
+				.getUserId() : mPhoto.getAuthor().getUserName());
+		mUserName.setText(sb.toString());
 		mArcMenu = (ArcMenu) v.findViewById(R.id.arc_menu);
 		initArcMenu();
 		return v;
@@ -201,9 +218,37 @@ public class ImageDetailFragment extends Fragment implements
 
 		ActionBar bar = getActivity().getActionBar();
 		mArcMenu.setVisibility(bar.isShowing() ? View.VISIBLE : View.INVISIBLE);
+		mUserInfoContainer.setVisibility(bar.isShowing() ? View.VISIBLE : View.INVISIBLE);
 	}
 
 	private boolean likePhoto() {
+
+		switch (mPhoto.getMediaSource()) {
+		case PX500:
+			Toast.makeText(getActivity(),
+					getString(R.string.msg_not_support_yet), Toast.LENGTH_SHORT)
+					.show();
+			return false;
+		case FLICKR:
+			UPSApplication app = (UPSApplication) getActivity()
+					.getApplication();
+			if (app.getFlickrUserId() == null) {
+				Toast.makeText(getActivity(),
+						getString(R.string.pls_sing_in_first),
+						Toast.LENGTH_SHORT).show();
+				return false;
+			}
+			break;
+		case INSTAGRAM:
+			app = (UPSApplication) getActivity().getApplication();
+			if (app.getInstagramUserId() == null) {
+				Toast.makeText(getActivity(),
+						getString(R.string.pls_sing_in_first),
+						Toast.LENGTH_SHORT).show();
+				return false;
+			}
+			break;
+		}
 
 		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
 		if (bmp == null) {
@@ -286,7 +331,23 @@ public class ImageDetailFragment extends Fragment implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (!menuItemClicked(item.getItemId())) {
+		int itemId = -1;
+		switch (item.getItemId()) {
+		case R.id.menu_item_like:
+			itemId = MENU_ITEM_LIKE;
+			break;
+		case R.id.menu_item_set_wallpaper:
+			itemId = MENU_ITEM_WALLPAPER;
+			break;
+		case R.id.menu_item_detail:
+			itemId = MENU_ITEM_DETAIL;
+			break;
+		case android.R.id.home:
+			itemId = item.getItemId();
+			break;
+		}
+
+		if (!menuItemClicked(itemId)) {
 			return super.onOptionsItemSelected(item);
 		}
 		return true;

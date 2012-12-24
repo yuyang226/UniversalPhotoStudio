@@ -4,6 +4,7 @@
 package com.gmail.charleszq.ups.ui;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 
 import com.gmail.charleszq.ups.R;
@@ -71,6 +72,12 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 				mLoadingMessageText.setVisibility(View.GONE);
 			}
 		}
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
 	}
 
 }

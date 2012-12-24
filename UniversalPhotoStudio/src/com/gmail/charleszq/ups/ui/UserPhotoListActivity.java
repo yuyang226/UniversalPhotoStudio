@@ -5,6 +5,7 @@ package com.gmail.charleszq.ups.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.MenuItem;
 
 import com.gmail.charleszq.ups.R;
 
@@ -23,5 +24,18 @@ public class UserPhotoListActivity extends FragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_photo_list_act);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 	}
+
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if( item.getItemId() == android.R.id.home ) {
+			finish();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+	
+	
 }

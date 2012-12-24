@@ -36,13 +36,14 @@
 
     <!-- option menu items -->
     <string name="action_bar_share_with" tools:ignore="TypographyEllipsis">Share With...</string>
+    <string name="menu_item_like_photo">Like</string>
+    <string name="menu_item_set_wallpaper">Set as Wallpaper</string>
+    <string name="menu_item_detail">See Details</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
     <string name="share_via">share from</string>
     <string name="loading_photos" tools:ignore="TypographyEllipsis">Loading...</string>
-    <string name="already_first_page">Already at the first page.</string>
-    <string name="already_last_page">No more pages.</string>
     <string name="msg_wallpaper_changed">Wallpaper changed.</string>
     <string name="like_photo_done">Liked!</string>
     
@@ -72,4 +73,6 @@
 	<string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
 	<string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
 	<string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
+	<string name="msg_not_support_yet">Not supported yet.</string>
+	<string name="msg_by_author_name">By</string>
 </resources>
