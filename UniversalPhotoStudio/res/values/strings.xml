@@ -39,6 +39,8 @@
     <string name="menu_item_like_photo">Like</string>
     <string name="menu_item_set_wallpaper">Set as Wallpaper</string>
     <string name="menu_item_detail">See Details</string>
+    <string name="menu_item_ig_follow_user">Follow</string>
+    <string name="menu_item_ig_unfollow_user">Unfollow</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
@@ -75,5 +77,6 @@
 	<string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
 	<string name="msg_not_support_yet">Not supported yet.</string>
 	<string name="msg_by_author_name">By</string>
-	<string name="msg_your_own_photo">This is your own photo.</string>
+	<string name="msg_your_own_photo">This is you.</string>
+	<string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
 </resources>

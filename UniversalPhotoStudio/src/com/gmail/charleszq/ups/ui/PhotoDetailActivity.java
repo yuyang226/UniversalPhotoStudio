@@ -31,6 +31,8 @@ import com.gmail.charleszq.ups.model.MediaSourceType;
 import com.gmail.charleszq.ups.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.ups.task.flickr.CheckUserLikePhotoTask;
 import com.gmail.charleszq.ups.task.flickr.FlickrLikeTask;
+import com.gmail.charleszq.ups.task.ig.InstagramCheckRelationshipTask;
+import com.gmail.charleszq.ups.task.ig.InstagramFollowUserTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLikePhotoTask;
 import com.gmail.charleszq.ups.ui.helper.PhotoDetailViewPagerAdapter;
 import com.gmail.charleszq.ups.utils.IConstants;
@@ -60,6 +62,11 @@ public class PhotoDetailActivity extends FragmentActivity {
 	 */
 	private boolean mUserLikeThePhoto = false;
 
+	/**
+	 * 0: don't know yet; 1: following; 2: not following
+	 */
+	private int mIsFollowing = 0;
+
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,7 +89,31 @@ public class PhotoDetailActivity extends FragmentActivity {
 
 		loadImage();
 		checkUserLikeOrNot();
+		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
+			checkRelationship();
+		}
 		getActionBar().setDisplayHomeAsUpEnabled(true);
+	}
+
+	private void checkRelationship() {
+		UPSApplication app = (UPSApplication) getApplication();
+		if (app.getInstagramUserId() == null) {
+			// not signed in
+			return;
+		} else {
+			InstagramCheckRelationshipTask task = new InstagramCheckRelationshipTask(
+					this);
+			task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
+
+				@Override
+				public void onTaskDone(Boolean result) {
+					mIsFollowing = result ? 1 : 2;
+					invalidateOptionsMenu();
+				}
+			});
+			task.execute(mCurrentPhoto.getAuthor().getUserId());
+		}
+
 	}
 
 	@Override
@@ -101,8 +132,25 @@ public class PhotoDetailActivity extends FragmentActivity {
 			item.setIcon(R.drawable.ic_fav_no);
 		}
 
+		// this menu item can only be visible if the photo is instagram and I've
+		// signed in.
+		MenuItem followItem = menu.findItem(R.id.menu_item_follow);
+		UPSApplication app = (UPSApplication) getApplication();
+		if (!MediaSourceType.INSTAGRAM.equals(mCurrentPhoto.getMediaSource())) {
+			followItem.setVisible(false);
+		} else {
+			followItem.setVisible(app.getInstagramUserId() != null);
+		}
+
+		followItem.setEnabled(mIsFollowing != 0);
+		if (mIsFollowing == 1) {
+			followItem.setTitle(getString(R.string.menu_item_ig_unfollow_user));
+		} else {
+			followItem.setTitle(getString(R.string.menu_item_ig_follow_user));
+		}
+
+		// disable like for px500 at this time.
 		if (mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
-			// disable like for px500 at this time.
 			item.setVisible(false);
 		}
 		return true;
@@ -114,15 +162,44 @@ public class PhotoDetailActivity extends FragmentActivity {
 		case android.R.id.home:
 			finish();
 			return true;
-		case R.id.menu_item_like:
-			final ProgressDialog dialog = ProgressDialog.show(this, "", //$NON-NLS-1$
+		case R.id.menu_item_follow:
+			final ProgressDialog dialog1 = ProgressDialog.show(this, "", //$NON-NLS-1$
 					getString(R.string.msg_working));
-			dialog.setCanceledOnTouchOutside(true);
+			dialog1.setCanceledOnTouchOutside(true);
+			IGeneralTaskDoneListener<Boolean> relationshipListener = new IGeneralTaskDoneListener<Boolean>() {
+
+				@Override
+				public void onTaskDone(Boolean result) {
+					if (dialog1 != null && dialog1.isShowing()) {
+						dialog1.dismiss();
+					}
+					if( result ) {
+						mIsFollowing = mIsFollowing == 1 ? 2 : 1;
+						invalidateOptionsMenu();
+					} else {
+						Toast.makeText(PhotoDetailActivity.this,
+								getString(R.string.msg_ig_chg_relationship_failed),
+								Toast.LENGTH_SHORT).show();
+					}
+				}
+			};
+			InstagramFollowUserTask followTask = new InstagramFollowUserTask(
+					this);
+			followTask.addTaskDoneListener(relationshipListener);
+			followTask.execute(
+					mCurrentPhoto.getAuthor().getUserId(),
+					mIsFollowing == 1 ? Boolean.FALSE.toString() : Boolean.TRUE
+							.toString());
+			return true;
+		case R.id.menu_item_like:
+			final ProgressDialog dialog2 = ProgressDialog.show(this, "", //$NON-NLS-1$
+					getString(R.string.msg_working));
+			dialog2.setCanceledOnTouchOutside(true);
 			IGeneralTaskDoneListener<Boolean> lis = new IGeneralTaskDoneListener<Boolean>() {
 				@Override
 				public void onTaskDone(Boolean result) {
-					if (dialog != null && dialog.isShowing()) {
-						dialog.dismiss();
+					if (dialog2 != null && dialog2.isShowing()) {
+						dialog2.dismiss();
 					}
 					if (result) {
 						mUserLikeThePhoto = !mUserLikeThePhoto;
@@ -188,46 +265,50 @@ public class PhotoDetailActivity extends FragmentActivity {
 		});
 		task.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());
 	}
-	
+
 	public void notifyDataChanged() {
-		if( mAdapter != null ) {
+		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged();
 		}
 	}
-	
+
+	/**
+	 * Called by inside fragments to show photos of the given
+	 * <code>author</code>.
+	 * 
+	 * @param author
+	 */
 	void showUserPhotos(Author author) {
-		
+
 		boolean canClick = canClickUserAvator(author);
 		if (!canClick) {
 			return;
 		}
-		
+
 		Intent i = new Intent(this, UserPhotoListActivity.class);
 		i.putExtra(UserPhotoListActivity.MD_TYPE_KEY, mCurrentPhoto
 				.getMediaSource().ordinal());
-		i.putExtra(UserPhotoListActivity.USER_KEY,
-				author);
+		i.putExtra(UserPhotoListActivity.USER_KEY, author);
 		startActivity(i);
 	}
-	
+
 	/**
 	 * Before trying to show photos of a given user, check this.
+	 * 
 	 * @return
 	 */
-	private boolean canClickUserAvator( Author author ) {
+	private boolean canClickUserAvator(Author author) {
 		boolean result = true;
 
 		UPSApplication app = (UPSApplication) getApplication();
 		switch (mCurrentPhoto.getMediaSource()) {
 		case INSTAGRAM:
 			if (app.getInstagramUserId() == null) {
-				Toast.makeText(this,
-						getString(R.string.pls_sing_in_first),
+				Toast.makeText(this, getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();
 				result = false;
 			} else {
-				if (app.getInstagramUserId().equals(
-						author.getUserId())) {
+				if (app.getInstagramUserId().equals(author.getUserId())) {
 					Toast.makeText(this,
 							getString(R.string.msg_your_own_photo),
 							Toast.LENGTH_SHORT).show();
@@ -237,13 +318,11 @@ public class PhotoDetailActivity extends FragmentActivity {
 			break;
 		case FLICKR:
 			if (app.getFlickrUserId() == null) {
-				Toast.makeText(this,
-						getString(R.string.pls_sing_in_first),
+				Toast.makeText(this, getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();
 				result = false;
 			} else {
-				if (app.getFlickrUserId().equals(
-						author.getUserId())) {
+				if (app.getFlickrUserId().equals(author.getUserId())) {
 					Toast.makeText(this,
 							getString(R.string.msg_your_own_photo),
 							Toast.LENGTH_SHORT).show();
