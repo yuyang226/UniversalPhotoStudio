@@ -263,6 +263,7 @@ public class ImageDetailFragment extends Fragment implements
 					Toast.makeText(getActivity(),
 							getActivity().getString(R.string.like_photo_done),
 							Toast.LENGTH_SHORT).show();
+					mPhoto.setUserLiked(true);
 				}
 			}
 		});
@@ -331,6 +332,21 @@ public class ImageDetailFragment extends Fragment implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		if( item.getItemId() == android.R.id.home ) {
+			return menuItemClicked(item.getItemId());
+		}
+		
+		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
+		if (bmp == null) {
+			Toast.makeText(getActivity(),
+					R.string.wait_for_image_loading, Toast.LENGTH_SHORT)
+					.show();
+			return false;
+		} else {
+			saveBitmapToShare(bmp);
+		}
+		
 		int itemId = -1;
 		switch (item.getItemId()) {
 		case R.id.menu_item_like:
@@ -341,9 +357,6 @@ public class ImageDetailFragment extends Fragment implements
 			break;
 		case R.id.menu_item_detail:
 			itemId = MENU_ITEM_DETAIL;
-			break;
-		case android.R.id.home:
-			itemId = item.getItemId();
 			break;
 		}
 
