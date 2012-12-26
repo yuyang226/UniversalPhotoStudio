@@ -7,9 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.model.GeoLocation;
 import com.gmail.charleszq.ups.model.MediaObject;
 import com.gmail.charleszq.ups.utils.IConstants;
@@ -77,9 +75,6 @@ public class PhotoDetailMapFragment extends SupportMapFragment {
 				map.addMarker(new MarkerOptions().position(pos));
 				map.moveCamera(CameraUpdateFactory.newLatLngZoom(pos, 8));
 			} else {
-				Toast.makeText(getActivity(),
-						getActivity().getString(R.string.photo_no_geo_info),
-						Toast.LENGTH_SHORT).show();
 			}
 		}
 	}

@@ -29,7 +29,7 @@
         android:id="@+id/imageView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:contentDescription="@string/imageview_description" />
+        android:contentDescription="@string/app_name" />
     
     <com.capricorn.ArcMenu
         android:id="@+id/arc_menu"

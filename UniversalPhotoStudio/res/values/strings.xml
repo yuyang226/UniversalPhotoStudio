@@ -2,7 +2,6 @@
 
     <string name="app_name">Photo Corner</string>
     <string name="no_network_connection_toast">No network connection found</string>
-    <string name="imageview_description">Image Thumbnail</string>
     <string name="f_interesting_photos">Interesting Photos</string>
     <string name="f_login">Sign In</string>
     <string name="f_my_photos">My Photos</string>
@@ -38,7 +37,7 @@
     <string name="action_bar_share_with" tools:ignore="TypographyEllipsis">Share With...</string>
     <string name="menu_item_like_photo">Like</string>
     <string name="menu_item_set_wallpaper">Set as Wallpaper</string>
-    <string name="menu_item_detail">See Details</string>
+    <string name="menu_item_detail">Details</string>
     <string name="menu_item_ig_follow_user">Follow</string>
     <string name="menu_item_ig_unfollow_user">Unfollow</string>
 
@@ -52,7 +51,7 @@
 	<!-- photo detail pager titles -->
 	<string name="flickr_detail_general_title">General</string>
 	<string name="flickr_detail_comments_title">Comments</string>
-	<string name="flickr_detail_exif_title">EXIF</string>
+	<string name="flickr_detail_exif_title">Exif</string>
 	<string name="flickr_detail_map">Map</string>
 	<string name="ig_like_users">Like Users</string>
 	
@@ -63,13 +62,11 @@
 	<string name="photo_no_title">NO TITLE</string>
 	<string name="photo_no_desc">NO DESCRIPTION</string>
 	<string name="photo_no_comments">No comment now.</string>
-	<string name="photo_no_exif">No EXIF Information.</string>
+	<string name="photo_no_exif">No Exif Information.</string>
 	<string name="photo_no_like_users">No likes now.</string>
 	<string name="msg_comment_added">Comment added.</string>
 	<string name="hint_add_comment">comment here.</string>
-	<string name="photo_no_geo_info">No GEO information.</string>
 	
-	<string name="btn_send_comment">Send</string>
 	<string name="pls_sing_in_first">Please sign in first.</string>
 	
 	<string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
