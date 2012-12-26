@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.ups.ui;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.gmail.charleszq.ups.task.flickr.FlickrGetPhotoGeneralInfoTask;
 import com.gmail.charleszq.ups.utils.IConstants;
 import com.gmail.charleszq.ups.utils.ModelUtils;
 import com.googlecode.flickrjandroid.photos.Photo;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 /**
  * Represents the fragment to show the detail information of photo, currently
@@ -54,11 +56,6 @@ public class PhotoDetailGeneralFragment extends
 		Bundle bundle = this.getArguments();
 		mCurrentPhoto = (MediaObject) bundle
 				.getSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY);
-
-		int thumbSize = getResources().getDimensionPixelSize(
-				R.dimen.cmd_icon_size);
-		initializeImageFetcher(IConstants.BUDDY_ICON_DIR, thumbSize);
-
 	}
 
 	@Override
@@ -107,8 +104,12 @@ public class PhotoDetailGeneralFragment extends
 				// try loading the buddy icon
 				if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM
 						|| mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
-					mImageFetcher.loadImage(mCurrentPhoto.getAuthor()
-							.getBuddyIconUrl(), image);
+					DisplayImageOptions imageDisplayOptions = new DisplayImageOptions.Builder()
+							.showStubImage(R.drawable.empty_photo)
+							.cacheInMemory()
+							.bitmapConfig(Bitmap.Config.RGB_565).build();
+					mImageFetcher.displayImage(mCurrentPhoto.getAuthor()
+							.getBuddyIconUrl(), image, imageDisplayOptions);
 				} else {
 					FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
 							getActivity(), mCurrentPhoto.getAuthor()

@@ -4,6 +4,7 @@
 package com.gmail.charleszq.ups.ui.helper;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -11,9 +12,12 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.dp.IPhotosProvider;
 import com.gmail.charleszq.ups.model.MediaObject;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -23,22 +27,30 @@ public class PhotoGridAdapter extends BaseAdapter {
 
 	private Context mContext;
 	private IPhotosProvider mPhotos;
-	private ImageFetcher mImageFetcher;
+	private ImageLoader mImageFetcher;
 
 	private int mNumColumns = 0;
 	private int mItemHeight;
 	private android.widget.AbsListView.LayoutParams mImageViewLayoutParams;
 
+	private DisplayImageOptions mImageDisplayOptions;
+
 	/**
 	 * 
 	 */
 	public PhotoGridAdapter(Context context, IPhotosProvider provider,
-			ImageFetcher fetcher) {
+			ImageLoader fetcher) {
 		this.mContext = context;
 		this.mPhotos = provider;
 		this.mImageFetcher = fetcher;
+		mImageFetcher.init(ImageLoaderConfiguration.createDefault(context));
 		mImageViewLayoutParams = new GridView.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+		mImageDisplayOptions = new DisplayImageOptions.Builder()
+				.showStubImage(R.drawable.empty_photo)
+				.showImageForEmptyUri(R.drawable.empty_photo).cacheInMemory()
+				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565).build();
 	}
 
 	/*
@@ -96,7 +108,8 @@ public class PhotoGridAdapter extends BaseAdapter {
 
 		MediaObject photo = mPhotos.getMediaObject(position);
 		if (photo != null)
-			mImageFetcher.loadImage(photo.getThumbUrl(), imageView);
+			// mImageFetcher.loadImage(photo.getThumbUrl(), imageView);
+			mImageFetcher.displayImage(photo.getThumbUrl(), imageView, mImageDisplayOptions);
 		return imageView;
 	}
 
@@ -111,7 +124,7 @@ public class PhotoGridAdapter extends BaseAdapter {
 		mItemHeight = height;
 		mImageViewLayoutParams = new GridView.LayoutParams(
 				LayoutParams.MATCH_PARENT, mItemHeight);
-		mImageFetcher.setImageSize(height);
+		// mImageFetcher.setImageSize(height);
 		notifyDataSetChanged();
 	}
 

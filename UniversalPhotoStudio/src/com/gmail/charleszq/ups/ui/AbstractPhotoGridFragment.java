@@ -27,7 +27,6 @@ import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 import com.gmail.charleszq.ups.ui.helper.OneTimeScrollListener;
 import com.gmail.charleszq.ups.ui.helper.PhotoGridAdapter;
 import com.gmail.charleszq.ups.utils.IConstants;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -125,14 +124,10 @@ public abstract class AbstractPhotoGridFragment extends
 		mGridView = (GridView) v.findViewById(R.id.grid_user_photos);
 		mLoadingMessageText = (TextView) v.findViewById(R.id.txt_user_info);
 
-		if (mImageFetcher == null) {
-			mImageThumbSize = getResources().getDimensionPixelSize(
-					R.dimen.image_thumbnail_size);
-			mImageThumbSpacing = getResources().getDimensionPixelSize(
-					R.dimen.image_thumbnail_spacing);
-			initializeImageFetcher(IConstants.IMAGE_THUMBS_CACHE_DIR,
-					mImageThumbSize);
-		}
+		mImageThumbSize = getResources().getDimensionPixelSize(
+				R.dimen.image_thumbnail_size);
+		mImageThumbSpacing = getResources().getDimensionPixelSize(
+				R.dimen.image_thumbnail_spacing);
 
 		if (mAdapter == null) {
 			mAdapter = new PhotoGridAdapter(getActivity(), mPhotosProvider,
@@ -140,7 +135,7 @@ public abstract class AbstractPhotoGridFragment extends
 		}
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnItemClickListener(this);
-		mScrollListener = new GridOnScrollListener(this, mImageFetcher);
+		mScrollListener = new GridOnScrollListener(this);
 		mGridView.setOnScrollListener(mScrollListener);
 
 		// This listener is used to get the final width of the GridView and then
@@ -236,23 +231,14 @@ public abstract class AbstractPhotoGridFragment extends
 	protected static class GridOnScrollListener extends OneTimeScrollListener {
 
 		private AbstractPhotoGridFragment mFragment;
-		private ImageFetcher mImageFetcher;
 
-		protected GridOnScrollListener(AbstractPhotoGridFragment fragment,
-				ImageFetcher fetcher) {
+		protected GridOnScrollListener(AbstractPhotoGridFragment fragment) {
 			this.mFragment = fragment;
-			this.mImageFetcher = fetcher;
 		}
 
 		@Override
 		public void onScrollStateChanged(AbsListView absListView,
 				int scrollState) {
-			// Pause fetcher to ensure smoother scrolling when flinging
-			if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-				mImageFetcher.setPauseWork(true);
-			} else {
-				mImageFetcher.setPauseWork(false);
-			}
 		}
 
 		@Override

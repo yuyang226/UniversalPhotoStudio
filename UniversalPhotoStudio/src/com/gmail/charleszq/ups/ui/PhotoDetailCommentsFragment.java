@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -39,8 +40,9 @@ import com.gmail.charleszq.ups.task.ig.InstagramAddPhotoCommentTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLoadCommentsTask;
 import com.gmail.charleszq.ups.task.px500.PxFetchPhotoCommentsTask;
 import com.gmail.charleszq.ups.utils.IConstants;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
 import com.gmail.charleszq.ups.utils.ModelUtils;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -77,11 +79,6 @@ public class PhotoDetailCommentsFragment extends
 		Bundle bundle = this.getArguments();
 		mCurrentPhoto = (MediaObject) bundle
 				.getSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY);
-
-		int thumbSize = getResources().getDimensionPixelSize(
-				R.dimen.cmd_icon_size);
-		initializeImageFetcher(IConstants.BUDDY_ICON_DIR, thumbSize);
-
 	}
 
 	@Override
@@ -107,15 +104,16 @@ public class PhotoDetailCommentsFragment extends
 					KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEND) {
 					CharSequence commentText = v.getText();
-					Log.e(getClass().getName(),"Comment: " + commentText); //$NON-NLS-1$
+					Log.e(getClass().getName(), "Comment: " + commentText); //$NON-NLS-1$
 					sendComment(commentText);
 				}
 				return false;
 			}
 		});
-		mSendComment.setVisibility(isUserLoggedIn()
-				&& MediaSourceType.FLICKR.equals(mCurrentPhoto
-						.getMediaSource()) ? View.VISIBLE : View.GONE);
+		mSendComment
+				.setVisibility(isUserLoggedIn()
+						&& MediaSourceType.FLICKR.equals(mCurrentPhoto
+								.getMediaSource()) ? View.VISIBLE : View.GONE);
 
 		return view;
 	}
@@ -261,15 +259,22 @@ public class PhotoDetailCommentsFragment extends
 
 		private List<MediaObjectComment> mComments;
 		private Context mContext;
-		private ImageFetcher mFetcher;
+		private ImageLoader mFetcher;
 		private MediaObject mPhoto;
+		private DisplayImageOptions mImageDisplayOptions;
 
 		CommentListAdapter(Context context, MediaObject photo,
-				List<MediaObjectComment> comments, ImageFetcher fetcher) {
+				List<MediaObjectComment> comments, ImageLoader fetcher) {
 			mContext = context;
 			mComments = comments;
 			mFetcher = fetcher;
 			mPhoto = photo;
+
+			mImageDisplayOptions = new DisplayImageOptions.Builder()
+					.showStubImage(R.drawable.empty_photo)
+					.showImageForEmptyUri(R.drawable.empty_photo)
+					.cacheInMemory().cacheOnDisc()
+					.bitmapConfig(Bitmap.Config.RGB_565).build();
 		}
 
 		@Override
@@ -320,12 +325,12 @@ public class PhotoDetailCommentsFragment extends
 			switch (type) {
 			case INSTAGRAM:
 				String buddyIcon = comment.getAuthor().getBuddyIconUrl();
-				mFetcher.loadImage(buddyIcon, image);
+				mFetcher.displayImage(buddyIcon, image, mImageDisplayOptions);
 				break;
 			case FLICKR:
 				String url = comment.getAuthor().getBuddyIconUrl();
 				if (url != null) {
-					mFetcher.loadImage(url, image);
+					mFetcher.displayImage(url, image, mImageDisplayOptions);
 				} else {
 					FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
 							mContext, comment.getAuthor().getUserId());
@@ -333,7 +338,8 @@ public class PhotoDetailCommentsFragment extends
 				}
 				break;
 			case PX500:
-				mFetcher.loadImage(comment.getAuthor().getBuddyIconUrl(), image);
+				mFetcher.displayImage(comment.getAuthor().getBuddyIconUrl(),
+						image, mImageDisplayOptions);
 				break;
 			}
 		}
@@ -348,8 +354,9 @@ public class PhotoDetailCommentsFragment extends
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		MediaObjectComment comment = (MediaObjectComment) parent.getAdapter().getItem(position);
+		MediaObjectComment comment = (MediaObjectComment) parent.getAdapter()
+				.getItem(position);
 		PhotoDetailActivity act = (PhotoDetailActivity) getActivity();
-		act.showUserPhotos( comment.getAuthor());
+		act.showUserPhotos(comment.getAuthor());
 	}
 }

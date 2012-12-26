@@ -33,26 +33,6 @@ public interface IConstants {
 	static final String DEF_PREF_NAME = "ups_flickr"; //$NON-NLS-1$
 
 	/**
-	 * cache folder name for commands, mainly photo set, group and gallery.
-	 */
-	static final String CMD_ICON_CACHE_DIR = "cmdicon"; //$NON-NLS-1$
-	
-	/**
-	 * cache folder for buddy icons
-	 */
-	static final String BUDDY_ICON_DIR = "buddyicon"; //$NON-NLS-1$
-	
-	/**
-	 * Cache folder name for image thumbs
-	 */
-	static final String IMAGE_THUMBS_CACHE_DIR = "thumbs"; //$NON-NLS-1$
-	
-	/**
-	 * Cache folder name for large image
-	 */
-	static final String IMAGE_CACHE_DIR = "images"; //$NON-NLS-1$
-
-	/**
 	 * Instagram oauth scheme, these constants cannot be modified, they are
 	 * defined in the client app of instagram.
 	 */

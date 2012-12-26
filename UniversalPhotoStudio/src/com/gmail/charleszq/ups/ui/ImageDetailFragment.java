@@ -51,9 +51,11 @@ import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.ups.ui.command.LikePhotoCommand;
 import com.gmail.charleszq.ups.utils.IConstants;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
 import com.gmail.charleszq.ups.utils.ImageUtils;
-import com.gmail.charleszq.ups.utils.ImageWorker;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 
 /**
  * This fragment will populate the children of the ViewPager from
@@ -71,7 +73,7 @@ public class ImageDetailFragment extends Fragment implements
 	private String mImageUrl;
 	private MediaObject mPhoto;
 	private ImageView mImageView;
-	private ImageFetcher mImageFetcher;
+	private ImageLoader mImageFetcher;
 	private ArcMenu mArcMenu;
 	private View mUserInfoContainer;
 	private TextView mPhotoTitle;
@@ -81,6 +83,39 @@ public class ImageDetailFragment extends Fragment implements
 	 * The current pos of the image in the photo list.
 	 */
 	private int mCurrentPos;
+
+	/**
+	 * The image display options
+	 */
+	private DisplayImageOptions mImageDisplayOptions;
+
+	private Bitmap mLoadedBitmap = null;
+
+	/**
+	 * The image laoder listener.
+	 */
+	private ImageLoadingListener mImageLoaderListener = new ImageLoadingListener() {
+
+		@Override
+		public void onLoadingStarted() {
+			mLoadedBitmap = null;
+		}
+
+		@Override
+		public void onLoadingFailed(FailReason failReason) {
+			mLoadedBitmap = null;
+		}
+
+		@Override
+		public void onLoadingComplete(Bitmap loadedImage) {
+			mLoadedBitmap = loadedImage;
+		}
+
+		@Override
+		public void onLoadingCancelled() {
+			mLoadedBitmap = null;
+		}
+	};
 
 	private IActionBarVisibleListener mActionBarListener = new IActionBarVisibleListener() {
 
@@ -114,8 +149,9 @@ public class ImageDetailFragment extends Fragment implements
 		if (mArcMenu != null) {
 			mArcMenu.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
 		}
-		if( mUserInfoContainer != null ) {
-			mUserInfoContainer.setVisibility( show ? View.VISIBLE : View.INVISIBLE );
+		if (mUserInfoContainer != null) {
+			mUserInfoContainer.setVisibility(show ? View.VISIBLE
+					: View.INVISIBLE);
 		}
 	}
 
@@ -123,7 +159,7 @@ public class ImageDetailFragment extends Fragment implements
 	 * Empty constructor as per the Fragment documentation
 	 */
 	public ImageDetailFragment() {
-
+		mLoadedBitmap = null;
 	}
 
 	/**
@@ -134,6 +170,11 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		mImageDisplayOptions = new DisplayImageOptions.Builder()
+				.showStubImage(R.drawable.empty_photo).cacheInMemory()
+				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565).build();
+
 		mImageUrl = getArguments() != null ? getArguments().getString(
 				IMAGE_DATA_EXTRA) : null;
 		int pos = (getArguments() != null ? getArguments()
@@ -174,17 +215,17 @@ public class ImageDetailFragment extends Fragment implements
 
 			@Override
 			public void onClick(View v) {
-				Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
-				if (bmp == null) {
+				if (mLoadedBitmap == null) {
 					Toast.makeText(getActivity(),
 							R.string.wait_for_image_loading, Toast.LENGTH_SHORT)
 							.show();
 					return;
+				} else {
+					saveBitmapToShare(mLoadedBitmap);
 				}
 
 				Integer tag = (Integer) v.getTag();
 				if (tag != null) {
-					saveBitmapToShare(bmp);
 					if (tag == R.id.menu_item_share_action_provider_action_bar) {
 						Intent i = createShareIntent();
 						getActivity().startActivity(i);
@@ -218,7 +259,8 @@ public class ImageDetailFragment extends Fragment implements
 
 		ActionBar bar = getActivity().getActionBar();
 		mArcMenu.setVisibility(bar.isShowing() ? View.VISIBLE : View.INVISIBLE);
-		mUserInfoContainer.setVisibility(bar.isShowing() ? View.VISIBLE : View.INVISIBLE);
+		mUserInfoContainer.setVisibility(bar.isShowing() ? View.VISIBLE
+				: View.INVISIBLE);
 	}
 
 	private boolean likePhoto() {
@@ -250,8 +292,7 @@ public class ImageDetailFragment extends Fragment implements
 			break;
 		}
 
-		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
-		if (bmp == null) {
+		if (mLoadedBitmap == null) {
 			return false; // image not loaded yet.
 		}
 
@@ -286,7 +327,8 @@ public class ImageDetailFragment extends Fragment implements
 		if (ImageDetailActivity.class.isInstance(getActivity())) {
 			mImageFetcher = ((ImageDetailActivity) getActivity())
 					.getImageFetcher();
-			mImageFetcher.loadImage(mImageUrl, mImageView);
+			mImageFetcher.displayImage(mImageUrl, mImageView,
+					mImageDisplayOptions, mImageLoaderListener);
 		}
 
 		// Pass clicks on the ImageView to the parent activity to handle
@@ -298,8 +340,6 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public void onDestroy() {
 		if (mImageView != null) {
-			// Cancel any pending image work
-			ImageWorker.cancelWork(mImageView);
 			mImageView.setImageDrawable(null);
 		}
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
@@ -310,6 +350,7 @@ public class ImageDetailFragment extends Fragment implements
 
 	@Override
 	public void onDetach() {
+		mLoadedBitmap = null;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		act.removeActionBarListener(mActionBarListener);
 		super.onDetach();
@@ -332,21 +373,19 @@ public class ImageDetailFragment extends Fragment implements
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		
-		if( item.getItemId() == android.R.id.home ) {
+
+		if (item.getItemId() == android.R.id.home) {
 			return menuItemClicked(item.getItemId());
 		}
-		
-		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
-		if (bmp == null) {
-			Toast.makeText(getActivity(),
-					R.string.wait_for_image_loading, Toast.LENGTH_SHORT)
-					.show();
+
+		if (mLoadedBitmap == null) {
+			Toast.makeText(getActivity(), R.string.wait_for_image_loading,
+					Toast.LENGTH_SHORT).show();
 			return false;
 		} else {
-			saveBitmapToShare(bmp);
+			saveBitmapToShare(mLoadedBitmap);
 		}
-		
+
 		int itemId = -1;
 		switch (item.getItemId()) {
 		case R.id.menu_item_like:
@@ -380,8 +419,6 @@ public class ImageDetailFragment extends Fragment implements
 			likePhoto();
 			return true;
 		case MENU_ITEM_WALLPAPER:
-			Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
-			saveBitmapToShare(bmp);
 			WallpaperManager wm = WallpaperManager.getInstance(getActivity());
 			FileInputStream fis = null;
 			try {
@@ -434,9 +471,9 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public boolean onShareTargetSelected(ShareActionProvider source,
 			Intent intent) {
-		Bitmap bmp = mImageFetcher.getBitmapFromCache(mImageUrl);
-		if (bmp != null) {
-			saveBitmapToShare(bmp);
+		if (mLoadedBitmap != null) {
+			saveBitmapToShare(mLoadedBitmap);
+			return true;
 		}
 		return false;
 	}

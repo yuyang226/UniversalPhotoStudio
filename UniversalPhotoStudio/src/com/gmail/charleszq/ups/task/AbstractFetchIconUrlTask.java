@@ -7,10 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.widget.ImageView;
 
-import com.gmail.charleszq.ups.utils.ImageFetcher;
+import com.gmail.charleszq.ups.R;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Represents the task to fetch the icon url from the server side.
@@ -29,7 +32,7 @@ public abstract class AbstractFetchIconUrlTask extends
 	 * Should be an activity, so we can get access to Application.
 	 */
 	protected Context mContext;
-	protected ImageFetcher mImageFetcher;
+	protected ImageLoader mImageFetcher;
 	protected ImageView mImageView;
 
 	public AbstractFetchIconUrlTask(Context ctx) {
@@ -39,18 +42,21 @@ public abstract class AbstractFetchIconUrlTask extends
 	@Override
 	protected void onPostExecute(String result) {
 		if (result != null) {
-			logger.debug( "Fetching command icon: " + result ); //$NON-NLS-1$
+			logger.debug("Fetching command icon: " + result); //$NON-NLS-1$
 			if (mImageFetcher != null && mImageView != null) {
-				mImageFetcher.loadImage(result, mImageView);
+				DisplayImageOptions options = new DisplayImageOptions.Builder()
+						.showStubImage(R.drawable.empty_photo).cacheInMemory()
+						.bitmapConfig(Bitmap.Config.RGB_565).build();
+				mImageFetcher.displayImage(result, mImageView,options);
 			}
 		}
 	}
-	
+
 	protected void beforeExecute(Object... params) {
-		if( params.length == 2 ) {
-			mImageFetcher = (ImageFetcher) params[0];
+		if (params.length == 2) {
+			mImageFetcher = (ImageLoader) params[0];
 			mImageView = (ImageView) params[1];
 		}
 	}
-	
+
 }

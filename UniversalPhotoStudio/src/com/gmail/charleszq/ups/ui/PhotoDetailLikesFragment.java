@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,7 +31,8 @@ import com.gmail.charleszq.ups.task.flickr.FetchFlickrUserIconUrlTask;
 import com.gmail.charleszq.ups.task.flickr.GetFlickrPhotoFavUsersTask;
 import com.gmail.charleszq.ups.task.ig.InstagramLoadLikesTask;
 import com.gmail.charleszq.ups.utils.IConstants;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * Represents the fragment to show the users who like a photo.
@@ -69,9 +71,6 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 		mCurrentPhoto = (MediaObject) bundle
 				.getSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY);
 
-		int thumbSize = getResources().getDimensionPixelSize(
-				R.dimen.cmd_icon_size);
-		initializeImageFetcher(IConstants.BUDDY_ICON_DIR, thumbSize);
 		this.setRetainInstance(true);
 
 	}
@@ -134,12 +133,12 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 	private static class LikesListAdapter extends BaseAdapter {
 
 		private Context mContext;
-		private ImageFetcher mFetcher;
+		private ImageLoader mFetcher;
 		private List<Author> mLikeUsers;
 		private MediaObject mCurrentPhoto;
 
 		LikesListAdapter(Context context, MediaObject photo,
-				List<Author> mAuthors, ImageFetcher fetcher) {
+				List<Author> mAuthors, ImageLoader fetcher) {
 			mContext = context;
 			mFetcher = fetcher;
 			mLikeUsers = mAuthors;
@@ -186,7 +185,10 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 			switch (type) {
 			case INSTAGRAM:
 				String buddyIcon = user.getBuddyIconUrl();
-				mFetcher.loadImage(buddyIcon, image);
+				DisplayImageOptions imageDisplayOptions = new DisplayImageOptions.Builder()
+						.showStubImage(R.drawable.empty_photo).cacheInMemory()
+						.bitmapConfig(Bitmap.Config.RGB_565).build();
+				mFetcher.displayImage(buddyIcon, image, imageDisplayOptions);
 				break;
 			case FLICKR:
 				FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(

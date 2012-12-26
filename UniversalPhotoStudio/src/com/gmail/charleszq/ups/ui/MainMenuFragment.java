@@ -20,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
@@ -115,39 +116,31 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			Bundle savedInstanceState) {
 		this.setRetainInstance(true);
 
-		int thumbSize = getResources().getDimensionPixelSize(
-				R.dimen.cmd_icon_size);
-
-		initializeImageFetcher(IConstants.CMD_ICON_CACHE_DIR, thumbSize);
-		mImageFetcher.setLoadingImage(R.drawable.icon);
-
 		View v = inflater.inflate(R.layout.main_menu, null);
 		ListView lv = (ListView) v.findViewById(R.id.listView1);
-		lv.setOnScrollListener(new AbsListView.OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView absListView,
-					int scrollState) {
-				// Pause fetcher to ensure smoother scrolling when flinging
-				if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
-					mImageFetcher.setPauseWork(true);
-				} else {
-					mImageFetcher.setPauseWork(false);
-				}
-			}
-
-			@Override
-			public void onScroll(AbsListView absListView, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-
-			}
-		});
 
 		mSectionAdapter = new CommandSectionListAdapter(getActivity(),
 				mImageFetcher);
 		prepareSections();
 
 		lv.setAdapter(mSectionAdapter);
+		lv.setOnScrollListener(new OnScrollListener() {
+
+			@Override
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
+					MainMenuFragment.this.mImageFetcher.resume();
+				} else {
+					MainMenuFragment.this.mImageFetcher.pause();
+				}
+			}
+
+			@Override
+			public void onScroll(AbsListView view, int firstVisibleItem,
+					int visibleItemCount, int totalItemCount) {
+
+			}
+		});
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
@@ -308,7 +301,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			command.setCommandCategory(headerName);
 			commands.add(command);
 
-			UPSApplication app = (UPSApplication) getActivity().getApplication();
+			UPSApplication app = (UPSApplication) getActivity()
+					.getApplication();
 			String myUserId = app.getInstagramUserId();
 			Author a = new Author();
 			a.setUserId(myUserId);
@@ -332,9 +326,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		commands.add(command);
 
 		if (!isUserAuthedPx500()) {
-//			command = new PxSignInCommand(getActivity());
-//			command.setCommandCategory(headerName);
-//			commands.add(command);
+			// command = new PxSignInCommand(getActivity());
+			// command.setCommandCategory(headerName);
+			// commands.add(command);
 		}
 
 		command = new PxPopularPhotosCommand(getActivity());
@@ -344,11 +338,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		command = new PxEditorsPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
-		
+
 		command = new PxUpcomingPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
-		
+
 		command = new PxFreshTodayPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
@@ -435,7 +429,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private void px500Auth(Uri pxUri) {
-		//TODO 500px oauth
+		// TODO 500px oauth
 	}
 
 	/**
@@ -461,7 +455,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				});
 				task.execute(code);
 			} else {
-				Log.e(getClass().getName(),"Instagram request token code not returned."); //$NON-NLS-1$
+				Log.e(getClass().getName(),
+						"Instagram request token code not returned."); //$NON-NLS-1$
 			}
 		}
 	}

@@ -19,7 +19,7 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.ups.ui.command.ICommand;
 import com.gmail.charleszq.ups.ui.command.MenuSectionHeaderCommand;
-import com.gmail.charleszq.ups.utils.ImageFetcher;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author Charles(charleszq@gmail.com)
@@ -41,12 +41,12 @@ public class CommandSectionListAdapter extends BaseAdapter {
 	List<ICommand<?>> mAllCommands;
 
 	private Context mContext;
-	private ImageFetcher mImageFetcher;
+	private ImageLoader mImageFetcher;
 
 	/**
 	 * Constructor.
 	 */
-	public CommandSectionListAdapter(Context ctx, ImageFetcher fetcher) {
+	public CommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
 		mContext = ctx;
 		mImageFetcher = fetcher;
 		mCommands = new ArrayList<ICommand<?>>();
@@ -143,7 +143,7 @@ public class CommandSectionListAdapter extends BaseAdapter {
 			image.setImageDrawable(mContext.getResources().getDrawable(iconId));
 		} else {
 			image.setImageDrawable(mContext.getResources().getDrawable(
-					R.drawable.icon));
+					R.drawable.empty_photo));
 			AbstractFetchIconUrlTask task = (AbstractFetchIconUrlTask) command
 					.getAdapter(AbstractFetchIconUrlTask.class);
 			if (task != null) {

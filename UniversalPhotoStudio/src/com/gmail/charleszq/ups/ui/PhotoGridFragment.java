@@ -74,7 +74,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		mPhotosProvider.loadData(photos, command);
 		mAdapter.notifyDataSetChanged();
 		if (mGridView != null) {
-			mScrollListener = new GridOnScrollListener(this, mImageFetcher);
+			mScrollListener = new GridOnScrollListener(this);
 			mGridView.setOnScrollListener(mScrollListener);
 		}
 		if (mLoadingMessageText != null) {
