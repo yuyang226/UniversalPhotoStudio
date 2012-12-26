@@ -67,6 +67,10 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 		command = new AboutCommand(getActivity());
 		commands.add(command);
+		
+//		command = new HelpCommand(getActivity());
+//		commands.add(command);
+		
 		mSectionAdapter.addCommands(commands);
 		mSectionAdapter.notifyDataSetChanged();
 	}

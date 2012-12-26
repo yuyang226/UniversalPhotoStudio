@@ -72,16 +72,12 @@
         <activity android:name=".ui.PhotoDetailActivity" >
         </activity>
 
-        <!-- charleszq dev key -->
-        <!-- <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyBNE-g4i9-7ruguehwgiOxHa2FUBbOZ58s" /> -->
         <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBdIjutWHvtOnqjgIv_baio7XGzUn4Orr8" />
-        <activity android:name="com.gmail.charleszq.ups.ui.UserPhotoListActivity"></activity>
-        <activity android:name="AboutActivity"></activity>
+        <activity android:name=".ui.UserPhotoListActivity"></activity>
+        <activity android:name=".ui.AboutActivity"></activity>
     </application>
 
 </manifest>

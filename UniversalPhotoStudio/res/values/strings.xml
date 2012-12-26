@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     
     <string name="about_file_name">about.html</string>
+    <string name="help_file_name">help.html</string>
 
     <string name="app_name">Photo Corner</string>
     <string name="no_network_connection_toast">No network connection found</string>
@@ -106,5 +107,11 @@
 	<string name="cd_ig_my_likes">Instagram: My Likes</string>
 	<string name="cd_ig_my_photos">Instagram: My Photos</string>
 	<string name="cd_ig_user_photos">Instagram: Photos of \'%s\'</string>
+	
+	<!-- use my own ig client -->
+	<string name="ig_client_id">Client ID</string>
+	<string name="ig_client_secret">Client Secret</string>
+	<string name="btn_help">Help</string>
+	<string name="btn_ok">OK</string>
 	
 </resources>

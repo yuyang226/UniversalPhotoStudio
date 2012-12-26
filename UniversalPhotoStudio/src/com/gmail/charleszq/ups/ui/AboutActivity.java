@@ -1,19 +1,22 @@
 /**
  * 
  */
-package com.gmail.charleszq.ups;
+package com.gmail.charleszq.ups.ui;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
+
+import com.gmail.charleszq.ups.utils.IConstants;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -22,11 +25,16 @@ import android.webkit.WebView;
 public class AboutActivity extends FragmentActivity {
 
 	private WebView mWebView;
+	private String mFileName;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		Intent i = getIntent();
+		mFileName = i.getStringExtra(IConstants.ABOUT_FILE_FRG_ARG_KEY);
+		
 		mWebView = new WebView(this);
 		mWebView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT));
@@ -40,8 +48,7 @@ public class AboutActivity extends FragmentActivity {
 		AssetManager am = getAssets();
 		InputStream is = null;
 		try {
-			String htmlFile = getString(R.string.about_file_name);
-			is = am.open(htmlFile);
+			is = am.open(mFileName);
 			BufferedReader reader = new BufferedReader(
 					new InputStreamReader(is));
 			StringBuilder sb = new StringBuilder();
@@ -50,7 +57,7 @@ public class AboutActivity extends FragmentActivity {
 				sb.append((char) ch);
 				ch = reader.read();
 			}
-			mWebView.loadDataWithBaseURL(htmlFile, sb.toString(),
+			mWebView.loadDataWithBaseURL(mFileName, sb.toString(),
 					"text/html", "utf-8", null); //$NON-NLS-1$//$NON-NLS-2$
 		} catch (IOException e) {
 		} finally {
