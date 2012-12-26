@@ -33,7 +33,7 @@ public class Author implements Serializable {
 		this.userId = userId;
 	}
 	public String getUserName() {
-		return userName;
+		return userName == null ? userId : userName;
 	}
 	public void setUserName(String userName) {
 		this.userName = userName;

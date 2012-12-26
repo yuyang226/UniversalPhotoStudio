@@ -38,6 +38,12 @@ public interface ICommand<T> {
 	 * @return
 	 */
 	String getLabel();
+	
+	/**
+	 * Gets the full description of the command.
+	 * @return
+	 */
+	String getDescription();
 
 	/**
 	 * <ul>

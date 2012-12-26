@@ -111,4 +111,9 @@ public abstract class AbstractCommand<T> implements ICommand<T> {
 		return mCommandCategory;
 	}
 
+	@Override
+	public String getDescription() {
+		return getLabel();
+	}
+
 }

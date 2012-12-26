@@ -104,8 +104,6 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
 	@Override
 	protected void loadFirstPage() {
-		// donothing here, since the first page will be populated with
-		// 'populatePhotoList'
 	}
 
 	@Override

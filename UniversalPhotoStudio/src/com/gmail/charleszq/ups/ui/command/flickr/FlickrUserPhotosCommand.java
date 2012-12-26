@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.ups.ui.command.flickr;
 
+import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.flickr.FlickrUserPhotoStreamService;
@@ -39,6 +40,12 @@ public class FlickrUserPhotosCommand extends MyFlickrPhotosCommand {
 			return mCurrentPhotoService;
 		}
 		return super.getAdapter(adapterClass);
+	}
+	
+	@Override
+	public String getDescription() {
+		String s = mContext.getString(R.string.cd_flickr_user_photos);
+		return String.format(s, mUserId);
 	}
 
 }

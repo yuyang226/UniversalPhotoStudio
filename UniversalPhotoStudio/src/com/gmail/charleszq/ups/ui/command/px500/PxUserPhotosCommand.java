@@ -5,6 +5,7 @@ package com.gmail.charleszq.ups.ui.command.px500;
 
 import android.content.Context;
 
+import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.px500.PxUserPhotosService;
 import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
@@ -51,6 +52,12 @@ public class PxUserPhotosCommand extends PhotoListCommand {
 			return new PxUserPhotosService(mUserId);
 		}
 		return super.getAdapter(adapterClass);
+	}
+	
+	@Override
+	public String getDescription() {
+		String s = mContext.getString(R.string.cd_500px_user_photos);
+		return String.format(s, mUserId);
 	}
 
 }

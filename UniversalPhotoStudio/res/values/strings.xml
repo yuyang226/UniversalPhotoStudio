@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="app_name">PHOTO CORNER</string>
+    <string name="app_name">Photo Corner</string>
     <string name="no_network_connection_toast">No network connection found</string>
     <string name="imageview_description">Image Thumbnail</string>
     <string name="f_interesting_photos">Interesting Photos</string>
@@ -79,4 +79,31 @@
 	<string name="msg_by_author_name">By</string>
 	<string name="msg_your_own_photo">This is you.</string>
 	<string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
+	
+	<!-- Command descritions -->
+	<!-- flickr -->
+	<string name="cd_flickr_interesting">Flickr: Interesting</string>
+	<string name="cd_flickr_user_photos">Flickr: Photos of User \'%s\'</string>
+	<string name="cd_flickr_my_favs">Flickr: My Favorites</string>
+	<string name="cd_flickr_my_populars">Flickr: My Popular Photos</string>
+	<string name="cd_flickr_my_contact_photos">Flickr: My Contact Photos</string>
+	<string name="cd_flickr_photo_set_photos">Flickr: Photos of Photo Set \'%s\'</string>
+	<string name="cd_flickr_group_photos">Flickr: Photos of Group \'%s\'</string>
+	<string name="cd_flickr_gallery_photos">Flickr: Photos of Gallery \'%s\'</string>
+	<string name="cd_flickr_my_photos">Flickr: My Photos</string>
+	
+	<!-- 500px -->
+	<string name="cd_500px_popular">500PX: Popular</string>
+	<string name="cd_500px_editor">500PX: Editors\' Choice</string>
+	<string name="cd_500px_upcoming">500PX: Upcoming</string>
+	<string name="cd_500px_fresh_today">500PX: Fresh Today</string>
+	<string name="cd_500px_user_photos">500PX: Photos of \'%s\'</string>
+	
+	<!-- Instagram -->
+	<string name="cd_ig_popular">Instagram: Popular</string>
+	<string name="cd_ig_my_feeds">Instagram: My Feeds</string>
+	<string name="cd_ig_my_likes">Instagram: My Likes</string>
+	<string name="cd_ig_my_photos">Instagram: My Photos</string>
+	<string name="cd_ig_user_photos">Instagram: Photos of \'%s\'</string>
+	
 </resources>

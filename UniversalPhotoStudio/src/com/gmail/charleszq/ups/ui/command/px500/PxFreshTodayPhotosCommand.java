@@ -46,5 +46,10 @@ public class PxFreshTodayPhotosCommand extends PhotoListCommand {
 		}
 		return super.getAdapter(adapterClass);
 	}
+	
+	@Override
+	public String getDescription() {
+		return mContext.getString(R.string.cd_500px_fresh_today);
+	}
 
 }

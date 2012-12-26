@@ -65,4 +65,10 @@ public class InstagramUserPhotosCommand extends PhotoListCommand {
 		}
 		return super.getAdapter(adapterClass);
 	}
+	
+	@Override
+	public String getDescription() {
+		String s = mContext.getString(R.string.cd_ig_user_photos);
+		return String.format(s, mUser.getUserName());
+	}
 }

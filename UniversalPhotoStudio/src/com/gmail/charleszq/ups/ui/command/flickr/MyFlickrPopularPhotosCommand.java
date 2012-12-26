@@ -62,5 +62,11 @@ public class MyFlickrPopularPhotosCommand extends PhotoListCommand {
 		}
 		return super.getAdapter(adapterClass);
 	}
+	
+	@Override
+	public String getDescription() {
+		return mContext.getString(R.string.cd_flickr_my_populars);
+	}
+
 
 }

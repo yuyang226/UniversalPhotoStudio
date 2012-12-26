@@ -53,4 +53,9 @@ public class InstagramPopularsCommand extends PhotoListCommand {
 		}
 		return super.getAdapter(adapterClass);
 	}
+	
+	@Override
+	public String getDescription() {
+		return mContext.getString(R.string.cd_ig_popular);
+	}
 }

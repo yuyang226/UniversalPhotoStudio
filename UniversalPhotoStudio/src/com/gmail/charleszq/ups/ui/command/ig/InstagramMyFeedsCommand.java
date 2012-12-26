@@ -47,4 +47,9 @@ public class InstagramMyFeedsCommand extends PhotoListCommand {
 		}
 		return super.getAdapter(adapterClass);
 	}
+	
+	@Override
+	public String getDescription() {
+		return mContext.getString(R.string.cd_ig_my_feeds);
+	}
 }

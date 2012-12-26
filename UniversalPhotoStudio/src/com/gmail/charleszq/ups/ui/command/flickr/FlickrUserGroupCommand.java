@@ -6,6 +6,7 @@ package com.gmail.charleszq.ups.ui.command.flickr;
 import android.app.Activity;
 import android.content.Context;
 
+import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.flickr.FlickrPhotoGroupPhotosService;
@@ -66,6 +67,12 @@ public class FlickrUserGroupCommand extends PhotoListCommand {
 			return mCurrentPhotoService;
 		}
 		return super.getAdapter(adapterClass);
+	}
+	
+	@Override
+	public String getDescription() {
+		String s = mContext.getString(R.string.cd_flickr_group_photos);
+		return String.format(s, mGroup.getName());
 	}
 
 }
