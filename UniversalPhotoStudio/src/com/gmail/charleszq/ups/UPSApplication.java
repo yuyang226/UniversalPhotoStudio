@@ -29,6 +29,17 @@ import com.googlecode.flickrjandroid.people.User;
 public class UPSApplication extends Application {
 
 	private IPhotosProvider mPhotosProvider = null;
+	
+	private void enableHttpResponseCache() {
+	    try {
+	        long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
+	        File httpCacheDir = new File(getCacheDir(), "http"); //$NON-NLS-1$
+	        Class.forName("android.net.http.HttpResponseCache") //$NON-NLS-1$
+	            .getMethod("install", File.class, long.class) //$NON-NLS-1$
+	            .invoke(null, httpCacheDir, httpCacheSize);
+	    } catch (Exception httpResponseCacheNotAvailable) {
+	    }
+	}
 
 	public String getFlickrToken() {
 		String token = getSharedPreferenceValue(IConstants.FLICKR_TOKEN, null);
