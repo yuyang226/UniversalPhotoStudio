@@ -46,8 +46,9 @@ public abstract class AbstractFetchIconUrlTask extends
 			if (mImageFetcher != null && mImageView != null) {
 				DisplayImageOptions options = new DisplayImageOptions.Builder()
 						.showStubImage(R.drawable.empty_photo).cacheInMemory()
-						.bitmapConfig(Bitmap.Config.RGB_565).build();
-				mImageFetcher.displayImage(result, mImageView,options);
+						.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
+						.build();
+				mImageFetcher.displayImage(result, mImageView, options);
 			}
 		}
 	}
