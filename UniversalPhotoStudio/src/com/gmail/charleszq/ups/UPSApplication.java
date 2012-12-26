@@ -40,9 +40,7 @@ public class UPSApplication extends Application {
 	    try {
 	        long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
 	        File httpCacheDir = new File(getCacheDir(), "http"); //$NON-NLS-1$
-	        Class.forName("android.net.http.HttpResponseCache") //$NON-NLS-1$
-	            .getMethod("install", File.class, long.class) //$NON-NLS-1$
-	            .invoke(null, httpCacheDir, httpCacheSize);
+	        android.net.http.HttpResponseCache.install(httpCacheDir, httpCacheSize);
 	    } catch (Exception httpResponseCacheNotAvailable) {
 	    }
 	}
