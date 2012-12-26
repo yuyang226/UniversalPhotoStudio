@@ -8,13 +8,12 @@ import android.content.Context;
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.px500.Px500PopularPhotosService;
-import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class PxPopularPhotosCommand extends PhotoListCommand {
+public class PxPopularPhotosCommand extends AbstractPx500PhotoListCommand {
 
 	/**
 	 * @param context

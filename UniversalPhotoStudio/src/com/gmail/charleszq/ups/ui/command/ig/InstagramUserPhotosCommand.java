@@ -13,13 +13,12 @@ import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.model.Author;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.ig.InstagramUserPhotosService;
-import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class InstagramUserPhotosCommand extends PhotoListCommand {
+public class InstagramUserPhotosCommand extends AbstractInstagramPhotoListCommand {
 
 	private Author mUser;
 

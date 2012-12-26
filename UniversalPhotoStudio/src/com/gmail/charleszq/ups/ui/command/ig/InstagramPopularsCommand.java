@@ -8,13 +8,12 @@ import android.content.Context;
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.ig.InstagramPopularsService;
-import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 
 /**
  * @author Charles(charleszq@gmail.com)
  * 
  */
-public class InstagramPopularsCommand extends PhotoListCommand {
+public class InstagramPopularsCommand extends AbstractInstagramPhotoListCommand {
 
 	/**
 	 * @param context

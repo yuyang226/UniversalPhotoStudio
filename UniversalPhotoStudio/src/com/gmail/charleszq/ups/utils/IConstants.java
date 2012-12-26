@@ -14,6 +14,8 @@ public interface IConstants {
 	 * the UI page size.
 	 */
 	static final int DEF_SERVICE_PAGE_SIZE = 50;
+	static final int DEF_500PX_PAGE_SIZE = 20;
+	static final int DEF_IG_PAGE_SIZE = 30;
 	
 	/**
 	 * Use this as the marker to say there is no more data, if server returns photos less than this,

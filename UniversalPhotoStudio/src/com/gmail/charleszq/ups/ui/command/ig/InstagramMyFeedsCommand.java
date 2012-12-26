@@ -12,13 +12,12 @@ import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.UPSApplication;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.ig.InstagramMyFeedsService;
-import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class InstagramMyFeedsCommand extends PhotoListCommand {
+public class InstagramMyFeedsCommand extends AbstractInstagramPhotoListCommand {
 
 	public InstagramMyFeedsCommand(Context context) {
 		super(context);

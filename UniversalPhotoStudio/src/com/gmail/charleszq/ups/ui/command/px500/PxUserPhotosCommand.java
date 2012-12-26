@@ -8,13 +8,12 @@ import android.content.Context;
 import com.gmail.charleszq.ups.R;
 import com.gmail.charleszq.ups.service.IPhotoService;
 import com.gmail.charleszq.ups.service.px500.PxUserPhotosService;
-import com.gmail.charleszq.ups.ui.command.PhotoListCommand;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class PxUserPhotosCommand extends PhotoListCommand {
+public class PxUserPhotosCommand extends AbstractPx500PhotoListCommand {
 
 	private String mUserId;
 
