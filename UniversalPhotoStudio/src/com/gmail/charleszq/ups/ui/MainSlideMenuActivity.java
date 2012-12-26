@@ -61,6 +61,12 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		getSupportFragmentManager().beginTransaction()
 				.replace(R.id.menu_frame, new MainMenuFragment()).commit();
 
+//		// secondary menu
+//		getSlidingMenu().setSecondaryMenu(R.layout.menu_frame_two);
+//		getSlidingMenu().setSecondaryShadowDrawable(R.drawable.shadowright);
+//		getSupportFragmentManager().beginTransaction()
+//				.replace(R.id.menu_frame_two, new MainMenuFragment()).commit();
+
 		// customize the SlidingMenu
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
@@ -109,6 +115,8 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 				R.color.menu_frame_bg_color));
 		sm.setBehindOffsetRes(R.dimen.slidingmenu_offset);
 		sm.setFadeDegree(0.35f);
+
+//		sm.setMode(SlidingMenu.LEFT_RIGHT);
 	}
 
 	@Override
