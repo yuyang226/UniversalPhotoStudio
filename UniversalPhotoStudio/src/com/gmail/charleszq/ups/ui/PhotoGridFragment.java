@@ -54,7 +54,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	 * @param command
 	 */
 	void populatePhotoList(MediaObjectCollection photos, ICommand<?> command) {
-		if (command == mCurrentCommand) {
+		if (command == mCurrentCommand || getActivity() == null ) {
 			// make sure this method will not be called after click the main
 			// menu item.
 			Log.d(TAG, "command is the same, just ignore."); //$NON-NLS-1$
