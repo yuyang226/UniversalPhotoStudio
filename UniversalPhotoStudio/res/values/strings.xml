@@ -1,7 +1,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
+    
+    <string name="about_file_name">about.html</string>
 
     <string name="app_name">Photo Corner</string>
     <string name="no_network_connection_toast">No network connection found</string>
+    <string name="secondary_menus">Secondary Menu</string>
     <string name="f_interesting_photos">Interesting Photos</string>
     <string name="f_login">Sign In</string>
     <string name="f_my_photos">My Photos</string>
@@ -24,6 +27,7 @@
     <string name="ig_popular">Popular Photos</string>
     <string name="menu_header_ig">Instagram</string>
     <string name="menu_header_px500">500PX</string>
+    <string name="cmd_name_about">About</string>
     
     <string name="ig_following">Following</string>
     <string name="ig_follow">Follow</string>
