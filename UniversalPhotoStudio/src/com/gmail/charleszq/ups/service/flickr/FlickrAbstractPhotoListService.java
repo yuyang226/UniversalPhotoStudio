@@ -15,7 +15,7 @@ import com.googlecode.flickrjandroid.photos.Extras;
  */
 public abstract class FlickrAbstractPhotoListService implements IPhotoService {
 	
-	protected String TAG = getClass().getName();
+	protected String TAG = getClass().getSimpleName();
 	
 	protected Set<String> mExtras = null;
 	

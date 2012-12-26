@@ -48,7 +48,7 @@ public class FlickrPhotoSetPhotosService extends FlickrAuthPhotoService {
 				mTokenSecret);
 		PhotosetsInterface psi = f.getPhotosetsInterface();
 		PhotoList list = psi.getPhotos(mPhotoset.getId(), mExtras,
-				Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, pageNo);
+				Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, pageNo+1);
 		MediaObjectCollection col = ModelUtils.convertFlickrPhotoList(list);
 		return col;
 	}

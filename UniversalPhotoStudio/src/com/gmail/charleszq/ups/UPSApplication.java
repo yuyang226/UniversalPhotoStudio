@@ -30,6 +30,12 @@ public class UPSApplication extends Application {
 
 	private IPhotosProvider mPhotosProvider = null;
 	
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		enableHttpResponseCache();
+	}
+
 	private void enableHttpResponseCache() {
 	    try {
 	        long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
