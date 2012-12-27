@@ -43,8 +43,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.capricorn.ArcMenu;
-import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
@@ -202,9 +203,12 @@ public class ImageDetailFragment extends Fragment implements
 		StringBuilder sb = new StringBuilder();
 		sb.append(getString(R.string.msg_by_author_name));
 		sb.append(" "); //$NON-NLS-1$
-		sb.append(mPhoto.getAuthor().getUserName() == null ? mPhoto.getAuthor()
-				.getUserId() : mPhoto.getAuthor().getUserName());
-		mUserName.setText(sb.toString());
+		Author a = mPhoto.getAuthor();
+		if (a != null) {
+			sb.append(mPhoto.getAuthor().getUserName() == null ? mPhoto
+					.getAuthor().getUserId() : mPhoto.getAuthor().getUserName());
+			mUserName.setText(sb.toString());
+		}
 		mArcMenu = (ArcMenu) v.findViewById(R.id.arc_menu);
 		initArcMenu();
 		return v;
