@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
@@ -31,7 +32,9 @@ public class UserPhotoListActivity extends FragmentActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if( item.getItemId() == android.R.id.home ) {
-			finish();
+			Intent i = new Intent(this, MainSlideMenuActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(i);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
