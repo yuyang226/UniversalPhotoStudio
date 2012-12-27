@@ -16,6 +16,7 @@ import android.widget.ListView;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.ui.command.AboutCommand;
+import com.gmail.charleszq.picorner.ui.command.HelpCommand;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
@@ -68,8 +69,8 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		command = new AboutCommand(getActivity());
 		commands.add(command);
 		
-//		command = new HelpCommand(getActivity());
-//		commands.add(command);
+		command = new HelpCommand(getActivity());
+		commands.add(command);
 		
 		mSectionAdapter.addCommands(commands);
 		mSectionAdapter.notifyDataSetChanged();
