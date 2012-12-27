@@ -42,9 +42,10 @@ public class FlickrPhotoSetPhotosService extends FlickrAuthPhotoService {
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mAuthToken,
 				mTokenSecret);
 		PhotosetsInterface psi = f.getPhotosetsInterface();
-		PhotoList list = psi.getPhotos(mPhotoset.getId(), mExtras,
+		Photoset photoset = psi.getPhotos(mPhotoset.getId(), mExtras,
 				Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, pageNo+1);
-		MediaObjectCollection col = ModelUtils.convertFlickrPhotoList(list);
+		//FIXME use the owner id in the Photoset instance.
+		MediaObjectCollection col = ModelUtils.convertFlickrPhotoList(photoset.getPhotoList());
 		return col;
 	}
 
