@@ -44,15 +44,12 @@ import com.googlecode.flickrjandroid.tags.Tag;
  * 
  */
 public final class ModelUtils {
+	
+	private static MediaObject convertFlickrPhoto(Photo p) {
+		return convertFlickrPhoto(p,null);
+	}
 
-	/**
-	 * Converts the flickrj api <code>Photo</code>.
-	 * 
-	 * @param photo
-	 * @param photoSize
-	 * @return
-	 */
-	public static MediaObject convertFlickrPhoto(Photo photo) {
+	public static MediaObject convertFlickrPhoto(Photo photo, User flickrOwner) {
 		MediaObject uPhoto = new MediaObject();
 		uPhoto.setDescription(photo.getDescription());
 		uPhoto.setTitle(photo.getTitle());
@@ -74,11 +71,16 @@ public final class ModelUtils {
 		}
 
 		User user = photo.getOwner();
+		Author author = new Author();
 		if (user != null) {
-			Author author = new Author();
 			author.setUserId(user.getId());
 			author.setUserName(user.getUsername());
 			author.setBuddyIconUrl(user.getBuddyIconUrl());
+			uPhoto.setAuthor(author);
+		} else if( flickrOwner != null ) {
+			author.setUserId(flickrOwner.getId());
+			author.setUserName(flickrOwner.getUsername());
+			author.setBuddyIconUrl(flickrOwner.getBuddyIconUrl());
 			uPhoto.setAuthor(author);
 		}
 
@@ -92,16 +94,21 @@ public final class ModelUtils {
 		return uPhoto;
 	}
 
-	public static MediaObjectCollection convertFlickrPhotoList(PhotoList list) {
+	public static MediaObjectCollection convertFlickrPhotoList(PhotoList list,
+			User flickrOwner) {
 		MediaObjectCollection pc = new MediaObjectCollection();
 		pc.setCurrentPage(list.getPage() - 1);
 		pc.setPageSize(list.getPerPage());
 		pc.setTotalCount(list.getTotal());
 		for (Photo p : list) {
-			MediaObject pic = convertFlickrPhoto(p);
+			MediaObject pic = flickrOwner == null ? convertFlickrPhoto(p) : convertFlickrPhoto(p,flickrOwner);
 			pc.addPhoto(pic);
 		}
 		return pc;
+	}
+
+	public static MediaObjectCollection convertFlickrPhotoList(PhotoList list) {
+		return convertFlickrPhotoList(list, null);
 	}
 
 	public static MediaObject convertInstagramPhoto(MediaFeedData feed) {

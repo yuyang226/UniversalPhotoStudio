@@ -9,7 +9,7 @@ import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.photos.PhotoList;
+import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.photosets.PhotosetsInterface;
 
@@ -43,9 +43,10 @@ public class FlickrPhotoSetPhotosService extends FlickrAuthPhotoService {
 				mTokenSecret);
 		PhotosetsInterface psi = f.getPhotosetsInterface();
 		Photoset photoset = psi.getPhotos(mPhotoset.getId(), mExtras,
-				Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, pageNo+1);
-		//FIXME use the owner id in the Photoset instance.
-		MediaObjectCollection col = ModelUtils.convertFlickrPhotoList(photoset.getPhotoList());
+				Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, pageNo + 1);
+		User user = photoset.getOwner();
+		MediaObjectCollection col = ModelUtils.convertFlickrPhotoList(
+				photoset.getPhotoList(), user);
 		return col;
 	}
 
