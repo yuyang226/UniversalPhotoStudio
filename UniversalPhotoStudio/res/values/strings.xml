@@ -114,7 +114,6 @@
 	<string name="ig_client_id">Client ID</string>
 	<string name="ig_client_secret">Client Secret</string>
 	<string name="btn_help">Help</string>
-	<string name="btn_ok">OK</string>
 	
 	<!-- Licensing Check -->
 	<string name="allow">Thank you for the purchase, please enjoy!</string>
