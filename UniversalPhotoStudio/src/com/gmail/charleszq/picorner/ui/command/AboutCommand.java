@@ -30,7 +30,7 @@ public class AboutCommand extends AbstractCommand<Void> {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.icon;
+		return R.drawable.ic_launcher;
 	}
 
 	@Override
