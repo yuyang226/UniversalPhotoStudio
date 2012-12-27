@@ -27,6 +27,7 @@ import com.googlecode.flickrjandroid.people.User;
 public class PicornerApplication extends Application {
 	
 	private static final String FIRST_TIME_KEY = "first.time"; //$NON-NLS-1$
+	private static final String IS_LICENSED = "isLicensed"; //$NON-NLS-1$
 
 	@Override
 	public void onCreate() {
@@ -169,11 +170,23 @@ public class PicornerApplication extends Application {
 		return getSharedPreferenceValue(FIRST_TIME_KEY, null) == null;
 	}
 	
+	public boolean isLicensed() {
+		return Boolean.valueOf(getSharedPreferenceValue(IS_LICENSED, Boolean.FALSE.toString()));
+	}
+	
 	public void setFirstTimeFalse() {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_PRIVATE);
 		Editor editor = sp.edit();
 		editor.putString(FIRST_TIME_KEY, Boolean.TRUE.toString());
+		editor.commit();
+	}
+	
+	public void setLicensedTrue() {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		editor.putString(IS_LICENSED, Boolean.TRUE.toString());
 		editor.commit();
 	}
 }
