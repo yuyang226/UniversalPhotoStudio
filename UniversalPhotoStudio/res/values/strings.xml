@@ -5,7 +5,7 @@
     
     <string name="main_photo_grid">Main</string>
 
-    <string name="app_name">PICORNER</string>
+    <string name="app_name">PiCorner</string>
     <string name="no_network_connection_toast">No network connection found</string>
     <string name="secondary_menus">Secondary Menu</string>
     <string name="f_interesting_photos">Interesting Photos</string>
