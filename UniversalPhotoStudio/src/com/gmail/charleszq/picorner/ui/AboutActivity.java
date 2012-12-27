@@ -57,7 +57,7 @@ public class AboutActivity extends FragmentActivity {
 				sb.append((char) ch);
 				ch = reader.read();
 			}
-			mWebView.loadDataWithBaseURL(mFileName, sb.toString(),
+			mWebView.loadDataWithBaseURL("file:///android_asset/", sb.toString(), //$NON-NLS-1$
 					"text/html", "utf-8", null); //$NON-NLS-1$//$NON-NLS-2$
 		} catch (IOException e) {
 		} finally {
