@@ -272,7 +272,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	            // Don't update UI if Activity is finishing.
 	            return;
 	        }
-	        displayResult(getString(R.string.dont_allow));
+//	        displayResult(getString(R.string.dont_allow));
 	        // Should not allow access. In most cases, the app should assume
 	        // the user has access unless it encounters this. If it does,
 	        // the app should inform the user of their unlicensed ways
