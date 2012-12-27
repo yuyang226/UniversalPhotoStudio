@@ -31,7 +31,6 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -39,7 +38,8 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class ImageDetailActivity extends FragmentActivity implements
 		OnClickListener {
-	public static final String EXTRA_IMAGE = "extra_image"; //$NON-NLS-1$
+	public static final String LARGE_IMAGE_POSITION = "extra_image"; //$NON-NLS-1$
+	public static final String DP_KEY = "data.provider"; //$NON-NLS-1$
 
 	private ImagePagerAdapter mAdapter;
 	private ImageLoader mImageFetcher;
@@ -47,7 +47,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 	
 	private Set<IActionBarVisibleListener> mActionBarListeners;
 
-	private IPhotosProvider mPhotosProvider;
+	IPhotosProvider mPhotosProvider;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -60,8 +60,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 		mImageFetcher.init(ImageLoaderConfiguration.createDefault(this));
 
 		// Set up ViewPager and backing adapter
-		PicornerApplication app = (PicornerApplication) this.getApplication();
-		mPhotosProvider = app.getPhotosProvider();
+		mPhotosProvider = (IPhotosProvider) getIntent().getExtras().getSerializable(DP_KEY);
 		mAdapter = new ImagePagerAdapter(mPhotosProvider,
 				getSupportFragmentManager(), mPhotosProvider.getCurrentSize());
 		mPager = (ViewPager) findViewById(R.id.pager);
@@ -108,7 +107,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 		}
 
 		// Set the current item based on the extra passed in to this activity
-		final int extraCurrentItem = getIntent().getIntExtra(EXTRA_IMAGE, -1);
+		final int extraCurrentItem = getIntent().getIntExtra(LARGE_IMAGE_POSITION, -1);
 		if (extraCurrentItem != -1) {
 			mPager.setCurrentItem(extraCurrentItem);
 		}
@@ -155,7 +154,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 			MediaObject obj = mProvider.getMediaObject(position);
 			ImageDetailFragment frg = ImageDetailFragment
 					.newInstance(obj.getLargeUrl() == null ? obj.getThumbUrl()
-							: obj.getLargeUrl(), position);
+							: obj.getLargeUrl(), mProvider, position);
 			return frg;
 		}
 	}

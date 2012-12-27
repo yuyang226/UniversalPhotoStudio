@@ -22,7 +22,6 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
@@ -83,10 +82,6 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		
 		//add listener for load more, so after done, we can hide the message.
 		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
-
-		// TODO think about different grid share DP in app.
-		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
-		app.setPhotosProvider(this.mPhotosProvider);
 	}
 
 	@Override
@@ -98,7 +93,8 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
-		i.putExtra(ImageDetailActivity.EXTRA_IMAGE, (int) id);
+		i.putExtra(ImageDetailActivity.DP_KEY, mPhotosProvider);
+		i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, (int) id);
 		startActivity(i);
 	}
 

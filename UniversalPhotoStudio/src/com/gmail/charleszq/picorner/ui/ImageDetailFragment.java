@@ -45,6 +45,7 @@ import android.widget.Toast;
 import com.capricorn.ArcMenu;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
@@ -135,12 +136,14 @@ public class ImageDetailFragment extends Fragment implements
 	 *            The image url to load
 	 * @return A new instance of ImageDetailFragment with imageNum extras
 	 */
-	public static ImageDetailFragment newInstance(String imageUrl, int pos) {
+	public static ImageDetailFragment newInstance(String imageUrl,
+			IPhotosProvider dp, int pos) {
 		final ImageDetailFragment f = new ImageDetailFragment();
 
 		final Bundle args = new Bundle();
 		args.putString(IMAGE_DATA_EXTRA, imageUrl);
 		args.putInt(MEDIA_OBJ_POS, pos);
+		args.putSerializable(ImageDetailActivity.DP_KEY, dp);
 		f.setArguments(args);
 
 		return f;
@@ -180,10 +183,11 @@ public class ImageDetailFragment extends Fragment implements
 				IMAGE_DATA_EXTRA) : null;
 		int pos = (getArguments() != null ? getArguments()
 				.getInt(MEDIA_OBJ_POS) : -1);
+		IPhotosProvider dp = (IPhotosProvider) (getArguments() != null ? getArguments()
+				.getSerializable(ImageDetailActivity.DP_KEY) : null);
 		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
-		PicornerApplication app = (PicornerApplication) act.getApplication();
-		mPhoto = app.getPhotosProvider().getMediaObject(pos);
+		mPhoto = dp.getMediaObject(pos);
 		setHasOptionsMenu(true);
 
 		act.addActionBarListener(mActionBarListener);
@@ -416,7 +420,9 @@ public class ImageDetailFragment extends Fragment implements
 			return true;
 		case MENU_ITEM_DETAIL:
 			Intent i = new Intent(getActivity(), PhotoDetailActivity.class);
-			i.putExtra(ImageDetailActivity.EXTRA_IMAGE, mCurrentPos);
+			IPhotosProvider dp = ((ImageDetailActivity) getActivity()).mPhotosProvider;
+			i.putExtra(ImageDetailActivity.DP_KEY, dp);
+			i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, mCurrentPos);
 			startActivity(i);
 			return true;
 		case MENU_ITEM_LIKE:

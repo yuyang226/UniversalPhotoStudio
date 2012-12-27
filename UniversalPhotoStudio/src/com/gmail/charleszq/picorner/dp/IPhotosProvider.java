@@ -3,6 +3,8 @@
  */
 package com.gmail.charleszq.picorner.dp;
 
+import java.io.Serializable;
+
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 
@@ -11,7 +13,7 @@ import com.gmail.charleszq.picorner.model.MediaObjectCollection;
  * @author Charles(charleszq@gmail.com)
  *
  */
-public interface IPhotosProvider {
+public interface IPhotosProvider extends Serializable {
 	
 	/**
 	 * Returns the <code>MediaObject</code> at the given index.
