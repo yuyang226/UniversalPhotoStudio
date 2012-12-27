@@ -17,6 +17,11 @@ import com.gmail.charleszq.picorner.model.MediaObjectCollection;
  */
 public class SinglePagePhotosProvider implements IPhotosProvider {
 
+	/**
+	 * auto gen sid
+	 */
+	private static final long serialVersionUID = 1771926524223469593L;
+
 	private static final String TAG = SinglePagePhotosProvider.class.getName();
 
 	private List<MediaObject> mPhotos;
@@ -24,7 +29,7 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	/**
 	 * The current source which populate photos into this, usually, the command.
 	 */
-	private Object mCurrentSource = null;
+	transient private Object mCurrentSource = null;
 
 	public SinglePagePhotosProvider(MediaObjectCollection photos) {
 		loadData(photos, null);

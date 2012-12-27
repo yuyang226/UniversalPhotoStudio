@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
@@ -73,10 +74,10 @@ public class PhotoDetailActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.photo_detail_activity);
 
-		mCurrentPos = getIntent().getIntExtra(ImageDetailActivity.EXTRA_IMAGE,
+		mCurrentPos = getIntent().getIntExtra(ImageDetailActivity.LARGE_IMAGE_POSITION,
 				-1);
-		PicornerApplication app = (PicornerApplication) getApplication();
-		mCurrentPhoto = app.getPhotosProvider().getMediaObject(mCurrentPos);
+		IPhotosProvider dp = (IPhotosProvider) getIntent().getSerializableExtra(ImageDetailActivity.DP_KEY);
+		mCurrentPhoto = dp.getMediaObject(mCurrentPos);
 		mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
 
 		mImageView = (ImageView) findViewById(R.id.imageThumb);
@@ -120,6 +121,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_photo_detail_2, menu);
+		inflater.inflate(R.menu.menu_ig_follow, menu);
 		return true;
 	}
 

@@ -8,9 +8,4 @@
         android:showAsAction="always"
         tools:ignore="MenuTitle">
     </item>
-    <item
-        android:id="@+id/menu_item_follow"
-        android:showAsAction="never"
-        android:title="@string/menu_item_ig_follow_user"/>
-
 </menu>

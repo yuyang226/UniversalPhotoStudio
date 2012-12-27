@@ -306,7 +306,14 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			String myUserId = app.getInstagramUserId();
 			Author a = new Author();
 			a.setUserId(myUserId);
-			command = new InstagramUserPhotosCommand(ctx, a);
+			command = new InstagramUserPhotosCommand(ctx, a) {
+				@Override
+				public String getDescription() {
+					//since we don't save my own user name
+					return getString(R.string.cd_ig_my_photos);
+				}
+				
+			};
 			command.setCommandCategory(headerName);
 			commands.add(command);
 		} else {
@@ -513,7 +520,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private String getTokenSecret() {
-		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
 		return app.getFlickrTokenSecret();
 	}
 

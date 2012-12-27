@@ -14,7 +14,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Environment;
 
-import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -28,8 +27,6 @@ import com.googlecode.flickrjandroid.people.User;
  */
 public class PicornerApplication extends Application {
 
-	private IPhotosProvider mPhotosProvider = null;
-	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -37,12 +34,13 @@ public class PicornerApplication extends Application {
 	}
 
 	private void enableHttpResponseCache() {
-	    try {
-	        long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
-	        File httpCacheDir = new File(getCacheDir(), "http"); //$NON-NLS-1$
-	        android.net.http.HttpResponseCache.install(httpCacheDir, httpCacheSize);
-	    } catch (Exception httpResponseCacheNotAvailable) {
-	    }
+		try {
+			long httpCacheSize = 10 * 1024 * 1024; // 10 MiB
+			File httpCacheDir = new File(getCacheDir(), "http"); //$NON-NLS-1$
+			android.net.http.HttpResponseCache.install(httpCacheDir,
+					httpCacheSize);
+		} catch (Exception httpResponseCacheNotAvailable) {
+		}
 	}
 
 	public String getFlickrToken() {
@@ -108,9 +106,10 @@ public class PicornerApplication extends Application {
 	public String getFlickrUserId() {
 		return getSharedPreferenceValue(IConstants.FLICKR_USER_ID, null);
 	}
-	
+
 	/**
 	 * Used to check if user log into px500 or not, currently.
+	 * 
 	 * @return
 	 */
 	public String getPx500UserId() {
@@ -148,14 +147,6 @@ public class PicornerApplication extends Application {
 		return value;
 	}
 
-	public IPhotosProvider getPhotosProvider() {
-		return mPhotosProvider;
-	}
-
-	public void setPhotosProvider(IPhotosProvider mPhotosProvider) {
-		this.mPhotosProvider = mPhotosProvider;
-	}
-
 	public String getInstagramUserId() {
 		return getSharedPreferenceValue(IConstants.IG_USER_ID, null);
 	}
@@ -188,6 +179,5 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.IG_AUTH_TOKEN_RAW_RES, rawResponse);
 		editor.putString(IConstants.IG_USER_BUDDY_ICON_URL, url);
 		editor.commit();
-
 	}
 }
