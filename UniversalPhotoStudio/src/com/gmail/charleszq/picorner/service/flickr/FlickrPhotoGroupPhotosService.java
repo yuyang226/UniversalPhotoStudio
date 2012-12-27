@@ -31,11 +31,6 @@ public class FlickrPhotoGroupPhotosService extends FlickrAuthPhotoService {
 		this.mGroupId = groupId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.service.IPhotoService#getPhotos(int, int)
-	 */
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {

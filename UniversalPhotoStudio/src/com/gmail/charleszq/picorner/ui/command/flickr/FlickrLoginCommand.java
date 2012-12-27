@@ -19,11 +19,6 @@ public class FlickrLoginCommand extends AbstractCommand<Object> {
 		super(context);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#execute()
-	 */
 	@Override
 	public boolean execute(Object... objects) {
 		FlickrOAuthTask task = new FlickrOAuthTask(mContext);
@@ -31,11 +26,6 @@ public class FlickrLoginCommand extends AbstractCommand<Object> {
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return mContext.getString(R.string.f_login);

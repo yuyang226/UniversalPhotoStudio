@@ -24,7 +24,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
@@ -75,7 +75,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 
 		mCurrentPos = getIntent().getIntExtra(ImageDetailActivity.EXTRA_IMAGE,
 				-1);
-		UPSApplication app = (UPSApplication) getApplication();
+		PicornerApplication app = (PicornerApplication) getApplication();
 		mCurrentPhoto = app.getPhotosProvider().getMediaObject(mCurrentPos);
 		mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
 
@@ -96,7 +96,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 	}
 
 	private void checkRelationship() {
-		UPSApplication app = (UPSApplication) getApplication();
+		PicornerApplication app = (PicornerApplication) getApplication();
 		if (app.getInstagramUserId() == null) {
 			// not signed in
 			return;
@@ -135,7 +135,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 		// this menu item can only be visible if the photo is instagram and I've
 		// signed in.
 		MenuItem followItem = menu.findItem(R.id.menu_item_follow);
-		UPSApplication app = (UPSApplication) getApplication();
+		PicornerApplication app = (PicornerApplication) getApplication();
 		if (!MediaSourceType.INSTAGRAM.equals(mCurrentPhoto.getMediaSource())) {
 			followItem.setVisible(false);
 		} else {
@@ -300,7 +300,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 	private boolean canClickUserAvator(Author author) {
 		boolean result = true;
 
-		UPSApplication app = (UPSApplication) getApplication();
+		PicornerApplication app = (PicornerApplication) getApplication();
 		switch (mCurrentPhoto.getMediaSource()) {
 		case INSTAGRAM:
 			if (app.getInstagramUserId() == null) {

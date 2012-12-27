@@ -30,33 +30,16 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 		loadData(photos, null);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.dp.IPhotosProvider#getMediaObject(int)
-	 */
 	@Override
 	public MediaObject getMediaObject(int index) {
 		return mPhotos.get(index);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.dp.IPhotosProvider#getCurrentSize()
-	 */
 	@Override
 	public int getCurrentSize() {
 		return mPhotos.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.gmail.charleszq.ups.dp.IPhotosProvider#loadData(com.gmail.charleszq
-	 * .ups.model.MediaObjectCollection, java.lang.Object)
-	 */
 	@Override
 	public void loadData(MediaObjectCollection list, Object source) {
 		if (list == null) {

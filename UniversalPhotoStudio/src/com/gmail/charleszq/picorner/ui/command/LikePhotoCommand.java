@@ -6,7 +6,7 @@ package com.gmail.charleszq.picorner.ui.command;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
@@ -32,7 +32,7 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 		}
 		MediaObject photo = (MediaObject) params[0];
 		
-		UPSApplication app = (UPSApplication) ((Activity)mContext).getApplication();
+		PicornerApplication app = (PicornerApplication) ((Activity)mContext).getApplication();
 		switch (photo.getMediaSource()) {
 		case FLICKR:
 			if( app.getFlickrUserId() == null ) {

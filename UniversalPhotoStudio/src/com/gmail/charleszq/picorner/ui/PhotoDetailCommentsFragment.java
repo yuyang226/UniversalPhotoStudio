@@ -27,7 +27,7 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectComment;
@@ -126,7 +126,7 @@ public class PhotoDetailCommentsFragment extends
 	 * @return
 	 */
 	private MediaObjectComment makeDummyComment(String comment) {
-		UPSApplication app = (UPSApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
 
 		MediaObjectComment c = new MediaObjectComment();
 		c.setText(comment);
@@ -189,7 +189,7 @@ public class PhotoDetailCommentsFragment extends
 
 	private boolean isUserLoggedIn() {
 		boolean result = false;
-		UPSApplication app = (UPSApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
 		switch (mCurrentPhoto.getMediaSource()) {
 		case FLICKR:
 			result = app.getFlickrUserId() != null;

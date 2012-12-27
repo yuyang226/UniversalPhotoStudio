@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import android.app.Activity;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractGeneralTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.galleries.GalleriesInterface;
@@ -42,7 +42,7 @@ public class FetchFlickrUserPhotoCollectionTask extends
 
 	public FetchFlickrUserPhotoCollectionTask(Activity act) {
 		this.mActivity = act;
-		UPSApplication app = (UPSApplication) mActivity.getApplication();
+		PicornerApplication app = (PicornerApplication) mActivity.getApplication();
 		mToken = app.getFlickrToken();
 		mSecret = app.getFlickrTokenSecret();
 		mUserId = app.getFlickrUserId();

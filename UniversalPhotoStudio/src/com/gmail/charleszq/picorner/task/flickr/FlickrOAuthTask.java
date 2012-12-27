@@ -19,7 +19,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.Flickr;
@@ -105,7 +105,7 @@ public class FlickrOAuthTask extends AsyncTask<Void, Integer, String> {
 	
 		logger.debug("request token: " + tokenSecret); //$NON-NLS-1$
 		Activity act = (Activity) mContext;
-		UPSApplication app = (UPSApplication) act
+		PicornerApplication app = (PicornerApplication) act
 				.getApplication();
 		app.saveFlickrTokenSecret(tokenSecret);
 		logger.debug("oauth token secrent saved: {}", tokenSecret); //$NON-NLS-1$

@@ -22,11 +22,6 @@ public class FlickrMyFavoritesService extends FlickrAuthPhotoService {
 		super(userId, token, secret);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.service.IPhotoService#getPhotos(int, int)
-	 */
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {

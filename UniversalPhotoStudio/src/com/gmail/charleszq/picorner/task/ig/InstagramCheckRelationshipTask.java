@@ -10,7 +10,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.InstagramHelper;
 
@@ -31,7 +31,7 @@ public class InstagramCheckRelationshipTask extends
 	@Override
 	protected Boolean doInBackground(String... params) {
 		String targetUserId = params[0];
-		UPSApplication app = (UPSApplication) ((Activity) mContext)
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 				.getApplication();
 		Instagram ig = InstagramHelper.getInstance().getAuthedInstagram(
 				app.getInstagramAuthToken());

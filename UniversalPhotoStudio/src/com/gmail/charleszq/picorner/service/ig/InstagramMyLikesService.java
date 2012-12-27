@@ -29,11 +29,6 @@ public class InstagramMyLikesService extends AbstractInstagramPhotoListService {
 		mToken = token;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.service.IPhotoService#getPhotos(int, int)
-	 */
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {

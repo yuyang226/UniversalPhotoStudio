@@ -8,7 +8,7 @@ import org.jinstagram.Instagram;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.utils.InstagramHelper;
@@ -42,7 +42,7 @@ public class InstagramLikePhotoTask extends
 		if (params.length > 1) {
 			like = Boolean.parseBoolean(params[1]);
 		}
-		UPSApplication app = (UPSApplication) ((Activity) mContext)
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 				.getApplication();
 		Instagram ig = InstagramHelper.getInstance().getAuthedInstagram(
 				app.getInstagramAuthToken());

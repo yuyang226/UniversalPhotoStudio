@@ -44,7 +44,7 @@ import android.widget.Toast;
 
 import com.capricorn.ArcMenu;
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
@@ -181,7 +181,7 @@ public class ImageDetailFragment extends Fragment implements
 				.getInt(MEDIA_OBJ_POS) : -1);
 		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
-		UPSApplication app = (UPSApplication) act.getApplication();
+		PicornerApplication app = (PicornerApplication) act.getApplication();
 		mPhoto = app.getPhotosProvider().getMediaObject(pos);
 		setHasOptionsMenu(true);
 
@@ -272,7 +272,7 @@ public class ImageDetailFragment extends Fragment implements
 					.show();
 			return false;
 		case FLICKR:
-			UPSApplication app = (UPSApplication) getActivity()
+			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();
 			if (app.getFlickrUserId() == null) {
 				Toast.makeText(getActivity(),
@@ -282,7 +282,7 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			break;
 		case INSTAGRAM:
-			app = (UPSApplication) getActivity().getApplication();
+			app = (PicornerApplication) getActivity().getApplication();
 			if (app.getInstagramUserId() == null) {
 				Toast.makeText(getActivity(),
 						getString(R.string.pls_sing_in_first),

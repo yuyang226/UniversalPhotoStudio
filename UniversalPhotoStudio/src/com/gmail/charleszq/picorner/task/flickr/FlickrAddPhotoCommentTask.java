@@ -6,7 +6,7 @@ package com.gmail.charleszq.picorner.task.flickr;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.Flickr;
@@ -29,7 +29,7 @@ public class FlickrAddPhotoCommentTask extends
 		String comment = params[1];
 
 		Activity act = (Activity) mContext;
-		UPSApplication app = (UPSApplication) act.getApplication();
+		PicornerApplication app = (PicornerApplication) act.getApplication();
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
 				app.getFlickrToken(), app.getFlickrTokenSecret());
 		CommentsInterface ci = f.getCommentsInterface();

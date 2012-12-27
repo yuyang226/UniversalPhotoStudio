@@ -22,7 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
@@ -85,7 +85,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
 
 		// TODO think about different grid share DP in app.
-		UPSApplication app = (UPSApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
 		app.setPhotosProvider(this.mPhotosProvider);
 	}
 

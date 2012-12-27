@@ -25,21 +25,11 @@ public class PxUserPhotosCommand extends AbstractPx500PhotoListCommand {
 		this.mUserId = userId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getIconResourceId()
-	 */
 	@Override
 	public int getIconResourceId() {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return null;

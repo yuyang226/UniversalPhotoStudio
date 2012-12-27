@@ -31,7 +31,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -60,7 +60,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 		mImageFetcher.init(ImageLoaderConfiguration.createDefault(this));
 
 		// Set up ViewPager and backing adapter
-		UPSApplication app = (UPSApplication) this.getApplication();
+		PicornerApplication app = (PicornerApplication) this.getApplication();
 		mPhotosProvider = app.getPhotosProvider();
 		mAdapter = new ImagePagerAdapter(mPhotosProvider,
 				getSupportFragmentManager(), mPhotosProvider.getCurrentSize());

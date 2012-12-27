@@ -22,17 +22,11 @@ public class PxFreshTodayPhotosCommand extends AbstractPx500PhotoListCommand {
 		super(context);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getIconResourceId()
-	 */
 	@Override
 	public int getIconResourceId() {
 		return R.drawable.ic_action_px_refresh_today;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return mContext.getString(R.string.px_fresh_today);

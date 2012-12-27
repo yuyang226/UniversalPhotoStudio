@@ -6,7 +6,7 @@ package com.gmail.charleszq.picorner.task.flickr;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.Flickr;
@@ -39,7 +39,7 @@ public class FetchFlickrGalleryIconUrlTask extends AbstractFetchIconUrlTask {
 	protected String doInBackground(Object... params) {
 		this.beforeExecute(params);
 		String primaryPhotoId = mGallery.getPrimaryPhotoId();
-		UPSApplication app = (UPSApplication) ((Activity) this.mContext)
+		PicornerApplication app = (PicornerApplication) ((Activity) this.mContext)
 				.getApplication();
 
 		String result = null;

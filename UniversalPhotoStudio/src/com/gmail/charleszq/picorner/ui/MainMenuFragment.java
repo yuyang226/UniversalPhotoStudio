@@ -28,7 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
@@ -263,19 +263,19 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private boolean isUserAuthedFlickr() {
-		UPSApplication app = (UPSApplication) this.getActivity()
+		PicornerApplication app = (PicornerApplication) this.getActivity()
 				.getApplication();
 		return app.getFlickrUserId() != null;
 	}
 
 	private boolean isUserAuthedPx500() {
-		UPSApplication app = (UPSApplication) this.getActivity()
+		PicornerApplication app = (PicornerApplication) this.getActivity()
 				.getApplication();
 		return app.getPx500UserId() != null;
 	}
 
 	private boolean isUserAuthedInstagram() {
-		UPSApplication app = (UPSApplication) this.getActivity()
+		PicornerApplication app = (PicornerApplication) this.getActivity()
 				.getApplication();
 		return app.getInstagramAuthToken() != null;
 	}
@@ -301,7 +301,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			command.setCommandCategory(headerName);
 			commands.add(command);
 
-			UPSApplication app = (UPSApplication) getActivity()
+			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();
 			String myUserId = app.getInstagramUserId();
 			Author a = new Author();
@@ -399,7 +399,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		if (IConstants.ID_SCHEME.equals(schema)) {
 
 			// if user already login, just return
-			UPSApplication app = (UPSApplication) getActivity()
+			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();
 			if (app.getFlickrUserId() != null) {
 				return;
@@ -513,7 +513,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private String getTokenSecret() {
-		UPSApplication app = (UPSApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
 		return app.getFlickrTokenSecret();
 	}
 
@@ -534,7 +534,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 						Toast.LENGTH_LONG).show();
 				return;
 			}
-			UPSApplication app = (UPSApplication) getActivity()
+			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();
 			app.saveFlickrAuthToken(result);
 

@@ -19,11 +19,6 @@ import com.gmail.charleszq.picorner.utils.ModelUtils;
  */
 public class InstagramPopularsService extends AbstractInstagramPhotoListService {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.service.IPhotoService#getPhotos(int, int)
-	 */
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {

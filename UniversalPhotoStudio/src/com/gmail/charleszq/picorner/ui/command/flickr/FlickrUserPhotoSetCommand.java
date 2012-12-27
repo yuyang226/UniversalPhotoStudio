@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoSetPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -34,21 +34,11 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 		mPhotoSet = ps;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getIconResourceId()
-	 */
 	@Override
 	public int getIconResourceId() {
 		return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return mPhotoSet == null ? "PHOTOSET NOT RIGHT" : mPhotoSet.getTitle(); //$NON-NLS-1$
@@ -62,7 +52,7 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
 				Activity act = (Activity) mContext;
-				UPSApplication app = (UPSApplication) act.getApplication();
+				PicornerApplication app = (PicornerApplication) act.getApplication();
 				mCurrentPhotoService = new FlickrPhotoSetPhotosService(
 						app.getFlickrUserId(), app.getFlickrToken(),
 						app.getFlickrTokenSecret(), mPhotoSet);

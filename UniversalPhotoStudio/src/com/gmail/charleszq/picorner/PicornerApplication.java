@@ -26,7 +26,7 @@ import com.googlecode.flickrjandroid.people.User;
  * 
  * @author charles
  */
-public class UPSApplication extends Application {
+public class PicornerApplication extends Application {
 
 	private IPhotosProvider mPhotosProvider = null;
 	

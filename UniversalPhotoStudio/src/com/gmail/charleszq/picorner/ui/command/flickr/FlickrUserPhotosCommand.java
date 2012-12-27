@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrUserPhotoStreamService;
 
@@ -32,7 +32,7 @@ public class FlickrUserPhotosCommand extends MyFlickrPhotosCommand {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
 				Activity act = (Activity) mContext;
-				UPSApplication app = (UPSApplication) act.getApplication();
+				PicornerApplication app = (PicornerApplication) act.getApplication();
 				mCurrentPhotoService = new FlickrUserPhotoStreamService(
 						mUserId, app.getFlickrToken(),
 						app.getFlickrTokenSecret());

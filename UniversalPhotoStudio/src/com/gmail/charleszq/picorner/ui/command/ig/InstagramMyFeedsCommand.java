@@ -9,7 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.ig.InstagramMyFeedsService;
 
@@ -37,7 +37,7 @@ public class InstagramMyFeedsCommand extends AbstractInstagramPhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
-				UPSApplication app = (UPSApplication) ((Activity) mContext)
+				PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 						.getApplication();
 				Token token = app.getInstagramAuthToken();
 				mCurrentPhotoService = new InstagramMyFeedsService(token);

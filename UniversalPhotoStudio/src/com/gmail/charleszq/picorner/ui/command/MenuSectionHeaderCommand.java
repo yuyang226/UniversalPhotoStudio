@@ -25,11 +25,6 @@ public class MenuSectionHeaderCommand extends AbstractCommand<String> {
 		this.mLabel = label;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#execute()
-	 */
 	@Override
 	public boolean execute(Object... objects) {
 		if (objects.length != 1) {
@@ -46,21 +41,11 @@ public class MenuSectionHeaderCommand extends AbstractCommand<String> {
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getIconResourceId()
-	 */
 	@Override
 	public int getIconResourceId() {
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return mLabel;

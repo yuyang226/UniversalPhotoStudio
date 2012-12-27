@@ -18,11 +18,6 @@ import com.gmail.charleszq.px500.model.Photo;
  */
 public class Px500PopularPhotosService implements IPhotoService {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.service.IPhotoService#getPhotos(int, int)
-	 */
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {

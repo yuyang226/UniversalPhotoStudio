@@ -7,7 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrContactPhotosService;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
@@ -25,21 +25,11 @@ public class MyFlickrContactPhotosCommand extends PhotoListCommand {
 		super(context);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getIconResourceId()
-	 */
 	@Override
 	public int getIconResourceId() {
 		return R.drawable.ic_action_contacts;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return mContext.getResources().getString(R.string.f_my_contacts);
@@ -53,7 +43,7 @@ public class MyFlickrContactPhotosCommand extends PhotoListCommand {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
 				Activity act = (Activity) mContext;
-				UPSApplication app = (UPSApplication) act.getApplication();
+				PicornerApplication app = (PicornerApplication) act.getApplication();
 				mCurrentPhotoService = new FlickrContactPhotosService(
 						app.getFlickrUserId(), app.getFlickrToken(),
 						app.getFlickrTokenSecret());

@@ -6,7 +6,7 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrGalleryPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -30,21 +30,11 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 		this.mGallery = g;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getIconResourceId()
-	 */
 	@Override
 	public int getIconResourceId() {
 		return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see com.gmail.charleszq.ups.ui.command.ICommand#getLabel()
-	 */
 	@Override
 	public String getLabel() {
 		return mGallery.getTitle();
@@ -55,7 +45,7 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
 				Activity act = (Activity) mContext;
-				UPSApplication app = (UPSApplication) act.getApplication();
+				PicornerApplication app = (PicornerApplication) act.getApplication();
 				mCurrentPhotoService = new FlickrGalleryPhotosService(
 						app.getFlickrUserId(), app.getFlickrToken(),
 						app.getFlickrTokenSecret(), mGallery.getGalleryId());

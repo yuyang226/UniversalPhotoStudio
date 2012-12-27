@@ -8,7 +8,7 @@ import org.jinstagram.Instagram;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.InstagramHelper;
 
@@ -34,7 +34,7 @@ public class InstagramAddPhotoCommentTask extends
 			logger.debug("instagram media id: " + photoId); //$NON-NLS-1$
 		}
 
-		UPSApplication app = (UPSApplication) ((Activity) mContext)
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 				.getApplication();
 		Instagram ig = InstagramHelper.getInstance().getAuthedInstagram(
 				app.getInstagramAuthToken());

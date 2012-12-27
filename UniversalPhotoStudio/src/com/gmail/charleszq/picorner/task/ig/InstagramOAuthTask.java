@@ -14,7 +14,7 @@ import org.jinstagram.model.Scope;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.IConstants;
 
@@ -50,7 +50,7 @@ public class InstagramOAuthTask extends
 				UserInfo user = ig.getCurrentUserInfo();
 				long userId = user.getData().getId();
 
-				UPSApplication app = (UPSApplication) ((Activity) mContext)
+				PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 						.getApplication();
 				app.saveInstagramAuthToken(userId, token.getToken(), token
 						.getSecret(), token.getRawResponse(), user.getData()

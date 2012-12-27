@@ -9,7 +9,7 @@ import org.jinstagram.model.Relationship;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.UPSApplication;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.InstagramHelper;
 
@@ -28,7 +28,7 @@ public class InstagramFollowUserTask extends
 	protected Boolean doInBackground(String... params) {
 		String targetUserId = params[0];
 		boolean follow = Boolean.parseBoolean(params[1]);
-		UPSApplication app = (UPSApplication) ((Activity) mContext)
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 				.getApplication();
 		Instagram ig = InstagramHelper.getInstance().getAuthedInstagram(
 				app.getInstagramAuthToken());
