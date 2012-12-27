@@ -18,11 +18,15 @@ public interface IConstants {
 	static final int DEF_IG_PAGE_SIZE = 30;
 	
 	/**
+	 * The image cache size.
+	 */
+	static final int IMAGE_CACHE_SIZE = 200000000; //200M
+	
+	/**
 	 * Use this as the marker to say there is no more data, if server returns photos less than this,
 	 * we say there is no more there.
 	 */
 	static final int DEF_MIN_PAGE_SIZE = 10;
-	
 	static final int DEF_MAX_TOTAL_PHOTOS = 300;
 
 	static final String SD_CARD_FOLDER_NAME = "ups_flickr"; //$NON-NLS-1$

@@ -12,7 +12,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.os.Environment;
 
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.RequestContext;
@@ -116,23 +115,6 @@ public class PicornerApplication extends Application {
 	 */
 	public String getPx500UserId() {
 		return null;
-	}
-
-	/**
-	 * Clear the user token
-	 */
-	public void logout() {
-		// delete the user cache file.
-		String token = getFlickrToken();
-		File root = new File(Environment.getExternalStorageDirectory(),
-				IConstants.SD_CARD_FOLDER_NAME);
-		if (root.exists()) {
-			File cacheFile = new File(root, token + ".dat"); //$NON-NLS-1$
-			if (cacheFile.exists()) {
-				cacheFile.delete();
-			}
-		}
-		saveFlickrAuthToken(null);
 	}
 
 	/**

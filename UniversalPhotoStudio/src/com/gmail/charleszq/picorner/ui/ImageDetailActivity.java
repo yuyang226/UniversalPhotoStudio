@@ -33,6 +33,7 @@ import android.view.WindowManager.LayoutParams;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
+import com.gmail.charleszq.picorner.utils.IConstants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -44,7 +45,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 	private ImagePagerAdapter mAdapter;
 	private ImageLoader mImageFetcher;
 	private ViewPager mPager;
-	
+
 	private Set<IActionBarVisibleListener> mActionBarListeners;
 
 	IPhotosProvider mPhotosProvider;
@@ -57,10 +58,14 @@ public class ImageDetailActivity extends FragmentActivity implements
 		// The ImageFetcher takes care of loading images into our ImageView
 		// children asynchronously
 		mImageFetcher = ImageLoader.getInstance();
-		mImageFetcher.init(ImageLoaderConfiguration.createDefault(this));
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				getApplicationContext()).discCacheSize(
+				IConstants.IMAGE_CACHE_SIZE).build();
+		mImageFetcher.init(config);
 
 		// Set up ViewPager and backing adapter
-		mPhotosProvider = (IPhotosProvider) getIntent().getExtras().getSerializable(DP_KEY);
+		mPhotosProvider = (IPhotosProvider) getIntent().getExtras()
+				.getSerializable(DP_KEY);
 		mAdapter = new ImagePagerAdapter(mPhotosProvider,
 				getSupportFragmentManager(), mPhotosProvider.getCurrentSize());
 		mPager = (ViewPager) findViewById(R.id.pager);
@@ -92,9 +97,9 @@ public class ImageDetailActivity extends FragmentActivity implements
 					} else {
 						actionBar.show();
 					}
-					
-					if(mActionBarListeners != null ) {
-						for( IActionBarVisibleListener lis : mActionBarListeners ) {
+
+					if (mActionBarListeners != null) {
+						for (IActionBarVisibleListener lis : mActionBarListeners) {
 							lis.onActionBarShown(shown);
 						}
 					}
@@ -107,7 +112,8 @@ public class ImageDetailActivity extends FragmentActivity implements
 		}
 
 		// Set the current item based on the extra passed in to this activity
-		final int extraCurrentItem = getIntent().getIntExtra(LARGE_IMAGE_POSITION, -1);
+		final int extraCurrentItem = getIntent().getIntExtra(
+				LARGE_IMAGE_POSITION, -1);
 		if (extraCurrentItem != -1) {
 			mPager.setCurrentItem(extraCurrentItem);
 		}
@@ -152,9 +158,9 @@ public class ImageDetailActivity extends FragmentActivity implements
 		@Override
 		public Fragment getItem(int position) {
 			MediaObject obj = mProvider.getMediaObject(position);
-			ImageDetailFragment frg = ImageDetailFragment
-					.newInstance(obj.getLargeUrl() == null ? obj.getThumbUrl()
-							: obj.getLargeUrl(), mProvider, position);
+			ImageDetailFragment frg = ImageDetailFragment.newInstance(
+					obj.getLargeUrl() == null ? obj.getThumbUrl() : obj
+							.getLargeUrl(), mProvider, position);
 			return frg;
 		}
 	}
@@ -172,25 +178,25 @@ public class ImageDetailActivity extends FragmentActivity implements
 			mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		}
 	}
-	
-	void addActionBarListener( IActionBarVisibleListener lis ) {
-		if( mActionBarListeners == null ) {
+
+	void addActionBarListener(IActionBarVisibleListener lis) {
+		if (mActionBarListeners == null) {
 			mActionBarListeners = new HashSet<IActionBarVisibleListener>();
 		}
 		mActionBarListeners.add(lis);
 	}
-	
-	void removeActionBarListener( IActionBarVisibleListener lis ) {
-		if( mActionBarListeners != null ) {
+
+	void removeActionBarListener(IActionBarVisibleListener lis) {
+		if (mActionBarListeners != null) {
 			mActionBarListeners.remove(lis);
 		}
 	}
-	
+
 	/**
 	 * @author charles(charleszq@gmail.com)
-	 *
+	 * 
 	 */
 	static interface IActionBarVisibleListener {
-		void onActionBarShown( boolean show );
+		void onActionBarShown(boolean show);
 	}
 }
