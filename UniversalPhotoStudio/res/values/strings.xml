@@ -118,11 +118,11 @@
 	
 	<!-- Licensing Check -->
 	<string name="allow">Thank you for the purchase, please enjoy!</string>
-	<string name="dont_allow">Sorry your copy of this application is NOT licensed, please make sure you purchased this application from the Google Play Store!</string>
+	<string name="dont_allow">Application NOT licensed!</string>
 	<string name="application_error">Application error: %1$s</string>
 	<!-- Unlicensed dialog messages -->
     <string name="unlicensed_dialog_title">Application not licensed</string>
-    <string name="unlicensed_dialog_body">This application is not licensed. Please purchase it from Android Market.</string>
+    <string name="unlicensed_dialog_body">This application is not licensed. Please purchase it from the Google Play Store.</string>
     <string name="buy_button">Buy app</string>
     <string name="quit_button">Exit</string>
 	
