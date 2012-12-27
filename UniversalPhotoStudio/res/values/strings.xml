@@ -3,7 +3,7 @@
     <string name="about_file_name">about.html</string>
     <string name="help_file_name">help.html</string>
 
-    <string name="app_name">Photo Corner</string>
+    <string name="app_name">PICORNER</string>
     <string name="no_network_connection_toast">No network connection found</string>
     <string name="secondary_menus">Secondary Menu</string>
     <string name="f_interesting_photos">Interesting Photos</string>

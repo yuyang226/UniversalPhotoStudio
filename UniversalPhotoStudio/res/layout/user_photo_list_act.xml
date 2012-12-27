@@ -4,7 +4,7 @@
     android:layout_height="match_parent" >
 
     <fragment
-        android:name="com.gmail.charleszq.ups.ui.UserPhotoListFragment"
+        android:name="com.gmail.charleszq.picorner.ui.UserPhotoListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center" android:id="@+id/frg_user_photo_list"/>

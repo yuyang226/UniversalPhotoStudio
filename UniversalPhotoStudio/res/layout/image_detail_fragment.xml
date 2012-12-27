@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <com.gmail.charleszq.ups.ui.TouchImageView
+    <com.gmail.charleszq.picorner.ui.TouchImageView
         android:id="@+id/imageView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
