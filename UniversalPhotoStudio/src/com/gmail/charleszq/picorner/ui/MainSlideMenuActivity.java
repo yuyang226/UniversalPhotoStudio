@@ -77,6 +77,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 
 		if (!retained)
 			loadDefaultPhotoList();
+		
 	}
 
 	/**

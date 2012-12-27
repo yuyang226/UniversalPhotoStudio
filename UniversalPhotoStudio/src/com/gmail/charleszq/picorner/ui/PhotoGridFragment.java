@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
@@ -53,7 +54,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	 * @param command
 	 */
 	void populatePhotoList(MediaObjectCollection photos, ICommand<?> command) {
-		if (command == mCurrentCommand || getActivity() == null ) {
+		if (command == mCurrentCommand || getActivity() == null) {
 			// make sure this method will not be called after click the main
 			// menu item.
 			Log.d(TAG, "command is the same, just ignore."); //$NON-NLS-1$
@@ -69,7 +70,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		// data, this method will not called again.
 		mCurrentCommand.clearCommandDoneListener();
 		mNoMoreData = false;
-		
+
 		mPhotosProvider.loadData(photos, command);
 		mAdapter.notifyDataSetChanged();
 		if (mGridView != null) {
@@ -79,9 +80,20 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		if (mLoadingMessageText != null) {
 			mLoadingMessageText.setVisibility(View.GONE);
 		}
-		
-		//add listener for load more, so after done, we can hide the message.
+
+		// add listener for load more, so after done, we can hide the message.
 		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
+
+		//show main menu at the first time.
+		if (getActivity() != null) {
+			PicornerApplication app = (PicornerApplication) getActivity()
+					.getApplication();
+			if (app.isFirstTime()) {
+				((MainSlideMenuActivity) getActivity()).getSlidingMenu()
+						.showMenu(true);
+				app.setFirstTimeFalse();
+			}
+		}
 	}
 
 	@Override

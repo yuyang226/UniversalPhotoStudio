@@ -26,6 +26,8 @@ import com.googlecode.flickrjandroid.people.User;
  * @author charles
  */
 public class PicornerApplication extends Application {
+	
+	private static final String FIRST_TIME_KEY = "first.time"; //$NON-NLS-1$
 
 	@Override
 	public void onCreate() {
@@ -178,6 +180,18 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.IG_AUTH_TOKEN_SECRET, secret);
 		editor.putString(IConstants.IG_AUTH_TOKEN_RAW_RES, rawResponse);
 		editor.putString(IConstants.IG_USER_BUDDY_ICON_URL, url);
+		editor.commit();
+	}
+	
+	public boolean isFirstTime() {
+		return getSharedPreferenceValue(FIRST_TIME_KEY, null) == null;
+	}
+	
+	public void setFirstTimeFalse() {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		editor.putString(FIRST_TIME_KEY, Boolean.TRUE.toString());
 		editor.commit();
 	}
 }
