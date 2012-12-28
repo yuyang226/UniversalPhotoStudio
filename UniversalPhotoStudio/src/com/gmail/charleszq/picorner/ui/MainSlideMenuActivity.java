@@ -63,11 +63,6 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		StringBuilder sb = new StringBuilder();
-		sb.append(getString(R.string.app_name));
-		sb.append(" - "); //$NON-NLS-1$
-		sb.append(getString(R.string.main_photo_grid));
-		getActionBar().setTitle( sb.toString() );
 
 		customizeSlideMenu();
 

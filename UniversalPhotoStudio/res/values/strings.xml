@@ -3,7 +3,8 @@
     <string name="about_file_name">about.html</string>
     <string name="help_file_name">help.html</string>
     
-    <string name="main_photo_grid">Main</string>
+    <string name="main_photo_grid">main</string>
+    <string name="user_photo_grid">user photos</string>
 
     <string name="app_name">PiCorner</string>
     <string name="no_network_connection_toast">No network connection found</string>
