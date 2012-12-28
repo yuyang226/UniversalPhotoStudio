@@ -119,9 +119,9 @@
 	<string name="allow">Thank you for the purchase, please enjoy!</string>
 	<string name="application_error">Application error: %1$s</string>
 	<!-- Unlicensed dialog messages -->
-    <string name="unlicensed_dialog_title">Application not licensed</string>
-    <string name="unlicensed_dialog_body">This application is not licensed. Please purchase it from the Google Play Store.</string>
-    <string name="buy_button">Buy app</string>
+    <string name="unlicensed_dialog_title">Application Not Licensed</string>
+    <string name="unlicensed_dialog_body">This application is NOT licensed. Please purchase it from the Google Play Store.</string>
+    <string name="buy_button">Purchase</string>
     <string name="quit_button">Exit</string>
 	
 </resources>
