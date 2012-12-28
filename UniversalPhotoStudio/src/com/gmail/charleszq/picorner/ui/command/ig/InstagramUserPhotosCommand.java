@@ -32,7 +32,7 @@ public class InstagramUserPhotosCommand extends AbstractInstagramPhotoListComman
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_my_ig;
+		return R.drawable.ic_action_instagram_my_photos;
 	}
 
 	@Override

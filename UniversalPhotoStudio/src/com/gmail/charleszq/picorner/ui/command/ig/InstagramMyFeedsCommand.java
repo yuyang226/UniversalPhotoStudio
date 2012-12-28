@@ -25,7 +25,7 @@ public class InstagramMyFeedsCommand extends AbstractInstagramPhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_ig_myfeed;
+		return R.drawable.ic_action_instagram_my_feed;
 	}
 
 	@Override

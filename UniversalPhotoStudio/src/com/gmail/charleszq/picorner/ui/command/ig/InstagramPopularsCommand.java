@@ -24,7 +24,7 @@ public class InstagramPopularsCommand extends AbstractInstagramPhotoListCommand 
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_ig_popular;
+		return R.drawable.ic_action_instagram_my_popular;
 	}
 
 	@Override
