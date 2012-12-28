@@ -9,7 +9,7 @@
 
     <string name="app_name">PiCorner</string>
     <string name="no_network_connection_toast">No network connection found</string>
-    <string name="secondary_menus">Secondary Menu</string>
+    <string name="secondary_menus">General</string>
     <string name="f_interesting_photos">Interesting Photos</string>
     <string name="f_login">Sign In</string>
     <string name="f_my_photos">My Photos</string>
