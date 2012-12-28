@@ -118,7 +118,6 @@
 	<string name="btn_help">Help</string>
 	
 	<!-- Licensing Check -->
-	<string name="allow">Thank you for the purchase, please enjoy!</string>
 	<string name="application_error">Application error: %1$s</string>
 	<!-- Unlicensed dialog messages -->
     <string name="unlicensed_dialog_title">Application Not Licensed</string>
