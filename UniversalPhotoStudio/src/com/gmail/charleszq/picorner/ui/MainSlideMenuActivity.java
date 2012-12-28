@@ -205,7 +205,6 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 							BASE64_PUBLIC_KEY);
 		}
 
-		setProgressBarIndeterminateVisibility(true);
 	    mChecker.checkAccess(mLicenseCheckerCallback);
 	}
 
