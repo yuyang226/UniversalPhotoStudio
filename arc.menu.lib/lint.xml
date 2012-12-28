@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="ContentDescription">
+        <ignore path="res\layout-large\arc_menu.xml" />
+        <ignore path="res\layout\arc_menu.xml" />
+    </issue>
+    <issue id="PxUsage">
+        <ignore path="res\layout-large\arc_menu.xml" />
+        <ignore path="res\layout\arc_menu.xml" />
+    </issue>
+</lint>

@@ -16,7 +16,6 @@
 
 package com.gmail.charleszq.picorner.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.util.Log;
 import android.view.View;
@@ -103,12 +102,6 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		mAdapter.notifyDataSetChanged();
 	}
 	
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-		activity.getActionBar().setSubtitle( R.string.main_photo_grid );
-	}
-
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		final Intent i = new Intent(getActivity(), ImageDetailActivity.class);

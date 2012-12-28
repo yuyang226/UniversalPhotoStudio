@@ -63,7 +63,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		mSectionAdapter.clearSections();
 		List<ICommand<?>> commands = new ArrayList<ICommand<?>>();
 		ICommand<?> command = new MenuSectionHeaderCommand(getActivity(),
-				getString(R.string.secondary_menus));
+				getString(R.string.secondary_menus_general));
 		commands.add(command);
 
 		command = new AboutCommand(getActivity());

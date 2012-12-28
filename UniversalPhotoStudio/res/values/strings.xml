@@ -4,15 +4,15 @@
     <string name="help_file_name">help.html</string>
     <string name="about_file_encoding">utf-8</string>
     
-    <string name="main_photo_grid">main</string>
     <string name="user_photo_grid">user photos</string>
 
     <string name="app_name">PiCorner</string>
     <string name="no_network_connection_toast">No network connection found</string>
-    <string name="secondary_menus">General</string>
+    <string name="secondary_menus_general">General</string>
+    <string name="secondary_menus_search">Search</string>
     <string name="f_interesting_photos">Interesting Photos</string>
     <string name="f_login">Sign In</string>
-    <string name="f_my_photos">My Photos</string>
+    <string name="f_my_photos">My Photo Stream</string>
     <string name="f_my_fav">My Favorites</string>
     <string name="f_my_contacts">My Contact Photos</string>
     <string name="f_my_popular">My Populars</string>
@@ -33,6 +33,7 @@
     <string name="menu_header_ig">Instagram</string>
     <string name="menu_header_px500">500PX</string>
     <string name="cmd_name_about">About</string>
+    <string name="cmd_name_flickr_tag_search">Flickr: Tag Search</string>
     
     <string name="ig_following">Following</string>
     <string name="ig_follow">Follow</string>
@@ -96,7 +97,7 @@
 	<string name="cd_flickr_photo_set_photos">Flickr: Photos of Photo Set \'%s\'</string>
 	<string name="cd_flickr_group_photos">Flickr: Photos of Group \'%s\'</string>
 	<string name="cd_flickr_gallery_photos">Flickr: Photos of Gallery \'%s\'</string>
-	<string name="cd_flickr_my_photos">Flickr: My Photos</string>
+	<string name="cd_flickr_my_photos">Flickr: My Photo Stream</string>
 	
 	<!-- 500px -->
 	<string name="cd_500px_popular">500PX: Popular</string>
