@@ -13,6 +13,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.gmail.charleszq.picorner.model.Author;
+import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -25,7 +27,7 @@ import com.googlecode.flickrjandroid.people.User;
  * @author charles
  */
 public class PicornerApplication extends Application {
-	
+
 	private static final String FIRST_TIME_KEY = "first.time"; //$NON-NLS-1$
 	private static final String IS_LICENSED = "isLicensed"; //$NON-NLS-1$
 
@@ -165,15 +167,16 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.IG_USER_BUDDY_ICON_URL, url);
 		editor.commit();
 	}
-	
+
 	public boolean isFirstTime() {
 		return getSharedPreferenceValue(FIRST_TIME_KEY, null) == null;
 	}
-	
+
 	public boolean isLicensed() {
-		return Boolean.valueOf(getSharedPreferenceValue(IS_LICENSED, Boolean.FALSE.toString()));
+		return Boolean.valueOf(getSharedPreferenceValue(IS_LICENSED,
+				Boolean.FALSE.toString()));
 	}
-	
+
 	public void setFirstTimeFalse() {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_PRIVATE);
@@ -181,12 +184,32 @@ public class PicornerApplication extends Application {
 		editor.putString(FIRST_TIME_KEY, Boolean.TRUE.toString());
 		editor.commit();
 	}
-	
+
 	public void setLicensedTrue() {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_PRIVATE);
 		Editor editor = sp.edit();
 		editor.putString(IS_LICENSED, Boolean.TRUE.toString());
 		editor.commit();
+	}
+
+	public boolean isMyOwnPhoto(MediaObject photo) {
+		boolean result = false;
+
+		Author a = photo.getAuthor();
+		if (a != null) {
+			switch (photo.getMediaSource()) {
+			case FLICKR:
+				result = a.getUserId().equals(getFlickrUserId());
+				break;
+			case INSTAGRAM:
+				result = a.getUserId().equals(getInstagramUserId());
+				break;
+			case PX500:
+				//not support yet.
+				break;
+			}
+		}
+		return result;
 	}
 }

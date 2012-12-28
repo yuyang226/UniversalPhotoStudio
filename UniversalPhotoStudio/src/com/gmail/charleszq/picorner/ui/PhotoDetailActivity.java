@@ -128,6 +128,16 @@ public class PhotoDetailActivity extends FragmentActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.menu_item_like);
+		
+		// disable like for px500 at this time.
+		if (mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
+			item.setVisible(false);
+		}
+		PicornerApplication app = (PicornerApplication) getApplication();
+		if( app.isMyOwnPhoto( mCurrentPhoto )) {
+			item.setVisible(false);
+		}
+		
 		if (mUserLikeThePhoto) {
 			item.setIcon(R.drawable.ic_fav_yes);
 		} else {
@@ -137,11 +147,10 @@ public class PhotoDetailActivity extends FragmentActivity {
 		// this menu item can only be visible if the photo is instagram and I've
 		// signed in.
 		MenuItem followItem = menu.findItem(R.id.menu_item_follow);
-		PicornerApplication app = (PicornerApplication) getApplication();
 		if (!MediaSourceType.INSTAGRAM.equals(mCurrentPhoto.getMediaSource())) {
 			followItem.setVisible(false);
 		} else {
-			followItem.setVisible(app.getInstagramUserId() != null);
+			followItem.setVisible(app.getInstagramUserId() != null && !app.isMyOwnPhoto(mCurrentPhoto));
 		}
 
 		followItem.setEnabled(mIsFollowing != 0);
@@ -151,10 +160,6 @@ public class PhotoDetailActivity extends FragmentActivity {
 			followItem.setTitle(getString(R.string.menu_item_ig_follow_user));
 		}
 
-		// disable like for px500 at this time.
-		if (mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
-			item.setVisible(false);
-		}
 		return true;
 	}
 
