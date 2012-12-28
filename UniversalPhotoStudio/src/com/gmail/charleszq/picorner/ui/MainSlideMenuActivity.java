@@ -12,12 +12,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings.Secure;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
-import android.view.Window;
-import android.widget.Toast;
 
 import com.android.vending.licensing.AESObfuscator;
 import com.android.vending.licensing.LicenseChecker;
@@ -49,19 +46,15 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkk2BWGUWXSRKCy31ytmFNYD09qq9AHpEfd+jz3/zyi3ykKVbWYdTIS+RZCio3fGAa1pMQHai6TZe1h+qpsR0EyMnlqgB5A23kwu5MI43uelw8JDgCJznXkZv7n3NJcG2uUNqMCz/VbGHukXXQkynx7PD2RDJLF9GQXIX2O/BA5iy9CvKLaIP++SfjTd/KS78KWfRTMqJCVqqIDadznMKHwH2ThJSCWHwdfrJG4TksEumiIZzbJmA3SFVt47qHZse0rpQhXlJ7Cob1gK/EsmkRkGcGrEGh+DeAFf70E5Nj7tY+yrw0bwBQtEPKYar27WZUP76GjW4ujgxXIaB1B9JbwIDAQAB"; //$NON-NLS-1$
 	// Generate your own 20 random bytes, and put them here.
 	private static final byte[] SALT = new byte[] {
-		-46, 79, 83, -128, -103, -57, 74, -64, 51, 88, -95, -45, 77, -117, -36, -113, -11, 32, -64,
-		89
+		-46, 79, 83, -128, -103, -57, 74, -64, 51, 88, -95, -45, 77, -117, -36, -113, -11, 32, -64,	89
 	};
 	private LicenseCheckerCallback mLicenseCheckerCallback;
     private LicenseChecker mChecker;
-	//A handler on the UI thread.
-    private Handler mHandler;
 
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		StringBuilder sb = new StringBuilder();
 		sb.append(getString(R.string.app_name));
@@ -103,15 +96,6 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		if (!retained)
 			loadDefaultPhotoList();
 	}
-
-	private void displayResult(final String result) {
-        mHandler.post(new Runnable() {
-            public void run() {
-            	Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                setProgressBarIndeterminateVisibility(false);
-            }
-        });
-    }
 
 	/**
 	 * When first time this activity starts, load default photo list, now it's
@@ -211,12 +195,6 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	}
 
 	private void checkLicense() {
-		//License Check
-		if (mHandler == null) {
-			//from onCreate
-			mHandler = new Handler();
-		}
-		
 		if (mLicenseCheckerCallback == null) {
 			// Library calls this when it's done.
 			mLicenseCheckerCallback = new MyLicenseCheckerCallback();
@@ -263,7 +241,6 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	            return;
 	        }
 	        // Should allow user access.
-	        displayResult(getString(R.string.allow));
 	        ((PicornerApplication) getApplication()).setLicensedTrue();
 	    }
 	
@@ -272,7 +249,6 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	            // Don't update UI if Activity is finishing.
 	            return;
 	        }
-//	        displayResult(getString(R.string.dont_allow));
 	        // Should not allow access. In most cases, the app should assume
 	        // the user has access unless it encounters this. If it does,
 	        // the app should inform the user of their unlicensed ways
@@ -292,7 +268,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	            // while setting up or calling the license checker library.
 	            // Please examine the error code and fix the error.
 	            String result = String.format(getString(R.string.application_error), errorCode);
-	            displayResult(result);
+	            logger.warn(result);
 	        }
 	    }
 	}

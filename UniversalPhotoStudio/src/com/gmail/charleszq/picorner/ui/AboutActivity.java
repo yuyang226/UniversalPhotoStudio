@@ -3,13 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MenuItem;
@@ -23,9 +17,9 @@ import com.gmail.charleszq.picorner.utils.IConstants;
  * 
  */
 public class AboutActivity extends FragmentActivity {
-
 	private WebView mWebView;
 	private String mFileName;
+	private String mFileEncoding;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -34,6 +28,10 @@ public class AboutActivity extends FragmentActivity {
 		
 		Intent i = getIntent();
 		mFileName = i.getStringExtra(IConstants.ABOUT_FILE_FRG_ARG_KEY);
+		mFileEncoding = i.getStringExtra(IConstants.ABOUT_FILE_ENCODING_KEY);
+		if (mFileEncoding == null || mFileEncoding == "") { //$NON-NLS-1$
+			mFileEncoding = IConstants.ABOUT_FILE_DEFAULT_ENCODING;
+		}
 		
 		mWebView = new WebView(this);
 		mWebView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
@@ -45,29 +43,8 @@ public class AboutActivity extends FragmentActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		AssetManager am = getAssets();
-		InputStream is = null;
-		try {
-			is = am.open(mFileName);
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(is));
-			StringBuilder sb = new StringBuilder();
-			int ch = reader.read();
-			while (ch != -1) {
-				sb.append((char) ch);
-				ch = reader.read();
-			}
-			mWebView.loadDataWithBaseURL("file:///android_asset/", sb.toString(), //$NON-NLS-1$
-					"text/html", "utf-8", null); //$NON-NLS-1$//$NON-NLS-2$
-		} catch (IOException e) {
-		} finally {
-			if (is != null) {
-				try {
-					is.close();
-				} catch (IOException e) {
-				}
-			}
-		}
+		mWebView.getSettings().setDefaultTextEncodingName(mFileEncoding);
+		mWebView.loadUrl(IConstants.ASSET_FOLDER + mFileName);
 	}
 
 	@Override

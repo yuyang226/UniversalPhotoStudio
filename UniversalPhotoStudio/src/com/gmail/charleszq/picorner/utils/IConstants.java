@@ -69,5 +69,9 @@ public interface IConstants {
 	static final String PX500_OAUTH_CALLBACK_SCHEMA = "schemapx500"; //$NON-NLS-1$
 	
 	static final String ABOUT_FILE_FRG_ARG_KEY = "frg.file.name"; //$NON-NLS-1$
+	static final String ABOUT_FILE_ENCODING_KEY = "frg.file.encoding"; //$NON-NLS-1$
+	static final String ABOUT_FILE_DEFAULT_ENCODING = "utf-8"; //$NON-NLS-1$
+	
+	static final String ASSET_FOLDER = "file:///android_asset/"; //$NON-NLS-1$
 
 }
