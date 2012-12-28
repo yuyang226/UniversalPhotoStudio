@@ -32,7 +32,7 @@ public class AboutCommand extends AbstractCommand<Void> {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_launcher;
+		return R.drawable.ic_action_about;
 	}
 
 	@Override
