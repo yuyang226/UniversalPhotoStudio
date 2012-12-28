@@ -31,7 +31,7 @@ public class FlickrIntestringCommand extends PhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.f_interest;
+		return R.drawable.ic_action_flickr_interesting;
 	}
 
 	@Override

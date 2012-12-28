@@ -27,7 +27,7 @@ public class MyFlickrFavsCommand extends PhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_my_favorite;
+		return R.drawable.ic_action_flickr_my_favourites;
 	}
 
 	@Override
