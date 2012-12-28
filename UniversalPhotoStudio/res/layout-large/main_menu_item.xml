@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/nav_item_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/app_name"
         android:paddingLeft="5dp"
