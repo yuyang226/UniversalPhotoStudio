@@ -24,7 +24,7 @@ public class PxUpcomingPhotosCommand extends AbstractPx500PhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_px_upcoming;
+		return R.drawable.ic_action_px500_upcoming;
 	}
 
 	@Override

@@ -24,7 +24,7 @@ public class PxFreshTodayPhotosCommand extends AbstractPx500PhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_px_refresh_today;
+		return R.drawable.ic_action_px500_fresh;
 	}
 
 	@Override
