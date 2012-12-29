@@ -29,7 +29,7 @@
     <string name="menu_header_flickr_gallery">Galleries</string>
     <string name="ig_popular">Popular Photos</string>
     <string name="menu_header_ig">Instagram</string>
-    <string name="menu_header_px500">500PX</string>
+    <string name="menu_header_px500">500px</string>
     <string name="cmd_name_about">About</string>
     <string name="cmd_name_flickr_tag_search">Flickr: Tag Search</string>
     
@@ -87,29 +87,29 @@
 	
 	<!-- Command descritions -->
 	<!-- flickr -->
-	<string name="cd_flickr_interesting">Flickr: Interesting</string>
-	<string name="cd_flickr_user_photos">Flickr: Photos of \'%s\'</string>
-	<string name="cd_flickr_my_favs">Flickr: My Favorites</string>
-	<string name="cd_flickr_my_populars">Flickr: My Popular Photos</string>
-	<string name="cd_flickr_my_contact_photos">Flickr: My Contact Photos</string>
-	<string name="cd_flickr_photo_set_photos">Flickr: Photos of Photo Set \'%s\'</string>
-	<string name="cd_flickr_group_photos">Flickr: Photos of Group \'%s\'</string>
-	<string name="cd_flickr_gallery_photos">Flickr: Photos of Gallery \'%s\'</string>
-	<string name="cd_flickr_my_photos">Flickr: My Photo Stream</string>
+	<string name="cd_flickr_interesting">flickr: interesting</string>
+	<string name="cd_flickr_user_photos">flickr: photos of \'%s\'</string>
+	<string name="cd_flickr_my_favs">flickr: my favorites</string>
+	<string name="cd_flickr_my_populars">flickr: my popular photos</string>
+	<string name="cd_flickr_my_contact_photos">flickr: my contact photos</string>
+	<string name="cd_flickr_photo_set_photos">flickr: photo set \'%s\'</string>
+	<string name="cd_flickr_group_photos">flickr: photo group \'%s\'</string>
+	<string name="cd_flickr_gallery_photos">flickr: photo gallery \'%s\'</string>
+	<string name="cd_flickr_my_photos">flickr: my photo stream</string>
 	
 	<!-- 500px -->
-	<string name="cd_500px_popular">500PX: Popular</string>
-	<string name="cd_500px_editor">500PX: Editors\' Choice</string>
-	<string name="cd_500px_upcoming">500PX: Upcoming</string>
-	<string name="cd_500px_fresh_today">500PX: Fresh Today</string>
-	<string name="cd_500px_user_photos">500PX: Photos of \'%s\'</string>
+	<string name="cd_500px_popular">500px: popular</string>
+	<string name="cd_500px_editor">500px: editors\' choice</string>
+	<string name="cd_500px_upcoming">500px: upcoming</string>
+	<string name="cd_500px_fresh_today">500px: fresh today</string>
+	<string name="cd_500px_user_photos">500px: photos of \'%s\'</string>
 	
 	<!-- Instagram -->
-	<string name="cd_ig_popular">Instagram: Popular</string>
-	<string name="cd_ig_my_feeds">Instagram: My Feeds</string>
-	<string name="cd_ig_my_likes">Instagram: My Likes</string>
-	<string name="cd_ig_my_photos">Instagram: My Photos</string>
-	<string name="cd_ig_user_photos">Instagram: Photos of \'%s\'</string>
+	<string name="cd_ig_popular">instagram: popular</string>
+	<string name="cd_ig_my_feeds">instagram: my feeds</string>
+	<string name="cd_ig_my_likes">instagram: my likes</string>
+	<string name="cd_ig_my_photos">instagram: my photos</string>
+	<string name="cd_ig_user_photos">instagram: photos of \'%s\'</string>
 	
 	<!-- use my own ig client -->
 	<string name="ig_client_id">Client ID</string>
