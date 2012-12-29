@@ -26,6 +26,8 @@
         android:glEsVersion="0x00020000"
         android:required="true" />
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
     <application
         android:name="com.gmail.charleszq.picorner.PicornerApplication"
         android:allowBackup="false"
@@ -68,7 +70,7 @@
         </activity>
         <activity
             android:name=".ui.ImageDetailActivity"
-            android:theme="@style/AppTheme.Black" android:uiOptions="splitActionBarWhenNarrow">
+            android:theme="@style/AppTheme.Black" >
         </activity>
         <activity android:name=".ui.PhotoDetailActivity" >
         </activity>
@@ -77,8 +79,11 @@
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyBdIjutWHvtOnqjgIv_baio7XGzUn4Orr8" />
-        <activity android:name=".ui.UserPhotoListActivity"></activity>
-        <activity android:name="com.gmail.charleszq.picorner.ui.AboutActivity"></activity>
+
+        <activity android:name=".ui.UserPhotoListActivity" >
+        </activity>
+        <activity android:name="com.gmail.charleszq.picorner.ui.AboutActivity" >
+        </activity>
     </application>
 
 </manifest>

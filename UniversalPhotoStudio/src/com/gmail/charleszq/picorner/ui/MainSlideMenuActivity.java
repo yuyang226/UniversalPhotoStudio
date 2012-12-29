@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.support.v4.app.Fragment;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.vending.licensing.AESObfuscator;
 import com.android.vending.licensing.LicenseChecker;
@@ -42,14 +43,14 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	private Fragment mContent;
 	private ICommand<MediaObjectCollection> mCommand;
 
-	//License Check
+	// License Check
 	private static final String BASE64_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkk2BWGUWXSRKCy31ytmFNYD09qq9AHpEfd+jz3/zyi3ykKVbWYdTIS+RZCio3fGAa1pMQHai6TZe1h+qpsR0EyMnlqgB5A23kwu5MI43uelw8JDgCJznXkZv7n3NJcG2uUNqMCz/VbGHukXXQkynx7PD2RDJLF9GQXIX2O/BA5iy9CvKLaIP++SfjTd/KS78KWfRTMqJCVqqIDadznMKHwH2ThJSCWHwdfrJG4TksEumiIZzbJmA3SFVt47qHZse0rpQhXlJ7Cob1gK/EsmkRkGcGrEGh+DeAFf70E5Nj7tY+yrw0bwBQtEPKYar27WZUP76GjW4ujgxXIaB1B9JbwIDAQAB"; //$NON-NLS-1$
 	// Generate your own 20 random bytes, and put them here.
-	private static final byte[] SALT = new byte[] {
-		-46, 79, 83, -128, -103, -57, 74, -64, 51, 88, -95, -45, 77, -117, -36, -113, -11, 32, -64,	89
-	};
+	private static final byte[] SALT = new byte[] { -46, 79, 83, -128, -103,
+			-57, 74, -64, 51, 88, -95, -45, 77, -117, -36, -113, -11, 32, -64,
+			89 };
 	private LicenseCheckerCallback mLicenseCheckerCallback;
-    private LicenseChecker mChecker;
+	private LicenseChecker mChecker;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -83,7 +84,8 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		getSlidingMenu().setSecondaryMenu(R.layout.menu_frame_two);
 		getSlidingMenu().setSecondaryShadowDrawable(R.drawable.shadowright);
 		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.menu_frame_two, new SecondaryMenuFragment()).commit();
+				.replace(R.id.menu_frame_two, new SecondaryMenuFragment())
+				.commit();
 
 		// customize the SlidingMenu
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
@@ -157,6 +159,14 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		switch (type) {
 		case PHOTO_LIST_CMD:
 			if (mContent instanceof PhotoGridFragment) {
+				MediaObjectCollection col = (MediaObjectCollection) result;
+				if (col == null || col.getPhotos().isEmpty()) {
+					String msg = getString(R.string.msg_no_photo_returned);
+					Toast.makeText(this,
+							String.format(msg, command.getDescription()),
+							Toast.LENGTH_SHORT).show();
+					return;
+				}
 				((PhotoGridFragment) mContent).populatePhotoList(
 						(MediaObjectCollection) result, command);
 			} else {
@@ -169,16 +179,18 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	void closeMenu() {
 		this.getSlidingMenu().toggle();
 	}
-	
-	@Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mChecker != null) {
-        	mChecker.onDestroy();
-        }
-    }
 
-	/* (non-Javadoc)
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (mChecker != null) {
+			mChecker.onDestroy();
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.FragmentActivity#onResume()
 	 */
 	@Override
@@ -194,77 +206,83 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 			// Library calls this when it's done.
 			mLicenseCheckerCallback = new MyLicenseCheckerCallback();
 		}
-		
+
 		if (mChecker == null) {
 			// Construct the LicenseChecker with a policy.
-			// Try to use more data here. ANDROID_ID is a single point of attack.
-			String deviceId = Secure.getString(getContentResolver(), Secure.ANDROID_ID);
-			mChecker = new LicenseChecker(
-					this, new ServerManagedPolicy(this,
-							new AESObfuscator(SALT, getPackageName(), deviceId)),
-							BASE64_PUBLIC_KEY);
+			// Try to use more data here. ANDROID_ID is a single point of
+			// attack.
+			String deviceId = Secure.getString(getContentResolver(),
+					Secure.ANDROID_ID);
+			mChecker = new LicenseChecker(this, new ServerManagedPolicy(this,
+					new AESObfuscator(SALT, getPackageName(), deviceId)),
+					BASE64_PUBLIC_KEY);
 		}
 
-	    mChecker.checkAccess(mLicenseCheckerCallback);
+		mChecker.checkAccess(mLicenseCheckerCallback);
 	}
 
 	private void onInvalidLicense() {
 		new AlertDialog.Builder(MainSlideMenuActivity.this)
-	    .setTitle(R.string.unlicensed_dialog_title)
-	    .setMessage(R.string.unlicensed_dialog_body)
-	    .setPositiveButton(R.string.buy_button, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) {
-	        	Uri uri = Uri.parse(
-	                    "https://play.google.com/store/apps/details?id=" + PicornerApplication.class.getPackage().getName()); //$NON-NLS-1$
-	            Intent marketIntent = new Intent(Intent.ACTION_VIEW, uri); 
-	            startActivity(marketIntent);
-	        }
-	    })
-	    .setNegativeButton(R.string.quit_button, new DialogInterface.OnClickListener() {
-	        public void onClick(DialogInterface dialog, int which) {
-	            finish();
-	        }
-	    })
-	    .create().show();
+				.setTitle(R.string.unlicensed_dialog_title)
+				.setMessage(R.string.unlicensed_dialog_body)
+				.setPositiveButton(R.string.buy_button,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								Uri uri = Uri
+										.parse("https://play.google.com/store/apps/details?id=" + PicornerApplication.class.getPackage().getName()); //$NON-NLS-1$
+								Intent marketIntent = new Intent(
+										Intent.ACTION_VIEW, uri);
+								startActivity(marketIntent);
+							}
+						})
+				.setNegativeButton(R.string.quit_button,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int which) {
+								finish();
+							}
+						}).create().show();
 	}
 
 	private class MyLicenseCheckerCallback implements LicenseCheckerCallback {
-	    public void allow() {
-	        if (isFinishing()) {
-	            // Don't update UI if Activity is finishing.
-	            return;
-	        }
-	        // Should allow user access.
-	        ((PicornerApplication) getApplication()).setLicensedTrue();
-	    }
-	
-	    public void dontAllow() {
-	        if (isFinishing()) {
-	            // Don't update UI if Activity is finishing.
-	            return;
-	        }
-	        // Should not allow access. In most cases, the app should assume
-	        // the user has access unless it encounters this. If it does,
-	        // the app should inform the user of their unlicensed ways
-	        // and then either shut down the app or limit the user to a
-	        // restricted set of features.
-	        // In this example, we show a dialog that takes the user to Market.
-	        onInvalidLicense();
-	    }
-	
-	    public void applicationError(ApplicationErrorCode errorCode) {
-	        if (isFinishing()) {
-	            // Don't update UI if Activity is finishing.
-	            return;
-	        }
-	        if (!ApplicationErrorCode.NOT_MARKET_MANAGED.equals(errorCode)) {
-	        	// This is a polite way of saying the developer made a mistake
-	            // while setting up or calling the license checker library.
-	            // Please examine the error code and fix the error.
-	            String result = String.format(getString(R.string.application_error), errorCode);
-	            logger.warn(result);
-	        }
-	    }
+		public void allow() {
+			if (isFinishing()) {
+				// Don't update UI if Activity is finishing.
+				return;
+			}
+			// Should allow user access.
+			((PicornerApplication) getApplication()).setLicensedTrue();
+		}
+
+		public void dontAllow() {
+			if (isFinishing()) {
+				// Don't update UI if Activity is finishing.
+				return;
+			}
+			// Should not allow access. In most cases, the app should assume
+			// the user has access unless it encounters this. If it does,
+			// the app should inform the user of their unlicensed ways
+			// and then either shut down the app or limit the user to a
+			// restricted set of features.
+			// In this example, we show a dialog that takes the user to Market.
+			onInvalidLicense();
+		}
+
+		public void applicationError(ApplicationErrorCode errorCode) {
+			if (isFinishing()) {
+				// Don't update UI if Activity is finishing.
+				return;
+			}
+			if (!ApplicationErrorCode.NOT_MARKET_MANAGED.equals(errorCode)) {
+				// This is a polite way of saying the developer made a mistake
+				// while setting up or calling the license checker library.
+				// Please examine the error code and fix the error.
+				String result = String.format(
+						getString(R.string.application_error), errorCode);
+				logger.warn(result);
+			}
+		}
 	}
-    
+
 }

@@ -33,5 +33,7 @@
     
     <!-- photo detail view pager -->
     <color name="view_pageer_bg_color">#FF6418</color>
-
+    
+    <!-- search panel bg -->
+	<color name="search_panel_bg">#FFFFFF</color>
 </resources>

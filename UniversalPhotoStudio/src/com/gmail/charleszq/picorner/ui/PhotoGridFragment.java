@@ -16,6 +16,8 @@
 
 package com.gmail.charleszq.picorner.ui;
 
+import java.util.Comparator;
+
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -51,6 +53,12 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	}
 
 	/**
+	 * In some cases, the command instance might be the same, this will provide
+	 * another way to tell whether we should populate a new result.
+	 */
+	private Object mCommandComparator = null;
+
+	/**
 	 * This method will be only be called from the menu fragment, after photos
 	 * are loaded, if we need to load more photos(the following pages), it will
 	 * call dp.loadData();
@@ -59,17 +67,29 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	 * @param command
 	 */
 	void populatePhotoList(MediaObjectCollection photos, ICommand<?> command) {
-		if (command == mCurrentCommand || getActivity() == null) {
-			// make sure this method will not be called after click the main
-			// menu item.
-			Log.d(TAG, "command is the same, just ignore."); //$NON-NLS-1$
+		if (getActivity() == null) {
+			Log.w(TAG, "activity is null!"); //$NON-NLS-1$
 			return;
 		}
+
+		if (command == mCurrentCommand) {
+
+			Object newComparator = command.getAdapter(Comparator.class);
+			if (newComparator == null
+					|| newComparator.equals(mCommandComparator)) {
+				// make sure this method will not be called after click the main
+				// menu item.
+				Log.d(TAG, "command is the same, just ignore."); //$NON-NLS-1$
+				return;
+			}
+		}
+
 		if (this.mGridView != null) {
 			mGridView.setOnScrollListener(null);
 			mGridView.smoothScrollToPositionFromTop(0, 0);
 		}
 		this.mCurrentCommand = (PhotoListCommand) command;
+		mCommandComparator = mCurrentCommand.getAdapter(Comparator.class);
 
 		// remove command done from the main menu UI, so later when load more
 		// data, this method will not called again.
@@ -103,7 +123,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 				ViewGroup vp = (ViewGroup) getView();
 				vp.addView(v);
 
-				//close the help layer if you open the menu.
+				// close the help layer if you open the menu.
 				act.getSlidingMenu().setOnOpenedListener(
 						new OnOpenedListener() {
 							@Override

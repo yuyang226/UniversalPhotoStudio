@@ -6,21 +6,31 @@ package com.gmail.charleszq.picorner.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.content.Context;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ListView;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.ui.command.AboutCommand;
 import com.gmail.charleszq.picorner.ui.command.HelpCommand;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
+import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.FlickrTagSearchCommand;
+import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
+import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
 
 /**
  * Represents the fragment to show the secondary menus.
@@ -34,6 +44,53 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	private ListView mListView;
 	private FrameLayout mBackViewContainer;
 	private CommandSectionListAdapter mSectionAdapter;
+
+	private boolean mHideAnimation = true;
+
+	/**
+	 * The listener to cancel the hidden view.
+	 */
+	private IHiddenViewActionListener mHideViewCancelListener = new IHiddenViewActionListener() {
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public void onAction(int action, ICommand<?> command, IHiddenView view,
+				Object... data) {
+			switch (action) {
+			case IHiddenView.ACTION_CANCEL:
+				// animation to show the list
+				mListView.animate().setDuration(1000).rotationY(-270f)
+						.rotationY(0f);
+				break;
+			case IHiddenView.ACTION_DO:
+				doCommand((ICommand<Object>) command, data);
+				mListView.animate().setDuration(2000).rotationY(-270f)
+						.rotationY(0f);
+				break;
+			}
+		}
+
+	};
+
+	private ICommandDoneListener<Object> mCommandDoneListener = new ICommandDoneListener<Object>() {
+
+		@Override
+		public void onCommandDone(ICommand<Object> command, Object t) {
+			MainSlideMenuActivity act = (MainSlideMenuActivity) SecondaryMenuFragment.this
+					.getActivity();
+			if (act == null) {
+				// when configuration changed, the activity of this fragement
+				// might be null,
+				// then try to get it from the command.
+				Context ctx = (Context) command.getAdapter(Context.class);
+				if (ctx != null && ctx instanceof MainSlideMenuActivity) {
+					act = (MainSlideMenuActivity) ctx;
+				}
+			}
+			if (act != null)
+				act.onCommandDone(command, t);
+		}
+	};
 
 	/**
 	 * 
@@ -67,6 +124,8 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	private void prepareMenuItems() {
 		mSectionAdapter.clearSections();
 		List<ICommand<?>> commands = new ArrayList<ICommand<?>>();
+
+		// general
 		ICommand<?> command = new MenuSectionHeaderCommand(getActivity(),
 				getString(R.string.secondary_menus_general));
 		commands.add(command);
@@ -77,6 +136,15 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		command = new HelpCommand(getActivity());
 		commands.add(command);
 
+		// search
+		command = new MenuSectionHeaderCommand(getActivity(),
+				getString(R.string.secondary_menus_search));
+		commands.add(command);
+		command = new InstagramSearchNearPhotosCommand(getActivity());
+		commands.add(command);
+		command = new FlickrTagSearchCommand(getActivity());
+		commands.add(command);
+
 		mSectionAdapter.addCommands(commands);
 		mSectionAdapter.notifyDataSetChanged();
 	}
@@ -85,13 +153,75 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		// execute the command
-		ICommand<?> command = (ICommand<?>) parent.getAdapter().getItem(
-				position);
-		command.execute();
+		@SuppressWarnings("unchecked")
+		ICommand<Object> command = (ICommand<Object>) parent.getAdapter()
+				.getItem(position);
 
+		IHiddenView hiddenView = (IHiddenView) command
+				.getAdapter(IHiddenView.class);
+		if (hiddenView == null) {
+			doCommand(command);
+		} else {
+			View hv = (View) hiddenView;
+			hiddenView.init(command, mHideViewCancelListener);
+
+			FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(
+					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
+					Gravity.CENTER_VERTICAL);
+			hv.setLayoutParams(param);
+			hv.setVisibility(View.INVISIBLE);
+			mBackViewContainer.addView(hv);
+			showHiddenView(hv);
+		}
+	}
+
+	private void doCommand(ICommand<Object> command, Object... params) {
+		command.addCommndDoneListener(mCommandDoneListener);
+		command.execute(params);
 		// close the menu.
 		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
 		act.closeMenu();
+	}
+
+	/**
+	 * Animate the view to show the hidden view
+	 * 
+	 * @param view
+	 */
+	private void showHiddenView(final View view) {
+		mHideAnimation = true;
+		mListView.animate().setListener(new AnimatorListener() {
+
+			@Override
+			public void onAnimationStart(Animator animation) {
+				if (!mHideAnimation) {
+					view.setVisibility(View.INVISIBLE);
+					mListView.setVisibility(View.VISIBLE);
+				}
+			}
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				mListView.setVisibility(mHideAnimation ? View.INVISIBLE
+						: View.VISIBLE);
+				if (mHideAnimation) {
+					view.setVisibility(View.VISIBLE);
+				} else {
+					SecondaryMenuFragment.this.mBackViewContainer
+							.removeView(view);
+				}
+				mHideAnimation = !mHideAnimation;
+			}
+
+			@Override
+			public void onAnimationCancel(Animator animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+
+			}
+		}).setDuration(3000).rotationY(90f).rotationY(180f);
 	}
 
 }
