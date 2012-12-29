@@ -84,6 +84,8 @@
 	<string name="msg_by_author_name">By</string>
 	<string name="msg_your_own_photo">This is you.</string>
 	<string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
+	<string name="try_swipe_left">Try swipe left</string>
+	<string name="try_swipe_right">Try swipe right</string>
 	
 	<!-- Command descritions -->
 	<!-- flickr -->

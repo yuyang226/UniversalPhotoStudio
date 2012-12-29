@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_trans"
+    android:padding="5dp" >
+
+    <ImageView
+        android:id="@+id/img_left"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/finger_swipe_left" />
+
+    <ImageView
+        android:id="@+id/img_right"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/finger_swipe_right" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/img_right"
+        android:layout_alignLeft="@id/img_right"
+        android:layout_marginBottom="10dp"
+        android:text="@string/try_swipe_right"
+        android:textColor="@color/comment_bg_color" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@id/img_left"
+        android:layout_below="@id/img_left"
+        android:layout_marginBottom="10dp"
+        android:text="@string/try_swipe_left"
+        android:textColor="@color/comment_bg_color" />
+
+</RelativeLayout>

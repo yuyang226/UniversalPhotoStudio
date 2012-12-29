@@ -18,14 +18,19 @@ package com.gmail.charleszq.picorner.ui;
 
 import android.content.Intent;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
 /**
  * The main fragment that powers the ImageGridActivity screen. Fairly straight
@@ -84,18 +89,35 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		// add listener for load more, so after done, we can hide the message.
 		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
 
-		if (getActivity() != null) {
-			//show main menu at the first time.
-			PicornerApplication app = (PicornerApplication) getActivity()
+		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
+		if (act != null) {
+			// show main menu at the first time.
+			PicornerApplication app = (PicornerApplication) act
 					.getApplication();
 			if (app.isFirstTime()) {
-				((MainSlideMenuActivity) getActivity()).getSlidingMenu()
-						.showMenu(true);
+				final View v = LayoutInflater.from(getActivity()).inflate(
+						R.layout.photo_grid_help_layer, null);
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+						LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+				v.setLayoutParams(params);
+				ViewGroup vp = (ViewGroup) getView();
+				vp.addView(v);
+
+				//close the help layer if you open the menu.
+				act.getSlidingMenu().setOnOpenedListener(
+						new OnOpenedListener() {
+							@Override
+							public void onOpened() {
+								v.setVisibility(View.GONE);
+							}
+						});
+
 				app.setFirstTimeFalse();
 			}
-			
-			//set the subtitle of the action bar
-			getActivity().getActionBar().setSubtitle(mCurrentCommand.getDescription());
+
+			// set the subtitle of the action bar
+			getActivity().getActionBar().setSubtitle(
+					mCurrentCommand.getDescription());
 		}
 	}
 
@@ -104,7 +126,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		super.onResume();
 		mAdapter.notifyDataSetChanged();
 	}
-	
+
 	@Override
 	public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 		final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
