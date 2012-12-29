@@ -15,7 +15,7 @@
     <item
         android:id="@+id/menu_item_set_wallpaper"
         android:icon="@android:drawable/ic_menu_gallery"
-        android:showAsAction="always"
+        android:showAsAction="never"
         android:title="@string/menu_item_set_wallpaper">
     </item>
     <item
