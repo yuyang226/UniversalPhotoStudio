@@ -84,8 +84,8 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		// add listener for load more, so after done, we can hide the message.
 		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
 
-		//show main menu at the first time.
 		if (getActivity() != null) {
+			//show main menu at the first time.
 			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();
 			if (app.isFirstTime()) {
@@ -93,6 +93,9 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 						.showMenu(true);
 				app.setFirstTimeFalse();
 			}
+			
+			//set the subtitle of the action bar
+			getActivity().getActionBar().setSubtitle(mCurrentCommand.getDescription());
 		}
 	}
 

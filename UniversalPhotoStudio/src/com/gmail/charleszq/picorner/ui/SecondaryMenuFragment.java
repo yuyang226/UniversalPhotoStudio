@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 
 import com.gmail.charleszq.picorner.R;
@@ -31,6 +32,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		implements OnItemClickListener {
 
 	private ListView mListView;
+	private FrameLayout mBackViewContainer;
 	private CommandSectionListAdapter mSectionAdapter;
 
 	/**
@@ -42,8 +44,11 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.main_menu, null);
-		mListView = (ListView) v.findViewById(R.id.listView1);
+		View v = inflater.inflate(R.layout.secondary_menu, null);
+		mListView = (ListView) v.findViewById(R.id.secondary_menu_list);
+		mBackViewContainer = (FrameLayout) v
+				.findViewById(R.id.back_view_container);
+
 		mSectionAdapter = new CommandSectionListAdapter(getActivity(),
 				mImageFetcher) {
 
@@ -68,10 +73,10 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 		command = new AboutCommand(getActivity());
 		commands.add(command);
-		
+
 		command = new HelpCommand(getActivity());
 		commands.add(command);
-		
+
 		mSectionAdapter.addCommands(commands);
 		mSectionAdapter.notifyDataSetChanged();
 	}

@@ -26,7 +26,6 @@ public class UserPhotoListActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.user_photo_list_act);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		getActionBar().setSubtitle(R.string.user_photo_grid);
 	}
 
 

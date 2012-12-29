@@ -26,15 +26,4 @@
         android:padding="5dp"
         android:textColor="@color/photo_detail_vp_indicator" />
 
-    <TextView
-        android:id="@+id/txt_photo_grid_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/user_name_text_size"
-        android:layout_gravity="top"
-        android:background="@color/color_trans"
-        android:gravity="center"
-        android:padding="5dp"
-        android:visibility="invisible"
-        android:textColor="@color/photo_detail_vp_indicator" />
-
 </FrameLayout>

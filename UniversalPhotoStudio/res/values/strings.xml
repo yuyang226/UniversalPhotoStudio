@@ -4,8 +4,6 @@
     <string name="help_file_name">help.html</string>
     <string name="about_file_encoding">utf-8</string>
     
-    <string name="user_photo_grid">user photos</string>
-
     <string name="app_name">PiCorner</string>
     <string name="no_network_connection_toast">No network connection found</string>
     <string name="secondary_menus_general">General</string>
@@ -90,7 +88,7 @@
 	<!-- Command descritions -->
 	<!-- flickr -->
 	<string name="cd_flickr_interesting">Flickr: Interesting</string>
-	<string name="cd_flickr_user_photos">Flickr: Photos of User \'%s\'</string>
+	<string name="cd_flickr_user_photos">Flickr: Photos of \'%s\'</string>
 	<string name="cd_flickr_my_favs">Flickr: My Favorites</string>
 	<string name="cd_flickr_my_populars">Flickr: My Popular Photos</string>
 	<string name="cd_flickr_my_contact_photos">Flickr: My Contact Photos</string>
