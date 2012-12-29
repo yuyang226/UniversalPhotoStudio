@@ -33,7 +33,7 @@
     <string name="cmd_name_about">About</string>
     
     <!-- search menu items -->
-    <string name="cmd_name_flickr_tag_search">Flickr: Tag Search</string>
+    <string name="cmd_name_flickr_tag_search">Flickr: Search</string>
     <string name="cmd_name_ig_loc_search">Instagram: Nearby Photos</string>
     
     <string name="ig_following">Following</string>
@@ -106,6 +106,7 @@
 	<string name="cd_flickr_group_photos">flickr: photo group \'%s\'</string>
 	<string name="cd_flickr_gallery_photos">flickr: photo gallery \'%s\'</string>
 	<string name="cd_flickr_my_photos">flickr: my photo stream</string>
+	<string name="cd_flickr_tag_search">flickr: search result \'%s\'</string>
 	
 	<!-- 500px -->
 	<string name="cd_500px_popular">500px: popular</string>

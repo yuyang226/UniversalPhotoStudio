@@ -81,4 +81,11 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 		return super.execute();
 	}
 
+	@Override
+	public String getDescription() {
+		String s = mContext.getString(R.string.cd_flickr_tag_search);
+		return String.format(s,
+				mCurrentSearchTag == null ? "" : mCurrentSearchTag); //$NON-NLS-1$
+	}
+
 }
