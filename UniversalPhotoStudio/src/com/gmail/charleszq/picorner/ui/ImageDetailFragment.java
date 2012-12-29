@@ -42,7 +42,6 @@ import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.capricorn.ArcMenu;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
@@ -66,17 +65,12 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 public class ImageDetailFragment extends Fragment implements
 		OnShareTargetSelectedListener {
 
-	private static final int MENU_ITEM_LIKE = 1001;
-	private static final int MENU_ITEM_WALLPAPER = 1002;
-	private static final int MENU_ITEM_DETAIL = 1003;
-
 	private static final String IMAGE_DATA_EXTRA = "extra_image_data"; //$NON-NLS-1$
 	private static final String MEDIA_OBJ_POS = "media_object"; //$NON-NLS-1$
 	private String mImageUrl;
 	private MediaObject mPhoto;
 	private ImageView mImageView;
 	private ImageLoader mImageFetcher;
-	private ArcMenu mArcMenu;
 	private View mUserInfoContainer;
 	private TextView mPhotoTitle;
 	private TextView mUserName;
@@ -150,9 +144,6 @@ public class ImageDetailFragment extends Fragment implements
 	}
 
 	private void onActionBarShown(boolean show) {
-		if (mArcMenu != null) {
-			mArcMenu.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
-		}
 		if (mUserInfoContainer != null) {
 			mUserInfoContainer.setVisibility(show ? View.VISIBLE
 					: View.INVISIBLE);
@@ -200,7 +191,11 @@ public class ImageDetailFragment extends Fragment implements
 		final View v = inflater.inflate(R.layout.image_detail_fragment,
 				container, false);
 		mImageView = (ImageView) v.findViewById(R.id.imageView);
+		
+		//photo title and author name
 		mUserInfoContainer = v.findViewById(R.id.photo_detail_user_info);
+		ActionBar bar = getActivity().getActionBar();
+		mUserInfoContainer.setVisibility( bar.isShowing() ? View.VISIBLE : View.INVISIBLE );
 		mPhotoTitle = (TextView) v.findViewById(R.id.photo_detail_photo_title);
 		mPhotoTitle.setText(mPhoto.getTitle() == null ? "" : mPhoto.getTitle()); //$NON-NLS-1$
 		mUserName = (TextView) v.findViewById(R.id.photo_detail_author_name);
@@ -213,62 +208,8 @@ public class ImageDetailFragment extends Fragment implements
 					.getAuthor().getUserId() : mPhoto.getAuthor().getUserName());
 			mUserName.setText(sb.toString());
 		}
-		mArcMenu = (ArcMenu) v.findViewById(R.id.arc_menu);
-		initArcMenu();
+		
 		return v;
-	}
-
-	private void initArcMenu() {
-		OnClickListener lis = new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (mLoadedBitmap == null) {
-					Toast.makeText(getActivity(),
-							R.string.wait_for_image_loading, Toast.LENGTH_SHORT)
-							.show();
-					return;
-				} else {
-					saveBitmapToShare(mLoadedBitmap);
-				}
-
-				Integer tag = (Integer) v.getTag();
-				if (tag != null) {
-					if (tag == R.id.menu_item_share_action_provider_action_bar) {
-						Intent i = createShareIntent();
-						getActivity().startActivity(i);
-					} else {
-						menuItemClicked(tag);
-					}
-				}
-
-			}
-		};
-
-		ImageView v0 = new ImageView(getActivity());
-		v0.setTag(R.id.menu_item_share_action_provider_action_bar);
-		v0.setImageResource(android.R.drawable.ic_menu_share);
-		mArcMenu.addItem(v0, lis);
-
-		ImageView v = new ImageView(getActivity());
-		v.setTag(MENU_ITEM_LIKE);
-		v.setImageResource(R.drawable.ic_menu_star);
-		mArcMenu.addItem(v, lis);
-
-		ImageView v1 = new ImageView(getActivity());
-		v1.setTag(MENU_ITEM_WALLPAPER);
-		v1.setImageResource(android.R.drawable.ic_menu_gallery);
-		mArcMenu.addItem(v1, lis);
-
-		ImageView v2 = new ImageView(getActivity());
-		v2.setTag(MENU_ITEM_DETAIL);
-		v2.setImageResource(R.drawable.ic_menu_find);
-		mArcMenu.addItem(v2, lis);
-
-		ActionBar bar = getActivity().getActionBar();
-		mArcMenu.setVisibility(bar.isShowing() ? View.VISIBLE : View.INVISIBLE);
-		mUserInfoContainer.setVisibility(bar.isShowing() ? View.VISIBLE
-				: View.INVISIBLE);
 	}
 
 	private boolean likePhoto() {
@@ -382,10 +323,6 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		if (item.getItemId() == android.R.id.home) {
-			return menuItemClicked(item.getItemId());
-		}
-
 		if (mLoadedBitmap == null) {
 			Toast.makeText(getActivity(), R.string.wait_for_image_loading,
 					Toast.LENGTH_SHORT).show();
@@ -394,41 +331,14 @@ public class ImageDetailFragment extends Fragment implements
 			saveBitmapToShare(mLoadedBitmap);
 		}
 
-		int itemId = -1;
 		switch (item.getItemId()) {
-		case R.id.menu_item_like:
-			itemId = MENU_ITEM_LIKE;
-			break;
-		case R.id.menu_item_set_wallpaper:
-			itemId = MENU_ITEM_WALLPAPER;
-			break;
-		case R.id.menu_item_detail:
-			itemId = MENU_ITEM_DETAIL;
-			break;
-		}
-
-		if (!menuItemClicked(itemId)) {
-			return super.onOptionsItemSelected(item);
-		}
-		return true;
-	}
-
-	private boolean menuItemClicked(int itemid) {
-		switch (itemid) {
 		case android.R.id.home:
 			getActivity().finish();
 			return true;
-		case MENU_ITEM_DETAIL:
-			Intent i = new Intent(getActivity(), PhotoDetailActivity.class);
-			IPhotosProvider dp = ((ImageDetailActivity) getActivity()).mPhotosProvider;
-			i.putExtra(ImageDetailActivity.DP_KEY, dp);
-			i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, mCurrentPos);
-			startActivity(i);
-			return true;
-		case MENU_ITEM_LIKE:
+		case R.id.menu_item_like:
 			likePhoto();
 			return true;
-		case MENU_ITEM_WALLPAPER:
+		case R.id.menu_item_set_wallpaper:
 			WallpaperManager wm = WallpaperManager.getInstance(getActivity());
 			FileInputStream fis = null;
 			try {
@@ -449,8 +359,15 @@ public class ImageDetailFragment extends Fragment implements
 				}
 			}
 			return true;
+		case R.id.menu_item_detail:
+			Intent i = new Intent(getActivity(), PhotoDetailActivity.class);
+			IPhotosProvider dp = ((ImageDetailActivity) getActivity()).mPhotosProvider;
+			i.putExtra(ImageDetailActivity.DP_KEY, dp);
+			i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, mCurrentPos);
+			startActivity(i);
+			return true;
 		}
-		return false;
+		return super.onOptionsItemSelected(item);
 	}
 
 	private File getShareImageFile() {

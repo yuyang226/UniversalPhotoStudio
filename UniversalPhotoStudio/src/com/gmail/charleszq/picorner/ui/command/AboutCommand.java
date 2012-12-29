@@ -24,13 +24,15 @@ public class AboutCommand extends AbstractCommand<Void> {
 	public boolean execute(Object... params) {
 		Intent i = new Intent(mContext, AboutActivity.class);
 		i.putExtra(IConstants.ABOUT_FILE_FRG_ARG_KEY, mContext.getString(R.string.about_file_name));
+		i.putExtra(IConstants.ABOUT_FILE_ENCODING_KEY, mContext.getString(R.string.about_file_encoding, 
+				IConstants.ABOUT_FILE_DEFAULT_ENCODING));
 		mContext.startActivity(i);
 		return true;
 	}
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_launcher;
+		return R.drawable.ic_action_about;
 	}
 
 	@Override

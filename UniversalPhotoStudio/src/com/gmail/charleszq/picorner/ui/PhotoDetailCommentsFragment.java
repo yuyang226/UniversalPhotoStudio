@@ -126,7 +126,8 @@ public class PhotoDetailCommentsFragment extends
 	 * @return
 	 */
 	private MediaObjectComment makeDummyComment(String comment) {
-		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
 
 		MediaObjectComment c = new MediaObjectComment();
 		c.setText(comment);
@@ -189,7 +190,8 @@ public class PhotoDetailCommentsFragment extends
 
 	private boolean isUserLoggedIn() {
 		boolean result = false;
-		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
 		switch (mCurrentPhoto.getMediaSource()) {
 		case FLICKR:
 			result = app.getFlickrUserId() != null;

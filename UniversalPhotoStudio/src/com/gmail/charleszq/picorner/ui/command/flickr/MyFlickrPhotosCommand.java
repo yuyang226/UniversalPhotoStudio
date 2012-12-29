@@ -32,7 +32,7 @@ public class MyFlickrPhotosCommand extends PhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_my_photos;
+		return R.drawable.ic_action_flickr_my_photos;
 	}
 
 	@Override

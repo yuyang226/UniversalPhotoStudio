@@ -6,8 +6,23 @@
         android:actionProviderClass="android.widget.ShareActionProvider"
         android:showAsAction="always"
         android:title="@string/action_bar_share_with"/>
-    <item android:id="@+id/menu_item_like" android:showAsAction="never" android:title="@string/menu_item_like_photo"></item>
-    <item android:id="@+id/menu_item_set_wallpaper" android:showAsAction="never" android:title="@string/menu_item_set_wallpaper"></item>
-    <item android:id="@+id/menu_item_detail" android:showAsAction="never" android:title="@string/menu_item_detail"></item>
+    <item
+        android:icon="@drawable/ic_menu_star"
+        android:id="@+id/menu_item_like"
+        android:showAsAction="always"
+        android:title="@string/menu_item_like_photo">
+    </item>
+    <item
+        android:id="@+id/menu_item_set_wallpaper"
+        android:icon="@android:drawable/ic_menu_gallery"
+        android:showAsAction="never"
+        android:title="@string/menu_item_set_wallpaper">
+    </item>
+    <item
+        android:id="@+id/menu_item_detail"
+        android:icon="@drawable/ic_menu_find"
+        android:showAsAction="always"
+        android:title="@string/menu_item_detail">
+    </item>
 
 </menu>

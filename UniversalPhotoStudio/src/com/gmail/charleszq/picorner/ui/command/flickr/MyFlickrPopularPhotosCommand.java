@@ -27,7 +27,7 @@ public class MyFlickrPopularPhotosCommand extends PhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_popular;
+		return R.drawable.ic_action_flickr_my_popular;
 	}
 
 	@Override

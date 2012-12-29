@@ -7,7 +7,8 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1"
+        android:background="@color/comment_list_bg_color" >
 
         <ProgressBar
             android:id="@+id/progressBar1"
@@ -28,17 +29,21 @@
         <ListView
             android:id="@+id/photo_detail_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:background="@color/comment_list_bg_color" />
     </FrameLayout>
+
     <EditText
         android:id="@+id/edit_comment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="36dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:drawablePadding="5dp"
+        android:drawableLeft="@drawable/comments"
         android:background="@color/comment_bg_color"
         android:hint="@string/hint_add_comment"
-        android:textColor="@android:color/white"
-        android:textColorHint="@color/comment_hint_color"
         android:imeOptions="actionSend"
-        android:inputType="textImeMultiLine"
-        android:padding="5dp" />
+        android:inputType="textImeMultiLine" />
+
 </LinearLayout>

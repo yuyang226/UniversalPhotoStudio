@@ -40,7 +40,6 @@ public abstract class AbstractPhotoGridFragment extends
 	 */
 	protected GridView mGridView;
 	protected TextView mLoadingMessageText;
-	protected TextView mGridTitleText;
 
 	/**
 	 * Photo grid size information.
@@ -122,7 +121,6 @@ public abstract class AbstractPhotoGridFragment extends
 		// layout ui controls
 		mGridView = (GridView) v.findViewById(R.id.grid_user_photos);
 		mLoadingMessageText = (TextView) v.findViewById(R.id.txt_user_info);
-		mGridTitleText = (TextView) v.findViewById(R.id.txt_photo_grid_title);
 
 		mImageThumbSize = getResources().getDimensionPixelSize(
 				R.dimen.image_thumbnail_size);
@@ -237,21 +235,6 @@ public abstract class AbstractPhotoGridFragment extends
 
 		@Override
 		protected void showGridTitle(boolean show) {
-			mFragment.showGridTitle(show);
-			
 		}
-	}
-
-	private void showGridTitle(boolean show) {
-		if( mGridTitleText == null ) {
-			return;
-		}
-		if( mCurrentCommand == null ) {
-			mGridTitleText.setVisibility(View.INVISIBLE);
-			return;
-		}
-		String s = mCurrentCommand.getDescription();
-		mGridTitleText.setText(s);
-		mGridTitleText.setVisibility( show ? View.VISIBLE : View.INVISIBLE);
 	}
 }

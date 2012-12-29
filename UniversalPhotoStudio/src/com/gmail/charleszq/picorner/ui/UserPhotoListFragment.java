@@ -65,7 +65,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	protected void loadFirstPage() {
 		if (mMedisSourceType == MediaSourceType.FLICKR.ordinal()) {
 			mCurrentCommand = new FlickrUserPhotosCommand(getActivity(),
-					mCurrentUser.getUserId());
+					mCurrentUser);
 		} else if (mMedisSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
 			mCurrentCommand = new InstagramUserPhotosCommand(getActivity(),
 					mCurrentUser);
@@ -76,6 +76,10 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 		}
 		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
 		mCurrentCommand.execute();
+		if (getActivity() != null) {
+			getActivity().getActionBar().setSubtitle(
+					mCurrentCommand.getDescription());
+		}
 	}
 
 	@Override
