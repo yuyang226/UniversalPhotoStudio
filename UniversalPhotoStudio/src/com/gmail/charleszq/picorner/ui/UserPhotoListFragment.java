@@ -74,7 +74,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 			mCurrentCommand = new PxUserPhotosCommand(getActivity(),
 					mCurrentUser.getUserId());
 		}
-		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
+		mCurrentCommand.setCommndDoneListener(mCommandDoneListener);
 		mCurrentCommand.execute();
 		if (getActivity() != null) {
 			getActivity().getActionBar().setSubtitle(

@@ -3,9 +3,6 @@
  */
 package com.gmail.charleszq.picorner.ui.command;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
@@ -18,7 +15,7 @@ import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
  */
 public abstract class AbstractCommand<T> implements ICommand<T> {
 
-	protected Set<ICommandDoneListener<T>> mListeners;
+	protected ICommandDoneListener<T> mListener;
 
 	/**
 	 * the command section header title, used to identify which group this
@@ -56,32 +53,13 @@ public abstract class AbstractCommand<T> implements ICommand<T> {
 	}
 
 	@Override
-	public void addCommndDoneListener(ICommandDoneListener<T> listener) {
-		if (mListeners == null) {
-			mListeners = new HashSet<ICommandDoneListener<T>>();
-		}
-		mListeners.add(listener);
-	}
-
-	@Override
-	public void removeCommandDoneListener(ICommandDoneListener<T> listener) {
-		if (mListeners != null) {
-			mListeners.remove(listener);
-		}
-	}
-
-	@Override
-	public void clearCommandDoneListener() {
-		if (mListeners != null) {
-			mListeners.clear();
-		}
+	public void setCommndDoneListener(ICommandDoneListener<T> listener) {
+		this.mListener = listener;
 	}
 
 	protected void onCommandDone(T result) {
-		if (mListeners != null) {
-			for (ICommandDoneListener<T> lis : mListeners) {
-				lis.onCommandDone(this, result);
-			}
+		if (mListener != null) {
+			mListener.onCommandDone(this, result);
 		}
 	}
 
@@ -115,5 +93,4 @@ public abstract class AbstractCommand<T> implements ICommand<T> {
 	public String getDescription() {
 		return getLabel();
 	}
-
 }

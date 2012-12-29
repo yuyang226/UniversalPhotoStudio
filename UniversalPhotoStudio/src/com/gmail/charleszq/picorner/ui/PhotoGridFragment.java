@@ -93,10 +93,9 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
 		// remove command done from the main menu UI, so later when load more
 		// data, this method will not called again.
-		mCurrentCommand.clearCommandDoneListener();
 		mNoMoreData = false;
 
-		mPhotosProvider.loadData(photos, command);
+		mPhotosProvider.loadData(photos, mCommandComparator == null ? command : mCommandComparator);
 		mAdapter.notifyDataSetChanged();
 		if (mGridView != null) {
 			mScrollListener = new GridOnScrollListener(this);
@@ -107,7 +106,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		}
 
 		// add listener for load more, so after done, we can hide the message.
-		mCurrentCommand.addCommndDoneListener(mCommandDoneListener);
+		mCurrentCommand.setCommndDoneListener(mCommandDoneListener);
 
 		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
 		if (act != null) {

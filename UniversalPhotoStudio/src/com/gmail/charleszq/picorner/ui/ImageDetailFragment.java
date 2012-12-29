@@ -246,7 +246,7 @@ public class ImageDetailFragment extends Fragment implements
 		}
 
 		ICommand<Boolean> cmd = new LikePhotoCommand(getActivity());
-		cmd.addCommndDoneListener(new ICommandDoneListener<Boolean>() {
+		cmd.setCommndDoneListener(new ICommandDoneListener<Boolean>() {
 			@Override
 			public void onCommandDone(ICommand<Boolean> command, Boolean t) {
 				if (t) {

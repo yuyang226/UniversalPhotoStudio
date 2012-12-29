@@ -155,8 +155,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 					view.animate().setDuration(3000).rotationX(90)
 							.rotationX(180).rotationX(270).rotationX(360);
 				} else {
-					command.clearCommandDoneListener();
-					command.addCommndDoneListener(mCommandDoneListener);
+					command.setCommndDoneListener(mCommandDoneListener);
 					command.execute();
 				}
 				if (PhotoListCommand.class.isInstance(command)) {

@@ -3,6 +3,8 @@
  */
 package com.gmail.charleszq.picorner.ui;
 
+import java.util.Comparator;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -82,7 +84,8 @@ public abstract class AbstractPhotoGridFragment extends
 			if (t == null || t.getPhotos().isEmpty()) {
 				mNoMoreData = true;
 			} else {
-				mPhotosProvider.loadData(t, command);
+				Object comparator = command.getAdapter(Comparator.class);
+				mPhotosProvider.loadData(t, comparator == null ? command : comparator);
 				mAdapter.notifyDataSetChanged();
 			}
 			if (mLoadingMessageText != null) {

@@ -103,7 +103,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		final ProgressDialog dialog = ProgressDialog.show(this,
 				"", getString(R.string.loading_photos)); //$NON-NLS-1$
 		dialog.setCancelable(true);
-		mCommand.addCommndDoneListener(new ICommandDoneListener<MediaObjectCollection>() {
+		mCommand.setCommndDoneListener(new ICommandDoneListener<MediaObjectCollection>() {
 
 			@Override
 			public void onCommandDone(ICommand<MediaObjectCollection> command,

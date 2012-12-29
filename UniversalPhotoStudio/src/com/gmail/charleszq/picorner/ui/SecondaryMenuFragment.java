@@ -59,12 +59,12 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 			switch (action) {
 			case IHiddenView.ACTION_CANCEL:
 				// animation to show the list
-				mListView.animate().setDuration(1000).rotationY(-270f)
+				mListView.animate().setDuration(500).rotationY(-270f)
 						.rotationY(0f);
 				break;
 			case IHiddenView.ACTION_DO:
 				doCommand((ICommand<Object>) command, data);
-				mListView.animate().setDuration(2000).rotationY(-270f)
+				mListView.animate().setDuration(500).rotationY(-270f)
 						.rotationY(0f);
 				break;
 			}
@@ -176,7 +176,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	}
 
 	private void doCommand(ICommand<Object> command, Object... params) {
-		command.addCommndDoneListener(mCommandDoneListener);
+		command.setCommndDoneListener(mCommandDoneListener);
 		command.execute(params);
 		// close the menu.
 		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
@@ -221,7 +221,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 			public void onAnimationRepeat(Animator animation) {
 
 			}
-		}).setDuration(3000).rotationY(90f).rotationY(180f);
+		}).setDuration(500).rotationY(90f).rotationY(180f);
 	}
 
 }
