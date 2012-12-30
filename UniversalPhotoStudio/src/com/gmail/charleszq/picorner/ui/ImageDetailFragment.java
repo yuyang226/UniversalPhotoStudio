@@ -378,20 +378,18 @@ public class ImageDetailFragment extends Fragment implements
 	}
 
 	private Intent createShareIntent() {
-		File bsRoot = new File(Environment.getExternalStorageDirectory(),
-				IConstants.SD_CARD_FOLDER_NAME);
-		File shareFile = new File(bsRoot, IConstants.SHARE_TEMP_FILE_NAME);
-		Uri uri = Uri.parse("file://" + shareFile.getAbsolutePath()); //$NON-NLS-1$
+		File shareFile = getShareImageFile();
+		Uri uri = Uri.fromFile(shareFile);
 
 		StringBuilder sb = new StringBuilder(mImageUrl);
 		sb.append(" ").append(getString(R.string.share_via)).append(" "); //$NON-NLS-1$//$NON-NLS-2$
 		sb.append(getString(R.string.app_name));
 
-		Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
+		Intent shareIntent = 
+				ShareCompat.IntentBuilder.from(getActivity())
 				.setText(sb.toString()).setType("image/*").setStream(uri) //$NON-NLS-1$
 				.getIntent();
 		shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
-
 		return shareIntent;
 	}
 
@@ -415,6 +413,7 @@ public class ImageDetailFragment extends Fragment implements
 		if (shareFile.exists()) {
 			shareFile.delete();
 		}
+
 		ImageUtils.saveImageToFile(shareFile, bitmap);
 	}
 }

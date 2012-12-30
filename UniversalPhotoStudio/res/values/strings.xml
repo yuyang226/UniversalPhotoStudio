@@ -54,7 +54,7 @@
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
-    <string name="share_via">share from</string>
+    <string name="share_via">shared from</string>
     <string name="loading_photos" tools:ignore="TypographyEllipsis">Loading...</string>
     <string name="msg_wallpaper_changed">Wallpaper changed.</string>
     <string name="like_photo_done">Liked!</string>
