@@ -70,7 +70,7 @@
         </activity>
         <activity
             android:name=".ui.ImageDetailActivity"
-            android:theme="@style/AppTheme.Black" >
+            android:theme="@style/AppTheme.Black" android:uiOptions="splitActionBarWhenNarrow">
         </activity>
         <activity android:name=".ui.PhotoDetailActivity" >
         </activity>

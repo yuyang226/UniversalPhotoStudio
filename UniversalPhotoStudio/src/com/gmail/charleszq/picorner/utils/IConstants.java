@@ -29,14 +29,14 @@ public interface IConstants {
 	static final int DEF_MIN_PAGE_SIZE = 10;
 	static final int DEF_MAX_TOTAL_PHOTOS = 300;
 
-	static final String SD_CARD_FOLDER_NAME = "ups_flickr"; //$NON-NLS-1$
-	static final String SHARE_TEMP_FILE_NAME = "ups.share.png"; //$NON-NLS-1$
+	static final String SD_CARD_FOLDER_NAME = "picorner"; //$NON-NLS-1$
+	static final String SHARE_TEMP_FILE_NAME = "picornershare.png"; //$NON-NLS-1$
 
 	/**
 	 * the flickr oauth scheme
 	 */
 	static final String ID_SCHEME = "ups-flickr-oauth"; //$NON-NLS-1$
-	static final String DEF_PREF_NAME = "ups_flickr"; //$NON-NLS-1$
+	static final String DEF_PREF_NAME = "picorner"; //$NON-NLS-1$
 
 	/**
 	 * Instagram oauth scheme, these constants cannot be modified, they are

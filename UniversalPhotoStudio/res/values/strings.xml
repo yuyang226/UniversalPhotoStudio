@@ -45,7 +45,8 @@
     <string name="auth_gen_req_token">Generating the authorization request.</string>
 
     <!-- option menu items -->
-    <string name="action_bar_share_with" tools:ignore="TypographyEllipsis">Share With...</string>
+    <string name="menu_item_save">Save</string>
+    <string name="menu_item_share">Share</string>
     <string name="menu_item_like_photo">Like</string>
     <string name="menu_item_set_wallpaper">Set as Wallpaper</string>
     <string name="menu_item_detail">Details</string>
@@ -89,6 +90,8 @@
 	<string name="msg_your_own_photo">This is you.</string>
 	<string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
 	<string name="msg_no_photo_returned">Ooops, no photo returned for \'%s\'</string>
+	<string name="msg_photo_saved_locally">Photo saved as \'%s\'</string>
+	<string name="msg_photo_save_exists">Photo already saved.</string>
 	
 	<!--  flickr tag search -->
 	<string name="msg_flickr_tag_search_label">Flickr tag search</string>

@@ -6,12 +6,16 @@ package com.gmail.charleszq.picorner.ui.helper;
 import android.app.Service;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
@@ -41,18 +45,7 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 			if (v == mCancelButton) {
 				onAction(ACTION_CANCEL);
 			} else if (v == mSearchButton) {
-				String s = mTagText.getText().toString();
-				if (s == null || s.trim().length() == 0) {
-					Toast.makeText(
-							getContext(),
-							getContext().getString(
-									R.string.msg_flickr_tag_search_empty_tag),
-							Toast.LENGTH_LONG).show();
-					return;
-				}
-
-				mSearchParameter.setTags(s);
-				onAction(ACTION_DO, mSearchParameter);
+				doSearch();
 			} else if (v == mRadioAnd) {
 				mSearchParameter.setSearchMode(FlickrTagSearchMode.ALL);
 			} else if (v == mRadioOr) {
@@ -92,6 +85,18 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 		mSearchParameter = new FlickrTagSearchParameter();
 
 		mTagText = (EditText) findViewById(R.id.txt_flickr_tag_search);
+		mTagText.setOnEditorActionListener(new OnEditorActionListener() {
+
+			@Override
+			public boolean onEditorAction(TextView v, int actionId,
+					KeyEvent event) {
+				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+					doSearch();
+					return true;
+				}
+				return false;
+			}
+		});
 
 		mCancelButton = (Button) findViewById(R.id.btn_cancel_search);
 		mCancelButton.setOnClickListener(mOnClickListener);
@@ -103,7 +108,21 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 		mRadioAnd.setOnClickListener(mOnClickListener);
 		mRadioOr = (RadioButton) findViewById(R.id.radio_or);
 		mRadioOr.setOnClickListener(mOnClickListener);
+	}
 
+	private void doSearch() {
+		String s = mTagText.getText().toString();
+		if (s == null || s.trim().length() == 0) {
+			Toast.makeText(
+					getContext(),
+					getContext().getString(
+							R.string.msg_flickr_tag_search_empty_tag),
+					Toast.LENGTH_LONG).show();
+			return;
+		}
+
+		mSearchParameter.setTags(s);
+		onAction(ACTION_DO, mSearchParameter);
 	}
 
 	@Override

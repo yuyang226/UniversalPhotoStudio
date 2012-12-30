@@ -85,7 +85,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 
 			// Hide title text and set home as up
 			actionBar.setDisplayHomeAsUpEnabled(true);
-			actionBar.setDisplayShowTitleEnabled(false);
+//			actionBar.setDisplayShowTitleEnabled(false);
 
 			// Hide and show the ActionBar as the visibility changes
 			mPager.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {

@@ -309,16 +309,16 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_photo_detail, menu);
-		MenuItem actionItem = menu
-				.findItem(R.id.menu_item_share_action_provider_action_bar);
-		ShareActionProvider actionProvider = (ShareActionProvider) actionItem
-				.getActionProvider();
-		actionProvider
-				.setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-		// Note that you can set/change the intent any time,
-		// say when the user has selected an image.
-		actionProvider.setShareIntent(createShareIntent());
-		actionProvider.setOnShareTargetSelectedListener(this);
+		// MenuItem actionItem = menu
+		// .findItem(R.id.menu_item_share_action_provider_action_bar);
+		// ShareActionProvider actionProvider = (ShareActionProvider) actionItem
+		// .getActionProvider();
+		// actionProvider
+		// .setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
+		// // Note that you can set/change the intent any time,
+		// // say when the user has selected an image.
+		// actionProvider.setShareIntent(createShareIntent());
+		// actionProvider.setOnShareTargetSelectedListener(this);
 	}
 
 	@Override
@@ -336,8 +336,15 @@ public class ImageDetailFragment extends Fragment implements
 		case android.R.id.home:
 			getActivity().finish();
 			return true;
+		case R.id.menu_item_share_action_provider_action_bar:
+			Intent shareIntent = createShareIntent();
+			getActivity().startActivity(shareIntent);
+			return true;
 		case R.id.menu_item_like:
 			likePhoto();
+			return true;
+		case R.id.menu_item_save:
+			savePhotoLocally();
 			return true;
 		case R.id.menu_item_set_wallpaper:
 			WallpaperManager wm = WallpaperManager.getInstance(getActivity());
@@ -371,6 +378,29 @@ public class ImageDetailFragment extends Fragment implements
 		return super.onOptionsItemSelected(item);
 	}
 
+	/**
+	 * Saves the photo locally.
+	 */
+	private void savePhotoLocally() {
+		File root = new File(Environment.getExternalStorageDirectory(),
+				IConstants.SD_CARD_FOLDER_NAME);
+		StringBuilder sb = new StringBuilder();
+		sb.append(mPhoto.getMediaSource().toString());
+		sb.append("_").append(mPhoto.getId()); //$NON-NLS-1$
+		sb.append(".png"); //$NON-NLS-1$
+		File saveFile = new File(root, sb.toString());
+		if (!saveFile.exists()) {
+			ImageUtils.saveImageToFile(saveFile, mLoadedBitmap);
+			String msg = getString(R.string.msg_photo_saved_locally);
+			msg = String.format(msg, sb.toString());
+			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
+		} else {
+			Toast.makeText(getActivity(),
+					getString(R.string.msg_photo_save_exists),
+					Toast.LENGTH_SHORT).show();
+		}
+	}
+
 	private File getShareImageFile() {
 		File root = new File(Environment.getExternalStorageDirectory(),
 				IConstants.SD_CARD_FOLDER_NAME);
@@ -386,8 +416,7 @@ public class ImageDetailFragment extends Fragment implements
 		sb.append(" ").append(getString(R.string.share_via)).append(" "); //$NON-NLS-1$//$NON-NLS-2$
 		sb.append(getString(R.string.app_name));
 
-		Intent shareIntent = 
-				ShareCompat.IntentBuilder.from(getActivity())
+		Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
 				.setText(sb.toString()).setType("image/*").setStream(uri) //$NON-NLS-1$
 				.getIntent();
 		shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);

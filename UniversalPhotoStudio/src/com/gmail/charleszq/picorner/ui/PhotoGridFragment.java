@@ -144,6 +144,9 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	public void onResume() {
 		super.onResume();
 		mAdapter.notifyDataSetChanged();
+		if( mCurrentCommand != null ) {
+			getActivity().getActionBar().setSubtitle( mCurrentCommand.getDescription());
+		}
 	}
 
 	@Override
