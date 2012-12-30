@@ -9,6 +9,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrTagSearchService;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
@@ -21,7 +22,7 @@ import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 public class FlickrTagSearchCommand extends PhotoListCommand {
 
 	private IHiddenView mHiddenView;
-	private String mCurrentSearchTag;
+	private FlickrTagSearchParameter mCurrentSearchParameter;
 
 	/**
 	 * @param context
@@ -53,12 +54,12 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 			if (mCurrentPhotoService == null) {
 				mCurrentPhotoService = new FlickrTagSearchService();
 				((FlickrTagSearchService) mCurrentPhotoService)
-						.setTags(mCurrentSearchTag);
+						.setTags(mCurrentSearchParameter);
 			}
 			return mCurrentPhotoService;
 		}
 		if (adapterClass == Comparator.class) {
-			return this.mCurrentSearchTag;
+			return this.mCurrentSearchParameter;
 		}
 		return super.getAdapter(adapterClass);
 	}
@@ -75,7 +76,7 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 
 	@Override
 	public boolean execute(Object... params) {
-		mCurrentSearchTag = (String) params[0];
+		mCurrentSearchParameter = (FlickrTagSearchParameter) params[0];
 
 		// parent execute method requires the first parameter is page no
 		return super.execute();
@@ -85,7 +86,7 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 	public String getDescription() {
 		String s = mContext.getString(R.string.cd_flickr_tag_search);
 		return String.format(s,
-				mCurrentSearchTag == null ? "" : mCurrentSearchTag); //$NON-NLS-1$
+				mCurrentSearchParameter == null ? "" : mCurrentSearchParameter); //$NON-NLS-1$
 	}
 
 }

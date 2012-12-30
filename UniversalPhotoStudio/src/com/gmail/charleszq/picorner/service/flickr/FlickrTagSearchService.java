@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.service.flickr;
 
+import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
@@ -30,9 +31,10 @@ public class FlickrTagSearchService extends FlickrAbstractPhotoListService {
 		mSearchParameter.setSort(SearchParameters.DATE_POSTED_DESC);
 	}
 	
-	public void setTags( String tags ) {
-		String[] ts = tags.split(" "); //$NON-NLS-1$
+	public void setTags( FlickrTagSearchParameter param ) {
+		String[] ts = param.getTags().split(" "); //$NON-NLS-1$
 		mSearchParameter.setTags(ts);
+		mSearchParameter.setTagMode(param.getSearchMode().toString());
 	}
 
 	/* (non-Javadoc)
@@ -43,7 +45,7 @@ public class FlickrTagSearchService extends FlickrAbstractPhotoListService {
 			throws Exception {
 		Flickr f = FlickrHelper.getInstance().getFlickr();
 		PhotosInterface pi = f.getPhotosInterface();
-		PhotoList list = pi.search(mSearchParameter, pageSize, pageNo);
+		PhotoList list = pi.search(mSearchParameter, pageSize, pageNo + 1);
 		return ModelUtils.convertFlickrPhotoList(list);
 	}
 

@@ -21,16 +21,26 @@ import com.gmail.charleszq.picorner.service.ig.InstagramSearchNearbyPhotosServic
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class InstagramSearchNearPhotosCommand extends AbstractInstagramPhotoListCommand {
+public class InstagramSearchNearPhotosCommand extends
+		AbstractInstagramPhotoListCommand {
 
 	private static final String TAG = InstagramSearchNearPhotosCommand.class
 			.getSimpleName();
 
 	/**
-	 * the current state 0: find the current location; 1: current location
-	 * found; other: can not find the current location.
+	 * the current state
+	 * <ul>
+	 * <li>0: find the current location;</li>
+	 * <li>1: current location found;</li>
+	 * <li>other: can not find the current location.</li>
+	 * </ul>
 	 */
 	private int mCurrentState = 0;
+
+	/**
+	 * The current location
+	 */
+	private Location mCurrentLocation = null;
 
 	/**
 	 * Location manager.
@@ -47,7 +57,7 @@ public class InstagramSearchNearPhotosCommand extends AbstractInstagramPhotoList
 			if (location != null) {
 				mLocationManager.removeUpdates(this);
 				InstagramSearchNearPhotosCommand.this.mCurrentState = 1;
-				mCurrentPhotoService = new InstagramSearchNearbyPhotosService(location);
+				mCurrentLocation = location;
 				Log.d(TAG, "lat = " + location.getAltitude() + ", lng = " //$NON-NLS-1$//$NON-NLS-2$
 						+ location.getLongitude());
 				InstagramSearchNearPhotosCommand.this.execute();
@@ -108,15 +118,19 @@ public class InstagramSearchNearPhotosCommand extends AbstractInstagramPhotoList
 			return super.execute(params);
 		}
 	}
-	
+
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
+			if (mCurrentPhotoService == null) {
+				mCurrentPhotoService = new InstagramSearchNearbyPhotosService(
+						mCurrentLocation);
+			}
 			return mCurrentPhotoService;
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return mContext.getString(R.string.cd_ig_photos_nearby);

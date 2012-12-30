@@ -89,9 +89,17 @@
 	<string name="msg_your_own_photo">This is you.</string>
 	<string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
 	<string name="msg_no_photo_returned">Ooops, no photo returned for \'%s\'</string>
-	<string name="msg_flickr_tag_search_label">Flickr tag search:</string>
+	
+	<!--  flickr tag search -->
+	<string name="msg_flickr_tag_search_label">Flickr tag search</string>
+	<string name="msg_flickr_tag_search_tags">Tags:</string>
+	<string name="msg_flickr_tag_search_mode">Search mode:</string>
 	<string name="msg_flickr_tag_search_hint">separate by space</string>
 	<string name="msg_flickr_tag_search_empty_tag">Please input tag to search.</string>
+	<string name="msg_flickr_tag_search_mode_and">and</string>
+	<string name="msg_flickr_tag_search_mode_or">or</string>
+	
+	<!-- help -->
 	<string name="try_swipe_left">Try swipe left</string>
 	<string name="try_swipe_right">Try swipe right</string>
 	

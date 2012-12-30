@@ -3,15 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical"
     android:background="@color/search_panel_bg"
+    android:orientation="vertical"
     android:padding="10dp" >
 
     <TextView
-        android:id="@+id/textView1"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="left|center_vertical"
+        android:background="@color/photo_detail_vp_indicator_bg"
+        android:gravity="left|center"
+        android:text="@string/msg_flickr_tag_search_label"
+        android:textColor="@color/search_panel_bg" />
+
+    <TextView
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/msg_flickr_tag_search_label" />
+        android:text="@string/msg_flickr_tag_search_tags" />
 
     <EditText
         android:id="@+id/txt_flickr_tag_search"
@@ -25,18 +34,49 @@
 
         <requestFocus />
     </EditText>
+    
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/msg_flickr_tag_search_mode" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup1"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radio_and"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/msg_flickr_tag_search_mode_and" />
+
+        <RadioButton
+            android:id="@+id/radio_or"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="@string/msg_flickr_tag_search_mode_or" />
+
+    </RadioGroup>
+
 
     <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/btn_cancel_search"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@android:string/cancel"
-            android:layout_width="0dp" />
+            android:text="@android:string/cancel" />
 
         <Button
             android:id="@+id/btn_search"
