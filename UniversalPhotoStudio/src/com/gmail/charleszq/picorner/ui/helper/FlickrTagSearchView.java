@@ -11,9 +11,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
+import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter.FlickrTagSearchMode;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 
 /**
@@ -27,6 +30,36 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 	private EditText mTagText;
 	private ICommand<?> mCommand;
 	private IHiddenViewActionListener mHideViewCancelListener;
+	private RadioButton mRadioAnd, mRadioOr;
+
+	private FlickrTagSearchParameter mSearchParameter;
+
+	private OnClickListener mOnClickListener = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			if (v == mCancelButton) {
+				onAction(ACTION_CANCEL);
+			} else if (v == mSearchButton) {
+				String s = mTagText.getText().toString();
+				if (s == null || s.trim().length() == 0) {
+					Toast.makeText(
+							getContext(),
+							getContext().getString(
+									R.string.msg_flickr_tag_search_empty_tag),
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+
+				mSearchParameter.setTags(s);
+				onAction(ACTION_DO, mSearchParameter);
+			} else if (v == mRadioAnd) {
+				mSearchParameter.setSearchMode(FlickrTagSearchMode.ALL);
+			} else if (v == mRadioOr) {
+				mSearchParameter.setSearchMode(FlickrTagSearchMode.ANY);
+			}
+		}
+	};
 
 	/**
 	 * @param context
@@ -56,47 +89,31 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 	public void init(ICommand<?> command, IHiddenViewActionListener listener) {
 		this.mCommand = command;
 		this.mHideViewCancelListener = listener;
+		mSearchParameter = new FlickrTagSearchParameter();
 
 		mTagText = (EditText) findViewById(R.id.txt_flickr_tag_search);
 
 		mCancelButton = (Button) findViewById(R.id.btn_cancel_search);
-		mCancelButton.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				onAction(ACTION_CANCEL);
-			}
-		});
+		mCancelButton.setOnClickListener(mOnClickListener);
 
 		mSearchButton = (Button) findViewById(R.id.btn_search);
-		mSearchButton.setOnClickListener(new OnClickListener() {
+		mSearchButton.setOnClickListener(mOnClickListener);
 
-			@Override
-			public void onClick(View v) {
-				String s = mTagText.getText().toString();
-				if (s == null || s.trim().length() == 0) {
-					Toast.makeText(
-							getContext(),
-							getContext().getString(
-									R.string.msg_flickr_tag_search_empty_tag),
-							Toast.LENGTH_LONG).show();
-					return;
-				}
-				
-				//hide the soft keyboard
-				InputMethodManager imm = (InputMethodManager) getContext()
-						.getSystemService(Service.INPUT_METHOD_SERVICE);
-				imm.hideSoftInputFromWindow(mTagText.getWindowToken(), 0);
-				
-				onAction(ACTION_DO, s);
-
-			}
-		});
+		mRadioAnd = (RadioButton) findViewById(R.id.radio_and);
+		mRadioAnd.setOnClickListener(mOnClickListener);
+		mRadioOr = (RadioButton) findViewById(R.id.radio_or);
+		mRadioOr.setOnClickListener(mOnClickListener);
 
 	}
 
 	@Override
 	public void onAction(int action, Object... data) {
+		// hide the soft keyboard
+		InputMethodManager imm = (InputMethodManager) getContext()
+				.getSystemService(Service.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mTagText.getWindowToken(), 0);
+
+		// notify the listener.
 		mHideViewCancelListener.onAction(action, mCommand, this, data);
 	}
 

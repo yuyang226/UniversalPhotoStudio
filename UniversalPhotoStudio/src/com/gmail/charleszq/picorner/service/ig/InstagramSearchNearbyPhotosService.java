@@ -15,22 +15,25 @@ import com.gmail.charleszq.picorner.utils.ModelUtils;
 
 /**
  * @author charles(charleszq@gmail.com)
- *
+ * 
  */
 public class InstagramSearchNearbyPhotosService extends
 		AbstractInstagramPhotoListService {
-	
+
 	private Location mLocation;
 
 	/**
 	 * Constructor.
 	 */
-	public InstagramSearchNearbyPhotosService( Location location ) {
+	public InstagramSearchNearbyPhotosService(Location location) {
 		mLocation = location;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.gmail.charleszq.picorner.service.IPhotoService#getPhotos(int, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.gmail.charleszq.picorner.service.IPhotoService#getPhotos(int,
+	 * int)
 	 */
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
@@ -39,11 +42,14 @@ public class InstagramSearchNearbyPhotosService extends
 		AdvancedInstagram ig = InstagramHelper.getInstance().getInstagram();
 
 		MediaFeed mf = null;
-		if (pageNo <= 0 || mPagination == null) {
-			//5: the distance, 5km
-			mf = ig.searchMedia(mLocation.getAltitude(), mLocation.getLongitude(), 5, pageSize);
+		if (pageNo <= 0) {
+			// 5000: the distance, 5km
+			mf = ig.searchMedia(mLocation.getLatitude(),
+					mLocation.getLongitude(), 5000, pageSize);
 		} else {
-			mf = ig.getNextPage(mPagination, pageSize);
+			if (mPagination != null) {
+				mf = ig.getNextPage(mPagination, pageSize);
+			}
 		}
 
 		if (mf != null) {

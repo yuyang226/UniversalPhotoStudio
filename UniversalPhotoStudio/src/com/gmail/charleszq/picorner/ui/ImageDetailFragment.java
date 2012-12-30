@@ -191,11 +191,12 @@ public class ImageDetailFragment extends Fragment implements
 		final View v = inflater.inflate(R.layout.image_detail_fragment,
 				container, false);
 		mImageView = (ImageView) v.findViewById(R.id.imageView);
-		
-		//photo title and author name
+
+		// photo title and author name
 		mUserInfoContainer = v.findViewById(R.id.photo_detail_user_info);
 		ActionBar bar = getActivity().getActionBar();
-		mUserInfoContainer.setVisibility( bar.isShowing() ? View.VISIBLE : View.INVISIBLE );
+		mUserInfoContainer.setVisibility(bar.isShowing() ? View.VISIBLE
+				: View.INVISIBLE);
 		mPhotoTitle = (TextView) v.findViewById(R.id.photo_detail_photo_title);
 		mPhotoTitle.setText(mPhoto.getTitle() == null ? "" : mPhoto.getTitle()); //$NON-NLS-1$
 		mUserName = (TextView) v.findViewById(R.id.photo_detail_author_name);
@@ -208,7 +209,7 @@ public class ImageDetailFragment extends Fragment implements
 					.getAuthor().getUserId() : mPhoto.getAuthor().getUserName());
 			mUserName.setText(sb.toString());
 		}
-		
+
 		return v;
 	}
 
