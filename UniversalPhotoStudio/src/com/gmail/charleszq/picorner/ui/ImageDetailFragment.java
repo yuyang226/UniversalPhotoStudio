@@ -68,6 +68,7 @@ public class ImageDetailFragment extends Fragment implements
 
 	private static final String IMAGE_DATA_EXTRA = "extra_image_data"; //$NON-NLS-1$
 	private static final String MEDIA_OBJ_POS = "media_object"; //$NON-NLS-1$
+	private static final String TAG = ImageDetailFragment.class.getSimpleName();
 	private String mImageUrl;
 	private MediaObject mPhoto;
 	private ImageView mImageView;
@@ -346,14 +347,7 @@ public class ImageDetailFragment extends Fragment implements
 			getActivity().finish();
 			return true;
 		case R.id.menu_item_share_action_provider_action_bar:
-			StringBuilder sb = new StringBuilder();
-			sb.append(IConstants.SHARE_INTENT_TMP_FILE_PREFIX);
-			sb.append(String.valueOf(Math.random()));
-			sb.append(".png"); //$NON-NLS-1$
-			mCurrentShareIntentFileName = sb.toString();
-			saveBitmapToShare(mLoadedBitmap, mCurrentShareIntentFileName);
-			Intent shareIntent = createShareIntent(mCurrentShareIntentFileName);
-			getActivity().startActivity(shareIntent);
+			sharePhoto();
 			return true;
 		case R.id.menu_item_like:
 			likePhoto();
@@ -391,6 +385,31 @@ public class ImageDetailFragment extends Fragment implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void sharePhoto() {
+		// delete previous share files
+		File root = new File(Environment.getExternalStorageDirectory(),
+				IConstants.SD_CARD_FOLDER_NAME);
+		if (root.exists())
+			for (File f : root.listFiles()) {
+				if (f.getName().startsWith(
+						IConstants.SHARE_INTENT_TMP_FILE_PREFIX)) {
+					if (f.delete()) {
+						Log.d(TAG, "file deleted: " + f.getName()); //$NON-NLS-1$
+					}
+				}
+			}
+
+		// share this one
+		StringBuilder sb = new StringBuilder();
+		sb.append(IConstants.SHARE_INTENT_TMP_FILE_PREFIX);
+		sb.append(String.valueOf(Math.random()));
+		sb.append(".png"); //$NON-NLS-1$
+		mCurrentShareIntentFileName = sb.toString();
+		saveBitmapToShare(mLoadedBitmap, mCurrentShareIntentFileName);
+		Intent shareIntent = createShareIntent(mCurrentShareIntentFileName);
+		getActivity().startActivity(shareIntent);
 	}
 
 	/**
@@ -449,20 +468,6 @@ public class ImageDetailFragment extends Fragment implements
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		if (mCurrentShareIntentFileName != null) {
-			File bsRoot = new File(Environment.getExternalStorageDirectory(),
-					IConstants.SD_CARD_FOLDER_NAME);
-			File shareIntentFile = new File(bsRoot, mCurrentShareIntentFileName);
-			if (shareIntentFile.exists()) {
-				Log.d(getClass().getSimpleName(), "share intent file deleted."); //$NON-NLS-1$
-				shareIntentFile.delete();
-			}
-		}
 	}
 
 	private void saveBitmapToShare(Bitmap bitmap, String filename) {
