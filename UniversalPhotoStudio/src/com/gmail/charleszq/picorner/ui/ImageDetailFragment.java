@@ -29,6 +29,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ShareCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,7 +86,15 @@ public class ImageDetailFragment extends Fragment implements
 	 */
 	private DisplayImageOptions mImageDisplayOptions;
 
+	/**
+	 * The loaded bitmap
+	 */
 	private Bitmap mLoadedBitmap = null;
+
+	/**
+	 * 
+	 */
+	private String mCurrentShareIntentFileName = null;
 
 	/**
 	 * The image laoder listener.
@@ -329,7 +338,7 @@ public class ImageDetailFragment extends Fragment implements
 					Toast.LENGTH_SHORT).show();
 			return false;
 		} else {
-			saveBitmapToShare(mLoadedBitmap);
+			saveBitmapToShare(mLoadedBitmap, null);
 		}
 
 		switch (item.getItemId()) {
@@ -337,7 +346,13 @@ public class ImageDetailFragment extends Fragment implements
 			getActivity().finish();
 			return true;
 		case R.id.menu_item_share_action_provider_action_bar:
-			Intent shareIntent = createShareIntent();
+			StringBuilder sb = new StringBuilder();
+			sb.append(IConstants.SHARE_INTENT_TMP_FILE_PREFIX);
+			sb.append(String.valueOf(Math.random()));
+			sb.append(".png"); //$NON-NLS-1$
+			mCurrentShareIntentFileName = sb.toString();
+			saveBitmapToShare(mLoadedBitmap, mCurrentShareIntentFileName);
+			Intent shareIntent = createShareIntent(mCurrentShareIntentFileName);
 			getActivity().startActivity(shareIntent);
 			return true;
 		case R.id.menu_item_like:
@@ -350,7 +365,7 @@ public class ImageDetailFragment extends Fragment implements
 			WallpaperManager wm = WallpaperManager.getInstance(getActivity());
 			FileInputStream fis = null;
 			try {
-				fis = new FileInputStream(getShareImageFile());
+				fis = new FileInputStream(getShareImageFile(null));
 				wm.setStream(fis);
 				Toast.makeText(
 						getActivity(),
@@ -401,15 +416,18 @@ public class ImageDetailFragment extends Fragment implements
 		}
 	}
 
-	private File getShareImageFile() {
+	private File getShareImageFile(String fileName) {
 		File root = new File(Environment.getExternalStorageDirectory(),
 				IConstants.SD_CARD_FOLDER_NAME);
-		File saveFile = new File(root, IConstants.SHARE_TEMP_FILE_NAME);
+		if (fileName == null) {
+			fileName = IConstants.SHARE_TEMP_FILE_NAME;
+		}
+		File saveFile = new File(root, fileName);
 		return saveFile;
 	}
 
-	private Intent createShareIntent() {
-		File shareFile = getShareImageFile();
+	private Intent createShareIntent(String filename) {
+		File shareFile = getShareImageFile(filename);
 		Uri uri = Uri.fromFile(shareFile);
 
 		StringBuilder sb = new StringBuilder(mImageUrl);
@@ -427,19 +445,36 @@ public class ImageDetailFragment extends Fragment implements
 	public boolean onShareTargetSelected(ShareActionProvider source,
 			Intent intent) {
 		if (mLoadedBitmap != null) {
-			saveBitmapToShare(mLoadedBitmap);
+			saveBitmapToShare(mLoadedBitmap, null);
 			return true;
 		}
 		return false;
 	}
 
-	private void saveBitmapToShare(Bitmap bitmap) {
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (mCurrentShareIntentFileName != null) {
+			File bsRoot = new File(Environment.getExternalStorageDirectory(),
+					IConstants.SD_CARD_FOLDER_NAME);
+			File shareIntentFile = new File(bsRoot, mCurrentShareIntentFileName);
+			if (shareIntentFile.exists()) {
+				Log.d(getClass().getSimpleName(), "share intent file deleted."); //$NON-NLS-1$
+				shareIntentFile.delete();
+			}
+		}
+	}
+
+	private void saveBitmapToShare(Bitmap bitmap, String filename) {
 		File bsRoot = new File(Environment.getExternalStorageDirectory(),
 				IConstants.SD_CARD_FOLDER_NAME);
 		if (!bsRoot.exists() && !bsRoot.mkdir()) {
 			return;
 		}
-		File shareFile = new File(bsRoot, IConstants.SHARE_TEMP_FILE_NAME);
+		if (filename == null) {
+			filename = IConstants.SHARE_TEMP_FILE_NAME;
+		}
+		File shareFile = new File(bsRoot, filename);
 		if (shareFile.exists()) {
 			shareFile.delete();
 		}

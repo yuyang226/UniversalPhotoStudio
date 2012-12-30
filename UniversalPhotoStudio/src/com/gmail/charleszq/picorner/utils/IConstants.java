@@ -31,6 +31,7 @@ public interface IConstants {
 
 	static final String SD_CARD_FOLDER_NAME = "picorner"; //$NON-NLS-1$
 	static final String SHARE_TEMP_FILE_NAME = "picornershare.png"; //$NON-NLS-1$
+	static final String SHARE_INTENT_TMP_FILE_PREFIX = "sharetmp_"; //$NON-NLS-1$
 
 	/**
 	 * the flickr oauth scheme
