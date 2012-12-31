@@ -37,13 +37,13 @@
         android:id="@+id/edit_comment"
         android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:drawablePadding="5dp"
-        android:drawableLeft="@drawable/comments"
         android:background="@color/comment_bg_color"
+        android:drawableLeft="@drawable/input_comment"
+        android:drawablePadding="5dp"
         android:hint="@string/hint_add_comment"
         android:imeOptions="actionSend"
-        android:inputType="textImeMultiLine" />
+        android:inputType="textImeMultiLine"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp" />
 
 </LinearLayout>

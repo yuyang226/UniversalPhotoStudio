@@ -21,6 +21,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 import android.app.ActionBar;
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -48,10 +50,12 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
+import com.gmail.charleszq.picorner.model.MediaSourceType;
+import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.picorner.task.flickr.CheckUserLikePhotoTask;
+import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
+import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
-import com.gmail.charleszq.picorner.ui.command.ICommand;
-import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
-import com.gmail.charleszq.picorner.ui.command.LikePhotoCommand;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ImageUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -133,6 +137,11 @@ public class ImageDetailFragment extends Fragment implements
 	};
 
 	/**
+	 * If user likes this photo or not.
+	 */
+	private boolean mUserLikeThePhoto = false;
+
+	/**
 	 * Factory method to generate a new instance of the fragment given an image
 	 * number.
 	 * 
@@ -190,8 +199,9 @@ public class ImageDetailFragment extends Fragment implements
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		mPhoto = dp.getMediaObject(pos);
 		setHasOptionsMenu(true);
-
+		checkUserLikeOrNot();
 		act.addActionBarListener(mActionBarListener);
+		setRetainInstance(true);
 	}
 
 	@Override
@@ -256,25 +266,41 @@ public class ImageDetailFragment extends Fragment implements
 			return false; // image not loaded yet.
 		}
 
-		ICommand<Boolean> cmd = new LikePhotoCommand(getActivity());
-		cmd.setCommndDoneListener(new ICommandDoneListener<Boolean>() {
+		final ProgressDialog dialog2 = ProgressDialog.show(getActivity(), "", //$NON-NLS-1$
+				getString(R.string.msg_working));
+		dialog2.setCanceledOnTouchOutside(true);
+		IGeneralTaskDoneListener<Boolean> lis = new IGeneralTaskDoneListener<Boolean>() {
 			@Override
-			public void onCommandDone(ICommand<Boolean> command, Boolean t) {
-				if (t) {
+			public void onTaskDone(Boolean result) {
+				if (dialog2 != null && dialog2.isShowing()) {
+					dialog2.dismiss();
+				}
+				if (result) {
+					mUserLikeThePhoto = !mUserLikeThePhoto;
+					Activity act = ImageDetailFragment.this.getActivity();
+					if (act != null) {
+						act.invalidateOptionsMenu();
+					}
+				} else {
 					Toast.makeText(getActivity(),
-							getActivity().getString(R.string.like_photo_done),
+							getString(R.string.msg_like_photo_fail),
 							Toast.LENGTH_SHORT).show();
-					mPhoto.setUserLiked(true);
 				}
 			}
-		});
-		boolean result = cmd.execute(mPhoto);
-		if (!result) {
-			Toast.makeText(getActivity(),
-					getActivity().getString(R.string.pls_sing_in_first),
-					Toast.LENGTH_SHORT).show();
+		};
+		String likeActionString = Boolean.toString(!mUserLikeThePhoto);
+		switch (this.mPhoto.getMediaSource()) {
+		case FLICKR:
+			FlickrLikeTask ftask = new FlickrLikeTask(getActivity(), lis);
+			ftask.execute(mPhoto.getId(), likeActionString);
+			break;
+		case INSTAGRAM:
+			InstagramLikePhotoTask igtask = new InstagramLikePhotoTask(
+					getActivity(), lis);
+			igtask.execute(mPhoto.getId(), likeActionString);
+			break;
 		}
-		return result;
+		return true;
 	}
 
 	@Override
@@ -329,6 +355,62 @@ public class ImageDetailFragment extends Fragment implements
 		// // say when the user has selected an image.
 		// actionProvider.setShareIntent(createShareIntent());
 		// actionProvider.setOnShareTargetSelectedListener(this);
+	}
+
+	private void checkUserLikeOrNot() {
+
+		switch (mPhoto.getMediaSource()) {
+		case INSTAGRAM:
+			Log.d(TAG, "Do I like this photo? " + mPhoto.isUserLiked()); //$NON-NLS-1$
+			mUserLikeThePhoto = mPhoto.isUserLiked();
+			getActivity().invalidateOptionsMenu();
+			break;
+		case FLICKR:
+			CheckUserLikePhotoTask task = new CheckUserLikePhotoTask(
+					getActivity());
+			task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
+
+				@Override
+				public void onTaskDone(Boolean result) {
+					mPhoto.setUserLiked(result);
+					Log.d(TAG, "Do I like this photo? " + result.toString()); //$NON-NLS-1$
+					mUserLikeThePhoto = mPhoto.isUserLiked();
+					Activity act = ImageDetailFragment.this.getActivity();
+					if (act != null) {
+						act.invalidateOptionsMenu();
+					}
+				}
+			});
+			task.execute(mPhoto.getId(), mPhoto.getSecret());
+			break;
+		case PX500:
+			// not support yet.
+			break;
+		}
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		MenuItem likeItem = menu.findItem(R.id.menu_item_like);
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
+		
+		//hide 'like' for 500px
+		if (mPhoto.getMediaSource() == MediaSourceType.PX500) {
+			likeItem.setVisible(false);
+		}
+
+		//for flickr, hide 'like' on my own photos.
+		if (mPhoto.getMediaSource() == MediaSourceType.FLICKR
+				&& app.isMyOwnPhoto(mPhoto)) {
+			likeItem.setVisible(false);
+		}
+
+		if (mUserLikeThePhoto) {
+			likeItem.setIcon(R.drawable.star_big_on);
+		} else {
+			likeItem.setIcon(R.drawable.ic_menu_star);
+		}
 	}
 
 	@Override

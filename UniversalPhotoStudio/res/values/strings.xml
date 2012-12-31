@@ -8,7 +8,7 @@
     <string name="no_network_connection_toast">No network connection found</string>
     <string name="secondary_menus_general">General</string>
     <string name="secondary_menus_search">Search</string>
-    <string name="f_interesting_photos">Interesting Photos</string>
+    <string name="f_interesting_photos">Explore</string>
     <string name="f_login">Sign In</string>
     <string name="f_my_photos">My Photo Stream</string>
     <string name="f_my_fav">My Favorites</string>
@@ -108,7 +108,7 @@
 	
 	<!-- Command descritions -->
 	<!-- flickr -->
-	<string name="cd_flickr_interesting">flickr: interesting</string>
+	<string name="cd_flickr_interesting">flickr: explore</string>
 	<string name="cd_flickr_user_photos">flickr: photos of \'%s\'</string>
 	<string name="cd_flickr_my_favs">flickr: my favorites</string>
 	<string name="cd_flickr_my_populars">flickr: my popular photos</string>

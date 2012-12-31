@@ -6,9 +6,6 @@ package com.gmail.charleszq.picorner.ui;
 import java.io.File;
 import java.io.FileInputStream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -23,18 +20,15 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
-import com.gmail.charleszq.picorner.task.flickr.CheckUserLikePhotoTask;
-import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramCheckRelationshipTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramFollowUserTask;
-import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
 import com.gmail.charleszq.picorner.ui.helper.PhotoDetailViewPagerAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -47,9 +41,6 @@ import com.viewpagerindicator.TitlePageIndicator;
  */
 public class PhotoDetailActivity extends FragmentActivity {
 
-	private static Logger logger = LoggerFactory
-			.getLogger(PhotoDetailActivity.class);
-
 	private ViewPager mViewPager;
 	private TitlePageIndicator mIndicator;
 	private PhotoDetailViewPagerAdapter mAdapter;
@@ -57,11 +48,6 @@ public class PhotoDetailActivity extends FragmentActivity {
 
 	private int mCurrentPos;
 	private MediaObject mCurrentPhoto;
-
-	/**
-	 * the marker to invalidate the option menu.
-	 */
-	private boolean mUserLikeThePhoto = false;
 
 	/**
 	 * 0: don't know yet; 1: following; 2: not following
@@ -74,11 +60,11 @@ public class PhotoDetailActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.photo_detail_activity);
 
-		mCurrentPos = getIntent().getIntExtra(ImageDetailActivity.LARGE_IMAGE_POSITION,
-				-1);
-		IPhotosProvider dp = (IPhotosProvider) getIntent().getSerializableExtra(ImageDetailActivity.DP_KEY);
+		mCurrentPos = getIntent().getIntExtra(
+				ImageDetailActivity.LARGE_IMAGE_POSITION, -1);
+		IPhotosProvider dp = (IPhotosProvider) getIntent()
+				.getSerializableExtra(ImageDetailActivity.DP_KEY);
 		mCurrentPhoto = dp.getMediaObject(mCurrentPos);
-		mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
 
 		mImageView = (ImageView) findViewById(R.id.imageThumb);
 		mViewPager = (ViewPager) findViewById(R.id.pager_photo_detail);
@@ -89,7 +75,6 @@ public class PhotoDetailActivity extends FragmentActivity {
 		mIndicator.setViewPager(mViewPager);
 
 		loadImage();
-		checkUserLikeOrNot();
 		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
 			checkRelationship();
 		}
@@ -120,37 +105,21 @@ public class PhotoDetailActivity extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_photo_detail_2, menu);
 		inflater.inflate(R.menu.menu_ig_follow, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		MenuItem item = menu.findItem(R.id.menu_item_like);
-		
-		// disable like for px500 at this time.
-		if (mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
-			item.setVisible(false);
-		}
 		PicornerApplication app = (PicornerApplication) getApplication();
-		if( app.isMyOwnPhoto( mCurrentPhoto )) {
-			item.setVisible(false);
-		}
-		
-		if (mUserLikeThePhoto) {
-			item.setIcon(R.drawable.ic_fav_yes);
-		} else {
-			item.setIcon(R.drawable.ic_fav_no);
-		}
-
 		// this menu item can only be visible if the photo is instagram and I've
 		// signed in.
 		MenuItem followItem = menu.findItem(R.id.menu_item_follow);
 		if (!MediaSourceType.INSTAGRAM.equals(mCurrentPhoto.getMediaSource())) {
 			followItem.setVisible(false);
 		} else {
-			followItem.setVisible(app.getInstagramUserId() != null && !app.isMyOwnPhoto(mCurrentPhoto));
+			followItem.setVisible(app.getInstagramUserId() != null
+					&& !app.isMyOwnPhoto(mCurrentPhoto));
 		}
 
 		followItem.setEnabled(mIsFollowing != 0);
@@ -180,11 +149,12 @@ public class PhotoDetailActivity extends FragmentActivity {
 					if (dialog1 != null && dialog1.isShowing()) {
 						dialog1.dismiss();
 					}
-					if( result ) {
+					if (result) {
 						mIsFollowing = mIsFollowing == 1 ? 2 : 1;
 						invalidateOptionsMenu();
 					} else {
-						Toast.makeText(PhotoDetailActivity.this,
+						Toast.makeText(
+								PhotoDetailActivity.this,
 								getString(R.string.msg_ig_chg_relationship_failed),
 								Toast.LENGTH_SHORT).show();
 					}
@@ -197,41 +167,6 @@ public class PhotoDetailActivity extends FragmentActivity {
 					mCurrentPhoto.getAuthor().getUserId(),
 					mIsFollowing == 1 ? Boolean.FALSE.toString() : Boolean.TRUE
 							.toString());
-			return true;
-		case R.id.menu_item_like:
-			final ProgressDialog dialog2 = ProgressDialog.show(this, "", //$NON-NLS-1$
-					getString(R.string.msg_working));
-			dialog2.setCanceledOnTouchOutside(true);
-			IGeneralTaskDoneListener<Boolean> lis = new IGeneralTaskDoneListener<Boolean>() {
-				@Override
-				public void onTaskDone(Boolean result) {
-					if (dialog2 != null && dialog2.isShowing()) {
-						dialog2.dismiss();
-					}
-					if (result) {
-						mUserLikeThePhoto = !mUserLikeThePhoto;
-						item.setIcon(mUserLikeThePhoto ? R.drawable.ic_fav_yes
-								: R.drawable.ic_fav_no);
-					} else {
-						Toast.makeText(PhotoDetailActivity.this,
-								getString(R.string.msg_like_photo_fail),
-								Toast.LENGTH_SHORT).show();
-					}
-				}
-			};
-
-			String likeActionString = Boolean.toString(!mUserLikeThePhoto);
-			switch (this.mCurrentPhoto.getMediaSource()) {
-			case FLICKR:
-				FlickrLikeTask ftask = new FlickrLikeTask(this, lis);
-				ftask.execute(mCurrentPhoto.getId(), likeActionString);
-				break;
-			case INSTAGRAM:
-				InstagramLikePhotoTask igtask = new InstagramLikePhotoTask(
-						this, lis);
-				igtask.execute(mCurrentPhoto.getId(), likeActionString);
-				break;
-			}
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -251,26 +186,6 @@ public class PhotoDetailActivity extends FragmentActivity {
 			mImageView.setImageBitmap(bmp);
 		} catch (Exception e) {
 		}
-	}
-
-	private void checkUserLikeOrNot() {
-		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
-			logger.debug("Do I like this photo? " + mCurrentPhoto.isUserLiked()); //$NON-NLS-1$
-			mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
-			return;
-		}
-		CheckUserLikePhotoTask task = new CheckUserLikePhotoTask(this);
-		task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
-
-			@Override
-			public void onTaskDone(Boolean result) {
-				mCurrentPhoto.setUserLiked(result);
-				logger.debug("Do I like this photo? " + result.toString()); //$NON-NLS-1$
-				mUserLikeThePhoto = mCurrentPhoto.isUserLiked();
-				PhotoDetailActivity.this.invalidateOptionsMenu();
-			}
-		});
-		task.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());
 	}
 
 	public void notifyDataChanged() {
