@@ -194,7 +194,7 @@ public final class MediaObject implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return this.mThumbUrl.hashCode() * 17 + this.mId.hashCode() * 37;
+		return mId.hashCode();
 	}
 	
 	

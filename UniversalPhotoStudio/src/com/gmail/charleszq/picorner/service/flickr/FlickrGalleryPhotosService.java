@@ -35,6 +35,11 @@ public class FlickrGalleryPhotosService extends FlickrAuthPhotoService {
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
 		Log.d(TAG, String.format("page size %s and page# %s", pageSize, pageNo)); //$NON-NLS-1$
+		if (pageNo > 0) {
+			// for flickr gallery, each one has max 18 photos in it, so, we
+			// don't need pagination here.
+			return null;
+		}
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mAuthToken,
 				mTokenSecret);
 		GalleriesInterface si = f.getGalleriesInterface();

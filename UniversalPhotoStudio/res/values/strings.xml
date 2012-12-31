@@ -132,7 +132,7 @@
 	<string name="cd_ig_my_likes">instagram: my likes</string>
 	<string name="cd_ig_my_photos">instagram: my photos</string>
 	<string name="cd_ig_user_photos">instagram: photos of \'%s\'</string>
-	<string name="cd_ig_photos_nearby">instagram: photos nearby</string>
+	<string name="cd_ig_photos_nearby">instagram: nearby photos</string>
 	
 	<!-- use my own ig client -->
 	<string name="ig_client_id">Client ID</string>

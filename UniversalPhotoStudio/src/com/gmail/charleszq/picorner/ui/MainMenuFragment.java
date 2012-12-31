@@ -105,7 +105,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			if (act != null)
 				act.onCommandDone(command, t);
 			if (mProgressDialog != null && mProgressDialog.isShowing()) {
-				mProgressDialog.dismiss();
+				try {
+					mProgressDialog.cancel();
+				} catch (Exception ex) {
+					// do nothing.
+				}
 			}
 		}
 
@@ -308,10 +312,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			command = new InstagramUserPhotosCommand(ctx, a) {
 				@Override
 				public String getDescription() {
-					//since we don't save my own user name
+					// since we don't save my own user name
 					return getString(R.string.cd_ig_my_photos);
 				}
-				
+
 			};
 			command.setCommandCategory(headerName);
 			commands.add(command);

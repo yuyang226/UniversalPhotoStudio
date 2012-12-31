@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -26,6 +27,7 @@ import com.gmail.charleszq.picorner.ui.command.HelpCommand;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
+import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrTagSearchCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
@@ -46,6 +48,8 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	private CommandSectionListAdapter mSectionAdapter;
 
 	private boolean mHideAnimation = true;
+
+	private ProgressDialog mProgressDialog;
 
 	/**
 	 * The listener to cancel the hidden view.
@@ -89,6 +93,15 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 			}
 			if (act != null)
 				act.onCommandDone(command, t);
+
+			if (mProgressDialog != null && mProgressDialog.isShowing()) {
+				try {
+					mProgressDialog.cancel();
+				} catch (Exception e) {
+					// do nothing, when configuration changes, this might
+					// happend, but no harm.
+				}
+			}
 		}
 	};
 
@@ -176,6 +189,12 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	}
 
 	private void doCommand(ICommand<Object> command, Object... params) {
+		if (PhotoListCommand.class.isInstance(command)) {
+			mProgressDialog = ProgressDialog.show(getActivity(),
+					"", getActivity() //$NON-NLS-1$
+							.getString(R.string.loading_photos));
+			mProgressDialog.setCanceledOnTouchOutside(true);
+		}
 		command.setCommndDoneListener(mCommandDoneListener);
 		command.execute(params);
 		// close the menu.

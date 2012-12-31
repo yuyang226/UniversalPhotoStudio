@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrGalleryPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -41,11 +42,18 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 	}
 
 	@Override
+	public String getDescription() {
+		String s = mContext.getString(R.string.cd_flickr_gallery_photos);
+		return String.format(s, getLabel());
+	}
+
+	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
 				Activity act = (Activity) mContext;
-				PicornerApplication app = (PicornerApplication) act.getApplication();
+				PicornerApplication app = (PicornerApplication) act
+						.getApplication();
 				mCurrentPhotoService = new FlickrGalleryPhotosService(
 						app.getFlickrUserId(), app.getFlickrToken(),
 						app.getFlickrTokenSecret(), mGallery.getGalleryId());
