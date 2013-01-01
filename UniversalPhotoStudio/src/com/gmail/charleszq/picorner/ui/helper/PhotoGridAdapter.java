@@ -16,9 +16,11 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.utils.IConstants;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -44,18 +46,20 @@ public class PhotoGridAdapter extends BaseAdapter {
 		this.mContext = context;
 		this.mPhotos = provider;
 		this.mImageFetcher = fetcher;
-		
+
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				mContext.getApplicationContext()).discCacheSize(
-				IConstants.IMAGE_CACHE_SIZE).build();
+				mContext.getApplicationContext())
+				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
+				.memoryCache(new WeakMemoryCache()).build();
 		mImageFetcher.init(config);
 		mImageViewLayoutParams = new GridView.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
 		mImageDisplayOptions = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.empty_photo)
-				.showImageForEmptyUri(R.drawable.empty_photo).cacheInMemory()
-				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565).build();
+				.showStubImage(R.drawable.empty_photo).cacheInMemory()
+				.showImageForEmptyUri(R.drawable.empty_photo).cacheOnDisc()
+				.imageScaleType(ImageScaleType.EXACTLY)
+				.bitmapConfig(Bitmap.Config.RGB_565).build();
 	}
 
 	/*
@@ -114,7 +118,8 @@ public class PhotoGridAdapter extends BaseAdapter {
 		MediaObject photo = mPhotos.getMediaObject(position);
 		if (photo != null)
 			// mImageFetcher.loadImage(photo.getThumbUrl(), imageView);
-			mImageFetcher.displayImage(photo.getThumbUrl(), imageView, mImageDisplayOptions);
+			mImageFetcher.displayImage(photo.getThumbUrl(), imageView,
+					mImageDisplayOptions);
 		return imageView;
 	}
 

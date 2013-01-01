@@ -106,7 +106,6 @@ public class PhotoDetailGeneralFragment extends
 						|| mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
 					DisplayImageOptions imageDisplayOptions = new DisplayImageOptions.Builder()
 							.showStubImage(R.drawable.empty_photo)
-							.cacheInMemory()
 							.bitmapConfig(Bitmap.Config.RGB_565).build();
 					mImageFetcher.displayImage(mCurrentPhoto.getAuthor()
 							.getBuddyIconUrl(), image, imageDisplayOptions);

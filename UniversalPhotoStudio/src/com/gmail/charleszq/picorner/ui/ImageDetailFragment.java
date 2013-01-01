@@ -186,7 +186,7 @@ public class ImageDetailFragment extends Fragment implements
 		super.onCreate(savedInstanceState);
 
 		mImageDisplayOptions = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.empty_photo).cacheInMemory()
+				.showStubImage(R.drawable.empty_photo)
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565).build();
 
 		mImageUrl = getArguments() != null ? getArguments().getString(

@@ -34,6 +34,7 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.utils.IConstants;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
@@ -59,8 +60,9 @@ public class ImageDetailActivity extends FragmentActivity implements
 		// children asynchronously
 		mImageFetcher = ImageLoader.getInstance();
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				getApplicationContext()).discCacheSize(
-				IConstants.IMAGE_CACHE_SIZE).build();
+				getApplicationContext()).threadPoolSize(5)
+				.memoryCache(new WeakMemoryCache())
+				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).build();
 		mImageFetcher.init(config);
 
 		// Set up ViewPager and backing adapter
@@ -85,7 +87,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 
 			// Hide title text and set home as up
 			actionBar.setDisplayHomeAsUpEnabled(true);
-//			actionBar.setDisplayShowTitleEnabled(false);
+			// actionBar.setDisplayShowTitleEnabled(false);
 
 			// Hide and show the ActionBar as the visibility changes
 			mPager.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {

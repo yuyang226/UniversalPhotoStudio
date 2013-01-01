@@ -43,6 +43,7 @@ import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -276,6 +277,7 @@ public class PhotoDetailCommentsFragment extends
 					.showStubImage(R.drawable.empty_photo)
 					.showImageForEmptyUri(R.drawable.empty_photo)
 					.cacheInMemory().cacheOnDisc()
+					.imageScaleType(ImageScaleType.EXACTLY)
 					.bitmapConfig(Bitmap.Config.RGB_565).build();
 		}
 

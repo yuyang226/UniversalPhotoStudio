@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.gmail.charleszq.picorner.R;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
  * Represents the task to fetch the icon url from the server side.
@@ -47,7 +48,7 @@ public abstract class AbstractFetchIconUrlTask extends
 				DisplayImageOptions options = new DisplayImageOptions.Builder()
 						.showStubImage(R.drawable.empty_photo).cacheInMemory()
 						.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
-						.build();
+						.imageScaleType(ImageScaleType.EXACTLY).build();
 				mImageFetcher.displayImage(result, mImageView, options);
 			}
 		}

@@ -72,7 +72,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 		} else {
 			// 500px
 			mCurrentCommand = new PxUserPhotosCommand(getActivity(),
-					mCurrentUser.getUserId());
+					mCurrentUser);
 		}
 		mCurrentCommand.setCommndDoneListener(mCommandDoneListener);
 		mCurrentCommand.execute();
@@ -215,6 +215,15 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 		i.putExtra(ImageDetailActivity.DP_KEY, mPhotosProvider);
 		i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, position);
 		startActivity(i);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if (mCurrentCommand != null) {
+			getActivity().getActionBar().setSubtitle(
+					mCurrentCommand.getDescription());
+		}
 	}
 
 }
