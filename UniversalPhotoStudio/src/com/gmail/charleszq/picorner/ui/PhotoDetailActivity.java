@@ -6,7 +6,6 @@ package com.gmail.charleszq.picorner.ui;
 import java.io.File;
 import java.io.FileInputStream;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,8 +13,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -25,10 +22,6 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
-import com.gmail.charleszq.picorner.model.MediaSourceType;
-import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
-import com.gmail.charleszq.picorner.task.ig.InstagramCheckRelationshipTask;
-import com.gmail.charleszq.picorner.task.ig.InstagramFollowUserTask;
 import com.gmail.charleszq.picorner.ui.helper.PhotoDetailViewPagerAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -48,11 +41,6 @@ public class PhotoDetailActivity extends FragmentActivity {
 
 	private int mCurrentPos;
 	private MediaObject mCurrentPhoto;
-
-	/**
-	 * 0: don't know yet; 1: following; 2: not following
-	 */
-	private int mIsFollowing = 0;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -75,61 +63,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 		mIndicator.setViewPager(mViewPager);
 
 		loadImage();
-		if (mCurrentPhoto.getMediaSource() == MediaSourceType.INSTAGRAM) {
-			checkRelationship();
-		}
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-	}
-
-	private void checkRelationship() {
-		PicornerApplication app = (PicornerApplication) getApplication();
-		if (app.getInstagramUserId() == null) {
-			// not signed in
-			return;
-		} else {
-			InstagramCheckRelationshipTask task = new InstagramCheckRelationshipTask(
-					this);
-			task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
-
-				@Override
-				public void onTaskDone(Boolean result) {
-					mIsFollowing = result ? 1 : 2;
-					invalidateOptionsMenu();
-				}
-			});
-			task.execute(mCurrentPhoto.getAuthor().getUserId());
-		}
-
-	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.menu_ig_follow, menu);
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		PicornerApplication app = (PicornerApplication) getApplication();
-		// this menu item can only be visible if the photo is instagram and I've
-		// signed in.
-		MenuItem followItem = menu.findItem(R.id.menu_item_follow);
-		if (!MediaSourceType.INSTAGRAM.equals(mCurrentPhoto.getMediaSource())) {
-			followItem.setVisible(false);
-		} else {
-			followItem.setVisible(app.getInstagramUserId() != null
-					&& !app.isMyOwnPhoto(mCurrentPhoto));
-		}
-
-		followItem.setEnabled(mIsFollowing != 0);
-		if (mIsFollowing == 1) {
-			followItem.setTitle(getString(R.string.menu_item_ig_unfollow_user));
-		} else {
-			followItem.setTitle(getString(R.string.menu_item_ig_follow_user));
-		}
-
-		return true;
 	}
 
 	@Override
@@ -137,36 +71,6 @@ public class PhotoDetailActivity extends FragmentActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			finish();
-			return true;
-		case R.id.menu_item_follow:
-			final ProgressDialog dialog1 = ProgressDialog.show(this, "", //$NON-NLS-1$
-					getString(R.string.msg_working));
-			dialog1.setCanceledOnTouchOutside(true);
-			IGeneralTaskDoneListener<Boolean> relationshipListener = new IGeneralTaskDoneListener<Boolean>() {
-
-				@Override
-				public void onTaskDone(Boolean result) {
-					if (dialog1 != null && dialog1.isShowing()) {
-						dialog1.dismiss();
-					}
-					if (result) {
-						mIsFollowing = mIsFollowing == 1 ? 2 : 1;
-						invalidateOptionsMenu();
-					} else {
-						Toast.makeText(
-								PhotoDetailActivity.this,
-								getString(R.string.msg_ig_chg_relationship_failed),
-								Toast.LENGTH_SHORT).show();
-					}
-				}
-			};
-			InstagramFollowUserTask followTask = new InstagramFollowUserTask(
-					this);
-			followTask.addTaskDoneListener(relationshipListener);
-			followTask.execute(
-					mCurrentPhoto.getAuthor().getUserId(),
-					mIsFollowing == 1 ? Boolean.FALSE.toString() : Boolean.TRUE
-							.toString());
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -188,6 +92,10 @@ public class PhotoDetailActivity extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * Called by inside page to check, for example, if the photo has location
+	 * information, then we will show the map page.
+	 */
 	public void notifyDataChanged() {
 		if (mAdapter != null) {
 			mAdapter.notifyDataSetChanged();

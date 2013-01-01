@@ -3,7 +3,8 @@
 
     <item
         android:id="@+id/menu_item_follow"
-        android:showAsAction="never"
+        android:showAsAction="ifRoom|withText"
+        android:icon="@drawable/ic_menu_friendslist"
         android:title="@string/menu_item_ig_follow_user"/>
 
 </menu>
