@@ -277,6 +277,7 @@ public class ImageDetailFragment extends Fragment implements
 				}
 				if (result) {
 					mUserLikeThePhoto = !mUserLikeThePhoto;
+					mPhoto.setUserLiked(mUserLikeThePhoto);
 					Activity act = ImageDetailFragment.this.getActivity();
 					if (act != null) {
 						act.invalidateOptionsMenu();
