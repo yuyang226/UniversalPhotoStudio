@@ -186,8 +186,8 @@ public class ImageDetailFragment extends Fragment implements
 		super.onCreate(savedInstanceState);
 
 		mImageDisplayOptions = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.empty_photo)
-				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565).build();
+				.showStubImage(R.drawable.empty_photo).cacheOnDisc()
+				.bitmapConfig(Bitmap.Config.RGB_565).build();
 
 		mImageUrl = getArguments() != null ? getArguments().getString(
 				IMAGE_DATA_EXTRA) : null;
@@ -367,22 +367,29 @@ public class ImageDetailFragment extends Fragment implements
 			getActivity().invalidateOptionsMenu();
 			break;
 		case FLICKR:
-			CheckUserLikePhotoTask task = new CheckUserLikePhotoTask(
-					getActivity());
-			task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
+			if (mPhoto.isUserLiked()) {
+				// if it's true, it means we've already checked again the
+				// server, so we don't need to check again.
+				mUserLikeThePhoto = true;
+				getActivity().invalidateOptionsMenu();
+			} else {
+				CheckUserLikePhotoTask task = new CheckUserLikePhotoTask(
+						getActivity());
+				task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
 
-				@Override
-				public void onTaskDone(Boolean result) {
-					mPhoto.setUserLiked(result);
-					Log.d(TAG, "Do I like this photo? " + result.toString()); //$NON-NLS-1$
-					mUserLikeThePhoto = mPhoto.isUserLiked();
-					Activity act = ImageDetailFragment.this.getActivity();
-					if (act != null) {
-						act.invalidateOptionsMenu();
+					@Override
+					public void onTaskDone(Boolean result) {
+						mPhoto.setUserLiked(result);
+						Log.d(TAG, "Do I like this photo? " + result.toString()); //$NON-NLS-1$
+						mUserLikeThePhoto = mPhoto.isUserLiked();
+						Activity act = ImageDetailFragment.this.getActivity();
+						if (act != null) {
+							act.invalidateOptionsMenu();
+						}
 					}
-				}
-			});
-			task.execute(mPhoto.getId(), mPhoto.getSecret());
+				});
+				task.execute(mPhoto.getId(), mPhoto.getSecret());
+			}
 			break;
 		case PX500:
 			// not support yet.
@@ -395,13 +402,13 @@ public class ImageDetailFragment extends Fragment implements
 		MenuItem likeItem = menu.findItem(R.id.menu_item_like);
 		PicornerApplication app = (PicornerApplication) getActivity()
 				.getApplication();
-		
-		//hide 'like' for 500px
+
+		// hide 'like' for 500px
 		if (mPhoto.getMediaSource() == MediaSourceType.PX500) {
 			likeItem.setVisible(false);
 		}
 
-		//for flickr, hide 'like' on my own photos.
+		// for flickr, hide 'like' on my own photos.
 		if (mPhoto.getMediaSource() == MediaSourceType.FLICKR
 				&& app.isMyOwnPhoto(mPhoto)) {
 			likeItem.setVisible(false);
