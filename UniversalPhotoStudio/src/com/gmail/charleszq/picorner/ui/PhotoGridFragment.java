@@ -146,6 +146,9 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		mAdapter.notifyDataSetChanged();
 		if( mCurrentCommand != null ) {
 			getActivity().getActionBar().setSubtitle( mCurrentCommand.getDescription());
+		} else {
+			MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
+			act.loadDefaultPhotoList();
 		}
 	}
 

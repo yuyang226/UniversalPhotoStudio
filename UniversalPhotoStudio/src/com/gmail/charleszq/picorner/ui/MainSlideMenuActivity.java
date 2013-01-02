@@ -98,7 +98,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	 * When first time this activity starts, load default photo list, now it's
 	 * flickr interesting photos.
 	 */
-	private void loadDefaultPhotoList() {
+	void loadDefaultPhotoList() {
 		mCommand = new PxPopularPhotosCommand(this);
 		final ProgressDialog dialog = ProgressDialog.show(this,
 				"", getString(R.string.loading_photos)); //$NON-NLS-1$
