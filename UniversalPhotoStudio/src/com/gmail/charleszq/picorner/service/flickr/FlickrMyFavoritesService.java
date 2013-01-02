@@ -5,6 +5,7 @@ package com.gmail.charleszq.picorner.service.flickr;
 
 import android.util.Log;
 
+import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
@@ -31,7 +32,11 @@ public class FlickrMyFavoritesService extends FlickrAuthPhotoService {
 		FavoritesInterface fi = f.getFavoritesInterface();
 		PhotoList list = fi.getList(mUserId, null, null, pageSize, pageNo + 1,
 				mExtras);
-
-		return ModelUtils.convertFlickrPhotoList(list);
+		// this will reduce one more network call to get the status.
+		MediaObjectCollection pc = ModelUtils.convertFlickrPhotoList(list);
+		for (MediaObject photo : pc.getPhotos()) {
+			photo.setUserLiked(true);
+		}
+		return pc;
 	}
 }
