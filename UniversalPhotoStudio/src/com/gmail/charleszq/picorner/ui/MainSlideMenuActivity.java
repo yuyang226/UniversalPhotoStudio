@@ -21,6 +21,7 @@ import com.android.vending.licensing.AESObfuscator;
 import com.android.vending.licensing.LicenseChecker;
 import com.android.vending.licensing.LicenseCheckerCallback;
 import com.android.vending.licensing.ServerManagedPolicy;
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
@@ -197,7 +198,9 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		if (!((PicornerApplication) getApplication()).isLicensed()) {
-			checkLicense();
+			if( !BuildConfig.DEBUG ) {
+				checkLicense();
+			} 
 		}
 	}
 
