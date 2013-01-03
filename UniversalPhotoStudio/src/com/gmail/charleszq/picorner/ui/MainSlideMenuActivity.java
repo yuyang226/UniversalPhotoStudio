@@ -197,7 +197,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		if (!((PicornerApplication) getApplication()).isLicensed()) {
-			checkLicense();
+//			checkLicense();
 		}
 	}
 

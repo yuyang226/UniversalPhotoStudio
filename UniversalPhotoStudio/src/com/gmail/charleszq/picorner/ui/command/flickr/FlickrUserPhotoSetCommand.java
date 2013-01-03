@@ -41,7 +41,7 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 
 	@Override
 	public String getLabel() {
-		return mPhotoSet == null ? "PHOTOSET NOT RIGHT" : mPhotoSet.getTitle(); //$NON-NLS-1$
+		return mPhotoSet.getTitle();
 	}
 
 	@Override

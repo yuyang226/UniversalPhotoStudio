@@ -3,6 +3,8 @@
  */
 package com.gmail.charleszq.picorner.task.flickr;
 
+import android.util.Log;
+
 import com.gmail.charleszq.picorner.task.AbstractGeneralTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.Flickr;
@@ -28,7 +30,7 @@ public class FlickrGetPhotoFavCountTask extends
 			PhotoFavouriteUserList list = pi.getFavorites(photoid, 10, 1);
 			count = list.getTotal();
 		} catch (Exception e) {
-			logger.warn("Unable to get the flickr fav count: " + e.getMessage()); //$NON-NLS-1$
+			Log.w(TAG, "Unable to get the flickr fav count: " + e.getMessage()); //$NON-NLS-1$
 		}
 		return count;
 	}

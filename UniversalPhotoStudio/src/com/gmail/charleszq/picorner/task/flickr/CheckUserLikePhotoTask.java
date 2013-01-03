@@ -5,6 +5,7 @@ package com.gmail.charleszq.picorner.task.flickr;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
@@ -42,7 +43,7 @@ public class CheckUserLikePhotoTask extends
 			Photo p = pi.getInfo(photoId, photoSecret);
 			return p.isFavorite();
 		} catch (Exception e) {
-			logger.warn("Unable to get the photo information: " + e.getMessage()); //$NON-NLS-1$
+			Log.w(TAG,"Unable to get the photo information: " + e.getMessage()); //$NON-NLS-1$
 		}
 		return false;
 	}

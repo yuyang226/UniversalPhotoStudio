@@ -74,5 +74,10 @@ public interface IConstants {
 	static final String ABOUT_FILE_DEFAULT_ENCODING = "utf-8"; //$NON-NLS-1$
 	
 	static final String ASSET_FOLDER = "file:///android_asset/"; //$NON-NLS-1$
+	
+	/**
+	 * The file name which saves the flickr user photo pool information.
+	 */
+	static final String FLICKR_USER_POOL_FILE_NAME = "flickr_user_pool.dat"; //$NON-NLS-1$
 
 }

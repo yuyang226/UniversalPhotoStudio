@@ -13,6 +13,7 @@ import org.jinstagram.model.Scope;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
@@ -58,7 +59,7 @@ public class InstagramOAuthTask extends
 			}
 			return token;
 		} catch (Exception e) {
-			logger.error("Instagram oauth failed: " + e.getMessage()); //$NON-NLS-1$
+			Log.e(TAG, "Instagram oauth failed: " + e.getMessage()); //$NON-NLS-1$
 			return null;
 		}
 	}

@@ -27,10 +27,11 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramOAuthTask;
 import com.gmail.charleszq.picorner.ui.command.CommandType;
@@ -192,10 +193,24 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		// get photo sets.
 		if (isUserAuthedFlickr()) {
-			FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
-					this.getActivity());
-			task.addTaskDoneListener(mPhotoSetsListener);
-			task.execute();
+			// first, try get information from cache.
+			FetchFlickrUserPhotoCollectionFromCacheTask cacheTask = new FetchFlickrUserPhotoCollectionFromCacheTask();
+			cacheTask
+					.addTaskDoneListener(new IGeneralTaskDoneListener<List<Object>>() {
+
+						@Override
+						public void onTaskDone(List<Object> result) {
+							FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
+									getActivity());
+							if (result == null) {
+								task.addTaskDoneListener(mPhotoSetsListener);
+							} else {
+								mPhotoSetsListener.onTaskDone(result);
+							}
+							task.execute();
+						}
+					});
+			cacheTask.execute();
 		}
 	}
 

@@ -6,6 +6,8 @@ package com.gmail.charleszq.picorner.task.px500;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
 import com.gmail.charleszq.picorner.model.MediaObjectComment;
 import com.gmail.charleszq.picorner.task.AbstractGeneralTask;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -33,7 +35,7 @@ public class PxFetchPhotoCommentsTask extends
 			}
 			return comments;
 		} catch (Exception e) {
-			logger.warn("Unable to get photo comments: " + e.getMessage()); //$NON-NLS-1$
+			Log.w(TAG, "Unable to get photo comments: " + e.getMessage()); //$NON-NLS-1$
 		}
 		return null;
 	}

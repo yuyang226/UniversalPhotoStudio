@@ -5,6 +5,8 @@ package com.gmail.charleszq.picorner.task.flickr;
 
 import java.util.List;
 
+import android.util.Log;
+
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.task.AbstractGeneralTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
@@ -31,7 +33,7 @@ public class GetFlickrPhotoFavUsersTask extends
 			PhotoFavouriteUserList list = pi.getFavorites(photoId, 20, 1);
 			return ModelUtils.convertFlickrUsers(list);
 		} catch (Exception e) {
-			logger.warn("Unable to fetch flickr fav users: " + e.getMessage()); //$NON-NLS-1$
+			Log.w(TAG,"Unable to fetch flickr fav users: " + e.getMessage()); //$NON-NLS-1$
 		}
 		return null;
 	}

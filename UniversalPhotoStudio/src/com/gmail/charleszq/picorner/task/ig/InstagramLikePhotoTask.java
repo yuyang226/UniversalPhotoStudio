@@ -7,6 +7,7 @@ import org.jinstagram.Instagram;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
@@ -31,11 +32,11 @@ public class InstagramLikePhotoTask extends
 	@Override
 	protected Boolean doInBackground(String... params) {
 		String id = params[0];
-		logger.debug("instagram media id: " + id); //$NON-NLS-1$
+		Log.d(TAG,"instagram media id: " + id); //$NON-NLS-1$
 		int index = id.indexOf("_"); //$NON-NLS-1$
 		if (index != -1) {
 			id = id.substring(0, index);
-			logger.debug("instagram media id: " + id); //$NON-NLS-1$
+			Log.d(TAG,"instagram media id: " + id); //$NON-NLS-1$
 		}
 
 		boolean like = true;
@@ -53,7 +54,7 @@ public class InstagramLikePhotoTask extends
 				ig.deleteUserLike(Long.parseLong(id));
 			}
 		} catch (Exception e) {
-			logger.error("Unable to like the instagram photo: " + id); //$NON-NLS-1$
+			Log.e(TAG, "Unable to like the instagram photo: " + id); //$NON-NLS-1$
 			return false;
 		}
 		return true;

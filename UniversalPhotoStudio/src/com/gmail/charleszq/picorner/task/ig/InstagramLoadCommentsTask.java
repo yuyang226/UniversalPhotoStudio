@@ -10,6 +10,7 @@ import org.jinstagram.entity.comments.MediaCommentsFeed;
 import org.jinstagram.exceptions.InstagramException;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.gmail.charleszq.picorner.model.MediaObjectComment;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
@@ -39,7 +40,7 @@ public class InstagramLoadCommentsTask extends
 		int index = id.indexOf("_"); //$NON-NLS-1$
 		if( index != -1 ) {
 			id = id.substring(0,index);
-			logger.debug("instagram media id: " + id); //$NON-NLS-1$
+			Log.d(TAG,"instagram media id: " + id); //$NON-NLS-1$
 		}
 		long photoId = Long.parseLong(id);
 		AdvancedInstagram ig = InstagramHelper.getInstance().getInstagram();

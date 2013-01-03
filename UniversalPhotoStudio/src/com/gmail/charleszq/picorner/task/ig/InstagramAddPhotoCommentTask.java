@@ -7,6 +7,7 @@ import org.jinstagram.Instagram;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
@@ -31,7 +32,7 @@ public class InstagramAddPhotoCommentTask extends
 		int index = photoId.indexOf("_"); //$NON-NLS-1$
 		if (index != -1) {
 			photoId = photoId.substring(0, index);
-			logger.debug("instagram media id: " + photoId); //$NON-NLS-1$
+			Log.d(TAG, "instagram media id: " + photoId); //$NON-NLS-1$
 		}
 
 		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
@@ -42,7 +43,7 @@ public class InstagramAddPhotoCommentTask extends
 			ig.setMediaComments(Long.valueOf(photoId), comment);
 			return true;
 		} catch (Exception e) {
-			logger.warn( "cannot add comment: " + e.getMessage()); //$NON-NLS-1$
+			Log.w(TAG,"cannot add comment: " + e.getMessage()); //$NON-NLS-1$
 		}
 		return false;
 	}

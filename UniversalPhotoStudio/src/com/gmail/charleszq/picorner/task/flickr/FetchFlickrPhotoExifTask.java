@@ -10,6 +10,7 @@ import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.ExifData;
@@ -49,7 +50,7 @@ public class FetchFlickrPhotoExifTask extends
 			List<ExifData> data = ModelUtils.convertFlickrExifs(exifs);
 			return postProcess(data);
 		} catch (Exception e) {
-			logger.warn("Error to get exif information of a photo: " //$NON-NLS-1$
+			Log.w(TAG, "Error to get exif information of a photo: " //$NON-NLS-1$
 					+ e.getMessage());
 		}
 
