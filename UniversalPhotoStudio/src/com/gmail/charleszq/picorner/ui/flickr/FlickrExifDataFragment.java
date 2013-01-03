@@ -86,6 +86,8 @@ public class FlickrExifDataFragment extends Fragment {
 		}
 
 		switch (mCurrentPhoto.getMediaSource()) {
+		case INSTAGRAM:
+			break;
 		case FLICKR:
 			FetchFlickrPhotoExifTask task = new FetchFlickrPhotoExifTask(
 					getActivity());

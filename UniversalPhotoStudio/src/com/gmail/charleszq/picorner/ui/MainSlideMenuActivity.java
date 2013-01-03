@@ -174,6 +174,8 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 				logger.warn("Not photo grid fragment?"); //$NON-NLS-1$
 			}
 			break;
+		default:
+			break;
 		}
 	}
 
@@ -198,9 +200,9 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	protected void onResume() {
 		super.onResume();
 		if (!((PicornerApplication) getApplication()).isLicensed()) {
-			if( !BuildConfig.DEBUG ) {
+			if (!BuildConfig.DEBUG) {
 				checkLicense();
-			} 
+			}
 		}
 	}
 

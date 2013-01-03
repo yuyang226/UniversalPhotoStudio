@@ -119,6 +119,7 @@ public class FetchFlickrUserPhotoCollectionTask extends
 				pool.setPhotoCount(gallery.getPhotoCount());
 				pool.setTitle(gallery.getTitle());
 			}
+			Log.d(TAG, pool.toString());
 			userPools.add(pool);
 		}
 		File poolFile = new File(bsRoot, IConstants.FLICKR_USER_POOL_FILE_NAME);

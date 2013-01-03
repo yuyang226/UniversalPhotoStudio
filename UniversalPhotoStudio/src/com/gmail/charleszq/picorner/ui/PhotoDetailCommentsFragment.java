@@ -146,6 +146,8 @@ public class PhotoDetailCommentsFragment extends
 			a.setUserId(String.valueOf(app.getInstagramUserId()));
 			a.setBuddyIconUrl(app.getInstagramUserBuddyIconUrl());
 			break;
+		case PX500:
+			break;
 		}
 
 		return c;
@@ -185,6 +187,8 @@ public class PhotoDetailCommentsFragment extends
 			it.addTaskDoneListener(lis);
 			it.execute(mCurrentPhoto.getId(), commentText.toString());
 			break;
+		case PX500:
+			break;
 		}
 
 	}
@@ -199,6 +203,8 @@ public class PhotoDetailCommentsFragment extends
 			break;
 		case INSTAGRAM:
 			result = app.getInstagramUserId() != null;
+			break;
+		case PX500:
 			break;
 		}
 		return result;

@@ -123,6 +123,8 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 		case FLICKR:
 			task = new GetFlickrPhotoFavUsersTask();
 			break;
+		case PX500:
+			break;
 		}
 		task.addTaskDoneListener(lis);
 		task.execute(photoId);
@@ -194,6 +196,8 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 				FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
 						mContext, user.getUserId());
 				task.execute(mFetcher, image);
+				break;
+			case PX500:
 				break;
 			}
 		}

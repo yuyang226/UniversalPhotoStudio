@@ -22,7 +22,7 @@ public class FlickrUserPhotoPool implements Serializable {
 	public static final String ICON_URL = "url"; //$NON-NLS-1$
 	public static final String TYPE = "t"; //$NON-NLS-1$
 	public static final String COUNT = "c"; //$NON-NLS-1$
-	
+
 	public static final int TYPE_PHOTO_SET = 0;
 	public static final int TYPE_GROUP = 1;
 	public static final int TYPE_GALLERY = 2;
@@ -34,12 +34,12 @@ public class FlickrUserPhotoPool implements Serializable {
 
 	private String id;
 	private String title;
-	
+
 	/**
 	 * <ul>
-	 * <li> for photo set, save photo set id;
-	 * <li> for group, just save the url;
-	 * <li> for gallery, save the primary photo id;
+	 * <li>for photo set, save photo set id;
+	 * <li>for group, just save the url;
+	 * <li>for gallery, save the primary photo id;
 	 * </ul>
 	 */
 	private String iconUrl;
@@ -93,4 +93,20 @@ public class FlickrUserPhotoPool implements Serializable {
 	public void setType(int type) {
 		this.type = type;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(type == TYPE_PHOTO_SET ? "photo set" : type == TYPE_GROUP ? "group" : "gallery"); //$NON-NLS-1$//$NON-NLS-2$//$NON-NLS-3$
+		sb.append("\n"); //$NON-NLS-1$
+		sb.append("title: " + title).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		sb.append("photo count: " + photoCount); //$NON-NLS-1$
+		return sb.toString();
+	}
+
 }
