@@ -7,7 +7,7 @@
         <item
             android:id="@+id/menu_item_add_my_flickr_photo_to_group"
             android:showAsAction="never"
-            android:title="@string/menu_item_add_my_flickr_photo_to_group">
+            android:title="@string/menu_item_org_my_flickr_photo">
         </item>
     </group>
 

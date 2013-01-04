@@ -53,7 +53,7 @@
     <string name="menu_item_ig_follow_user">Follow</string>
     <string name="menu_item_ig_unfollow_user">Unfollow</string>
     <string name="menu_item_owner_photos">Owner Photos</string>
-    <string name="menu_item_add_my_flickr_photo_to_group">Add to Flickr Set/Group</string>
+    <string name="menu_item_org_my_flickr_photo">Flickr: Organize Photo</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
@@ -148,5 +148,11 @@
     <string name="unlicensed_dialog_body">This application is NOT licensed. Please purchase it from the Google Play Store.</string>
     <string name="buy_button">Purchase</string>
     <string name="quit_button">Exit</string>
+    
+    <!-- organize my flickr photo -->
+    <string name="flickr_photo_perm_private">Private</string>
+    <string name="flickr_photo_perm_friend">Friend</string>
+    <string name="flickr_photo_perm_family">Family</string>
+    <string name="flickr_photo_perm_public">Public</string>
 	
 </resources>

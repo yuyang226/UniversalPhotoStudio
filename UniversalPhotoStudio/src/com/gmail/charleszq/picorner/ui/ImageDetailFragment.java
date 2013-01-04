@@ -32,10 +32,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ShareCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -62,7 +59,7 @@ import com.gmail.charleszq.picorner.task.flickr.CheckUserLikePhotoTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
-import com.gmail.charleszq.picorner.ui.flickr.AddPhotoToGroupDialog;
+import com.gmail.charleszq.picorner.ui.flickr.OrganizeMyFlickrPhotoActivity;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ImageUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -360,7 +357,7 @@ public class ImageDetailFragment extends Fragment implements
 		inflater.inflate(R.menu.menu_photo_detail, menu);
 
 		// the menu item to add my flickr photo to set/group
-		inflater.inflate(R.menu.flickr_add_my_photo_to_group, menu);
+		inflater.inflate(R.menu.flickr_org_my_photo, menu);
 
 		// MenuItem actionItem = menu
 		// .findItem(R.id.menu_item_share_action_provider_action_bar);
@@ -466,7 +463,7 @@ public class ImageDetailFragment extends Fragment implements
 
 		switch (item.getItemId()) {
 		case R.id.menu_item_add_my_flickr_photo_to_group:
-			addMyFlickrPhotoToSetGroup();
+			organizeFlickrPhoto();
 			return true;
 		case android.R.id.home:
 			getActivity().finish();
@@ -520,16 +517,12 @@ public class ImageDetailFragment extends Fragment implements
 		return super.onOptionsItemSelected(item);
 	}
 
-	private void addMyFlickrPhotoToSetGroup() {
-		FragmentManager fm = this.getFragmentManager();
-		FragmentTransaction ft = fm.beginTransaction();
-		Fragment frg = fm.findFragmentByTag(AddPhotoToGroupDialog.DLG_TAG);
-		if (frg != null) {
-			ft.remove(frg);
-		}
-		ft.addToBackStack(null);
-		DialogFragment dialog = AddPhotoToGroupDialog.newInstance(mPhoto);
-		dialog.show(ft, AddPhotoToGroupDialog.DLG_TAG);
+	/**
+	 * shows the UI to organize my flickr photo. mainly change permission, and add to set/groups
+	 */
+	private void organizeFlickrPhoto() {
+		Intent i = new Intent(getActivity(), OrganizeMyFlickrPhotoActivity.class);
+		getActivity().startActivity(i);
 	}
 
 	private void sharePhoto() {
