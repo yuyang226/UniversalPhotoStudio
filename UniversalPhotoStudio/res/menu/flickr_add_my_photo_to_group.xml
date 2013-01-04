@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/menu_item_add_my_flickr_photo_to_group" android:title="@string/menu_item_add_my_flickr_photo_to_group" android:showAsAction="never"></item>
-    
+
+    <group
+        android:id="@+id/menu_group_photo_detail_flickr"
+        android:checkableBehavior="none" >
+        <item
+            android:id="@+id/menu_item_add_my_flickr_photo_to_group"
+            android:showAsAction="never"
+            android:title="@string/menu_item_add_my_flickr_photo_to_group">
+        </item>
+    </group>
 
 </menu>

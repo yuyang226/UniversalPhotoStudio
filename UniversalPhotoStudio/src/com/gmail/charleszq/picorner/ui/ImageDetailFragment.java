@@ -80,6 +80,8 @@ public class ImageDetailFragment extends Fragment implements
 	private static final String IMAGE_DATA_EXTRA = "extra_image_data"; //$NON-NLS-1$
 	private static final String MEDIA_OBJ_POS = "media_object"; //$NON-NLS-1$
 	private static final String TAG = ImageDetailFragment.class.getSimpleName();
+
+	// ui controls.
 	private String mImageUrl;
 	private MediaObject mPhoto;
 	private ImageView mImageView;
@@ -104,9 +106,19 @@ public class ImageDetailFragment extends Fragment implements
 	private Bitmap mLoadedBitmap = null;
 
 	/**
-	 * 
+	 * The current file name to store image so the share action can get the
+	 * image from it.
 	 */
 	private String mCurrentShareIntentFileName = null;
+
+	/**
+	 * the image detail fragment keeps this to know from which photo grid this
+	 * fragment was brought up, so later, when user click the menu item 'see
+	 * owner's all photos', if this fragment just came from the user's photo
+	 * grid, then we will just finish this activity, otherwise, start a new
+	 * activity to show user's photos.
+	 */
+	private Author mAuthorFromPhotoGrid = null;
 
 	/**
 	 * The image laoder listener.
@@ -157,13 +169,14 @@ public class ImageDetailFragment extends Fragment implements
 	 * @return A new instance of ImageDetailFragment with imageNum extras
 	 */
 	public static ImageDetailFragment newInstance(String imageUrl,
-			IPhotosProvider dp, int pos) {
+			IPhotosProvider dp, int pos, Author author) {
 		final ImageDetailFragment f = new ImageDetailFragment();
 
 		final Bundle args = new Bundle();
 		args.putString(IMAGE_DATA_EXTRA, imageUrl);
 		args.putInt(MEDIA_OBJ_POS, pos);
 		args.putSerializable(ImageDetailActivity.DP_KEY, dp);
+		args.putSerializable(ImageDetailActivity.AUTHOR_KEY, author);
 		f.setArguments(args);
 
 		return f;
@@ -202,6 +215,8 @@ public class ImageDetailFragment extends Fragment implements
 				.getInt(MEDIA_OBJ_POS) : -1);
 		IPhotosProvider dp = (IPhotosProvider) (getArguments() != null ? getArguments()
 				.getSerializable(ImageDetailActivity.DP_KEY) : null);
+		mAuthorFromPhotoGrid = (Author) (getArguments() != null ? getArguments()
+				.getSerializable(ImageDetailActivity.AUTHOR_KEY) : null);
 		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		mPhoto = dp.getMediaObject(pos);
@@ -433,12 +448,19 @@ public class ImageDetailFragment extends Fragment implements
 			likeItem.setIcon(R.drawable.ic_menu_star);
 		}
 
-		MenuItem addToSetGroupItem = menu
-				.findItem(R.id.menu_item_add_my_flickr_photo_to_group);
+		// deal with flickr menu items.
 		if (!MediaSourceType.FLICKR.equals(mPhoto.getMediaSource())) {
-			addToSetGroupItem.setVisible(false);
+			menu.setGroupVisible(R.id.menu_group_photo_detail_flickr, false);
 		} else {
+			MenuItem addToSetGroupItem = menu
+					.findItem(R.id.menu_item_add_my_flickr_photo_to_group);
 			addToSetGroupItem.setVisible(app.isMyOwnPhoto(mPhoto));
+		}
+		
+		//hide 'owner photos' menu item for my own photos
+		MenuItem ownerPhotoItem = menu.findItem(R.id.menu_item_see_owner_photos);
+		if( app.isMyOwnPhoto(mPhoto)) {
+			ownerPhotoItem.setVisible(false);
 		}
 	}
 
@@ -462,6 +484,20 @@ public class ImageDetailFragment extends Fragment implements
 			return true;
 		case R.id.menu_item_share_action_provider_action_bar:
 			sharePhoto();
+			return true;
+		case R.id.menu_item_see_owner_photos:
+			if (mAuthorFromPhotoGrid != null
+					&& mAuthorFromPhotoGrid.getUserId().equals(
+							mPhoto.getAuthor().getUserId())) {
+				getActivity().finish();
+			} else {
+				Intent i = new Intent(getActivity(),
+						UserPhotoListActivity.class);
+				i.putExtra(UserPhotoListActivity.MD_TYPE_KEY, mPhoto
+						.getMediaSource().ordinal());
+				i.putExtra(UserPhotoListActivity.USER_KEY, mPhoto.getAuthor());
+				startActivity(i);
+			}
 			return true;
 		case R.id.menu_item_like:
 			likePhoto();
@@ -589,8 +625,8 @@ public class ImageDetailFragment extends Fragment implements
 	}
 
 	private void saveToClipboard(String s) {
-		ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(
-				Context.CLIPBOARD_SERVICE);
+		ClipboardManager cm = (ClipboardManager) getActivity()
+				.getSystemService(Context.CLIPBOARD_SERVICE);
 		ClipData data = ClipData.newPlainText(getString(R.string.app_name), s);
 		cm.setPrimaryClip(data);
 	}

@@ -52,7 +52,8 @@
     <string name="menu_item_detail">Details</string>
     <string name="menu_item_ig_follow_user">Follow</string>
     <string name="menu_item_ig_unfollow_user">Unfollow</string>
-    <string name="menu_item_add_my_flickr_photo_to_group">Add to Set/Group</string>
+    <string name="menu_item_owner_photos">Owner Photos</string>
+    <string name="menu_item_add_my_flickr_photo_to_group">Add to Flickr Set/Group</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
