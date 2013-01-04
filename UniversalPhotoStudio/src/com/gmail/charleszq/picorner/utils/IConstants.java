@@ -8,6 +8,8 @@ package com.gmail.charleszq.picorner.utils;
  * 
  */
 public interface IConstants {
+	
+	static final String APP_GL_STORE_URL = "http://goo.gl/eOQW8"; //$NON-NLS-1$
 
 	/**
 	 * For each service call, what's the page size, by default, it's 10 times of

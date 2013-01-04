@@ -24,6 +24,9 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.WallpaperManager;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -502,7 +505,7 @@ public class ImageDetailFragment extends Fragment implements
 		FragmentManager fm = this.getFragmentManager();
 		FragmentTransaction ft = fm.beginTransaction();
 		Fragment frg = fm.findFragmentByTag(AddPhotoToGroupDialog.DLG_TAG);
-		if( frg != null ) {
+		if (frg != null) {
 			ft.remove(frg);
 		}
 		ft.addToBackStack(null);
@@ -575,12 +578,21 @@ public class ImageDetailFragment extends Fragment implements
 		StringBuilder sb = new StringBuilder(mImageUrl);
 		sb.append(" ").append(getString(R.string.share_via)).append(" "); //$NON-NLS-1$//$NON-NLS-2$
 		sb.append(getString(R.string.app_name));
+		sb.append(" ").append(IConstants.APP_GL_STORE_URL); //$NON-NLS-1$
+		saveToClipboard(sb.toString());
 
 		Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
 				.setText(sb.toString()).setType("image/*").setStream(uri) //$NON-NLS-1$
 				.getIntent();
 		shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 		return shareIntent;
+	}
+
+	private void saveToClipboard(String s) {
+		ClipboardManager cm = (ClipboardManager) getActivity().getSystemService(
+				Context.CLIPBOARD_SERVICE);
+		ClipData data = ClipData.newPlainText(getString(R.string.app_name), s);
+		cm.setPrimaryClip(data);
 	}
 
 	@Override
