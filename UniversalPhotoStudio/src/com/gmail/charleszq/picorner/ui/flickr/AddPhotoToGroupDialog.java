@@ -68,7 +68,7 @@ public class AddPhotoToGroupDialog extends DialogFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		getDialog().setTitle(R.string.menu_item_add_my_flickr_photo_to_group);
-		View v = inflater.inflate(R.layout.add_my_flickr_photo_to_group, null);
+		View v = inflater.inflate(R.layout.add_my_flickr_photo_to_group, container, false);
 		mListView = (ListView) v.findViewById(R.id.list_photo_add_to_group);
 		mAdapter = new PhotoSetGroupAdapter(getActivity(), mImageLoader);
 		List<ICommand<?>> commands = new ArrayList<ICommand<?>>();

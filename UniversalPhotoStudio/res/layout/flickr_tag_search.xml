@@ -73,17 +73,22 @@
 
         <Button
             android:id="@+id/btn_cancel_search"
+            style="@style/PicornerButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
             android:text="@android:string/cancel" />
 
         <Button
             android:id="@+id/btn_search"
+            style="@style/PicornerButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_search"
             android:text="@android:string/search_go" />
+
     </LinearLayout>
 
 </com.gmail.charleszq.picorner.ui.helper.FlickrTagSearchView>

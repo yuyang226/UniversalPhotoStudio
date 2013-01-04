@@ -36,4 +36,14 @@
     
     <!-- search panel bg -->
 	<color name="search_panel_bg">#FFFFFF</color>
+	
+	<!-- Button colors -->
+	<!-- enable button -->
+	<color name="button_center_color">#FF6418</color>
+	<color name="button_start_color">#FF1111</color>
+	<color name="button_end_color">#FFAAAA</color>
+	<!-- pressed button -->
+	<color name="pressed_button_center_color">#AACCFF</color>
+	<color name="pressed_button_start_color">#AA00CC</color>
+	<color name="pressed_button_end_color">#AA00CC</color>
 </resources>

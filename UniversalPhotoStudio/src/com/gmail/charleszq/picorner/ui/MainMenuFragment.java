@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.jinstagram.auth.model.Token;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -200,14 +201,21 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 						@Override
 						public void onTaskDone(List<Object> result) {
-							FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
-									getActivity());
-							if (result == null) {
-								task.addTaskDoneListener(mPhotoSetsListener);
-							} else {
+
+							if (result != null) {
 								mPhotoSetsListener.onTaskDone(result);
 							}
-							task.execute();
+
+							Activity act = getActivity();
+							//activity might be null due to the configuration change.
+							if (act != null) {
+								FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
+										getActivity());
+								if (result == null) {
+									task.addTaskDoneListener(mPhotoSetsListener);
+								}
+								task.execute();
+							}
 						}
 					});
 			cacheTask.execute();
