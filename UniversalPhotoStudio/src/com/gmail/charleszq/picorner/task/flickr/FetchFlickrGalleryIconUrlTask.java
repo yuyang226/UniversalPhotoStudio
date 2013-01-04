@@ -5,6 +5,7 @@ package com.gmail.charleszq.picorner.task.flickr;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -50,7 +51,7 @@ public class FetchFlickrGalleryIconUrlTask extends AbstractFetchIconUrlTask {
 			Photo photo = psi.getInfo(primaryPhotoId, app.getFlickrTokenSecret());
 			result = photo.getSmallSquareUrl();
 		} catch (Exception e) {
-			logger.debug(e.getMessage());
+			Log.w(TAG, e.getMessage());
 		}
 		return result;
 	}

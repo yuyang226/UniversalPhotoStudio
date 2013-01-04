@@ -3,9 +3,6 @@
  */
 package com.gmail.charleszq.picorner.task;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -27,7 +24,10 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 public abstract class AbstractFetchIconUrlTask extends
 		AsyncTask<Object, Integer, String> {
 
-	protected final Logger logger = LoggerFactory.getLogger(getClass());
+	/**
+	 * The log tag.
+	 */
+	protected String TAG = getClass().getSimpleName();
 
 	/**
 	 * Should be an activity, so we can get access to Application.
@@ -43,7 +43,6 @@ public abstract class AbstractFetchIconUrlTask extends
 	@Override
 	protected void onPostExecute(String result) {
 		if (result != null) {
-			logger.debug("Fetching command icon: " + result); //$NON-NLS-1$
 			if (mImageFetcher != null && mImageView != null) {
 				DisplayImageOptions options = new DisplayImageOptions.Builder()
 						.showStubImage(R.drawable.empty_photo).cacheInMemory()

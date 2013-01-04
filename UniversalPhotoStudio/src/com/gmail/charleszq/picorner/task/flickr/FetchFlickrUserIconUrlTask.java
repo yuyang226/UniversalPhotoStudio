@@ -40,9 +40,8 @@ public class FetchFlickrUserIconUrlTask extends AbstractFetchIconUrlTask {
 		try {
 			User u = pi.getInfo(mUserId);
 			if( u != null ) {
-				logger.debug( "flickr user buddy icon url: " + u.getBuddyIconUrl()); //$NON-NLS-1$
+				return u.getBuddyIconUrl();
 			}
-			return u.getBuddyIconUrl();
 		} catch (Exception e) {
 			
 		}

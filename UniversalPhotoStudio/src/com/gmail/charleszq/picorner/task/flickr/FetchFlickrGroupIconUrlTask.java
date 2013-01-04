@@ -30,7 +30,6 @@ public class FetchFlickrGroupIconUrlTask extends AbstractFetchIconUrlTask {
 	@Override
 	protected String doInBackground(Object... params) {
 		beforeExecute(params);
-		logger.debug("Group buddy icon: " + mPhotoGroup.getBuddyIconUrl()); //$NON-NLS-1$
 		return mPhotoGroup.getBuddyIconUrl();
 	}
 
