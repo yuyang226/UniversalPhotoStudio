@@ -32,7 +32,6 @@ import android.view.WindowManager.LayoutParams;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
-import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
@@ -43,7 +42,6 @@ public class ImageDetailActivity extends FragmentActivity implements
 		OnClickListener {
 	public static final String LARGE_IMAGE_POSITION = "extra_image"; //$NON-NLS-1$
 	public static final String DP_KEY = "data.provider"; //$NON-NLS-1$
-	public static final String AUTHOR_KEY = "author"; //$NON-NLS-1$
 
 	private ImagePagerAdapter mAdapter;
 	private ImageLoader mImageFetcher;
@@ -53,15 +51,6 @@ public class ImageDetailActivity extends FragmentActivity implements
 
 	IPhotosProvider mPhotosProvider;
 	
-	/**
-	 * The photo grid is responsible to given this activity the current author information;
-	 * the main photo grid will give 'null' here, but the <code>UserPhotoListFragment</code>
-	 * will pass a real author, so the image detail page knows where I come from, so later, when
-	 * user click the menu item 'see all owner's photos', we can choose to finish this activity
-	 * or start a new one.
-	 */
-	private Author mAuthorFromPhotoGrid = null;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -87,9 +76,6 @@ public class ImageDetailActivity extends FragmentActivity implements
 				R.dimen.image_detail_pager_margin));
 		mPager.setOffscreenPageLimit(2);
 		
-		//save the author if any
-		mAuthorFromPhotoGrid = (Author) getIntent().getExtras().getSerializable(AUTHOR_KEY);
-
 		// Set up activity to go full screen
 		getWindow().addFlags(LayoutParams.FLAG_FULLSCREEN);
 
@@ -177,7 +163,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 			MediaObject obj = mProvider.getMediaObject(position);
 			ImageDetailFragment frg = ImageDetailFragment.newInstance(
 					obj.getLargeUrl() == null ? obj.getThumbUrl() : obj
-							.getLargeUrl(), mProvider, position, mAuthorFromPhotoGrid);
+							.getLargeUrl(), mProvider, position);
 			return frg;
 		}
 	}

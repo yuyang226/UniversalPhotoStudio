@@ -116,6 +116,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 		}
 
 		Intent i = new Intent(this, UserPhotoListActivity.class);
+		i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		i.putExtra(UserPhotoListActivity.MD_TYPE_KEY, mCurrentPhoto
 				.getMediaSource().ordinal());
 		i.putExtra(UserPhotoListActivity.USER_KEY, author);

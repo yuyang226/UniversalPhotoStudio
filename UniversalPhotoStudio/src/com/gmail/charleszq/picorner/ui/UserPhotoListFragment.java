@@ -214,7 +214,6 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 		final Intent i = new Intent(getActivity(), ImageDetailActivity.class);
 		i.putExtra(ImageDetailActivity.DP_KEY, mPhotosProvider);
 		i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, position);
-		i.putExtra(ImageDetailActivity.AUTHOR_KEY, mCurrentUser);
 		startActivity(i);
 	}
 

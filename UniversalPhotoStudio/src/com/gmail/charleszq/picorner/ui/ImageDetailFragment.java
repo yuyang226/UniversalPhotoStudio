@@ -112,15 +112,6 @@ public class ImageDetailFragment extends Fragment implements
 	private String mCurrentShareIntentFileName = null;
 
 	/**
-	 * the image detail fragment keeps this to know from which photo grid this
-	 * fragment was brought up, so later, when user click the menu item 'see
-	 * owner's all photos', if this fragment just came from the user's photo
-	 * grid, then we will just finish this activity, otherwise, start a new
-	 * activity to show user's photos.
-	 */
-	private Author mAuthorFromPhotoGrid = null;
-
-	/**
 	 * The image laoder listener.
 	 */
 	private ImageLoadingListener mImageLoaderListener = new ImageLoadingListener() {
@@ -169,14 +160,13 @@ public class ImageDetailFragment extends Fragment implements
 	 * @return A new instance of ImageDetailFragment with imageNum extras
 	 */
 	public static ImageDetailFragment newInstance(String imageUrl,
-			IPhotosProvider dp, int pos, Author author) {
+			IPhotosProvider dp, int pos) {
 		final ImageDetailFragment f = new ImageDetailFragment();
 
 		final Bundle args = new Bundle();
 		args.putString(IMAGE_DATA_EXTRA, imageUrl);
 		args.putInt(MEDIA_OBJ_POS, pos);
 		args.putSerializable(ImageDetailActivity.DP_KEY, dp);
-		args.putSerializable(ImageDetailActivity.AUTHOR_KEY, author);
 		f.setArguments(args);
 
 		return f;
@@ -215,8 +205,6 @@ public class ImageDetailFragment extends Fragment implements
 				.getInt(MEDIA_OBJ_POS) : -1);
 		IPhotosProvider dp = (IPhotosProvider) (getArguments() != null ? getArguments()
 				.getSerializable(ImageDetailActivity.DP_KEY) : null);
-		mAuthorFromPhotoGrid = (Author) (getArguments() != null ? getArguments()
-				.getSerializable(ImageDetailActivity.AUTHOR_KEY) : null);
 		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		mPhoto = dp.getMediaObject(pos);
@@ -456,10 +444,11 @@ public class ImageDetailFragment extends Fragment implements
 					.findItem(R.id.menu_item_add_my_flickr_photo_to_group);
 			addToSetGroupItem.setVisible(app.isMyOwnPhoto(mPhoto));
 		}
-		
-		//hide 'owner photos' menu item for my own photos
-		MenuItem ownerPhotoItem = menu.findItem(R.id.menu_item_see_owner_photos);
-		if( app.isMyOwnPhoto(mPhoto)) {
+
+		// hide 'owner photos' menu item for my own photos
+		MenuItem ownerPhotoItem = menu
+				.findItem(R.id.menu_item_see_owner_photos);
+		if (app.isMyOwnPhoto(mPhoto)) {
 			ownerPhotoItem.setVisible(false);
 		}
 	}
@@ -486,18 +475,12 @@ public class ImageDetailFragment extends Fragment implements
 			sharePhoto();
 			return true;
 		case R.id.menu_item_see_owner_photos:
-			if (mAuthorFromPhotoGrid != null
-					&& mAuthorFromPhotoGrid.getUserId().equals(
-							mPhoto.getAuthor().getUserId())) {
-				getActivity().finish();
-			} else {
-				Intent i = new Intent(getActivity(),
-						UserPhotoListActivity.class);
-				i.putExtra(UserPhotoListActivity.MD_TYPE_KEY, mPhoto
-						.getMediaSource().ordinal());
-				i.putExtra(UserPhotoListActivity.USER_KEY, mPhoto.getAuthor());
-				startActivity(i);
-			}
+			Intent i = new Intent(getActivity(), UserPhotoListActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			i.putExtra(UserPhotoListActivity.MD_TYPE_KEY, mPhoto
+					.getMediaSource().ordinal());
+			i.putExtra(UserPhotoListActivity.USER_KEY, mPhoto.getAuthor());
+			startActivity(i);
 			return true;
 		case R.id.menu_item_like:
 			likePhoto();
@@ -527,11 +510,11 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			return true;
 		case R.id.menu_item_detail:
-			Intent i = new Intent(getActivity(), PhotoDetailActivity.class);
+			Intent detailIntent = new Intent(getActivity(), PhotoDetailActivity.class);
 			IPhotosProvider dp = ((ImageDetailActivity) getActivity()).mPhotosProvider;
-			i.putExtra(ImageDetailActivity.DP_KEY, dp);
-			i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, mCurrentPos);
-			startActivity(i);
+			detailIntent.putExtra(ImageDetailActivity.DP_KEY, dp);
+			detailIntent.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, mCurrentPos);
+			startActivity(detailIntent);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
