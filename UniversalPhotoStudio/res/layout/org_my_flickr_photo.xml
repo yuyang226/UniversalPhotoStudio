@@ -5,7 +5,7 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/imageThumb"
+        android:id="@+id/image_org_my_f_photo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
