@@ -595,7 +595,7 @@ public class ImageDetailFragment extends Fragment implements
 
 		Intent shareIntent = ShareCompat.IntentBuilder.from(getActivity())
 				.setText(sb.toString()).setType("image/*").setStream(uri) //$NON-NLS-1$
-				.getIntent();
+				.createChooserIntent();
 		shareIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
 		return shareIntent;
 	}
