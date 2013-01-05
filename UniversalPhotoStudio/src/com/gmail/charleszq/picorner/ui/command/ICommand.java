@@ -38,9 +38,10 @@ public interface ICommand<T> {
 	 * @return
 	 */
 	String getLabel();
-	
+
 	/**
 	 * Gets the full description of the command.
+	 * 
 	 * @return
 	 */
 	String getDescription();
@@ -48,11 +49,15 @@ public interface ICommand<T> {
 	/**
 	 * <ul>
 	 * <li>IPhotoService.class, return a service to return photos;</li>
-	 * <li>Integer.class, return the page size, default to that defined in {@link IConstants};</li>
-	 * <li>AbstractFetchIconUrlTask.class, return the task to get the url of this command.</li>
-	 * <li>Boolean.class, return <code>false</code> to say don't show navigation menu items;</li>
+	 * <li>Integer.class, return the page size, default to that defined in
+	 * {@link IConstants};</li>
+	 * <li>AbstractFetchIconUrlTask.class, return the task to get the url of
+	 * this command.</li>
 	 * <li>Context.class, return <code>mContext</code>.
+	 * <li>Comparator.class, return the real comparator, which will be used in
+	 * photo grid page to check the command is the same as previous one.
 	 * </ul>
+	 * 
 	 * @param adapterClass
 	 * @return
 	 */
@@ -74,14 +79,15 @@ public interface ICommand<T> {
 	 * Cancels the execution of this command.
 	 */
 	void cancel();
-	
+
 	/**
 	 * 
 	 * @param ctx
 	 */
 	void attacheContext(Context ctx);
-	
+
 	void setCommandCategory(String category);
+
 	String getCommandCategory();
 
 }

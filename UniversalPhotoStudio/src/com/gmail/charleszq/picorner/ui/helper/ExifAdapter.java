@@ -54,7 +54,7 @@ public class ExifAdapter extends BaseAdapter {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View v = LayoutInflater.from(mContext).inflate(
-				R.layout.flikckr_exif_list_item, null);
+				R.layout.flickr_exif_list_item, null);
 		ExifData exif = (ExifData) getItem(position);
 		TextView label = (TextView) v.findViewById(R.id.exif_label);
 		TextView value = (TextView) v.findViewById(R.id.exif_value);

@@ -6,13 +6,15 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoSetPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrPhotosetIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.googlecode.flickrjandroid.photos.PhotoPlace;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 
 /**
@@ -58,6 +60,9 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 						app.getFlickrTokenSecret(), mPhotoSet);
 			}
 			return mCurrentPhotoService;
+		}
+		if( adapterClass == FlickrUserPhotoPool.class ) {
+			return PhotoPlace.SET + mPhotoSet.getId();
 		}
 		return super.getAdapter(adapterClass);
 	}

@@ -522,6 +522,7 @@ public class ImageDetailFragment extends Fragment implements
 	 */
 	private void organizeFlickrPhoto() {
 		Intent i = new Intent(getActivity(), OrganizeMyFlickrPhotoActivity.class);
+		i.putExtra(OrganizeMyFlickrPhotoActivity.PHOTO_ID_KEY, mPhoto.getId());
 		getActivity().startActivity(i);
 	}
 

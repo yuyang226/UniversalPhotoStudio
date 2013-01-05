@@ -12,7 +12,7 @@
         android:layout_height="30dp"
         android:layout_gravity="left|center_vertical"
         android:background="@color/photo_detail_vp_indicator_bg"
-        android:gravity="left|center"
+        android:gravity="center"
         android:text="@string/msg_flickr_tag_search_label"
         android:textColor="@color/search_panel_bg" />
 

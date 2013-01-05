@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:orientation="horizontal"
+    android:padding="5dp" >
+
+    <ImageView
+        android:id="@+id/photo_pool_icon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/empty_photo"
+        android:layout_gravity="left|center"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerInside" />
+
+    <CheckedTextView
+        android:id="@android:id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center"
+        android:checkMark="?android:attr/listChoiceIndicatorMultiple"
+        android:gravity="center_vertical"
+        android:paddingLeft="6dip"
+        android:paddingRight="6dip"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+</LinearLayout>

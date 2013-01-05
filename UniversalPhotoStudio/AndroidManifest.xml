@@ -84,7 +84,7 @@
         </activity>
         <activity android:name="com.gmail.charleszq.picorner.ui.AboutActivity" >
         </activity>
-        <activity android:name=".ui.flickr.OrganizeMyFlickrPhotoActivity"></activity>
+        <activity android:name=".ui.flickr.OrganizeMyFlickrPhotoActivity" android:label="@string/msg_org_flickr_photo_title"></activity>
     </application>
 
 </manifest>

@@ -4,7 +4,6 @@
 package com.gmail.charleszq.picorner.ui;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.jinstagram.auth.model.Token;
@@ -80,10 +79,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	private CommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
 
-	private IGeneralTaskDoneListener<Collection<?>> mPhotoSetsListener = new IGeneralTaskDoneListener<Collection<?>>() {
+	private IGeneralTaskDoneListener<List<Object>> mPhotoSetsListener = new IGeneralTaskDoneListener<List<Object>>() {
 
 		@Override
-		public void onTaskDone(Collection<?> result) {
+		public void onTaskDone(List<Object> result) {
 			populatePhotoSetMenuItems(result);
 
 		}
@@ -228,7 +227,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	 * 
 	 * @param list
 	 */
-	private void populatePhotoSetMenuItems(Collection<?> list) {
+	private void populatePhotoSetMenuItems(List<Object> list) {
 
 		if (!this.isVisible())
 			return;

@@ -43,8 +43,8 @@ public class CommandSectionListAdapter extends BaseAdapter {
 	 */
 	List<ICommand<?>> mAllCommands;
 
-	private Context mContext;
-	private ImageLoader mImageFetcher;
+	protected Context mContext;
+	protected ImageLoader mImageFetcher;
 
 	/**
 	 * Constructor.

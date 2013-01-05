@@ -13,47 +13,25 @@
         android:scaleType="centerCrop"
         android:src="@drawable/empty_photo" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <RadioButton
-            android:id="@+id/radio_f_perm_private"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/flickr_photo_perm_private" />
-
-        <RadioButton
-            android:id="@+id/radio_f_perm_friend"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/flickr_photo_perm_friend" />
-
-        <RadioButton
-            android:id="@+id/radio_f_perm_family"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/flickr_photo_perm_family" />
-        <RadioButton
-            android:id="@+id/radio_f_perm_public"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="@string/flickr_photo_perm_public" />
-    </RadioGroup>
-
-    <ListView
-        android:id="@+id/listView1"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2" >
-    </ListView>
+
+        <ProgressBar
+            android:id="@+id/pb_org_flickr_photo"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
+        <ListView
+            android:id="@+id/list_org_flickr_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" >
+        </ListView>
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -76,7 +54,6 @@
             android:layout_weight="1"
             android:drawableLeft="@android:drawable/ic_menu_save"
             android:text="@android:string/ok" />
-
     </LinearLayout>
 
 </LinearLayout>

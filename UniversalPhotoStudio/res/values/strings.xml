@@ -83,6 +83,7 @@
 	
 	<string name="pls_sing_in_first">Please sign in first.</string>
 	
+	<!--  general messages  -->
 	<string name="msg_pls_turn_on_location">Please turn on your network location setting.</string>
 	<string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
 	<string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
@@ -150,9 +151,14 @@
     <string name="quit_button">Exit</string>
     
     <!-- organize my flickr photo -->
-    <string name="flickr_photo_perm_private">Private</string>
-    <string name="flickr_photo_perm_friend">Friend</string>
-    <string name="flickr_photo_perm_family">Family</string>
-    <string name="flickr_photo_perm_public">Public</string>
+    <string name="flickr_photo_perm_private">Only You</string>
+    <string name="flickr_photo_perm_friend">Your friends</string>
+    <string name="flickr_photo_perm_family">Your family</string>
+    <string name="flickr_photo_perm_public">Anyone</string>
+    <string name="flickr_photo_perm_title">Who can see this photo:</string>
+    <string name="msg_flickr_photo_perm_hint">Note: Changing from public to private will remove all favorites.</string>
+    
+    <!-- organize flickr photo -->
+    <string name="msg_org_flickr_photo_title">Organize Set/Group</string>
 	
 </resources>

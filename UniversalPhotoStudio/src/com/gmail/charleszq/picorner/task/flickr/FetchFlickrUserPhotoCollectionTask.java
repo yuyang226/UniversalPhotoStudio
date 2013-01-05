@@ -34,7 +34,7 @@ import com.googlecode.flickrjandroid.photosets.PhotosetsInterface;
  * 
  */
 public class FetchFlickrUserPhotoCollectionTask extends
-		AbstractGeneralTask<Void, Integer, Collection<?>> {
+		AbstractGeneralTask<Void, Integer, List<Object>> {
 
 	/**
 	 * The activity
@@ -52,7 +52,7 @@ public class FetchFlickrUserPhotoCollectionTask extends
 	}
 
 	@Override
-	protected Collection<?> doInBackground(Void... params) {
+	protected List<Object> doInBackground(Void... params) {
 		List<Object> photosets = new ArrayList<Object>();
 
 		PhotosetsInterface psi = FlickrHelper.getInstance()

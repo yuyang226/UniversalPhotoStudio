@@ -6,14 +6,16 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoGroupPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrGroupIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.googlecode.flickrjandroid.groups.Group;
+import com.googlecode.flickrjandroid.photos.PhotoPlace;
 
 /**
  * @author Charles(charleszq@gmail.com)
@@ -55,6 +57,9 @@ public class FlickrUserGroupCommand extends PhotoListCommand {
 						app.getFlickrTokenSecret(), mGroup.getId());
 			}
 			return mCurrentPhotoService;
+		}
+		if( adapterClass == FlickrUserPhotoPool.class ) {
+			return PhotoPlace.POOL + mGroup.getId();
 		}
 		return super.getAdapter(adapterClass);
 	}

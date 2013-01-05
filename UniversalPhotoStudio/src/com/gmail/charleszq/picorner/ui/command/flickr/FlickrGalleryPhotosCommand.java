@@ -8,6 +8,7 @@ import android.content.Context;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrGalleryPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -62,6 +63,9 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 		}
 		if (adapterClass == AbstractFetchIconUrlTask.class) {
 			return new FetchFlickrGalleryIconUrlTask(mContext, mGallery);
+		}
+		if( adapterClass == FlickrUserPhotoPool.class ) {
+			return mGallery.getGalleryId();
 		}
 		return super.getAdapter(adapterClass);
 	}
