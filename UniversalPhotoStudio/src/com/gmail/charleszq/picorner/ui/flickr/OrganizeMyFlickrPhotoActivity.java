@@ -241,6 +241,7 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 				onPoolsFetched(result);
 			}
 		});
+		task.execute();
 	}
 
 	private void loadImage() {
