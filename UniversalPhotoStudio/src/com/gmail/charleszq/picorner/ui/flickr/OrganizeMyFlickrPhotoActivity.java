@@ -39,6 +39,7 @@ import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrPhotoContextTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
+import com.gmail.charleszq.picorner.task.flickr.FlickrOrganizePhotoTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserGroupCommand;
@@ -55,7 +56,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
  * @author charleszq
  * 
  */
-public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements OnItemClickListener {
+public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
+		OnItemClickListener {
 
 	public static final String PHOTO_ID_KEY = "photo.id.key"; //$NON-NLS-1$
 
@@ -121,7 +123,7 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements O
 		mListView = (ListView) findViewById(R.id.list_org_flickr_photo);
 		mAdapter = new OrganizeAdapter(this, ImageLoader.getInstance());
 		mListView.setAdapter(mAdapter);
-		mListView.setOnItemClickListener( this );
+		mListView.setOnItemClickListener(this);
 
 		// the progress bar
 		mProgressBar = (ProgressBar) findViewById(R.id.pb_org_flickr_photo);
@@ -275,7 +277,30 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements O
 	 * Does the actual action to manage the photo's sets and groups.
 	 */
 	private void performOk() {
+		Set<String> add = new HashSet<String>();
+		Set<String> remove = new HashSet<String>();
 
+		for (String s : mUpdatePhotoContext) {
+			if (!mCurrentPhotoContext.contains(s)) {
+				add.add(s);
+			}
+		}
+
+		for (String ss : mCurrentPhotoContext) {
+			if (!mUpdatePhotoContext.contains(ss)) {
+				remove.add(ss);
+			}
+		}
+		FlickrOrganizePhotoTask task = new FlickrOrganizePhotoTask(this, add,
+				remove);
+		task.addTaskDoneListener(new IGeneralTaskDoneListener<Integer>() {
+
+			@Override
+			public void onTaskDone(Integer result) {
+				OrganizeMyFlickrPhotoActivity.this.finish();
+			}
+		});
+		task.execute(this.mPhotoId);
 	}
 
 	private static class OrganizeAdapter extends CommandSectionListAdapter {
@@ -289,9 +314,13 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements O
 		void setCurrentPhotoContext(Set<String> set) {
 			mCurrentPhotoContext = set;
 		}
-		
-		/* (non-Javadoc)
-		 * @see com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter#isEnabled(int)
+
+		/*
+		 * (non-Javadoc)
+		 * 
+		 * @see
+		 * com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter#
+		 * isEnabled(int)
 		 */
 		@Override
 		public boolean isEnabled(int position) {
@@ -353,24 +382,25 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements O
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parentView, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> parentView, View view, int position,
+			long id) {
 		ICommand<?> cmd = (ICommand<?>) mAdapter.getItem(position);
-		if( cmd ==  null ) {
+		if (cmd == null) {
 			return;
 		}
-		
+
 		String poolid = cmd.getAdapter(FlickrUserPhotoPool.class).toString();
-		if( poolid == null ) {
+		if (poolid == null) {
 			return;
 		}
-		
-		if( mUpdatePhotoContext.contains( poolid ) ) {
+
+		if (mUpdatePhotoContext.contains(poolid)) {
 			mUpdatePhotoContext.remove(poolid);
 		} else {
 			mUpdatePhotoContext.add(poolid);
 		}
 		mAdapter.notifyDataSetChanged();
-		
+
 	}
 
 }

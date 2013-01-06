@@ -53,7 +53,7 @@
     <string name="menu_item_ig_follow_user">Follow</string>
     <string name="menu_item_ig_unfollow_user">Unfollow</string>
     <string name="menu_item_owner_photos">Owner Photos</string>
-    <string name="menu_item_org_my_flickr_photo">Flickr: Organize Photo</string>
+    <string name="menu_item_org_my_flickr_photo">Organize</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
@@ -89,12 +89,13 @@
 	<string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
 	<string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
 	<string name="msg_not_support_yet">Not supported yet.</string>
-	<string name="msg_by_author_name">By</string>
+	<string name="msg_by_author_name">by</string>
 	<string name="msg_your_own_photo">This is you.</string>
 	<string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
 	<string name="msg_no_photo_returned">Ooops, no photo returned for \'%s\'</string>
 	<string name="msg_photo_saved_locally">Photo saved as \'%s\'</string>
 	<string name="msg_photo_save_exists">Photo already saved.</string>
+	<string name="msg_photo">photo</string>
 	
 	<!--  flickr tag search -->
 	<string name="msg_flickr_tag_search_label">Flickr tag search</string>
@@ -160,5 +161,8 @@
     
     <!-- organize flickr photo -->
     <string name="msg_org_flickr_photo_title">Organize Set/Group</string>
-	
+    <string name="msg_org_my_f_photo_progress" tools:ignore="TypographyEllipsis">Organizing my photo...</string>
+    <string name="msg_org_my_f_photo_done">Photo organized.</string>
+    <string name="msg_org_my_f_photo_fail">Failed to organize photo.</string>
+	<string name="msg_org_my_f_photo_partail_success">Photo organized with errors.</string>
 </resources>

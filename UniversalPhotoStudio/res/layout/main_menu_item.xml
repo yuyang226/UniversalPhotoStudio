@@ -10,7 +10,7 @@
         android:layout_alignParentLeft="true"
         android:contentDescription="@string/app_name"
         android:paddingLeft="5dp"
-        android:scaleType="centerCrop" />
+        android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/nav_item_title"

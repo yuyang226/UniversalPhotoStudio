@@ -12,7 +12,7 @@
         android:src="@drawable/empty_photo"
         android:layout_gravity="left|center"
         android:contentDescription="@string/app_name"
-        android:scaleType="centerInside" />
+        android:scaleType="fitCenter" />
 
     <CheckedTextView
         android:id="@android:id/text1"

@@ -1,0 +1,9 @@
+What's new (2013-01-06)
+
+1, simplify the share process;
+2, cache flickr user pool information( sets, groups and galleries );
+3, access owner photos from image detail page;
+4, organize my own flickr photos from image detai page;
+5, indicate photo source in image detail page;
+6, change the main menu image scale type;
+7, change the button style

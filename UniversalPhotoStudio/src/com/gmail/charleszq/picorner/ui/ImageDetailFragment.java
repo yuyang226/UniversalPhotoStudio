@@ -205,6 +205,7 @@ public class ImageDetailFragment extends Fragment implements
 		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		mPhoto = dp.getMediaObject(pos);
+		
 		setHasOptionsMenu(true);
 		checkUserLikeOrNot();
 		act.addActionBarListener(mActionBarListener);
@@ -238,6 +239,30 @@ public class ImageDetailFragment extends Fragment implements
 		}
 
 		return v;
+	}
+
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onStart()
+	 */
+	@Override
+	public void onStart() {
+		super.onStart();
+		Activity act = getActivity();
+		//set the actionbar title.
+		StringBuilder sb = new StringBuilder();
+		switch( mPhoto.getMediaSource() ) {
+		case FLICKR:
+			sb.append( getString(R.string.menu_header_flickr));
+			break;
+		case INSTAGRAM:
+			sb.append( getString(R.string.menu_header_ig));
+			break;
+		case PX500:
+			sb.append( getString(R.string.menu_header_px500));
+			break;
+		}
+		sb.append( " ").append( getString(R.string.msg_photo)); //$NON-NLS-1$
+		act.getActionBar().setTitle(sb.toString());
 	}
 
 	private boolean likePhoto() {
