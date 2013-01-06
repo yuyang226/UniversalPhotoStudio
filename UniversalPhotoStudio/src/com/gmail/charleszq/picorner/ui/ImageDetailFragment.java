@@ -262,7 +262,7 @@ public class ImageDetailFragment extends Fragment implements
 			break;
 		}
 		sb.append( " ").append( getString(R.string.msg_photo)); //$NON-NLS-1$
-		act.getActionBar().setTitle(sb.toString());
+		act.getActionBar().setSubtitle(sb.toString().toLowerCase());
 	}
 
 	private boolean likePhoto() {

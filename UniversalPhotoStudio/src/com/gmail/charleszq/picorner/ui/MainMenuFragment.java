@@ -27,9 +27,11 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.github.yuyang226.j500px.J500px;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
+import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
@@ -53,9 +55,11 @@ import com.gmail.charleszq.picorner.ui.command.ig.InstagramLoginCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramMyFeedsCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramPopularsCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramUserPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.Px500MyPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxEditorsPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxFreshTodayPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxPopularPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.PxSignInCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxUpcomingPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
@@ -172,6 +176,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 					mProgressDialog.setCancelable(true);
 				}
 				if (!(command instanceof FlickrLoginCommand)
+						&& !(command instanceof PxSignInCommand)
 						&& !CommandType.MENU_HEADER_CMD.equals(command
 								.getCommandType())) {
 					MainSlideMenuActivity act = (MainSlideMenuActivity) MainMenuFragment.this
@@ -206,7 +211,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 							}
 
 							Activity act = getActivity();
-							//activity might be null due to the configuration change.
+							// activity might be null due to the configuration
+							// change.
 							if (act != null) {
 								FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
 										getActivity());
@@ -296,7 +302,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	private boolean isUserAuthedPx500() {
 		PicornerApplication app = (PicornerApplication) this.getActivity()
 				.getApplication();
-		return app.getPx500UserId() != null;
+		return app.getPx500OauthToken() != null;
 	}
 
 	private boolean isUserAuthedInstagram() {
@@ -358,9 +364,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		commands.add(command);
 
 		if (!isUserAuthedPx500()) {
-			// command = new PxSignInCommand(getActivity());
-			// command.setCommandCategory(headerName);
-			// commands.add(command);
+//			command = new PxSignInCommand(getActivity());
+//			command.setCommandCategory(headerName);
+//			commands.add(command);
 		}
 
 		command = new PxPopularPhotosCommand(getActivity());
@@ -378,6 +384,12 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		command = new PxFreshTodayPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
+		
+		if( isUserAuthedPx500() ) {
+			command = new Px500MyPhotosCommand(getActivity());
+			command.setCommandCategory(headerName);
+			commands.add(command);
+		}
 		return commands;
 	}
 
@@ -445,9 +457,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				String oauthVerifier = data[1]
 						.substring(data[1].indexOf("=") + 1); //$NON-NLS-1$
 
-				String secret = getTokenSecret();
+				String secret = getTokenSecret(MediaSourceType.FLICKR);
 				if (secret != null) {
-					GetOAuthTokenTask task = new GetOAuthTokenTask(this);
+					GetOAuthTokenTask task = new GetOAuthTokenTask(this,
+							MediaSourceType.FLICKR);
 					task.execute(oauthToken, secret, oauthVerifier);
 				}
 			}
@@ -462,6 +475,20 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 	private void px500Auth(Uri pxUri) {
 		// TODO 500px oauth
+		Log.d(TAG, pxUri.toString());
+		String query = pxUri.getQuery();
+		String[] data = query.split("&"); //$NON-NLS-1$
+		if (data != null && data.length == 2) {
+			String oauthToken = data[0].substring(data[0].indexOf("=") + 1); //$NON-NLS-1$
+			String oauthVerifier = data[1].substring(data[1].indexOf("=") + 1); //$NON-NLS-1$
+
+			String secret = getTokenSecret(MediaSourceType.PX500);
+			if (secret != null) {
+				GetOAuthTokenTask task = new GetOAuthTokenTask(this,
+						MediaSourceType.PX500);
+				task.execute(oauthToken, secret, oauthVerifier);
+			}
+		}
 	}
 
 	/**
@@ -511,65 +538,93 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	 * 
 	 */
 	private static class GetOAuthTokenTask extends
-			AsyncTask<String, Integer, OAuth> {
+			AsyncTask<String, Integer, Object> {
 
 		private MainMenuFragment mAuthDialog;
+		private MediaSourceType mMediaSourceType;
 
-		GetOAuthTokenTask(MainMenuFragment context) {
+		GetOAuthTokenTask(MainMenuFragment context, MediaSourceType type) {
 			this.mAuthDialog = context;
+			this.mMediaSourceType = type;
 		}
 
 		@Override
-		protected OAuth doInBackground(String... params) {
+		protected Object doInBackground(String... params) {
 			String oauthToken = params[0];
 			String oauthTokenSecret = params[1];
 			String verifier = params[2];
 
-			Flickr f = FlickrHelper.getInstance().getFlickr();
-			OAuthInterface oauthApi = f.getOAuthInterface();
-			try {
-				return oauthApi.getAccessToken(oauthToken, oauthTokenSecret,
-						verifier);
-			} catch (Exception e) {
-				return null;
+			if (mMediaSourceType == MediaSourceType.FLICKR) {
+				Flickr f = FlickrHelper.getInstance().getFlickr();
+				OAuthInterface oauthApi = f.getOAuthInterface();
+				try {
+					return oauthApi.getAccessToken(oauthToken,
+							oauthTokenSecret, verifier);
+				} catch (Exception e) {
+					return null;
+				}
+			} else if (mMediaSourceType == MediaSourceType.PX500) {
+				try {
+					J500px px = new J500px(IConstants.PX500_CONSUMER_KEY,
+							IConstants.PX500_CONSUMER_SECRET);
+					return px.getOAuthInterface().getAccessToken(oauthToken,
+							oauthTokenSecret, verifier);
+				} catch (Exception e) {
+				}
 			}
 
+			return null;
 		}
 
 		@Override
-		protected void onPostExecute(OAuth result) {
+		protected void onPostExecute(Object result) {
 			if (mAuthDialog != null) {
-				mAuthDialog.onOAuthDone(result);
+				mAuthDialog.onOAuthDone(result, mMediaSourceType);
 			}
 		}
 	}
 
-	private String getTokenSecret() {
+	private String getTokenSecret(MediaSourceType type) {
 		PicornerApplication app = (PicornerApplication) getActivity()
 				.getApplication();
-		return app.getFlickrTokenSecret();
+		switch (type) {
+		case FLICKR:
+			return app.getFlickrTokenSecret();
+		case PX500:
+			return app.getPx500TokenSecret();
+		default:
+			return null; // not support
+		}
 	}
 
-	void onOAuthDone(OAuth result) {
+	void onOAuthDone(Object result, MediaSourceType type) {
 
 		if (result == null) {
 			Toast.makeText(getActivity(),
 					getActivity().getString(R.string.fail_to_oauth),
 					Toast.LENGTH_LONG).show();
 		} else {
-			User user = result.getUser();
-			OAuthToken token = result.getToken();
-			if (user == null || user.getId() == null || token == null
-					|| token.getOauthToken() == null
-					|| token.getOauthTokenSecret() == null) {
-				Toast.makeText(getActivity(),
-						getActivity().getString(R.string.fail_to_oauth),
-						Toast.LENGTH_LONG).show();
-				return;
-			}
 			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();
-			app.saveFlickrAuthToken(result);
+			if (type == MediaSourceType.FLICKR) {
+				OAuth oauth = (OAuth) result;
+				User user = oauth.getUser();
+				OAuthToken token = oauth.getToken();
+				if (user == null || user.getId() == null || token == null
+						|| token.getOauthToken() == null
+						|| token.getOauthTokenSecret() == null) {
+					Toast.makeText(getActivity(),
+							getActivity().getString(R.string.fail_to_oauth),
+							Toast.LENGTH_LONG).show();
+					return;
+				}
+				app.saveFlickrAuthToken(oauth);
+			}
+			else if( type == MediaSourceType.PX500 ) {
+				com.github.yuyang226.j500px.oauth.OAuth pxoauth = (com.github.yuyang226.j500px.oauth.OAuth) result;
+				com.github.yuyang226.j500px.oauth.OAuthToken token = pxoauth.getToken();
+				app.savePxAuthToken(token);
+			}
 
 			prepareSections();
 		}

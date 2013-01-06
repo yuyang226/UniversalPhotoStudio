@@ -5,9 +5,6 @@ package com.gmail.charleszq.picorner.task.flickr;
 
 import java.net.URL;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,10 +13,11 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
-import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.Flickr;
@@ -34,9 +32,9 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
  * 
  */
 public class FlickrOAuthTask extends AsyncTask<Void, Integer, String> {
+	
+	private final String TAG = FlickrOAuthTask.class.getSimpleName();
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(FlickrOAuthTask.class);
 	private static final Uri OAUTH_CALLBACK_URI = Uri.parse(IConstants.ID_SCHEME
 			+ "://oauth"); //$NON-NLS-1$
 
@@ -91,7 +89,7 @@ public class FlickrOAuthTask extends AsyncTask<Void, Integer, String> {
 					Permission.WRITE, oauthToken);
 			return oauthUrl.toString();
 		} catch (Exception e) {
-			logger.error("Error to oauth", e); //$NON-NLS-1$
+			Log.e(TAG, "Error to oauth", e); //$NON-NLS-1$
 			return "error:" + e.getMessage(); //$NON-NLS-1$
 		}
 	}
@@ -103,12 +101,10 @@ public class FlickrOAuthTask extends AsyncTask<Void, Integer, String> {
 	 */
 	private void saveTokenSecrent(String tokenSecret) {
 	
-		logger.debug("request token: " + tokenSecret); //$NON-NLS-1$
 		Activity act = (Activity) mContext;
 		PicornerApplication app = (PicornerApplication) act
 				.getApplication();
 		app.saveFlickrTokenSecret(tokenSecret);
-		logger.debug("oauth token secrent saved: {}", tokenSecret); //$NON-NLS-1$
 	}
 
 	@Override

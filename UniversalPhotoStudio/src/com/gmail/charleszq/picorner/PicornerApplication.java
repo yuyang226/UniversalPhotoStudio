@@ -102,6 +102,10 @@ public class PicornerApplication extends Application {
 	public String getFlickrTokenSecret() {
 		return getSharedPreferenceValue(IConstants.FLICKR_TOKEN_SECRENT, null);
 	}
+	
+	public String getPx500TokenSecret() {
+		return getSharedPreferenceValue(IConstants.PX500_TOKEN_SECRET_KEY, null);
+	}
 
 	public String getFlickrUserName() {
 		return getSharedPreferenceValue(IConstants.FLICKR_USER_NAME, null);
@@ -116,8 +120,12 @@ public class PicornerApplication extends Application {
 	 * 
 	 * @return
 	 */
-	public String getPx500UserId() {
-		return null;
+	public String getPx500OauthToken() {
+		return getSharedPreferenceValue(IConstants.PX500_OAUTH_TOKEN_KEY,null);
+	}
+	
+	public String getPx500OauthTokenSecret() {
+		return getSharedPreferenceValue(IConstants.PX500_OAUTH_TOKEN_SECRET_KEY,null);
 	}
 
 	/**
@@ -206,10 +214,28 @@ public class PicornerApplication extends Application {
 				result = a.getUserId().equals(getInstagramUserId());
 				break;
 			case PX500:
-				//not support yet.
+				// not support yet.
 				break;
 			}
 		}
 		return result;
+	}
+
+	public void savePx500TokenSecret(String oauthTokenSecret) {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		editor.putString(IConstants.PX500_TOKEN_SECRET_KEY, oauthTokenSecret);
+		editor.commit();
+	}
+
+	public void savePxAuthToken(
+			com.github.yuyang226.j500px.oauth.OAuthToken token) {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		editor.putString(IConstants.PX500_OAUTH_TOKEN_KEY, token.getOauthToken());
+		editor.putString(IConstants.PX500_OAUTH_TOKEN_SECRET_KEY, token.getOauthTokenSecret());
+		editor.commit();
 	}
 }

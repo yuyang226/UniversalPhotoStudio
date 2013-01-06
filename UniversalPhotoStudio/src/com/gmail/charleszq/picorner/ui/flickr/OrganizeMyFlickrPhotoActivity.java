@@ -139,6 +139,7 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 	@Override
 	protected void onStart() {
 		super.onStart();
+		getActionBar().setSubtitle(R.string.msg_org_flickr_photo_title);
 		FetchFlickrPhotoContextTask t = new FetchFlickrPhotoContextTask();
 		t.addTaskDoneListener(new IGeneralTaskDoneListener<List<PhotoPlace>>() {
 
@@ -163,6 +164,7 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 				mUpdatePhotoContext.add(place.getKind() + place.getId());
 			}
 		mAdapter.setCurrentPhotoContext(mUpdatePhotoContext);
+		mAdapter.notifyDataSetChanged();
 
 		// start another task to fetch all my photo sets and groups
 		FetchFlickrUserPhotoCollectionFromCacheTask task = new FetchFlickrUserPhotoCollectionFromCacheTask();

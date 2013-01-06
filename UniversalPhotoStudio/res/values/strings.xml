@@ -96,6 +96,7 @@
 	<string name="msg_photo_saved_locally">Photo saved as \'%s\'</string>
 	<string name="msg_photo_save_exists">Photo already saved.</string>
 	<string name="msg_photo">photo</string>
+	<string name="msg_px500_auth_fail">Failed to sign into 500px.</string>
 	
 	<!--  flickr tag search -->
 	<string name="msg_flickr_tag_search_label">Flickr tag search</string>
@@ -160,7 +161,7 @@
     <string name="msg_flickr_photo_perm_hint">Note: Changing from public to private will remove all favorites.</string>
     
     <!-- organize flickr photo -->
-    <string name="msg_org_flickr_photo_title">Organize Set/Group</string>
+    <string name="msg_org_flickr_photo_title">organize photo</string>
     <string name="msg_org_my_f_photo_progress" tools:ignore="TypographyEllipsis">Organizing my photo...</string>
     <string name="msg_org_my_f_photo_done">Photo organized.</string>
     <string name="msg_org_my_f_photo_fail">Failed to organize photo.</string>

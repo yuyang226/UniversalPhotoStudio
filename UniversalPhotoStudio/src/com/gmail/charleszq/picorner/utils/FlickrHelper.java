@@ -51,5 +51,4 @@ public final class FlickrHelper {
 		requestContext.setOAuth(auth);
 		return f;
 	}
-
 }

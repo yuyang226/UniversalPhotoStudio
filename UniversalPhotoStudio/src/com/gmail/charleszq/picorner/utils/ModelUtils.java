@@ -20,7 +20,6 @@ import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.common.Location;
 import org.jinstagram.entity.likes.LikesFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
-import org.json.JSONObject;
 
 import android.text.Html;
 import android.text.util.Linkify;

@@ -51,7 +51,7 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 			igLikeTask.execute(photo.getId());
 			break;
 		case PX500:
-			if( app.getPx500UserId() == null ) {
+			if( app.getPx500OauthToken() == null ) {
 				return false;
 			}
 			break;

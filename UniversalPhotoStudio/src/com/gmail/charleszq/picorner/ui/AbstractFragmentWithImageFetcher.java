@@ -15,6 +15,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public abstract class AbstractFragmentWithImageFetcher extends Fragment {
 
 	protected ImageLoader mImageFetcher;
+	protected String TAG = getClass().getSimpleName();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

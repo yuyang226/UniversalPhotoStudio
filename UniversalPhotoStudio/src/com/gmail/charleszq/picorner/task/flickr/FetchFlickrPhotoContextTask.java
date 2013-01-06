@@ -25,10 +25,13 @@ public class FetchFlickrPhotoContextTask extends
 
 	@Override
 	protected List<PhotoPlace> doInBackground(String... params) {
+		
+		String photoId = params[0];
+		Log.d(TAG, "photo id: " + photoId ); //$NON-NLS-1$
 		Flickr f = FlickrHelper.getInstance().getFlickr();
 		PhotosInterface pi = f.getPhotosInterface();
 		try {
-			return pi.getAllContexts(params[0]);
+			return pi.getAllContexts(photoId);
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 			return null;

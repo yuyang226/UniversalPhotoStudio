@@ -69,7 +69,11 @@ public interface IConstants {
 	
 	//500px related constants
 	static final String PX500_CONSUMER_KEY = "XLvGaTDTlDL7UH9njjxpc9VmpoSKYQwRHjV0Qujx"; //$NON-NLS-1$
+	static final String PX500_CONSUMER_SECRET = "IVyb65oFNXxYbZeNpptNEHuF8FaxqMuffY9vipZF"; //$NON-NLS-1$
 	static final String PX500_OAUTH_CALLBACK_SCHEMA = "schemapx500"; //$NON-NLS-1$
+	static final String PX500_TOKEN_SECRET_KEY = "px500.token.secret"; //$NON-NLS-1$
+	static final String PX500_OAUTH_TOKEN_KEY = "px500.oauth.token"; //$NON-NLS-1$
+	static final String PX500_OAUTH_TOKEN_SECRET_KEY = "px500.oauth.token.secret"; //$NON-NLS-1$
 	
 	static final String ABOUT_FILE_FRG_ARG_KEY = "frg.file.name"; //$NON-NLS-1$
 	static final String ABOUT_FILE_ENCODING_KEY = "frg.file.encoding"; //$NON-NLS-1$
