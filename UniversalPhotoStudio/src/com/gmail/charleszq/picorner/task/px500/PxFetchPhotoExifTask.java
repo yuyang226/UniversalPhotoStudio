@@ -19,8 +19,8 @@ public class PxFetchPhotoExifTask extends
 	@Override
 	protected Photo doInBackground(String... params) {
 		String photoId = params[0];
-		J500px px = new J500px(IConstants.PX500_CONSUMER_KEY);
 		try {
+			J500px px = new J500px(IConstants.PX500_CONSUMER_KEY);
 			Photo p = px.getPhotosInterface().getPhotoDetail(photoId, ImageSize.LARGEST, false, -1);
 			return p;
 		} catch (Exception e) {

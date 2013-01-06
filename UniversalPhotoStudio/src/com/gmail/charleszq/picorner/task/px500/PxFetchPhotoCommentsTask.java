@@ -26,8 +26,9 @@ public class PxFetchPhotoCommentsTask extends
 	@Override
 	protected List<MediaObjectComment> doInBackground(String... params) {
 		String photoId = params[0];
-		J500px px = new J500px(IConstants.PX500_CONSUMER_KEY);
+		
 		try {
+			J500px px = new J500px(IConstants.PX500_CONSUMER_KEY);
 			Photo photo = px.getPhotosInterface().getPhotoDetail(photoId, null, true, -1);
 			List<Comment> pxComments = photo.getComments();
 			List<MediaObjectComment> comments = new ArrayList<MediaObjectComment>();
