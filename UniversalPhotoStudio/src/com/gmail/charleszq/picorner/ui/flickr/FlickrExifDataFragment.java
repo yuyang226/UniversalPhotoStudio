@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.github.yuyang226.j500px.photos.Photo;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.ExifData;
 import com.gmail.charleszq.picorner.model.GeoLocation;
@@ -26,7 +27,6 @@ import com.gmail.charleszq.picorner.task.px500.PxFetchPhotoExifTask;
 import com.gmail.charleszq.picorner.ui.PhotoDetailActivity;
 import com.gmail.charleszq.picorner.ui.helper.ExifAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
-import com.gmail.charleszq.px500.model.Photo;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -126,13 +126,11 @@ public class FlickrExifDataFragment extends Fragment {
 						adapter.notifyDataSetChanged();
 
 						try {
-							if (result.latitude != null
-									&& result.longitude != null) {
+							if (result.getLatitude() != null
+									&& result.getLongitude() != null) {
 								GeoLocation loc = new GeoLocation();
-								loc.setLatitude(Double
-										.parseDouble(result.latitude));
-								loc.setLongitude(Double
-										.parseDouble(result.longitude));
+								loc.setLatitude(result.getLatitude());
+								loc.setLongitude(result.getLongitude());
 								mCurrentPhoto.setLocation(loc);
 								Log.d(TAG, "lat: " + loc.getLatitude()); //$NON-NLS-1$
 								Log.d(TAG, "log: " + loc.getLongitude()); //$NON-NLS-1$

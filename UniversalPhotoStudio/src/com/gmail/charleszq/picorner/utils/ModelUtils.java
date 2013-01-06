@@ -20,6 +20,7 @@ import org.jinstagram.entity.common.Images;
 import org.jinstagram.entity.common.Location;
 import org.jinstagram.entity.likes.LikesFeed;
 import org.jinstagram.entity.users.feed.MediaFeedData;
+import org.json.JSONObject;
 
 import android.text.Html;
 import android.text.util.Linkify;
@@ -29,6 +30,7 @@ import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.widget.TextView;
 
+import com.github.yuyang226.j500px.photos.PhotoExif;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.ExifData;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
@@ -302,9 +304,9 @@ public final class ModelUtils {
 	}
 
 	public static MediaObjectCollection convertPx500Photos(
-			List<com.gmail.charleszq.px500.model.Photo> photos) {
+			List<com.github.yuyang226.j500px.photos.Photo> photos) {
 		MediaObjectCollection list = new MediaObjectCollection();
-		for (com.gmail.charleszq.px500.model.Photo p : photos) {
+		for (com.github.yuyang226.j500px.photos.Photo p : photos) {
 			list.addPhoto(convertPx500Photo(p));
 		}
 		list.setTotalCount(photos.size());
@@ -312,82 +314,103 @@ public final class ModelUtils {
 	}
 
 	public static MediaObject convertPx500Photo(
-			com.gmail.charleszq.px500.model.Photo p) {
+			com.github.yuyang226.j500px.photos.Photo p) {
 		MediaObject photo = new MediaObject();
-		photo.setId(p.id);
-		photo.setThumbUrl(p.imageUrl);
-		photo.setLargeUrl(p.largeImageUrl);
-		photo.setTitle(p.name);
+		photo.setId(String.valueOf(p.getId()));
+		photo.setThumbUrl(p.getImageUrl());
+		if (!p.getImageUrls().isEmpty()) {
+			photo.setLargeUrl(p.getImageUrls().get(0).getImageUrl());
+		}
+		photo.setTitle(p.getName());
 
-		Author a = new Author();
-		a.setUserId(p.author.id);
-		a.setUserName(p.author.userName);
-		a.setBuddyIconUrl(p.author.buddyIconUrl);
-		photo.setAuthor(a);
+		if (p.getAuthor() != null) {
+			Author a = new Author();
+			a.setUserId(String.valueOf(p.getAuthor().getId()));
+			a.setUserName(p.getAuthor().getUserName());
+			a.setBuddyIconUrl(p.getAuthor().getUserPicUrl());
+			photo.setAuthor(a);
+		}
 
 		// Exif
 		handlePx500PhotoExif(photo, p);
 
-		if (p.latitude != null && p.longitude != null) {
+		if (p.getLatitude() != null && p.getLongitude() != null) {
 			GeoLocation loc = new GeoLocation();
-			loc.setLatitude(Double.parseDouble(p.latitude));
-			loc.setLongitude(Double.parseDouble(p.longitude));
+			loc.setLatitude(p.getLatitude());
+			loc.setLongitude(p.getLongitude());
 			photo.setLocation(loc);
 		}
 
-		photo.setFavorites(p.favorites);
-		photo.setComments(p.comments);
-		photo.setViews(p.views);
+		photo.setFavorites(p.getFavouritesCount());
+		photo.setComments(p.getCommentsCount());
+		photo.setViews(p.getViewsCount());
 
 		photo.setMediaSource(MediaSourceType.PX500);
 		return photo;
 	}
 
 	public static MediaObject handlePx500PhotoExif(MediaObject photo,
-			com.gmail.charleszq.px500.model.Photo p) {
-		if (p.exif != null) {
-			ExifData exif = new ExifData(ExifData.LABEL_MODEL);
-			exif.value = p.exif.camera;
-			photo.addExifdata(exif);
+			com.github.yuyang226.j500px.photos.Photo p) {
+		if (p.getExif() != null) {
+			PhotoExif pExif = p.getExif();
+			ExifData exif = null;
+			if (pExif.getCamera() != null) {
+				exif = new ExifData(ExifData.LABEL_MODEL);
+				exif.value = pExif.getCamera().getName();
+				photo.addExifdata(exif);
+			}
 
-			exif = new ExifData(ExifData.LABEL_APERTURE);
-			exif.value = p.exif.aperture;
-			photo.addExifdata(exif);
+			if (pExif.getAperture() != null) {
+				exif = new ExifData(ExifData.LABEL_APERTURE);
+				exif.value = pExif.getAperture();
+				photo.addExifdata(exif);
+			}
 
-			exif = new ExifData(ExifData.LABEL_CRT_TIME);
-			exif.value = p.exif.takenAt;
-			photo.addExifdata(exif);
+			if (pExif.getTakenAt() != null) {
+				exif = new ExifData(ExifData.LABEL_CRT_TIME);
+				exif.value = pExif.getTakenAt().toString();
+				photo.addExifdata(exif);
+			}
 
-			exif = new ExifData(ExifData.LABEL_FOCAL_LEN);
-			exif.value = p.exif.focalLength;
-			photo.addExifdata(exif);
+			if (pExif.getFocalLength() != null) {
+				exif = new ExifData(ExifData.LABEL_FOCAL_LEN);
+				exif.value = pExif.getFocalLength();
+				photo.addExifdata(exif);
+			}
 
-			exif = new ExifData(ExifData.LABEL_ISO);
-			exif.value = p.exif.iso;
-			photo.addExifdata(exif);
+			if (pExif.getIso() != null) {
+				exif = new ExifData(ExifData.LABEL_ISO);
+				exif.value = pExif.getIso();
+				photo.addExifdata(exif);
+			}
 
-			exif = new ExifData(ExifData.LABEL_EXPOSURE);
-			exif.value = p.exif.shutterSpeed;
-			photo.addExifdata(exif);
+			if (pExif.getShutterSpeed() != null) {
+				exif = new ExifData(ExifData.LABEL_EXPOSURE);
+				exif.value = pExif.getShutterSpeed();
+				photo.addExifdata(exif);
+			}
 
-			exif = new ExifData(ExifData.LABEL_LEN);
-			exif.value = p.exif.lens;
-			photo.addExifdata(exif);
+			if (pExif.getLens() != null) {
+				exif = new ExifData(ExifData.LABEL_LEN);
+				exif.value = pExif.getLens().getName();
+				photo.addExifdata(exif);
+			}
 		}
 		return photo;
 	}
 
 	public static MediaObjectComment convertPxPhotoComment(
-			com.gmail.charleszq.px500.model.Comment pxComment) {
+			com.github.yuyang226.j500px.photos.Comment pxComment) {
 		MediaObjectComment comment = new MediaObjectComment();
-		comment.setId(pxComment.id);
-		comment.setText(pxComment.body);
-		comment.setCreateTimeString(pxComment.createTime);
+		comment.setId(String.valueOf(pxComment.getId()));
+		comment.setText(pxComment.getComment());
+		comment.setCreateTimeString(pxComment.getCreatedAt() != null 
+				? pxComment.getCreatedAt().toString() : ""); //$NON-NLS-1$
 
 		Author u = new Author();
-		u.setUserId(pxComment.user.id);
-		u.setUserName(pxComment.user.userName);
-		u.setBuddyIconUrl(pxComment.user.buddyIconUrl);
+		u.setUserId(String.valueOf(pxComment.getUserId()));
+		u.setUserName(pxComment.getAuthor().getUserName());
+		u.setBuddyIconUrl(pxComment.getAuthor().getUserPicUrl());
 		comment.setAuthor(u);
 		return comment;
 	}

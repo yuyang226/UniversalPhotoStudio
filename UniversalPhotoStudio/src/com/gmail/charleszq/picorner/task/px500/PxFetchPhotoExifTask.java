@@ -3,10 +3,11 @@
  */
 package com.gmail.charleszq.picorner.task.px500;
 
+import com.github.yuyang226.j500px.J500px;
+import com.github.yuyang226.j500px.photos.ImageSize;
+import com.github.yuyang226.j500px.photos.Photo;
 import com.gmail.charleszq.picorner.task.AbstractGeneralTask;
 import com.gmail.charleszq.picorner.utils.IConstants;
-import com.gmail.charleszq.px500.PX500;
-import com.gmail.charleszq.px500.model.Photo;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -18,9 +19,9 @@ public class PxFetchPhotoExifTask extends
 	@Override
 	protected Photo doInBackground(String... params) {
 		String photoId = params[0];
-		PX500 px = new PX500(IConstants.PX500_CONSUMER_KEY);
+		J500px px = new J500px(IConstants.PX500_CONSUMER_KEY);
 		try {
-			Photo p = px.getPhotoDetail(photoId);
+			Photo p = px.getPhotosInterface().getPhotoDetail(photoId, ImageSize.LARGEST, false, -1);
 			return p;
 		} catch (Exception e) {
 			return null;
