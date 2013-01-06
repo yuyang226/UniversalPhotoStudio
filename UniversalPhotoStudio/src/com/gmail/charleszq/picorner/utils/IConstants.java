@@ -74,6 +74,9 @@ public interface IConstants {
 	static final String PX500_TOKEN_SECRET_KEY = "px500.token.secret"; //$NON-NLS-1$
 	static final String PX500_OAUTH_TOKEN_KEY = "px500.oauth.token"; //$NON-NLS-1$
 	static final String PX500_OAUTH_TOKEN_SECRET_KEY = "px500.oauth.token.secret"; //$NON-NLS-1$
+	static final String PX_USER_ID = "px500.user.id"; //$NON-NLS-1$
+	static final String PX_USER_NAME = "px500.user.name"; //$NON-NLS-1$
+	static final String PX_USER_BUDDY_ICON_URL = "px500.user.icon.url"; //$NON-NLS-1$
 	
 	static final String ABOUT_FILE_FRG_ARG_KEY = "frg.file.name"; //$NON-NLS-1$
 	static final String ABOUT_FILE_ENCODING_KEY = "frg.file.encoding"; //$NON-NLS-1$
@@ -85,5 +88,6 @@ public interface IConstants {
 	 * The file name which saves the flickr user photo pool information.
 	 */
 	static final String FLICKR_USER_POOL_FILE_NAME = "flickr_user_pool.dat"; //$NON-NLS-1$
+
 
 }

@@ -97,6 +97,7 @@
 	<string name="msg_photo_save_exists">Photo already saved.</string>
 	<string name="msg_photo">photo</string>
 	<string name="msg_px500_auth_fail">Failed to sign into 500px.</string>
+	<string name="msg_px_error_fetch_user_profile">Error to get my 500px user profile.</string>
 	
 	<!--  flickr tag search -->
 	<string name="msg_flickr_tag_search_label">Flickr tag search</string>

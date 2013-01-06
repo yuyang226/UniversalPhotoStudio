@@ -102,7 +102,7 @@ public class PicornerApplication extends Application {
 	public String getFlickrTokenSecret() {
 		return getSharedPreferenceValue(IConstants.FLICKR_TOKEN_SECRENT, null);
 	}
-	
+
 	public String getPx500TokenSecret() {
 		return getSharedPreferenceValue(IConstants.PX500_TOKEN_SECRET_KEY, null);
 	}
@@ -121,11 +121,12 @@ public class PicornerApplication extends Application {
 	 * @return
 	 */
 	public String getPx500OauthToken() {
-		return getSharedPreferenceValue(IConstants.PX500_OAUTH_TOKEN_KEY,null);
+		return getSharedPreferenceValue(IConstants.PX500_OAUTH_TOKEN_KEY, null);
 	}
-	
+
 	public String getPx500OauthTokenSecret() {
-		return getSharedPreferenceValue(IConstants.PX500_OAUTH_TOKEN_SECRET_KEY,null);
+		return getSharedPreferenceValue(
+				IConstants.PX500_OAUTH_TOKEN_SECRET_KEY, null);
 	}
 
 	/**
@@ -234,8 +235,34 @@ public class PicornerApplication extends Application {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_PRIVATE);
 		Editor editor = sp.edit();
-		editor.putString(IConstants.PX500_OAUTH_TOKEN_KEY, token.getOauthToken());
-		editor.putString(IConstants.PX500_OAUTH_TOKEN_SECRET_KEY, token.getOauthTokenSecret());
+		editor.putString(IConstants.PX500_OAUTH_TOKEN_KEY,
+				token.getOauthToken());
+		editor.putString(IConstants.PX500_OAUTH_TOKEN_SECRET_KEY,
+				token.getOauthTokenSecret());
+		editor.commit();
+	}
+
+	public Author getPxUserProfile() {
+		String userId = getSharedPreferenceValue(IConstants.PX_USER_ID, null);
+		if (userId == null) {
+			return null;
+		}
+
+		Author a = new Author();
+		a.setUserId(userId);
+		a.setUserName(getSharedPreferenceValue(IConstants.PX_USER_NAME, null));
+		a.setBuddyIconUrl(getSharedPreferenceValue(
+				IConstants.PX_USER_BUDDY_ICON_URL, null));
+		return a;
+	}
+	
+	public void savePxUserProfile(String id, String name, String url) {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_PRIVATE);
+		Editor editor = sp.edit();
+		editor.putString(IConstants.PX_USER_ID,id);
+		editor.putString(IConstants.PX_USER_NAME, name);
+		editor.putString(IConstants.PX_USER_BUDDY_ICON_URL, url);
 		editor.commit();
 	}
 }
