@@ -105,4 +105,11 @@ public class Px500MyPhotosCommand extends AbstractPx500PhotoListCommand {
 		}
 		return super.getAdapter(adapterClass);
 	}
+
+	@Override
+	public String getDescription() {
+		return mContext.getString(R.string.cd_500px_my_photos);
+	}
+	
+	
 }

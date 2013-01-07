@@ -131,6 +131,7 @@
 	<string name="cd_500px_upcoming">500px: upcoming</string>
 	<string name="cd_500px_fresh_today">500px: fresh today</string>
 	<string name="cd_500px_user_photos">500px: photos of \'%s\'</string>
+	<string name="cd_500px_my_photos">500px: my photos</string>
 	
 	<!-- Instagram -->
 	<string name="cd_ig_popular">instagram: popular</string>
