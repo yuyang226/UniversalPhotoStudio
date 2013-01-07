@@ -64,6 +64,7 @@ import com.gmail.charleszq.picorner.ui.command.px500.PxUpcomingPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
+import com.gmail.charleszq.picorner.utils.PicornerConfig;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.galleries.Gallery;
 import com.googlecode.flickrjandroid.groups.Group;
@@ -191,8 +192,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	private void prepareSections() {
 
 		mSectionAdapter.clearSections();
-		mSectionAdapter.addCommands(createPx500MenuItems());
-		mSectionAdapter.addCommands(createInstagramMenuItems());
+		if (PicornerConfig.IS_PAID_VERSION) {
+			mSectionAdapter.addCommands(createPx500MenuItems());
+			mSectionAdapter.addCommands(createInstagramMenuItems());
+		}
 		mSectionAdapter.addCommands(createFlickrGeneralMenuItems());
 		mSectionAdapter.notifyDataSetChanged();
 
@@ -384,8 +387,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		command = new PxFreshTodayPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
-		
-		if( isUserAuthedPx500() ) {
+
+		if (isUserAuthedPx500()) {
 			command = new Px500MyPhotosCommand(getActivity());
 			command.setCommandCategory(headerName);
 			commands.add(command);
@@ -619,10 +622,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 					return;
 				}
 				app.saveFlickrAuthToken(oauth);
-			}
-			else if( type == MediaSourceType.PX500 ) {
+			} else if (type == MediaSourceType.PX500) {
 				com.github.yuyang226.j500px.oauth.OAuth pxoauth = (com.github.yuyang226.j500px.oauth.OAuth) result;
-				com.github.yuyang226.j500px.oauth.OAuthToken token = pxoauth.getToken();
+				com.github.yuyang226.j500px.oauth.OAuthToken token = pxoauth
+						.getToken();
 				app.savePxAuthToken(token);
 			}
 
