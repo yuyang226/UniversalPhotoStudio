@@ -54,6 +54,7 @@
     <string name="menu_item_ig_unfollow_user">Unfollow</string>
     <string name="menu_item_owner_photos">Owner Photos</string>
     <string name="menu_item_org_my_flickr_photo">Organize</string>
+    <string name="menu_item_f_user_web_site">Owner\'s Website</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>

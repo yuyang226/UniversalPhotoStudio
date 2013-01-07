@@ -6,6 +6,7 @@ package com.gmail.charleszq.picorner.ui;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,6 +25,7 @@ import com.gmail.charleszq.picorner.task.ig.InstagramFollowUserTask;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramUserPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxUserPhotosCommand;
+import com.gmail.charleszq.picorner.utils.IConstants;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -47,7 +49,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	 * owner, if it's instagram photo, we will show the menu item, and according
 	 * the current relationship, we change the menu item title.
 	 */
-	private boolean mShowFollowMenu = false;
+	private boolean mShowInstagramFollowMenu = false;
 
 	/**
 	 * 0: not ready yet, we don't know the relaitonship now; 1: following 2: not
@@ -117,6 +119,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_ig_follow, menu);
+		inflater.inflate(R.menu.menu_flickr_user_photo_list, menu);
 	}
 
 	@Override
@@ -153,13 +156,21 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 							.toString());
 			return true;
 		}
+		
+		//show flickr user's web site.
+		if( item.getItemId() == R.id.menu_item_f_user_website ) {
+			String url = IConstants.FLICKR_WEB_SITE_URL + this.mCurrentUser.getUserId(); 
+			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+			getActivity().startActivity(intent);
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.menu_item_follow);
-		if (!mShowFollowMenu) {
+		if (!mShowInstagramFollowMenu) {
 			item.setVisible(false);
 		}
 
@@ -176,6 +187,9 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 			item.setTitle(getString(R.string.menu_item_ig_follow_user));
 			break;
 		}
+
+		menu.setGroupVisible(R.id.group_f_u_photo_list,
+				this.mMedisSourceType == MediaSourceType.FLICKR.ordinal());
 	}
 
 	@Override
@@ -186,10 +200,10 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();
 			if (app.getInstagramUserId() == null) {
-				mShowFollowMenu = false;
+				mShowInstagramFollowMenu = false;
 				getActivity().invalidateOptionsMenu();
 			} else {
-				mShowFollowMenu = true;
+				mShowInstagramFollowMenu = true;
 				InstagramCheckRelationshipTask task = new InstagramCheckRelationshipTask(
 						getActivity());
 				task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
@@ -197,7 +211,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 					@Override
 					public void onTaskDone(Boolean result) {
 						mFollowing = result ? 1 : 2;
-						mShowFollowMenu = true;
+						mShowInstagramFollowMenu = true;
 						if (getActivity() != null)
 							getActivity().invalidateOptionsMenu();
 

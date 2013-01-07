@@ -88,6 +88,6 @@ public interface IConstants {
 	 * The file name which saves the flickr user photo pool information.
 	 */
 	static final String FLICKR_USER_POOL_FILE_NAME = "flickr_user_pool.dat"; //$NON-NLS-1$
-
+	static final String FLICKR_WEB_SITE_URL = "http://www.flickr.com/photos/"; //$NON-NLS-1$
 
 }
