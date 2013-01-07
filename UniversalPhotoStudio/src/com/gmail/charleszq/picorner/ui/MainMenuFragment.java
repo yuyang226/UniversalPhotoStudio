@@ -364,9 +364,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		commands.add(command);
 
 		if (!isUserAuthedPx500()) {
-//			command = new PxSignInCommand(getActivity());
-//			command.setCommandCategory(headerName);
-//			commands.add(command);
+			command = new PxSignInCommand(getActivity());
+			command.setCommandCategory(headerName);
+			commands.add(command);
 		}
 
 		command = new PxPopularPhotosCommand(getActivity());
