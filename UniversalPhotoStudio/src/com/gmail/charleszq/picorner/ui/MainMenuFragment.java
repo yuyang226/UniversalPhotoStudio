@@ -366,12 +366,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				headerName);
 		commands.add(command);
 
-		if (!isUserAuthedPx500()) {
-			command = new PxSignInCommand(getActivity());
-			command.setCommandCategory(headerName);
-			commands.add(command);
-		}
-
 		command = new PxPopularPhotosCommand(getActivity());
 		command.setCommandCategory(headerName);
 		commands.add(command);
@@ -390,6 +384,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		if (isUserAuthedPx500()) {
 			command = new Px500MyPhotosCommand(getActivity());
+			command.setCommandCategory(headerName);
+			commands.add(command);
+		} else {
+			command = new PxSignInCommand(getActivity());
 			command.setCommandCategory(headerName);
 			commands.add(command);
 		}
@@ -445,10 +443,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		String schema = intent.getScheme();
 		if (IConstants.ID_SCHEME.equals(schema)) {
 
-			// if user already login, just return
-			PicornerApplication app = (PicornerApplication) getActivity()
-					.getApplication();
-			if (app.getFlickrUserId() != null) {
+			// if flickr already authed.
+			if (isUserAuthedFlickr()) {
 				return;
 			}
 
@@ -468,9 +464,15 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				}
 			}
 		} else if (IConstants.ID_IG_SCHEME.equals(schema)) {
+			if (isUserAuthedInstagram()) {
+				return;
+			}
 			Uri uri = intent.getData();
 			instagramAuth(uri);
 		} else if (IConstants.PX500_OAUTH_CALLBACK_SCHEMA.equals(schema)) {
+			if (isUserAuthedPx500()) {
+				return;
+			}
 			Uri pxUri = intent.getData();
 			px500Auth(pxUri);
 		}
@@ -603,9 +605,15 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	void onOAuthDone(Object result, MediaSourceType type) {
 
 		if (result == null) {
-			Toast.makeText(getActivity(),
-					getActivity().getString(R.string.fail_to_oauth),
-					Toast.LENGTH_LONG).show();
+			String msg = getString(R.string.fail_to_oauth);
+			if (type == MediaSourceType.FLICKR) {
+				msg = String
+						.format(msg, getString(R.string.menu_header_flickr));
+			} else {
+				msg = String.format(msg, getString(R.string.menu_header_px500));
+			}
+			msg = msg.toLowerCase();
+			Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
 		} else {
 			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();

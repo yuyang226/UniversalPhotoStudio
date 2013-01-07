@@ -40,7 +40,7 @@
     <string name="ig_follow">Follow</string>
 
     <!-- auth process -->
-    <string name="fail_to_oauth">Failed to access your flickr account, please try
+    <string name="fail_to_oauth">Failed to access your %s account, please try
 		again</string>
     <string name="auth_gen_req_token">Generating the authorization request.</string>
 
