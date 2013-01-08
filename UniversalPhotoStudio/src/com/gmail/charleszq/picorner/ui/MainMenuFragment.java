@@ -274,9 +274,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			}
 		}
 		if (!photosetCommands.isEmpty()) {
-			ICommand<?> sectionCommand = new MenuSectionHeaderCommand(
+			ICommand<?> photosetCommand = new MenuSectionHeaderCommand(
 					getActivity(), photoSetHeaderName);
-			photosetCommands.add(0, sectionCommand);
+			photosetCommands.add(0, photosetCommand);
 			mSectionAdapter.addCommands(photosetCommands);
 		}
 
