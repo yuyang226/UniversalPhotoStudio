@@ -35,6 +35,7 @@ public class FetchFlickrUserPhotoCollectionFromCacheTask extends
 
 		try {
 			List<Object> pools = ModelUtils.readFlickrUserPhotoPools(cacheFile);
+			Log.d( TAG, "Pools got from cache: " + pools.size()); //$NON-NLS-1$
 			return pools;
 		} catch (IOException e) {
 			Log.w(TAG, "Unable to read from cache file: " + e.getMessage()); //$NON-NLS-1$

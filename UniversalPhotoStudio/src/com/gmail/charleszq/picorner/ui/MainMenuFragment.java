@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.jinstagram.auth.model.Token;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -79,6 +80,7 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
  * @author Charles(charleszq@gmail.com)
  * 
  */
+@SuppressLint("DefaultLocale")
 public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 	private CommandSectionListAdapter mSectionAdapter;
@@ -237,37 +239,39 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	 * @param list
 	 */
 	private void populatePhotoSetMenuItems(List<Object> list) {
-
-		if (!this.isVisible())
+		
+		Activity act = getActivity();
+		if( act == null ) {
 			return;
+		}
 
 		final List<ICommand<?>> photosetCommands = new ArrayList<ICommand<?>>();
 		final List<ICommand<?>> groupCommands = new ArrayList<ICommand<?>>();
 		final List<ICommand<?>> galleryCommands = new ArrayList<ICommand<?>>();
 
-		String photoSetHeaderName = getActivity().getString(
+		String photoSetHeaderName = act.getString(
 				R.string.menu_header_flickr_sets);
-		String groupHeaderName = getActivity().getString(
+		String groupHeaderName = act.getString(
 				R.string.menu_header_flickr_groups);
-		String galleryHeaderName = getActivity().getString(
+		String galleryHeaderName = act.getString(
 				R.string.menu_header_flickr_gallery);
 		for (Object obj : list) {
 			if (obj instanceof Photoset) {
 				ICommand<?> cmd = new FlickrUserPhotoSetCommand(
-						this.getActivity(), (Photoset) obj);
+						act, (Photoset) obj);
 				cmd.setCommandCategory(photoSetHeaderName);
 				photosetCommands.add(cmd);
 			}
 
 			if (obj instanceof Group) {
 				ICommand<?> cmd = new FlickrUserGroupCommand(
-						this.getActivity(), (Group) obj);
+						act, (Group) obj);
 				cmd.setCommandCategory(groupHeaderName);
 				groupCommands.add(cmd);
 			}
 
 			if (obj instanceof Gallery) {
-				ICommand<?> cmd = new FlickrGalleryPhotosCommand(getActivity(),
+				ICommand<?> cmd = new FlickrGalleryPhotosCommand(act,
 						(Gallery) obj);
 				cmd.setCommandCategory(galleryHeaderName);
 				galleryCommands.add(cmd);
@@ -275,21 +279,21 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		}
 		if (!photosetCommands.isEmpty()) {
 			ICommand<?> photosetCommand = new MenuSectionHeaderCommand(
-					getActivity(), photoSetHeaderName);
+					act, photoSetHeaderName);
 			photosetCommands.add(0, photosetCommand);
 			mSectionAdapter.addCommands(photosetCommands);
 		}
 
 		if (!groupCommands.isEmpty()) {
 			ICommand<?> groupCommand = new MenuSectionHeaderCommand(
-					getActivity(), groupHeaderName);
+					act, groupHeaderName);
 			groupCommands.add(0, groupCommand);
 			mSectionAdapter.addCommands(groupCommands);
 		}
 
 		if (!galleryCommands.isEmpty()) {
 			ICommand<?> galleryCommand = new MenuSectionHeaderCommand(
-					getActivity(), galleryHeaderName);
+					act, galleryHeaderName);
 			galleryCommands.add(0, galleryCommand);
 			mSectionAdapter.addCommands(galleryCommands);
 		}
@@ -479,7 +483,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private void px500Auth(Uri pxUri) {
-		// TODO 500px oauth
 		Log.d(TAG, pxUri.toString());
 		String query = pxUri.getQuery();
 		String[] data = query.split("&"); //$NON-NLS-1$
@@ -514,7 +517,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 					@Override
 					public void onTaskDone(Token result) {
-						MainMenuFragment.this.onInstagramAuthDone(result);
+						MainMenuFragment.this.onOAuthDone(result, MediaSourceType.INSTAGRAM);
 					}
 				});
 				task.execute(code);
@@ -522,14 +525,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				Log.e(getClass().getName(),
 						"Instagram request token code not returned."); //$NON-NLS-1$
 			}
-		}
-	}
-
-	private void onInstagramAuthDone(Token result) {
-		if (result == null) {
-			// TODO revisit here, what to do if auth failed?
-		} else {
-			prepareSections();
 		}
 	}
 
@@ -606,11 +601,17 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		if (result == null) {
 			String msg = getString(R.string.fail_to_oauth);
-			if (type == MediaSourceType.FLICKR) {
+			switch( type ) {
+			case FLICKR:
 				msg = String
 						.format(msg, getString(R.string.menu_header_flickr));
-			} else {
+				break;
+			case PX500:
 				msg = String.format(msg, getString(R.string.menu_header_px500));
+				break;
+			case INSTAGRAM:
+				msg = String.format(msg, getString(R.string.menu_header_ig));
+				break;
 			}
 			msg = msg.toLowerCase();
 			Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
@@ -635,8 +636,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				com.github.yuyang226.j500px.oauth.OAuthToken token = pxoauth
 						.getToken();
 				app.savePxAuthToken(token);
+			} else {
+				
 			}
-
 			prepareSections();
 		}
 	}
