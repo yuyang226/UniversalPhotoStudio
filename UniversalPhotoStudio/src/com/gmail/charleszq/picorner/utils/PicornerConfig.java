@@ -12,6 +12,6 @@ package com.gmail.charleszq.picorner.utils;
 public final class PicornerConfig {
 	
 	public static final boolean IS_PAID_VERSION = true;
-	public static final boolean DEBUG = true;
+	public static final boolean DEBUG = false;
 
 }
