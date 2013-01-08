@@ -62,13 +62,11 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 		customizeSlideMenu();
 
 		// set the Above View
-		boolean retained = true;
 		if (savedInstanceState != null)
 			mContent = getSupportFragmentManager().getFragment(
 					savedInstanceState, "mContent"); //$NON-NLS-1$
 		if (mContent == null) {
 			mContent = new PhotoGridFragment();
-			retained = false;
 		}
 
 		// set the Above View
@@ -90,9 +88,6 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 
 		// customize the SlidingMenu
 		getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
-
-		if (!retained)
-			loadDefaultPhotoList();
 	}
 
 	/**
