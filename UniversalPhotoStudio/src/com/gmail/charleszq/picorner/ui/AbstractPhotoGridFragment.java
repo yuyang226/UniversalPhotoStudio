@@ -35,7 +35,7 @@ import com.gmail.charleszq.picorner.utils.IConstants;
 public abstract class AbstractPhotoGridFragment extends
 		AbstractFragmentWithImageFetcher implements OnItemClickListener {
 
-	private static String TAG = AbstractPhotoGridFragment.class.getName();
+	private static String TAG = AbstractPhotoGridFragment.class.getSimpleName();
 
 	/**
 	 * UI controls
@@ -165,10 +165,15 @@ public abstract class AbstractPhotoGridFragment extends
 				});
 
 		bindData();
+		return v;
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
 		if (mCurrentCommand == null) {
 			loadFirstPage();
 		}
-		return v;
 	}
 
 	/**

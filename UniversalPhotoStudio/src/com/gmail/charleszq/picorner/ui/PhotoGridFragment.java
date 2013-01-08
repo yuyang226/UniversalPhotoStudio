@@ -95,7 +95,8 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		// data, this method will not called again.
 		mNoMoreData = false;
 
-		mPhotosProvider.loadData(photos, mCommandComparator == null ? command : mCommandComparator);
+		mPhotosProvider.loadData(photos, mCommandComparator == null ? command
+				: mCommandComparator);
 		mAdapter.notifyDataSetChanged();
 		if (mGridView != null) {
 			mScrollListener = new GridOnScrollListener(this);
@@ -143,9 +144,10 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
-		mAdapter.notifyDataSetChanged();
-		if( mCurrentCommand != null ) {
-			getActivity().getActionBar().setSubtitle( mCurrentCommand.getDescription());
+		Log.d(TAG, "Current photo size: " + mAdapter.getCount()); //$NON-NLS-1$
+		if (mCurrentCommand != null) {
+			getActivity().getActionBar().setSubtitle(
+					mCurrentCommand.getDescription());
 		}
 	}
 
@@ -159,6 +161,10 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
 	@Override
 	protected void loadFirstPage() {
+		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
+		if( act != null && mCurrentCommand == null ) {
+			act.loadDefaultPhotoList();
+		}
 	}
 
 	@Override
