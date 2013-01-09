@@ -73,6 +73,15 @@ public class MenuSectionHeaderCommand extends AbstractCommand<String> {
 		return super.getAdapter(adapterClass);
 	}
 	
+	/**
+	 * Sets the mark to say now this menu item was filtering its sub items or not. usually, this will be called
+	 * in the main menu text filter, that is, when doing the text fitler, we will need say that each header is now
+	 * filtering.
+	 * @param filtering
+	 */
+	public void setFiltering(boolean filtering) {
+		this.mFiltering = filtering;
+	}
 	
 
 }

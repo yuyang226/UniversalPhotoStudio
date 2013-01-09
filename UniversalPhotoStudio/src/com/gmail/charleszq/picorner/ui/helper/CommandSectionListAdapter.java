@@ -47,6 +47,11 @@ public class CommandSectionListAdapter extends BaseAdapter {
 	protected ImageLoader mImageFetcher;
 
 	/**
+	 * the marker to say whether we show the '^'/'v' sign on the header.
+	 */
+	private boolean mShowHeaderIndicator = true;
+
+	/**
 	 * Constructor.
 	 */
 	public CommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
@@ -61,18 +66,24 @@ public class CommandSectionListAdapter extends BaseAdapter {
 		mAllCommands = new ArrayList<ICommand<?>>();
 	}
 
+	public CommandSectionListAdapter(Context ctx, ImageLoader fetcher,
+			boolean showHeaderMarker) {
+		this(ctx, fetcher);
+		mShowHeaderIndicator = showHeaderMarker;
+	}
+
 	public void addCommands(Collection<ICommand<?>> commands) {
 		boolean add = true;
-		for( ICommand<?> cmd : commands ) {
-			if( cmd instanceof MenuSectionHeaderCommand ) {
+		for (ICommand<?> cmd : commands) {
+			if (cmd instanceof MenuSectionHeaderCommand) {
 				add = true;
 				mCommands.add(cmd);
 				MenuSectionHeaderCommand headerCmd = (MenuSectionHeaderCommand) cmd;
-				if( headerCmd.isFiltering() ) {
-					add  = false;
+				if (headerCmd.isFiltering()) {
+					add = false;
 				}
 			} else {
-				if( add ) {
+				if (add) {
 					mCommands.add(cmd);
 				}
 			}
@@ -150,6 +161,16 @@ public class CommandSectionListAdapter extends BaseAdapter {
 			view = LayoutInflater.from(mContext).inflate(
 					R.layout.section_header, null);
 			((TextView) view).setText(command.getLabel());
+			MenuSectionHeaderCommand hc = (MenuSectionHeaderCommand) command;
+			if (mShowHeaderIndicator) {
+				if (hc.isFiltering()) {
+					((TextView) view).setCompoundDrawablesWithIntrinsicBounds(
+							0, 0, R.drawable.ic_find_previous_holo_dark, 0);
+				} else {
+					((TextView) view).setCompoundDrawablesWithIntrinsicBounds(
+							0, 0, R.drawable.ic_find_next_holo_dark, 0);
+				}
+			}
 			return view;
 		}
 

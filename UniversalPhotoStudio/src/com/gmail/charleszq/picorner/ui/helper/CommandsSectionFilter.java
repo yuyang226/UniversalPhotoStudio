@@ -53,6 +53,11 @@ public class CommandsSectionFilter extends Filter {
 		index ++;
 		for( ICommand<?> c : mAdapter.mAllCommands ) {
 			if( mFilterStrig.equals( c.getCommandCategory() )) {
+				if( mAdapter.mCommands.contains(c)) {
+					//don't add that if that command is there already, this is because
+					//the it matches the text filter constraint.
+					continue;
+				}
 				mAdapter.mCommands.add(index++, c);
 			}
 		}

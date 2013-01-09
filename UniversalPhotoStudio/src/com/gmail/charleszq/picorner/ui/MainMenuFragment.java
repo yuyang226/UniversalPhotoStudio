@@ -4,15 +4,14 @@
 package com.gmail.charleszq.picorner.ui;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.jinstagram.auth.model.Token;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,12 +21,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.github.yuyang226.j500px.J500px;
@@ -65,9 +66,9 @@ import com.gmail.charleszq.picorner.ui.command.px500.PxPopularPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxSignInCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxUpcomingPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.MainMenuTextFilter;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
-import com.gmail.charleszq.picorner.utils.PicornerConfig;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.galleries.Gallery;
 import com.googlecode.flickrjandroid.groups.Group;
@@ -87,12 +88,45 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 	private CommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
-	
-	/**
-	 * The set to store the collapsed header menu items, the key is the label.
-	 */
-	private Set<String> mCollapsedMenuHeaders = null;
+	private SearchView mSearchView;
+	private MainMenuTextFilter mTextMenuFilter;
 
+	/**
+	 * The listener to handle the menu filter.
+	 */
+	private SearchView.OnQueryTextListener mQueryTextListener = new SearchView.OnQueryTextListener() {
+
+		@Override
+		public boolean onQueryTextSubmit(String query) {
+			if( query == null || query.trim().length() == 0 ) {
+				return false;
+			}
+			
+			if( mTextMenuFilter == null ) {
+				mTextMenuFilter = new MainMenuTextFilter(mSectionAdapter);
+			}
+			mTextMenuFilter.filter(query);
+			
+			// hide the soft keyboard
+			InputMethodManager imm = (InputMethodManager) getActivity()
+					.getSystemService(Service.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+			return true;
+		}
+
+		@Override
+		public boolean onQueryTextChange(String newText) {
+			if (newText == null || newText.trim().length() == 0) {
+				prepareSections();
+				return true;
+			} else
+				return false;
+		}
+	};
+
+	/**
+	 * The listener to handle user's flickr photo set /group/gallery menu items.
+	 */
 	private IGeneralTaskDoneListener<List<Object>> mPhotoSetsListener = new IGeneralTaskDoneListener<List<Object>>() {
 
 		@Override
@@ -102,6 +136,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		}
 	};
 
+	/**
+	 * The command done listener
+	 */
 	private ICommandDoneListener<Object> mCommandDoneListener = new ICommandDoneListener<Object>() {
 
 		@Override
@@ -136,8 +173,12 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		this.setRetainInstance(true);
 
 		View v = inflater.inflate(R.layout.main_menu, null);
-		ListView lv = (ListView) v.findViewById(R.id.listView1);
+		// filter view
+		mSearchView = (SearchView) v.findViewById(R.id.main_menu_search_view);
+		mSearchView.setOnQueryTextListener(mQueryTextListener);
 
+		// menu list
+		ListView lv = (ListView) v.findViewById(R.id.listView1);
 		mSectionAdapter = new CommandSectionListAdapter(getActivity(),
 				mImageFetcher);
 		prepareSections();
@@ -171,8 +212,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 						.getItem(pos);
 				if (command.getCommandType() == CommandType.MENU_HEADER_CMD) {
 					command.execute(adapter);
-					view.animate().setDuration(3000).rotationX(90)
-							.rotationX(180).rotationX(270).rotationX(360);
+//					view.animate().setDuration(3000).rotationX(90)
+//							.rotationX(180).rotationX(270).rotationX(360);
 				} else {
 					command.setCommndDoneListener(mCommandDoneListener);
 					command.execute();
@@ -201,10 +242,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	private void prepareSections() {
 
 		mSectionAdapter.clearSections();
-		if (PicornerConfig.IS_PAID_VERSION) {
-			mSectionAdapter.addCommands(createPx500MenuItems());
-			mSectionAdapter.addCommands(createInstagramMenuItems());
-		}
+		mSectionAdapter.addCommands(createPx500MenuItems());
+		mSectionAdapter.addCommands(createInstagramMenuItems());
 		mSectionAdapter.addCommands(createFlickrGeneralMenuItems());
 		mSectionAdapter.notifyDataSetChanged();
 
@@ -246,9 +285,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	 * @param list
 	 */
 	private void populatePhotoSetMenuItems(List<Object> list) {
-		
+
 		Activity act = getActivity();
-		if( act == null ) {
+		if (act == null) {
 			return;
 		}
 
@@ -256,23 +295,22 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		final List<ICommand<?>> groupCommands = new ArrayList<ICommand<?>>();
 		final List<ICommand<?>> galleryCommands = new ArrayList<ICommand<?>>();
 
-		String photoSetHeaderName = act.getString(
-				R.string.menu_header_flickr_sets);
-		String groupHeaderName = act.getString(
-				R.string.menu_header_flickr_groups);
-		String galleryHeaderName = act.getString(
-				R.string.menu_header_flickr_gallery);
+		String photoSetHeaderName = act
+				.getString(R.string.menu_header_flickr_sets);
+		String groupHeaderName = act
+				.getString(R.string.menu_header_flickr_groups);
+		String galleryHeaderName = act
+				.getString(R.string.menu_header_flickr_gallery);
 		for (Object obj : list) {
 			if (obj instanceof Photoset) {
-				ICommand<?> cmd = new FlickrUserPhotoSetCommand(
-						act, (Photoset) obj);
+				ICommand<?> cmd = new FlickrUserPhotoSetCommand(act,
+						(Photoset) obj);
 				cmd.setCommandCategory(photoSetHeaderName);
 				photosetCommands.add(cmd);
 			}
 
 			if (obj instanceof Group) {
-				ICommand<?> cmd = new FlickrUserGroupCommand(
-						act, (Group) obj);
+				ICommand<?> cmd = new FlickrUserGroupCommand(act, (Group) obj);
 				cmd.setCommandCategory(groupHeaderName);
 				groupCommands.add(cmd);
 			}
@@ -285,22 +323,22 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			}
 		}
 		if (!photosetCommands.isEmpty()) {
-			ICommand<?> photosetCommand = new MenuSectionHeaderCommand(
-					act, photoSetHeaderName, true);
+			ICommand<?> photosetCommand = new MenuSectionHeaderCommand(act,
+					photoSetHeaderName, true);
 			photosetCommands.add(0, photosetCommand);
 			mSectionAdapter.addCommands(photosetCommands);
 		}
 
 		if (!groupCommands.isEmpty()) {
-			ICommand<?> groupCommand = new MenuSectionHeaderCommand(
-					act, groupHeaderName,true);
+			ICommand<?> groupCommand = new MenuSectionHeaderCommand(act,
+					groupHeaderName, true);
 			groupCommands.add(0, groupCommand);
 			mSectionAdapter.addCommands(groupCommands);
 		}
 
 		if (!galleryCommands.isEmpty()) {
-			ICommand<?> galleryCommand = new MenuSectionHeaderCommand(
-					act, galleryHeaderName,true);
+			ICommand<?> galleryCommand = new MenuSectionHeaderCommand(act,
+					galleryHeaderName, true);
 			galleryCommands.add(0, galleryCommand);
 			mSectionAdapter.addCommands(galleryCommands);
 		}
@@ -524,7 +562,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 					@Override
 					public void onTaskDone(Token result) {
-						MainMenuFragment.this.onOAuthDone(result, MediaSourceType.INSTAGRAM);
+						MainMenuFragment.this.onOAuthDone(result,
+								MediaSourceType.INSTAGRAM);
 					}
 				});
 				task.execute(code);
@@ -608,7 +647,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		if (result == null) {
 			String msg = getString(R.string.fail_to_oauth);
-			switch( type ) {
+			switch (type) {
 			case FLICKR:
 				msg = String
 						.format(msg, getString(R.string.menu_header_flickr));
@@ -644,21 +683,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 						.getToken();
 				app.savePxAuthToken(token);
 			} else {
-				
+
 			}
 			prepareSections();
 		}
 	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		mCollapsedMenuHeaders = new HashSet<String>();
-		mCollapsedMenuHeaders.add( getString(R.string.menu_header_flickr_sets));
-		mCollapsedMenuHeaders.add( getString(R.string.menu_header_flickr_groups));
-		mCollapsedMenuHeaders.add( getString(R.string.menu_header_flickr_gallery));
-	}
-	
-	
 
 }
