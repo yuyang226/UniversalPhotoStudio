@@ -4,7 +4,9 @@
 package com.gmail.charleszq.picorner.ui;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.jinstagram.auth.model.Token;
 
@@ -85,6 +87,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 	private CommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
+	
+	/**
+	 * The set to store the collapsed header menu items, the key is the label.
+	 */
+	private Set<String> mCollapsedMenuHeaders = null;
 
 	private IGeneralTaskDoneListener<List<Object>> mPhotoSetsListener = new IGeneralTaskDoneListener<List<Object>>() {
 
@@ -279,21 +286,21 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		}
 		if (!photosetCommands.isEmpty()) {
 			ICommand<?> photosetCommand = new MenuSectionHeaderCommand(
-					act, photoSetHeaderName);
+					act, photoSetHeaderName, true);
 			photosetCommands.add(0, photosetCommand);
 			mSectionAdapter.addCommands(photosetCommands);
 		}
 
 		if (!groupCommands.isEmpty()) {
 			ICommand<?> groupCommand = new MenuSectionHeaderCommand(
-					act, groupHeaderName);
+					act, groupHeaderName,true);
 			groupCommands.add(0, groupCommand);
 			mSectionAdapter.addCommands(groupCommands);
 		}
 
 		if (!galleryCommands.isEmpty()) {
 			ICommand<?> galleryCommand = new MenuSectionHeaderCommand(
-					act, galleryHeaderName);
+					act, galleryHeaderName,true);
 			galleryCommands.add(0, galleryCommand);
 			mSectionAdapter.addCommands(galleryCommands);
 		}
@@ -642,5 +649,16 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			prepareSections();
 		}
 	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		mCollapsedMenuHeaders = new HashSet<String>();
+		mCollapsedMenuHeaders.add( getString(R.string.menu_header_flickr_sets));
+		mCollapsedMenuHeaders.add( getString(R.string.menu_header_flickr_groups));
+		mCollapsedMenuHeaders.add( getString(R.string.menu_header_flickr_gallery));
+	}
+	
+	
 
 }

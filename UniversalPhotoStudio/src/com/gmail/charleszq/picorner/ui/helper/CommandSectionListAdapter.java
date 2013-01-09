@@ -62,7 +62,21 @@ public class CommandSectionListAdapter extends BaseAdapter {
 	}
 
 	public void addCommands(Collection<ICommand<?>> commands) {
-		mCommands.addAll(commands);
+		boolean add = true;
+		for( ICommand<?> cmd : commands ) {
+			if( cmd instanceof MenuSectionHeaderCommand ) {
+				add = true;
+				mCommands.add(cmd);
+				MenuSectionHeaderCommand headerCmd = (MenuSectionHeaderCommand) cmd;
+				if( headerCmd.isFiltering() ) {
+					add  = false;
+				}
+			} else {
+				if( add ) {
+					mCommands.add(cmd);
+				}
+			}
+		}
 		mAllCommands.addAll(commands);
 	}
 

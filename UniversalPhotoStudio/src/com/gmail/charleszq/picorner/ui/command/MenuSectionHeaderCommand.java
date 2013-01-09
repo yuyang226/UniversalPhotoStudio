@@ -21,8 +21,13 @@ public class MenuSectionHeaderCommand extends AbstractCommand<String> {
 	 * @param context
 	 */
 	public MenuSectionHeaderCommand(Context context, String label) {
+		this(context, label, false);
+	}
+	
+	public MenuSectionHeaderCommand(Context context, String label, boolean hide) {
 		super(context);
 		this.mLabel = label;
+		this.mFiltering = hide;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -228,7 +229,10 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 				mListView.setVisibility(mHideAnimation ? View.INVISIBLE
 						: View.VISIBLE);
 				if (mHideAnimation) {
+					view.setAlpha(0f);
 					view.setVisibility(View.VISIBLE);
+					ObjectAnimator
+							.ofFloat(view, "alpha", 0f, 1f).setDuration(2000).start(); //$NON-NLS-1$
 				} else {
 					SecondaryMenuFragment.this.mBackViewContainer
 							.removeView(view);
