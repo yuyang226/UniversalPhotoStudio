@@ -46,4 +46,7 @@
 	<color name="pressed_button_center_color">#AACCFF</color>
 	<color name="pressed_button_start_color">#AA00CC</color>
 	<color name="pressed_button_end_color">#AA00CC</color>
+	
+	<!-- search view bg -->
+	<color name="search_view_bg">#E6E6E6</color>
 </resources>
