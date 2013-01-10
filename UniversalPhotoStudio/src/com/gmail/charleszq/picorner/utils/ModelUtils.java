@@ -343,6 +343,8 @@ public final class ModelUtils {
 		photo.setFavorites(p.getFavouritesCount());
 		photo.setComments(p.getCommentsCount());
 		photo.setViews(p.getViewsCount());
+		
+		photo.setUserLiked(p.isFavorited());
 
 		photo.setMediaSource(MediaSourceType.PX500);
 		return photo;

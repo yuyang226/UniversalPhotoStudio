@@ -208,9 +208,17 @@ public class ImageDetailFragment extends Fragment implements
 		mPhoto = dp.getMediaObject(pos);
 
 		setHasOptionsMenu(true);
-		checkUserLikeOrNot();
 		act.addActionBarListener(mActionBarListener);
 		setRetainInstance(true);
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onResume()
+	 */
+	@Override
+	public void onResume() {
+		super.onResume();
+		checkUserLikeOrNot();
 	}
 
 	@Override
@@ -273,7 +281,7 @@ public class ImageDetailFragment extends Fragment implements
 				.getApplication();
 		switch (mPhoto.getMediaSource()) {
 		case PX500:
-			if( app.getPx500OauthToken() == null ) {
+			if (app.getPx500OauthToken() == null) {
 				Toast.makeText(getActivity(),
 						getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();
@@ -309,7 +317,10 @@ public class ImageDetailFragment extends Fragment implements
 			@Override
 			public void onTaskDone(Boolean result) {
 				if (dialog2 != null && dialog2.isShowing()) {
-					dialog2.dismiss();
+					try {
+						dialog2.cancel();
+					} catch (Exception e) {
+					}
 				}
 				if (result) {
 					mUserLikeThePhoto = !mUserLikeThePhoto;
@@ -407,6 +418,7 @@ public class ImageDetailFragment extends Fragment implements
 
 		switch (mPhoto.getMediaSource()) {
 		case INSTAGRAM:
+		case PX500:
 			Log.d(TAG, "Do I like this photo? " + mPhoto.isUserLiked()); //$NON-NLS-1$
 			mUserLikeThePhoto = mPhoto.isUserLiked();
 			getActivity().invalidateOptionsMenu();
@@ -435,9 +447,6 @@ public class ImageDetailFragment extends Fragment implements
 				});
 				task.execute(mPhoto.getId(), mPhoto.getSecret());
 			}
-			break;
-		case PX500:
-			// not support yet.
 			break;
 		}
 	}

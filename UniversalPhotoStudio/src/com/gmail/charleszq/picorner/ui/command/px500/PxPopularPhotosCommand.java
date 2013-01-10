@@ -3,8 +3,10 @@
  */
 package com.gmail.charleszq.picorner.ui.command.px500;
 
+import android.app.Activity;
 import android.content.Context;
 
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.px500.Px500PopularPhotosService;
@@ -35,7 +37,14 @@ public class PxPopularPhotosCommand extends AbstractPx500PhotoListCommand {
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			return new Px500PopularPhotosService();
+			PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+					.getApplication();
+			if (app.getPx500OauthToken() != null) {
+				return new Px500PopularPhotosService(app.getPx500OauthToken(),
+						app.getPx500OauthTokenSecret());
+			} else {
+				return new Px500PopularPhotosService();
+			}
 		}
 		return super.getAdapter(adapterClass);
 	}

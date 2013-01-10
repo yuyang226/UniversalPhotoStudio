@@ -7,7 +7,6 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.github.yuyang226.j500px.J500px;
-import com.github.yuyang226.j500px.J500pxException;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.J500pxHelper;
@@ -33,9 +32,10 @@ public class Px500AddCommentTask extends
 		J500px px = J500pxHelper.getJ500pxAuthedInstance(
 				app.getPx500OauthToken(), app.getPx500OauthTokenSecret());
 		try {
-			px.getPhotosInterface().commentPhoto(photoId, comment);
+			px.getPhotosInterface().commentPhoto(Integer.parseInt(photoId),
+					comment);
 			return true;
-		} catch (J500pxException e) {
+		} catch (Exception e) {
 			return false;
 		}
 

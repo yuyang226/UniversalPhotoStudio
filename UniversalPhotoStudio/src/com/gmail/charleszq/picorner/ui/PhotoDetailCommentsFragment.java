@@ -120,7 +120,7 @@ public class PhotoDetailCommentsFragment extends
 		});
 		mSendComment
 				.setVisibility(isUserLoggedIn()
-						&& MediaSourceType.FLICKR.equals(mCurrentPhoto
+						&& !MediaSourceType.INSTAGRAM.equals(mCurrentPhoto
 								.getMediaSource()) ? View.VISIBLE : View.GONE);
 
 		return view;
@@ -182,6 +182,7 @@ public class PhotoDetailCommentsFragment extends
 							getActivity().getString(R.string.msg_comment_added),
 							Toast.LENGTH_SHORT).show();
 					mSendComment.setText(""); //$NON-NLS-1$
+					mCurrentPhoto.setComments(mCurrentPhoto.getComments()+1);
 				} else {
 					Toast.makeText(
 							getActivity(),

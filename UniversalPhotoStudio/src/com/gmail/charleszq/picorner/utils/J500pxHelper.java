@@ -29,10 +29,9 @@ public final class J500pxHelper {
 		try {
 			J500px j500px = new J500px(IConstants.PX500_CONSUMER_KEY,
 					IConstants.PX500_CONSUMER_SECRET);
-			RequestContext requestContext = RequestContext.getRequestContext();
 			OAuth auth = new OAuth();
 			auth.setToken(new OAuthToken(token, secret));
-			requestContext.setOAuth(auth);
+			RequestContext.getRequestContext().setOAuth(auth);
 			return j500px;
 		} catch (ParserConfigurationException e) {
 			return null;
