@@ -5,6 +5,8 @@ An Android photo viewer program for Flickr, Instagram and 500PX.
 Dependencies
 ====================
 Please also download the following projects and import into your Eclipse workspace:
+* FlickrjApi4Android:	https://github.com/yuyang226/FlickrjApi4Android
+* j500px:	https://github.com/yuyang226/j500px
 * jInstagram:	https://github.com/charleszq/jInstagram (this is forked from https://github.com/sachin-handiekar/jInstagram with some minor changes)
 * SlidingMenu:	https://github.com/jfeinstein10/SlidingMenu
 * Android-ViewPagerIndicator: https://github.com/JakeWharton/Android-ViewPagerIndicator
