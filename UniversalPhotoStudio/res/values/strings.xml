@@ -22,6 +22,7 @@
     <string name="px_editors">Editors\' Choice</string>
     <string name="px_upcoming">Upcoming</string>
     <string name="px_fresh_today">Fresh Today</string>
+    <string name="px_my_flow">My Flow</string>
     
     <string name="menu_header_flickr">Flickr</string>
     <string name="menu_header_flickr_sets">Photo Sets</string>
@@ -134,6 +135,8 @@
 	<string name="cd_500px_fresh_today">500px: fresh today</string>
 	<string name="cd_500px_user_photos">500px: photos of \'%s\'</string>
 	<string name="cd_500px_my_photos">500px: my photos</string>
+	<string name="cd_500px_my_favs">500px: my favorites</string>
+	<string name="cd_500px_my_flow">500px: my flow</string>
 	
 	<!-- Instagram -->
 	<string name="cd_ig_popular">instagram: popular</string>

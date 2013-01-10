@@ -6,6 +6,7 @@ package com.gmail.charleszq.picorner.ui;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
@@ -26,8 +28,8 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 
-import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectComment;
@@ -38,6 +40,7 @@ import com.gmail.charleszq.picorner.task.flickr.FlickrAddPhotoCommentTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLoadCommentsTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramAddPhotoCommentTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramLoadCommentsTask;
+import com.gmail.charleszq.picorner.task.px500.Px500AddCommentTask;
 import com.gmail.charleszq.picorner.task.px500.PxFetchPhotoCommentsTask;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
@@ -105,15 +108,19 @@ public class PhotoDetailCommentsFragment extends
 					KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEND) {
 					CharSequence commentText = v.getText();
-					Log.e(getClass().getName(), "Comment: " + commentText); //$NON-NLS-1$
-					sendComment(commentText);
+					if( commentText.toString().trim().length() == 0 ) {
+						return false;
+					}
+					Log.d(getClass().getName(), "Comment: " + commentText); //$NON-NLS-1$
+					sendComment(commentText.toString().trim());
+					return true;
 				}
 				return false;
 			}
 		});
 		mSendComment
 				.setVisibility(isUserLoggedIn()
-						&& MediaSourceType.FLICKR.equals(mCurrentPhoto
+						&& !MediaSourceType.INSTAGRAM.equals(mCurrentPhoto
 								.getMediaSource()) ? View.VISIBLE : View.GONE);
 
 		return view;
@@ -147,6 +154,11 @@ public class PhotoDetailCommentsFragment extends
 			a.setBuddyIconUrl(app.getInstagramUserBuddyIconUrl());
 			break;
 		case PX500:
+			Author pxProfile = app.getPxUserProfile();
+			if( pxProfile != null ) {
+				a.setUserId(pxProfile.getUserId());
+				a.setUserName(pxProfile.getUserName());
+			}
 			break;
 		}
 
@@ -170,7 +182,16 @@ public class PhotoDetailCommentsFragment extends
 							getActivity().getString(R.string.msg_comment_added),
 							Toast.LENGTH_SHORT).show();
 					mSendComment.setText(""); //$NON-NLS-1$
+				} else {
+					Toast.makeText(
+							getActivity(),
+							getActivity().getString(R.string.msg_like_photo_fail),
+							Toast.LENGTH_SHORT).show();
 				}
+				// hide the soft keyboard
+				InputMethodManager imm = (InputMethodManager) getActivity()
+						.getSystemService(Service.INPUT_METHOD_SERVICE);
+				imm.hideSoftInputFromWindow(mSendComment.getWindowToken(), 0);
 			}
 		};
 
@@ -188,6 +209,9 @@ public class PhotoDetailCommentsFragment extends
 			it.execute(mCurrentPhoto.getId(), commentText.toString());
 			break;
 		case PX500:
+			Px500AddCommentTask pt = new Px500AddCommentTask(getActivity());
+			pt.addTaskDoneListener(lis);
+			pt.execute(mCurrentPhoto.getId(), commentText.toString());
 			break;
 		}
 
@@ -205,6 +229,7 @@ public class PhotoDetailCommentsFragment extends
 			result = app.getInstagramUserId() != null;
 			break;
 		case PX500:
+			result = app.getPx500OauthToken() != null;
 			break;
 		}
 		return result;

@@ -40,6 +40,7 @@ import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramOAuthTask;
+import com.gmail.charleszq.picorner.task.px500.PxFetchUserProfileTask;
 import com.gmail.charleszq.picorner.ui.command.CommandType;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
@@ -62,6 +63,8 @@ import com.gmail.charleszq.picorner.ui.command.ig.InstagramUserPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.Px500MyPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxEditorsPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxFreshTodayPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.PxMyFavPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.PxMyFlowCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxPopularPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxSignInCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxUpcomingPhotosCommand;
@@ -98,15 +101,15 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		@Override
 		public boolean onQueryTextSubmit(String query) {
-			if( query == null || query.trim().length() == 0 ) {
+			if (query == null || query.trim().length() == 0) {
 				return false;
 			}
-			
-			if( mTextMenuFilter == null ) {
+
+			if (mTextMenuFilter == null) {
 				mTextMenuFilter = new MainMenuTextFilter(mSectionAdapter);
 			}
 			mTextMenuFilter.filter(query);
-			
+
 			// hide the soft keyboard
 			InputMethodManager imm = (InputMethodManager) getActivity()
 					.getSystemService(Service.INPUT_METHOD_SERVICE);
@@ -212,8 +215,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 						.getItem(pos);
 				if (command.getCommandType() == CommandType.MENU_HEADER_CMD) {
 					command.execute(adapter);
-//					view.animate().setDuration(3000).rotationX(90)
-//							.rotationX(180).rotationX(270).rotationX(360);
+					// view.animate().setDuration(3000).rotationX(90)
+					// .rotationX(180).rotationX(270).rotationX(360);
 				} else {
 					command.setCommndDoneListener(mCommandDoneListener);
 					command.execute();
@@ -435,6 +438,14 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			command = new Px500MyPhotosCommand(getActivity());
 			command.setCommandCategory(headerName);
 			commands.add(command);
+			
+			command = new PxMyFavPhotosCommand(getActivity());
+			command.setCommandCategory(headerName);
+			commands.add(command);
+			
+			command = new PxMyFlowCommand(getActivity());
+			command.setCommandCategory(headerName);
+			commands.add(command);
 		} else {
 			command = new PxSignInCommand(getActivity());
 			command.setCommandCategory(headerName);
@@ -646,21 +657,27 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	void onOAuthDone(Object result, MediaSourceType type) {
 
 		if (result == null) {
+			boolean signedin = false;
 			String msg = getString(R.string.fail_to_oauth);
 			switch (type) {
 			case FLICKR:
 				msg = String
 						.format(msg, getString(R.string.menu_header_flickr));
+				signedin = isUserAuthedFlickr();
 				break;
 			case PX500:
 				msg = String.format(msg, getString(R.string.menu_header_px500));
+				signedin = isUserAuthedPx500();
 				break;
 			case INSTAGRAM:
 				msg = String.format(msg, getString(R.string.menu_header_ig));
+				signedin = isUserAuthedInstagram();
 				break;
 			}
-			msg = msg.toLowerCase();
-			Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+			if (!signedin) {
+				msg = msg.toLowerCase();
+				Toast.makeText(getActivity(), msg, Toast.LENGTH_LONG).show();
+			}
 		} else {
 			PicornerApplication app = (PicornerApplication) getActivity()
 					.getApplication();
@@ -682,6 +699,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				com.github.yuyang226.j500px.oauth.OAuthToken token = pxoauth
 						.getToken();
 				app.savePxAuthToken(token);
+
+				// fetch user profile
+				PxFetchUserProfileTask userTask = new PxFetchUserProfileTask(
+						getActivity());
+				userTask.execute();
 			} else {
 
 			}

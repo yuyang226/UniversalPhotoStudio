@@ -36,4 +36,15 @@ public class PxFetchUserProfileTask extends
 		}
 	}
 
+	@Override
+	protected void onPostExecute(User result) {
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+				.getApplication();
+		app.savePxUserProfile(String.valueOf(result.getId()),
+				result.getUserName(), result.getUserPicUrl());
+		super.onPostExecute(result);
+	}
+	
+	
+
 }

@@ -1,49 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     android:padding="10dp" >
 
-    <TextView
-        android:id="@+id/textView1"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="10dp"
-        android:text="@string/flickr_photo_perm_title"
-        android:gravity="left|center" />
-
-    <RadioButton
-        android:id="@+id/radioButton1"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="true"
-        android:text="@string/flickr_photo_perm_private" />
+        android:orientation="vertical" >
 
-    <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:text="@string/flickr_photo_perm_friend" />
+        <TextView
+            style="@style/PhotoDetailSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="@string/detail_gen_title_section" />
 
-    <CheckBox
-        android:id="@+id/checkBox2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:text="@string/flickr_photo_perm_family" />
+        <EditText
+            android:id="@+id/edit_f_p_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" >
+        </EditText>
 
-    <RadioButton
-        android:id="@+id/radioButton2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/flickr_photo_perm_public" />
+        <TextView
+            style="@style/PhotoDetailSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="left|center"
+            android:text="@string/detail_gen_description_section" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="@string/msg_flickr_photo_perm_hint" />
+        <EditText
+            android:id="@+id/edit_f_p_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:minLines="6" >
+        </EditText>
 
-</RadioGroup>
+        <TextView
+            style="@style/PhotoDetailSection"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="left|center"
+            android:text="@string/flickr_photo_perm_title" />
+
+        <RadioGroup
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical" >
+
+            <RadioButton
+                android:id="@+id/rb_f_p_private"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="@string/flickr_photo_perm_private" />
+
+            <CheckBox
+                android:id="@+id/cb_f_p_friend"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="@string/flickr_photo_perm_friend" />
+
+            <CheckBox
+                android:id="@+id/cb_f_p_family"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="25dp"
+                android:text="@string/flickr_photo_perm_family" />
+
+            <RadioButton
+                android:id="@+id/rb_f_p_public"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/flickr_photo_perm_public" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="@string/msg_flickr_photo_perm_hint" />
+        </RadioGroup>
+    </LinearLayout>
+
+</ScrollView>
