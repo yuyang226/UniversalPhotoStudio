@@ -22,23 +22,25 @@ import com.gmail.charleszq.picorner.utils.IConstants;
 
 /**
  * @author charleszq
- *
+ * 
  */
 public class Px500OAuthTask extends
 		AbstractContextAwareTask<Void, Integer, String> {
-	
+
 	private final String TAG = Px500OAuthTask.class.getSimpleName();
 
-	private static final Uri OAUTH_CALLBACK_URI = Uri.parse(IConstants.PX500_OAUTH_CALLBACK_SCHEMA
-			+ "://oauth"); //$NON-NLS-1$
-	
+	private static final Uri OAUTH_CALLBACK_URI = Uri
+			.parse(IConstants.PX500_OAUTH_CALLBACK_SCHEMA + "://oauth"); //$NON-NLS-1$
+
 	private ProgressDialog mProgressDialog;
 
 	public Px500OAuthTask(Context ctx) {
 		super(ctx);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.os.AsyncTask#onPreExecute()
 	 */
 	@Override
@@ -59,10 +61,13 @@ public class Px500OAuthTask extends
 	@Override
 	protected String doInBackground(Void... params) {
 		try {
-			J500px j500px = new J500px(IConstants.PX500_CONSUMER_KEY, IConstants.PX500_CONSUMER_SECRET);
-			OAuthToken token = j500px.getOAuthInterface().getRequestToken(OAUTH_CALLBACK_URI.toString());
+			J500px j500px = new J500px(IConstants.PX500_CONSUMER_KEY,
+					IConstants.PX500_CONSUMER_SECRET);
+			OAuthToken token = j500px.getOAuthInterface().getRequestToken(
+					OAUTH_CALLBACK_URI.toString());
 			saveTokenSecrent(token.getOauthTokenSecret());
-			URL oauthUrl = j500px.getOAuthInterface().buildAuthenticationUrl(token);
+			URL oauthUrl = j500px.getOAuthInterface().buildAuthenticationUrl(
+					token);
 			return oauthUrl.toString();
 		} catch (Exception e) {
 			Log.e(TAG, "Error to oauth", e); //$NON-NLS-1$
@@ -72,18 +77,25 @@ public class Px500OAuthTask extends
 
 	private void saveTokenSecrent(String oauthTokenSecret) {
 		Activity act = (Activity) mContext;
-		PicornerApplication app = (PicornerApplication) act
-				.getApplication();
+		PicornerApplication app = (PicornerApplication) act.getApplication();
 		app.savePx500TokenSecret(oauthTokenSecret);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.gmail.charleszq.picorner.task.AbstractGeneralTask#onPostExecute(java.lang.Object)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.gmail.charleszq.picorner.task.AbstractGeneralTask#onPostExecute(java
+	 * .lang.Object)
 	 */
 	@Override
 	protected void onPostExecute(String result) {
-		if( mProgressDialog != null ) {
-			mProgressDialog.cancel();
+		if (mProgressDialog != null) {
+			try {
+				mProgressDialog.cancel();
+			} catch (Exception e) {
+
+			}
 		}
 		super.onPostExecute(result);
 	}

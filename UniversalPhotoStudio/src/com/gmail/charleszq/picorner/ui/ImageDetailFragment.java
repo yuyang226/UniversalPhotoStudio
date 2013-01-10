@@ -58,6 +58,7 @@ import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.CheckUserLikePhotoTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
+import com.gmail.charleszq.picorner.task.px500.PxLikePhotoTask;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
 import com.gmail.charleszq.picorner.ui.flickr.OrganizeMyFlickrPhotoActivity;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -205,7 +206,7 @@ public class ImageDetailFragment extends Fragment implements
 		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		mPhoto = dp.getMediaObject(pos);
-		
+
 		setHasOptionsMenu(true);
 		checkUserLikeOrNot();
 		act.addActionBarListener(mActionBarListener);
@@ -241,41 +242,45 @@ public class ImageDetailFragment extends Fragment implements
 		return v;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onStart()
 	 */
 	@Override
 	public void onStart() {
 		super.onStart();
 		Activity act = getActivity();
-		//set the actionbar title.
+		// set the actionbar title.
 		StringBuilder sb = new StringBuilder();
-		switch( mPhoto.getMediaSource() ) {
+		switch (mPhoto.getMediaSource()) {
 		case FLICKR:
-			sb.append( getString(R.string.menu_header_flickr));
+			sb.append(getString(R.string.menu_header_flickr));
 			break;
 		case INSTAGRAM:
-			sb.append( getString(R.string.menu_header_ig));
+			sb.append(getString(R.string.menu_header_ig));
 			break;
 		case PX500:
-			sb.append( getString(R.string.menu_header_px500));
+			sb.append(getString(R.string.menu_header_px500));
 			break;
 		}
-		sb.append( " ").append( getString(R.string.msg_photo)); //$NON-NLS-1$
+		sb.append(" ").append(getString(R.string.msg_photo)); //$NON-NLS-1$
 		act.getActionBar().setSubtitle(sb.toString().toLowerCase());
 	}
 
 	private boolean likePhoto() {
-
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
 		switch (mPhoto.getMediaSource()) {
 		case PX500:
-			Toast.makeText(getActivity(),
-					getString(R.string.msg_not_support_yet), Toast.LENGTH_SHORT)
-					.show();
-			return false;
+			if( app.getPx500OauthToken() == null ) {
+				Toast.makeText(getActivity(),
+						getString(R.string.pls_sing_in_first),
+						Toast.LENGTH_SHORT).show();
+				return false;
+			}
+			break;
 		case FLICKR:
-			PicornerApplication app = (PicornerApplication) getActivity()
-					.getApplication();
 			if (app.getFlickrUserId() == null) {
 				Toast.makeText(getActivity(),
 						getString(R.string.pls_sing_in_first),
@@ -284,7 +289,6 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			break;
 		case INSTAGRAM:
-			app = (PicornerApplication) getActivity().getApplication();
 			if (app.getInstagramUserId() == null) {
 				Toast.makeText(getActivity(),
 						getString(R.string.pls_sing_in_first),
@@ -333,6 +337,9 @@ public class ImageDetailFragment extends Fragment implements
 			igtask.execute(mPhoto.getId(), likeActionString);
 			break;
 		case PX500:
+			PxLikePhotoTask pxTask = new PxLikePhotoTask(getActivity());
+			pxTask.addTaskDoneListener(lis);
+			pxTask.execute(mPhoto.getId(), likeActionString);
 			break;
 		}
 		return true;
@@ -441,11 +448,6 @@ public class ImageDetailFragment extends Fragment implements
 		PicornerApplication app = (PicornerApplication) getActivity()
 				.getApplication();
 
-		// hide 'like' for 500px
-		if (mPhoto.getMediaSource() == MediaSourceType.PX500) {
-			likeItem.setVisible(false);
-		}
-
 		// for flickr, hide 'like' on my own photos.
 		if (mPhoto.getMediaSource() == MediaSourceType.FLICKR
 				&& app.isMyOwnPhoto(mPhoto)) {
@@ -532,10 +534,12 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			return true;
 		case R.id.menu_item_detail:
-			Intent detailIntent = new Intent(getActivity(), PhotoDetailActivity.class);
+			Intent detailIntent = new Intent(getActivity(),
+					PhotoDetailActivity.class);
 			IPhotosProvider dp = ((ImageDetailActivity) getActivity()).mPhotosProvider;
 			detailIntent.putExtra(ImageDetailActivity.DP_KEY, dp);
-			detailIntent.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, mCurrentPos);
+			detailIntent.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION,
+					mCurrentPos);
 			startActivity(detailIntent);
 			return true;
 		}
@@ -543,10 +547,12 @@ public class ImageDetailFragment extends Fragment implements
 	}
 
 	/**
-	 * shows the UI to organize my flickr photo. mainly change permission, and add to set/groups
+	 * shows the UI to organize my flickr photo. mainly change permission, and
+	 * add to set/groups
 	 */
 	private void organizeFlickrPhoto() {
-		Intent i = new Intent(getActivity(), OrganizeMyFlickrPhotoActivity.class);
+		Intent i = new Intent(getActivity(),
+				OrganizeMyFlickrPhotoActivity.class);
 		i.putExtra(OrganizeMyFlickrPhotoActivity.PHOTO_ID_KEY, mPhoto.getId());
 		getActivity().startActivity(i);
 	}

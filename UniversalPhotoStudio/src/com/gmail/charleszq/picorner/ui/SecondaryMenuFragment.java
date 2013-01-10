@@ -34,7 +34,6 @@ import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosComma
 import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
-import com.gmail.charleszq.picorner.utils.PicornerConfig;
 
 /**
  * Represents the fragment to show the secondary menus.
@@ -122,13 +121,12 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 				.findViewById(R.id.back_view_container);
 
 		mSectionAdapter = new CommandSectionListAdapter(getActivity(),
-				mImageFetcher) {
+				mImageFetcher,false) {
 
 			@Override
 			public boolean isEnabled(int position) {
 				return getItemViewType(position) == CommandSectionListAdapter.ITEM_COMMAND;
 			}
-
 		};
 		mListView.setAdapter(mSectionAdapter);
 		mListView.setOnItemClickListener(this);
@@ -156,10 +154,8 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 				getString(R.string.secondary_menus_search));
 		commands.add(command);
 
-		if (PicornerConfig.IS_PAID_VERSION) {
-			command = new InstagramSearchNearPhotosCommand(getActivity());
-			commands.add(command);
-		}
+		command = new InstagramSearchNearPhotosCommand(getActivity());
+		commands.add(command);
 		command = new FlickrTagSearchCommand(getActivity());
 		commands.add(command);
 

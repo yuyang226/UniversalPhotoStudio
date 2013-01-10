@@ -6,10 +6,11 @@
 
     <SearchView
         android:id="@+id/main_menu_search_view"
-        android:background="@color/search_view_bg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:iconifiedByDefault="false" />
+        android:background="@color/search_view_bg"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/main_menu_filter_hint" />
 
     <ListView
         android:id="@+id/listView1"

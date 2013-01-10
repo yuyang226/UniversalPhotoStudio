@@ -22,6 +22,7 @@
     <string name="px_editors">Editors\' Choice</string>
     <string name="px_upcoming">Upcoming</string>
     <string name="px_fresh_today">Fresh Today</string>
+    <string name="px_my_flow">My Flow</string>
     
     <string name="menu_header_flickr">Flickr</string>
     <string name="menu_header_flickr_sets">Photo Sets</string>
@@ -55,6 +56,7 @@
     <string name="menu_item_owner_photos">Owner Photos</string>
     <string name="menu_item_org_my_flickr_photo">Organize</string>
     <string name="menu_item_f_user_web_site">Owner\'s Website</string>
+    <string name="main_menu_filter_hint">menu filter</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
@@ -133,6 +135,8 @@
 	<string name="cd_500px_fresh_today">500px: fresh today</string>
 	<string name="cd_500px_user_photos">500px: photos of \'%s\'</string>
 	<string name="cd_500px_my_photos">500px: my photos</string>
+	<string name="cd_500px_my_favs">500px: my favorites</string>
+	<string name="cd_500px_my_flow">500px: my flow</string>
 	
 	<!-- Instagram -->
 	<string name="cd_ig_popular">instagram: popular</string>
@@ -155,7 +159,7 @@
     <string name="buy_button">Purchase</string>
     <string name="quit_button">Exit</string>
     
-    <!-- organize my flickr photo -->
+    <!-- change my flickr photo properties -->
     <string name="flickr_photo_perm_private">Only You</string>
     <string name="flickr_photo_perm_friend">Your friends</string>
     <string name="flickr_photo_perm_family">Your family</string>

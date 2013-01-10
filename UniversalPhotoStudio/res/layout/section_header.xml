@@ -3,7 +3,7 @@
     style="@style/MenuListHeader"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:drawablePadding="10dp"
-    android:padding="10dp"
-    android:gravity="center|left" />
+    android:drawablePadding="3dp"
+    android:gravity="center|left"
+    android:padding="10dp" />
 

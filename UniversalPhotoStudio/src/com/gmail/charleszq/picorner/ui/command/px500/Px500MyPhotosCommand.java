@@ -83,11 +83,6 @@ public class Px500MyPhotosCommand extends AbstractPx500PhotoListCommand {
 							mContext.getString(R.string.msg_px_error_fetch_user_profile),
 							Toast.LENGTH_SHORT).show();
 				} else {
-					PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-							.getApplication();
-					app.savePxUserProfile(String.valueOf(result.getId()),
-							result.getUserName(), result.getUserPicUrl());
-					//then execute the real command.
 					execute(params);
 				}
 			}

@@ -24,7 +24,6 @@ import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.auth.Permission;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
-
 /**
  * Represents the task to start the oauth process.
  * 
@@ -32,11 +31,11 @@ import com.googlecode.flickrjandroid.oauth.OAuthToken;
  * 
  */
 public class FlickrOAuthTask extends AsyncTask<Void, Integer, String> {
-	
+
 	private final String TAG = FlickrOAuthTask.class.getSimpleName();
 
-	private static final Uri OAUTH_CALLBACK_URI = Uri.parse(IConstants.ID_SCHEME
-			+ "://oauth"); //$NON-NLS-1$
+	private static final Uri OAUTH_CALLBACK_URI = Uri
+			.parse(IConstants.ID_SCHEME + "://oauth"); //$NON-NLS-1$
 
 	/**
 	 * The context.
@@ -100,19 +99,22 @@ public class FlickrOAuthTask extends AsyncTask<Void, Integer, String> {
 	 * @param tokenSecret
 	 */
 	private void saveTokenSecrent(String tokenSecret) {
-	
+
 		Activity act = (Activity) mContext;
-		PicornerApplication app = (PicornerApplication) act
-				.getApplication();
+		PicornerApplication app = (PicornerApplication) act.getApplication();
 		app.saveFlickrTokenSecret(tokenSecret);
 	}
 
 	@Override
 	protected void onPostExecute(String result) {
 		if (mProgressDialog != null) {
-			mProgressDialog.dismiss();
+			try {
+				mProgressDialog.cancel();
+			} catch (Exception e) {
+
+			}
 		}
-		if (result != null && !result.startsWith("error") ) { //$NON-NLS-1$
+		if (result != null && !result.startsWith("error")) { //$NON-NLS-1$
 			mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri
 					.parse(result)));
 		} else {
