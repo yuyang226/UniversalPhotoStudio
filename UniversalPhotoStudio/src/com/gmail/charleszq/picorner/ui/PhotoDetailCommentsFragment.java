@@ -108,7 +108,7 @@ public class PhotoDetailCommentsFragment extends
 					KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEND) {
 					CharSequence commentText = v.getText();
-					if( commentText.toString().trim().length() == 0 ) {
+					if (commentText.toString().trim().length() == 0) {
 						return false;
 					}
 					Log.d(getClass().getName(), "Comment: " + commentText); //$NON-NLS-1$
@@ -120,7 +120,7 @@ public class PhotoDetailCommentsFragment extends
 		});
 		mSendComment
 				.setVisibility(isUserLoggedIn()
-						&& !MediaSourceType.INSTAGRAM.equals(mCurrentPhoto
+						&& MediaSourceType.FLICKR.equals(mCurrentPhoto
 								.getMediaSource()) ? View.VISIBLE : View.GONE);
 
 		return view;
@@ -155,7 +155,7 @@ public class PhotoDetailCommentsFragment extends
 			break;
 		case PX500:
 			Author pxProfile = app.getPxUserProfile();
-			if( pxProfile != null ) {
+			if (pxProfile != null) {
 				a.setUserId(pxProfile.getUserId());
 				a.setUserName(pxProfile.getUserName());
 			}
@@ -185,7 +185,8 @@ public class PhotoDetailCommentsFragment extends
 				} else {
 					Toast.makeText(
 							getActivity(),
-							getActivity().getString(R.string.msg_like_photo_fail),
+							getActivity().getString(
+									R.string.msg_like_photo_fail),
 							Toast.LENGTH_SHORT).show();
 				}
 				// hide the soft keyboard
