@@ -34,7 +34,7 @@ public class PxMyFlowCommand extends AbstractPx500PhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_px500_you;
+		return R.drawable.ic_action_500px_myflow;
 	}
 	
 	@Override
