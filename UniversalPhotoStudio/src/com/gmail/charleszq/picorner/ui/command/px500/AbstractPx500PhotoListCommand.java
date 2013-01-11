@@ -5,9 +5,14 @@ package com.gmail.charleszq.picorner.ui.command.px500;
 
 import android.app.Activity;
 import android.content.Context;
+import android.widget.Toast;
 
+import com.github.yuyang226.j500px.users.User;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
+import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.picorner.task.px500.PxFetchUserProfileTask;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.utils.IConstants;
 
@@ -53,6 +58,32 @@ public abstract class AbstractPx500PhotoListCommand extends PhotoListCommand {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * If a sub-class needs the 500px login user id information but it's not
+	 * saved yet, the sub-class needs to call this first.
+	 * 
+	 * @param params
+	 */
+	protected void fetchUserProfile(final Object... params) {
+		PxFetchUserProfileTask task = new PxFetchUserProfileTask(mContext);
+		task.addTaskDoneListener(new IGeneralTaskDoneListener<User>() {
+
+			@Override
+			public void onTaskDone(User result) {
+				if (result == null) {
+					// error
+					Toast.makeText(
+							mContext,
+							mContext.getString(R.string.msg_px_error_fetch_user_profile),
+							Toast.LENGTH_SHORT).show();
+				} else {
+					execute(params);
+				}
+			}
+		});
+		task.execute();
 	}
 
 }

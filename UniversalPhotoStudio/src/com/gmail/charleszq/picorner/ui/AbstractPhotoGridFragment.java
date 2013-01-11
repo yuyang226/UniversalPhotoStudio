@@ -20,7 +20,11 @@ import android.widget.TextView;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
+import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
+import com.gmail.charleszq.picorner.msg.IMessageConsumer;
+import com.gmail.charleszq.picorner.msg.Message;
+import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
@@ -91,6 +95,25 @@ public abstract class AbstractPhotoGridFragment extends
 			if (mLoadingMessageText != null) {
 				mLoadingMessageText.setVisibility(View.GONE);
 			}
+		}
+	};
+	
+	protected IMessageConsumer mConsumer = new IMessageConsumer() {
+
+		@Override
+		public boolean consumeMessage(Message msg) {
+			if (msg.getMessageType() == Message.LIKE_PHOTO) {
+				for (int i = 0; i < mPhotosProvider.getCurrentSize(); i++) {
+					MediaObject photo = mPhotosProvider.getMediaObject(i);
+					if (photo.getId().equals(msg.getPhotoId())) {
+						photo.setUserLiked(Boolean.parseBoolean(msg
+								.getCoreData().toString()));
+						break;
+					}
+				}
+				return true;
+			}
+			return false;
 		}
 	};
 
@@ -174,6 +197,16 @@ public abstract class AbstractPhotoGridFragment extends
 		if (mCurrentCommand == null) {
 			loadFirstPage();
 		}
+		MessageBus.addConsumer(mConsumer);
+	}
+	
+	/* (non-Javadoc)
+	 * @see android.support.v4.app.Fragment#onDetach()
+	 */
+	@Override
+	public void onDetach() {
+		MessageBus.removeConsumer(mConsumer);
+		super.onDetach();
 	}
 
 	/**

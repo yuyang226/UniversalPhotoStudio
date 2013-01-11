@@ -162,7 +162,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	@Override
 	protected void loadFirstPage() {
 		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
-		if( act != null && mCurrentCommand == null ) {
+		if (act != null && mCurrentCommand == null) {
 			act.loadDefaultPhotoList();
 		}
 	}

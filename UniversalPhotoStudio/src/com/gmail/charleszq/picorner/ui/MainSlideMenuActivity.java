@@ -25,6 +25,7 @@ import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
+import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.ui.command.CommandType;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
@@ -95,6 +96,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	 * flickr interesting photos.
 	 */
 	void loadDefaultPhotoList() {
+		MessageBus.reset();
 		mCommand = new PxPopularPhotosCommand(this);
 		final ProgressDialog dialog = ProgressDialog.show(this,
 				"", getString(R.string.loading_photos)); //$NON-NLS-1$

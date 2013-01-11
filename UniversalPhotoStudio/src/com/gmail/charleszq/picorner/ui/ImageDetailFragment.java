@@ -54,6 +54,8 @@ import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
+import com.gmail.charleszq.picorner.msg.Message;
+import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.CheckUserLikePhotoTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
@@ -211,8 +213,10 @@ public class ImageDetailFragment extends Fragment implements
 		act.addActionBarListener(mActionBarListener);
 		setRetainInstance(true);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onResume()
 	 */
 	@Override
@@ -329,6 +333,11 @@ public class ImageDetailFragment extends Fragment implements
 					if (act != null) {
 						act.invalidateOptionsMenu();
 					}
+					// broadcast messages
+					Message msg = new Message(Message.LIKE_PHOTO,
+							mPhoto.getMediaSource(), mPhoto.getId(),
+							mUserLikeThePhoto);
+					MessageBus.broadcastMessage(msg);
 				} else {
 					Toast.makeText(getActivity(),
 							getString(R.string.msg_like_photo_fail),

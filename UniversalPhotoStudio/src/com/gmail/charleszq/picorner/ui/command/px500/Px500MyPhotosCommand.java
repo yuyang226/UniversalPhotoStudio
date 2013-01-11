@@ -5,16 +5,12 @@ package com.gmail.charleszq.picorner.ui.command.px500;
 
 import android.app.Activity;
 import android.content.Context;
-import android.widget.Toast;
 
-import com.github.yuyang226.j500px.users.User;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.px500.PxUserPhotosService;
-import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
-import com.gmail.charleszq.picorner.task.px500.PxFetchUserProfileTask;
 
 /**
  * @author charleszq
@@ -68,26 +64,6 @@ public class Px500MyPhotosCommand extends AbstractPx500PhotoListCommand {
 		} else {
 			return super.execute(params);
 		}
-	}
-
-	private void fetchUserProfile(final Object... params) {
-		PxFetchUserProfileTask task = new PxFetchUserProfileTask(mContext);
-		task.addTaskDoneListener(new IGeneralTaskDoneListener<User>() {
-
-			@Override
-			public void onTaskDone(User result) {
-				if (result == null) {
-					// error
-					Toast.makeText(
-							mContext,
-							mContext.getString(R.string.msg_px_error_fetch_user_profile),
-							Toast.LENGTH_SHORT).show();
-				} else {
-					execute(params);
-				}
-			}
-		});
-		task.execute();
 	}
 
 	@Override
