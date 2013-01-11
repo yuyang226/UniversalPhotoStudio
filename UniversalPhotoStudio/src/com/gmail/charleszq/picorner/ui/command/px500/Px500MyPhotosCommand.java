@@ -96,7 +96,13 @@ public class Px500MyPhotosCommand extends AbstractPx500PhotoListCommand {
 			PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 					.getApplication();
 			Author a = app.getPxUserProfile();
-			return new PxUserPhotosService(a.getUserId());
+			String token = getAuthToken();
+			if (token == null) {
+				return new PxUserPhotosService(a.getUserId());
+			} else {
+				return new PxUserPhotosService(token, getAuthTokenSecret(),
+						a.getUserId());
+			}
 		}
 		return super.getAdapter(adapterClass);
 	}
@@ -105,6 +111,5 @@ public class Px500MyPhotosCommand extends AbstractPx500PhotoListCommand {
 	public String getDescription() {
 		return mContext.getString(R.string.cd_500px_my_photos);
 	}
-	
-	
+
 }

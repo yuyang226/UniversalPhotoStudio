@@ -11,7 +11,7 @@ import com.gmail.charleszq.picorner.service.px500.Px500FreshTodayPhotosService;
 
 /**
  * @author charles(charleszq@gmail.com)
- *
+ * 
  */
 public class PxFreshTodayPhotosCommand extends AbstractPx500PhotoListCommand {
 
@@ -31,15 +31,21 @@ public class PxFreshTodayPhotosCommand extends AbstractPx500PhotoListCommand {
 	public String getLabel() {
 		return mContext.getString(R.string.px_fresh_today);
 	}
-	
+
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			return new Px500FreshTodayPhotosService();
+			String token = getAuthToken();
+			if (token == null) {
+				return new Px500FreshTodayPhotosService();
+			} else {
+				return new Px500FreshTodayPhotosService(token,
+						getAuthTokenSecret());
+			}
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return mContext.getString(R.string.cd_500px_fresh_today);

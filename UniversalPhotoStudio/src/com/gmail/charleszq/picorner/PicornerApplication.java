@@ -12,6 +12,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.os.Environment;
 
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
@@ -71,6 +72,8 @@ public class PicornerApplication extends Application {
 	}
 
 	public void saveFlickrAuthToken(OAuth oauth) {
+		
+		//save the token information.
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_PRIVATE);
 		Editor editor = sp.edit();
@@ -89,6 +92,15 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.FLICKR_USER_ID, userId);
 		editor.putString(IConstants.FLICKR_USER_NAME, userName);
 		editor.commit();
+		
+		//delete the cached flickr pool information, user might login with anthor account.
+		File bsRoot = new File(Environment.getExternalStorageDirectory(),
+				IConstants.SD_CARD_FOLDER_NAME);
+		File cacheFile = new File(bsRoot, IConstants.FLICKR_USER_POOL_FILE_NAME);
+		if (cacheFile.exists()) {
+			cacheFile.delete();
+		}
+		
 	}
 
 	public void saveFlickrTokenSecret(String tokenSecrent) {

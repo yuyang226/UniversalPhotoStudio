@@ -31,11 +31,16 @@ public class PxEditorsPhotosCommand extends AbstractPx500PhotoListCommand {
 	public String getLabel() {
 		return mContext.getString(R.string.px_editors);
 	}
-	
+
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			return new Px500EditorsPhotosService();
+			if (getAuthToken() != null) {
+				return new Px500EditorsPhotosService(getAuthToken(),
+						getAuthTokenSecret());
+			} else {
+				return new Px500EditorsPhotosService();
+			}
 		}
 		return super.getAdapter(adapterClass);
 	}

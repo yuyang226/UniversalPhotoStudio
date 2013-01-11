@@ -39,7 +39,13 @@ public class PxUserPhotosCommand extends AbstractPx500PhotoListCommand {
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			return new PxUserPhotosService(mAuthor.getUserId());
+			String token = getAuthToken();
+			if (token == null) {
+				return new PxUserPhotosService(mAuthor.getUserId());
+			} else {
+				return new PxUserPhotosService(token, getAuthTokenSecret(),
+						mAuthor.getUserId());
+			}
 		}
 		return super.getAdapter(adapterClass);
 	}

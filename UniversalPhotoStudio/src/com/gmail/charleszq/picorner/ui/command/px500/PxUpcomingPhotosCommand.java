@@ -35,11 +35,17 @@ public class PxUpcomingPhotosCommand extends AbstractPx500PhotoListCommand {
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			return new Px500UpcomingPhotosService();
+			String token = getAuthToken();
+			if (token == null) {
+				return new Px500UpcomingPhotosService();
+			} else {
+				return new Px500UpcomingPhotosService(token,
+						getAuthTokenSecret());
+			}
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
+
 	@Override
 	public String getDescription() {
 		return mContext.getString(R.string.cd_500px_upcoming);
