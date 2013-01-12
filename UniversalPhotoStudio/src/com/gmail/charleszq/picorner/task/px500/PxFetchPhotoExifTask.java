@@ -21,7 +21,7 @@ public class PxFetchPhotoExifTask extends
 		String photoId = params[0];
 		try {
 			J500px px = new J500px(IConstants.PX500_CONSUMER_KEY);
-			Photo p = px.getPhotosInterface().getPhotoDetail(photoId, ImageSize.LARGEST, false, -1);
+			Photo p = px.getPhotosInterface().getPhotoDetail(Integer.parseInt(photoId), ImageSize.LARGEST, false, -1);
 			return p;
 		} catch (Exception e) {
 			return null;

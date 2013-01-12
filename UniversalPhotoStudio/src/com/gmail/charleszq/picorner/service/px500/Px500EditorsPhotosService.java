@@ -31,7 +31,8 @@ public class Px500EditorsPhotosService extends AbstractPxPhotoListService {
 			throws Exception {
 		J500px px = getJ500px();
 		List<Photo> photos = px.getPhotosInterface().getPhotos(GlobalFeatures.EDITORS, 
-				null, null, null, ImageSize.LARGEST, null, pageNo + 1, pageSize);
+				null, null, null, new ImageSize[]{ImageSize.LARGEST}, null, 
+				false, false, false, pageNo + 1, pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 
