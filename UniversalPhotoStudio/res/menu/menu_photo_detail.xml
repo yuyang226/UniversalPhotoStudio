@@ -42,9 +42,18 @@
             android:showAsAction="never"
             android:title="@string/menu_item_set_wallpaper">
         </item>
-        <item android:id="@+id/menu_item_see_owner_photos"
+        <item
+            android:id="@+id/menu_item_see_owner_photos"
             android:showAsAction="never"
             android:title="@string/menu_item_owner_photos"/>
+    </group>
+    <group android:id="@+id/menu_group_photo_detail_500px" >
+        <item
+            android:id="@+id/menu_item_vote"
+            android:showAsAction="ifRoom"
+            android:icon="@drawable/ic_action_vote"
+            android:title="@string/menu_item_vote">
+        </item>
     </group>
 
 </menu>

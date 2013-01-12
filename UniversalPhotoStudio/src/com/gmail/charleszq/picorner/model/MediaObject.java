@@ -29,6 +29,15 @@ public final class MediaObject implements Serializable {
 	private List<ExifData> mExifs = new ArrayList<ExifData>();
 
 	private boolean isUserLiked = false;
+	private boolean isUserVoted = false;
+	
+	public boolean isUserVoted () {
+		return isUserVoted;
+	}
+	
+	public void setUserVoted(boolean voted) {
+		this.isUserVoted = voted;
+	}
 
 	public boolean isUserLiked() {
 		return isUserLiked;

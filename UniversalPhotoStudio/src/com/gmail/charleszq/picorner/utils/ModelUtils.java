@@ -345,6 +345,7 @@ public final class ModelUtils {
 		photo.setViews(p.getViewsCount());
 		
 		photo.setUserLiked(p.isFavorited());
+		photo.setUserVoted(p.isVoted());
 
 		photo.setMediaSource(MediaSourceType.PX500);
 		return photo;

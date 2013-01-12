@@ -56,6 +56,7 @@
     <string name="menu_item_owner_photos">Owner Photos</string>
     <string name="menu_item_org_my_flickr_photo">Organize</string>
     <string name="menu_item_f_user_web_site">Owner\'s Website</string>
+    <string name="menu_item_vote">Vote</string>
     <string name="main_menu_filter_hint">menu filter</string>
 
     <!-- messages -->
@@ -101,6 +102,8 @@
 	<string name="msg_photo">photo</string>
 	<string name="msg_px500_auth_fail">Failed to sign into 500px.</string>
 	<string name="msg_px_error_fetch_user_profile">Error to get my 500px user profile.</string>
+	<string name="msg_500px_photo_voted">Voted!</string>
+	<string name="msg_500px_photo_vote_failed">You may already voted!</string>
 	
 	<!--  flickr tag search -->
 	<string name="msg_flickr_tag_search_label">Flickr tag search</string>

@@ -72,8 +72,8 @@ public class PicornerApplication extends Application {
 	}
 
 	public void saveFlickrAuthToken(OAuth oauth) {
-		
-		//save the token information.
+
+		// save the token information.
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_PRIVATE);
 		Editor editor = sp.edit();
@@ -92,15 +92,16 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.FLICKR_USER_ID, userId);
 		editor.putString(IConstants.FLICKR_USER_NAME, userName);
 		editor.commit();
-		
-		//delete the cached flickr pool information, user might login with anthor account.
+
+		// delete the cached flickr pool information, user might login with
+		// anthor account.
 		File bsRoot = new File(Environment.getExternalStorageDirectory(),
 				IConstants.SD_CARD_FOLDER_NAME);
 		File cacheFile = new File(bsRoot, IConstants.FLICKR_USER_POOL_FILE_NAME);
 		if (cacheFile.exists()) {
 			cacheFile.delete();
 		}
-		
+
 	}
 
 	public void saveFlickrTokenSecret(String tokenSecrent) {
@@ -227,7 +228,12 @@ public class PicornerApplication extends Application {
 				result = a.getUserId().equals(getInstagramUserId());
 				break;
 			case PX500:
-				// not support yet.
+				Author me = getPxUserProfile();
+				if (me == null) {
+					result = true; // not login
+				} else {
+					result = a.getUserId().equals(me.getUserId());
+				}
 				break;
 			}
 		}
@@ -267,12 +273,12 @@ public class PicornerApplication extends Application {
 				IConstants.PX_USER_BUDDY_ICON_URL, null));
 		return a;
 	}
-	
+
 	public void savePxUserProfile(String id, String name, String url) {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_PRIVATE);
 		Editor editor = sp.edit();
-		editor.putString(IConstants.PX_USER_ID,id);
+		editor.putString(IConstants.PX_USER_ID, id);
 		editor.putString(IConstants.PX_USER_NAME, name);
 		editor.putString(IConstants.PX_USER_BUDDY_ICON_URL, url);
 		editor.commit();

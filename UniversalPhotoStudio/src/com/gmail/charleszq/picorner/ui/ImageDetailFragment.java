@@ -61,6 +61,7 @@ import com.gmail.charleszq.picorner.task.flickr.CheckUserLikePhotoTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
 import com.gmail.charleszq.picorner.task.px500.PxLikePhotoTask;
+import com.gmail.charleszq.picorner.task.px500.PxVotePhotoTask;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
 import com.gmail.charleszq.picorner.ui.flickr.OrganizeMyFlickrPhotoActivity;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -493,6 +494,15 @@ public class ImageDetailFragment extends Fragment implements
 		if (app.isMyOwnPhoto(mPhoto)) {
 			ownerPhotoItem.setVisible(false);
 		}
+
+		// 500px menu group
+		if (mPhoto.getMediaSource() != MediaSourceType.PX500) {
+			menu.setGroupVisible(R.id.menu_group_photo_detail_500px, false);
+		} else {
+			MenuItem voteItem = menu.findItem(R.id.menu_item_vote);
+			voteItem.setVisible(app.getPx500OauthToken() != null
+					&& !app.isMyOwnPhoto(mPhoto) && !mPhoto.isUserVoted());
+		}
 	}
 
 	@Override
@@ -526,6 +536,9 @@ public class ImageDetailFragment extends Fragment implements
 			return true;
 		case R.id.menu_item_like:
 			likePhoto();
+			return true;
+		case R.id.menu_item_vote:
+			votePhoto();
 			return true;
 		case R.id.menu_item_save:
 			savePhotoLocally();
@@ -562,6 +575,31 @@ public class ImageDetailFragment extends Fragment implements
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	/**
+	 * Votes a 500px photo.
+	 */
+	private void votePhoto() {
+		PxVotePhotoTask task = new PxVotePhotoTask(getActivity());
+		task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
+
+			@Override
+			public void onTaskDone(Boolean result) {
+				if (result) {
+					Toast.makeText(getActivity(),
+							getString(R.string.msg_500px_photo_voted),
+							Toast.LENGTH_SHORT).show();
+					mPhoto.setUserVoted(true);
+					getActivity().invalidateOptionsMenu();
+				} else {
+					Toast.makeText(getActivity(),
+							getString(R.string.msg_500px_photo_vote_failed),
+							Toast.LENGTH_SHORT).show();
+				}
+			}
+		});
+		task.execute(mPhoto.getId());
 	}
 
 	/**
