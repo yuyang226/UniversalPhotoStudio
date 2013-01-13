@@ -18,7 +18,7 @@ import com.gmail.charleszq.picorner.utils.InstagramHelper;
  * 
  */
 public class InstagramFollowUserTask extends
-		AbstractContextAwareTask<String, Void, Boolean> {
+		AbstractContextAwareTask<String, Integer, Boolean> {
 
 	public InstagramFollowUserTask(Context ctx) {
 		super(ctx);

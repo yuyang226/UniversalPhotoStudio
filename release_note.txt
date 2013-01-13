@@ -7,7 +7,9 @@ What's new (version 1.1.1)
 6, fav/unfav 500px photos; 
 7, comment 500px photos;
 8, vote 500px photos;
-9, bug fixes
+9, follow/unfollow 500px users;
+10, increase the photo thumb size for nexus 7
+11, bug fixes. 
 
 What's new (version 1.1.0)
 

@@ -14,23 +14,33 @@ import com.gmail.charleszq.picorner.utils.J500pxHelper;
 
 /**
  * @author charleszq
- *
+ * 
  */
 public class PxFetchUserProfileTask extends
-		AbstractContextAwareTask<Void, Integer, User> {
+		AbstractContextAwareTask<String, Integer, User> {
 
 	public PxFetchUserProfileTask(Context ctx) {
 		super(ctx);
 	}
 
+	/**
+	 * if no params, means geting my own user profile; otherwise, get the user profile of
+	 * the given user id.
+	 */
 	@Override
-	protected User doInBackground(Void... params) {
-		PicornerApplication app = (PicornerApplication) ((Activity)mContext).getApplication();
+	protected User doInBackground(String... params) {
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+				.getApplication();
 		String token = app.getPx500OauthToken();
 		String secret = app.getPx500OauthTokenSecret();
 		J500px px = J500pxHelper.getJ500pxAuthedInstance(token, secret);
 		try {
-			return px.getUsersInterface().getUserProfile();
+			if (params.length > 0) {
+				return px.getUsersInterface().getUserProfile(
+						Integer.parseInt(params[0]), null, null);
+			} else {
+				return px.getUsersInterface().getUserProfile();
+			}
 		} catch (Exception e) {
 			return null;
 		}
@@ -44,7 +54,5 @@ public class PxFetchUserProfileTask extends
 				result.getUserName(), result.getUserPicUrl());
 		super.onPostExecute(result);
 	}
-	
-	
 
 }

@@ -15,13 +15,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.github.yuyang226.j500px.users.User;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
+import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.ig.InstagramCheckRelationshipTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramFollowUserTask;
+import com.gmail.charleszq.picorner.task.px500.PxFetchUserProfileTask;
+import com.gmail.charleszq.picorner.task.px500.PxFollowUserTask;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramUserPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxUserPhotosCommand;
@@ -41,7 +45,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	/**
 	 * the ordinal of <code>MediaSourceType</code>
 	 */
-	private int mMedisSourceType = 0;
+	private int mMediaSourceType = 0;
 
 	/**
 	 * The marker to show the follow menu item or not, when this fragment is
@@ -49,11 +53,12 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	 * owner, if it's instagram photo, we will show the menu item, and according
 	 * the current relationship, we change the menu item title.
 	 */
-	private boolean mShowInstagramFollowMenu = false;
+	private boolean mShowFollowMenuItem = false;
 
 	/**
-	 * 0: not ready yet, we don't know the relaitonship now; 1: following 2: not
-	 * following
+	 * 0: not ready yet, we don't know the relaitonship now; <br/>
+	 * 1: following <br/>
+	 * 2: not following
 	 */
 	private int mFollowing = 0;
 
@@ -65,10 +70,10 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 
 	@Override
 	protected void loadFirstPage() {
-		if (mMedisSourceType == MediaSourceType.FLICKR.ordinal()) {
+		if (mMediaSourceType == MediaSourceType.FLICKR.ordinal()) {
 			mCurrentCommand = new FlickrUserPhotosCommand(getActivity(),
 					mCurrentUser);
-		} else if (mMedisSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
+		} else if (mMediaSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
 			mCurrentCommand = new InstagramUserPhotosCommand(getActivity(),
 					mCurrentUser);
 		} else {
@@ -86,7 +91,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 
 	@Override
 	protected void initialIntentData(Intent intent) {
-		mMedisSourceType = intent.getIntExtra(
+		mMediaSourceType = intent.getIntExtra(
 				UserPhotoListActivity.MD_TYPE_KEY, 0);
 		mCurrentUser = (Author) intent
 				.getSerializableExtra(UserPhotoListActivity.USER_KEY);
@@ -147,19 +152,25 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 					}
 				}
 			};
-			InstagramFollowUserTask followTask = new InstagramFollowUserTask(
-					getActivity());
-			followTask.addTaskDoneListener(relationshipListener);
-			followTask.execute(
-					mCurrentUser.getUserId(),
-					mFollowing == 1 ? Boolean.FALSE.toString() : Boolean.TRUE
-							.toString());
+			AbstractContextAwareTask<String, Integer,Boolean> followTask = null;
+			if (mMediaSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
+				followTask = new InstagramFollowUserTask(getActivity());
+			} else if (mMediaSourceType == MediaSourceType.PX500.ordinal()) {
+				followTask = new PxFollowUserTask(getActivity());
+			}
+			if (followTask != null) {
+				followTask.addTaskDoneListener(relationshipListener);
+				followTask.execute(mCurrentUser.getUserId(),
+						mFollowing == 1 ? Boolean.FALSE.toString()
+								: Boolean.TRUE.toString());
+			}
 			return true;
 		}
-		
-		//show flickr user's web site.
-		if( item.getItemId() == R.id.menu_item_f_user_website ) {
-			String url = IConstants.FLICKR_WEB_SITE_URL + this.mCurrentUser.getUserId(); 
+
+		// show flickr user's web site.
+		if (item.getItemId() == R.id.menu_item_f_user_website) {
+			String url = IConstants.FLICKR_WEB_SITE_URL
+					+ this.mCurrentUser.getUserId();
 			Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 			getActivity().startActivity(intent);
 			return true;
@@ -170,7 +181,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		MenuItem item = menu.findItem(R.id.menu_item_follow);
-		if (!mShowInstagramFollowMenu) {
+		if (!mShowFollowMenuItem) {
 			item.setVisible(false);
 		}
 
@@ -189,21 +200,21 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 		}
 
 		menu.setGroupVisible(R.id.group_f_u_photo_list,
-				this.mMedisSourceType == MediaSourceType.FLICKR.ordinal());
+				this.mMediaSourceType == MediaSourceType.FLICKR.ordinal());
 	}
 
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		// now we have the user information, we need to check the relationship.
-		if (mMedisSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
-			PicornerApplication app = (PicornerApplication) getActivity()
-					.getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
+		if (mMediaSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
 			if (app.getInstagramUserId() == null) {
-				mShowInstagramFollowMenu = false;
+				mShowFollowMenuItem = false;
 				getActivity().invalidateOptionsMenu();
 			} else {
-				mShowInstagramFollowMenu = true;
+				mShowFollowMenuItem = true;
 				InstagramCheckRelationshipTask task = new InstagramCheckRelationshipTask(
 						getActivity());
 				task.addTaskDoneListener(new IGeneralTaskDoneListener<Boolean>() {
@@ -211,13 +222,36 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 					@Override
 					public void onTaskDone(Boolean result) {
 						mFollowing = result ? 1 : 2;
-						mShowInstagramFollowMenu = true;
+						mShowFollowMenuItem = true;
 						if (getActivity() != null)
 							getActivity().invalidateOptionsMenu();
 
 					}
 				});
 				task.execute(mCurrentUser.getUserId());
+			}
+		} else if (mMediaSourceType == MediaSourceType.PX500.ordinal()) {
+			if (app.getPx500OauthToken() == null) {
+				mShowFollowMenuItem = false;
+				getActivity().invalidateOptionsMenu();
+			} else {
+				PxFetchUserProfileTask pxUserTask = new PxFetchUserProfileTask(
+						getActivity());
+				pxUserTask
+						.addTaskDoneListener(new IGeneralTaskDoneListener<User>() {
+
+							@Override
+							public void onTaskDone(User result) {
+								if (result != null) {
+									mFollowing = result.isFollowing() ? 1 : 2;
+									mShowFollowMenuItem = true;
+									if (getActivity() != null) {
+										getActivity().invalidateOptionsMenu();
+									}
+								}
+							}
+						});
+				pxUserTask.execute(mCurrentUser.getUserId());
 			}
 		}
 	}
