@@ -496,10 +496,10 @@ public class ImageDetailFragment extends Fragment implements
 		}
 
 		// 500px menu group
+		MenuItem voteItem = menu.findItem(R.id.menu_item_vote);
 		if (mPhoto.getMediaSource() != MediaSourceType.PX500) {
-			menu.setGroupVisible(R.id.menu_group_photo_detail_500px, false);
+			voteItem.setVisible(false);
 		} else {
-			MenuItem voteItem = menu.findItem(R.id.menu_item_vote);
 			voteItem.setVisible(app.getPx500OauthToken() != null
 					&& !app.isMyOwnPhoto(mPhoto) && !mPhoto.isUserVoted());
 		}

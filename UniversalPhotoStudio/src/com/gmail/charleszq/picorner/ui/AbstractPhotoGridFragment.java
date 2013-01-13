@@ -173,7 +173,7 @@ public abstract class AbstractPhotoGridFragment extends
 				new ViewTreeObserver.OnGlobalLayoutListener() {
 					@Override
 					public void onGlobalLayout() {
-						if (mAdapter.getNumColumns() == 0) {
+//						if (mAdapter.getNumColumns() == 0) {
 							final int numColumns = (int) Math.floor(mGridView
 									.getWidth()
 									/ (mImageThumbSize + mImageThumbSpacing));
@@ -183,7 +183,7 @@ public abstract class AbstractPhotoGridFragment extends
 								mAdapter.setNumColumns(numColumns);
 								mAdapter.setItemHeight(columnWidth);
 							}
-						}
+//						}
 					}
 				});
 

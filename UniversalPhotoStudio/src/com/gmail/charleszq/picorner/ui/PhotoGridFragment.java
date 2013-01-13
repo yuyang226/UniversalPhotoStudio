@@ -111,7 +111,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
 		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
 		if (act != null) {
-			// show main menu at the first time.
+			// show help layer at the first time.
 			PicornerApplication app = (PicornerApplication) act
 					.getApplication();
 			if (app.isFirstTime()) {
