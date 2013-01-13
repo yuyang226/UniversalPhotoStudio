@@ -19,13 +19,15 @@ import com.gmail.charleszq.picorner.utils.J500pxHelper;
 public class PxFetchUserProfileTask extends
 		AbstractContextAwareTask<String, Integer, User> {
 
+	private boolean mIsMyProfile = true;
+
 	public PxFetchUserProfileTask(Context ctx) {
 		super(ctx);
 	}
 
 	/**
-	 * if no params, means geting my own user profile; otherwise, get the user profile of
-	 * the given user id.
+	 * if no params, means geting my own user profile; otherwise, get the user
+	 * profile of the given user id.
 	 */
 	@Override
 	protected User doInBackground(String... params) {
@@ -36,6 +38,7 @@ public class PxFetchUserProfileTask extends
 		J500px px = J500pxHelper.getJ500pxAuthedInstance(token, secret);
 		try {
 			if (params.length > 0) {
+				mIsMyProfile = false;
 				return px.getUsersInterface().getUserProfile(
 						Integer.parseInt(params[0]), null, null);
 			} else {
@@ -48,10 +51,12 @@ public class PxFetchUserProfileTask extends
 
 	@Override
 	protected void onPostExecute(User result) {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		app.savePxUserProfile(String.valueOf(result.getId()),
-				result.getUserName(), result.getUserPicUrl());
+		if (mIsMyProfile) {
+			PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+					.getApplication();
+			app.savePxUserProfile(String.valueOf(result.getId()),
+					result.getUserName(), result.getUserPicUrl());
+		}
 		super.onPostExecute(result);
 	}
 

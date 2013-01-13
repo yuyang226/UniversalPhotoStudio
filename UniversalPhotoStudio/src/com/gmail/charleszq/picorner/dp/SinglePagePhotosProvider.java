@@ -4,7 +4,9 @@
 package com.gmail.charleszq.picorner.dp;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import android.util.Log;
 
@@ -22,9 +24,17 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	 */
 	private static final long serialVersionUID = 1771926524223469593L;
 
+	/**
+	 * Log tag
+	 */
 	private static final String TAG = SinglePagePhotosProvider.class.getName();
 
+	/**
+	 * The photo list.
+	 */
 	private List<MediaObject> mPhotos;
+	
+	private Set<String> mPhotoIds;
 
 	/**
 	 * The current source which populate photos into this, usually, the command.
@@ -32,6 +42,7 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	transient private Object mCurrentSource = null;
 
 	public SinglePagePhotosProvider(MediaObjectCollection photos) {
+		mPhotoIds = new HashSet<String>();
 		loadData(photos, null);
 	}
 
@@ -57,14 +68,16 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 					"before clear previous photos, there were %s in it", //$NON-NLS-1$
 					mPhotos.size()));
 			mPhotos.clear();
+			mPhotoIds.clear();
 			mCurrentSource = source;
 		}
 		for( MediaObject p : list.getPhotos() ) {
-			if( mPhotos.contains(p) ) {
-				Log.w(TAG, "Duplication photo."); //$NON-NLS-1$
+			if(mPhotoIds.contains(p.getId())) {
+				Log.d(TAG, "Duplicate photo."); //$NON-NLS-1$
 				continue;
 			}
 			mPhotos.add(p);
+			mPhotoIds.add(p.getId());
 		}
 		Log.d(TAG, String.format("now there are %s photos.", mPhotos.size())); //$NON-NLS-1$
 	}
