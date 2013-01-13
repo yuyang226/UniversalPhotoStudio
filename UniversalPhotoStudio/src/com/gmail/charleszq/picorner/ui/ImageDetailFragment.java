@@ -212,7 +212,6 @@ public class ImageDetailFragment extends Fragment implements
 
 		setHasOptionsMenu(true);
 		act.addActionBarListener(mActionBarListener);
-		setRetainInstance(true);
 	}
 
 	/*
