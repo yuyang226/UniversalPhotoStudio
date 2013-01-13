@@ -383,6 +383,10 @@ public class ImageDetailFragment extends Fragment implements
 		// Pass clicks on the ImageView to the parent activity to handle
 		if (OnClickListener.class.isInstance(getActivity())) {
 			mImageView.setOnClickListener((OnClickListener) getActivity());
+			mUserInfoContainer
+					.setOnClickListener((OnClickListener) getActivity());
+			this.mPhotoTitle.setOnClickListener((OnClickListener) getActivity());
+			this.mUserName.setOnClickListener((OnClickListener) getActivity());
 		}
 	}
 
@@ -592,11 +596,10 @@ public class ImageDetailFragment extends Fragment implements
 							Toast.LENGTH_SHORT).show();
 					mPhoto.setUserVoted(true);
 					getActivity().invalidateOptionsMenu();
-					
+
 					// broadcast messages
-					Message msg = new Message(Message.VOTE_PHOTO,
-							mPhoto.getMediaSource(), mPhoto.getId(),
-							true);
+					Message msg = new Message(Message.VOTE_PHOTO, mPhoto
+							.getMediaSource(), mPhoto.getId(), true);
 					MessageBus.broadcastMessage(msg);
 				} else {
 					Toast.makeText(getActivity(),
