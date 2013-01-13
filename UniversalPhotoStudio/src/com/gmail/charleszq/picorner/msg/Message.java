@@ -12,6 +12,7 @@ import com.gmail.charleszq.picorner.model.MediaSourceType;
 public final class Message {
 	
 	public static final int LIKE_PHOTO = 100;
+	public static final int VOTE_PHOTO = 101;
 	
 	private int mMessageType;
 	private MediaSourceType mPhotoType;

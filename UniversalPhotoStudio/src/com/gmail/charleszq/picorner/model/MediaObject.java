@@ -200,11 +200,5 @@ public final class MediaObject implements Serializable {
 	public List<ExifData> getExifs() {
 		return mExifs;
 	}
-
-	@Override
-	public int hashCode() {
-		return mId.hashCode();
-	}
-	
 	
 }

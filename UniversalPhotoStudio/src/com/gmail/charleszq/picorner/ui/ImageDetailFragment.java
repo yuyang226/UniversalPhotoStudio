@@ -592,6 +592,12 @@ public class ImageDetailFragment extends Fragment implements
 							Toast.LENGTH_SHORT).show();
 					mPhoto.setUserVoted(true);
 					getActivity().invalidateOptionsMenu();
+					
+					// broadcast messages
+					Message msg = new Message(Message.VOTE_PHOTO,
+							mPhoto.getMediaSource(), mPhoto.getId(),
+							true);
+					MessageBus.broadcastMessage(msg);
 				} else {
 					Toast.makeText(getActivity(),
 							getString(R.string.msg_500px_photo_vote_failed),

@@ -42,6 +42,7 @@ public class PxFetchUserProfileTask extends
 				return px.getUsersInterface().getUserProfile(
 						Integer.parseInt(params[0]), null, null);
 			} else {
+				mIsMyProfile = true;
 				return px.getUsersInterface().getUserProfile();
 			}
 		} catch (Exception e) {

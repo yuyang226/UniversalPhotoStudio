@@ -113,6 +113,16 @@ public abstract class AbstractPhotoGridFragment extends
 				}
 				return true;
 			}
+			if( msg.getMessageType() == Message.VOTE_PHOTO ) {
+				for( int i = 0; i < mPhotosProvider.getCurrentSize(); i ++ ) {
+					MediaObject photo = mPhotosProvider.getMediaObject(i);
+					if( photo.getId().equals(msg.getPhotoId())) {
+						photo.setUserVoted(true);
+						break;
+					}
+				}
+				return true;
+			}
 			return false;
 		}
 	};
