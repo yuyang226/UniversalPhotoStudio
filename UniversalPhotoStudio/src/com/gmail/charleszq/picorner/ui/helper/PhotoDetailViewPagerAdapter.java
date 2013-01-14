@@ -11,10 +11,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.ui.PhotoDetailCommentsFragment;
+import com.gmail.charleszq.picorner.ui.PhotoDetailExifDataFragment;
 import com.gmail.charleszq.picorner.ui.PhotoDetailGeneralFragment;
 import com.gmail.charleszq.picorner.ui.PhotoDetailLikesFragment;
 import com.gmail.charleszq.picorner.ui.PhotoDetailMapFragment;
-import com.gmail.charleszq.picorner.ui.flickr.FlickrExifDataFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -35,7 +35,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 		case FLICKR:
 			fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
-			fragments.add(FlickrExifDataFragment.newInstance(mPhoto));
+			fragments.add(PhotoDetailExifDataFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailLikesFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailMapFragment.newMyInstance(mPhoto));
 			break;
@@ -48,7 +48,7 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 		case PX500:
 			fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
-			fragments.add(FlickrExifDataFragment.newInstance(mPhoto));
+			fragments.add(PhotoDetailExifDataFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailMapFragment.newMyInstance(mPhoto));
 			break;
 		}
