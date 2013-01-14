@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -21,7 +22,13 @@ import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
+import com.gmail.charleszq.picorner.model.GeoLocation;
 import com.gmail.charleszq.picorner.model.MediaObject;
+import com.gmail.charleszq.picorner.model.MediaSourceType;
+import com.gmail.charleszq.picorner.msg.Message;
+import com.gmail.charleszq.picorner.msg.MessageBus;
+import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.picorner.task.flickr.FetchGeoLocationTask;
 import com.gmail.charleszq.picorner.ui.helper.PhotoDetailViewPagerAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.viewpagerindicator.TitlePageIndicator;
@@ -33,6 +40,8 @@ import com.viewpagerindicator.TitlePageIndicator;
  * 
  */
 public class PhotoDetailActivity extends FragmentActivity {
+
+	private static final String TAG = PhotoDetailActivity.class.getSimpleName();
 
 	private ViewPager mViewPager;
 	private TitlePageIndicator mIndicator;
@@ -165,6 +174,58 @@ public class PhotoDetailActivity extends FragmentActivity {
 			break;
 		}
 		return result;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see android.support.v4.app.FragmentActivity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		// for flickr photos, some api calls just cannot return the geo
+		// information,
+		// then check if there is geo information
+		if (mCurrentPhoto == null
+				|| !MediaSourceType.FLICKR.equals(mCurrentPhoto
+						.getMediaSource())) {
+			return;
+		}
+
+		GeoLocation loc = mCurrentPhoto.getLocation();
+		if (loc != null) {
+			return;
+		}
+
+		FetchGeoLocationTask task = new FetchGeoLocationTask();
+		task.addTaskDoneListener(new IGeneralTaskDoneListener<GeoLocation>() {
+			@Override
+			public void onTaskDone(GeoLocation result) {
+				onFlickrGeoInformationFetch(result);
+			}
+		});
+		Log.d(TAG, "call server to fetch geo information for flickr photo."); //$NON-NLS-1$
+		task.execute(mCurrentPhoto.getId());
+
+	}
+
+	/**
+	 * After geo location fetched for flikcr photos.
+	 * 
+	 * @param result
+	 */
+	private void onFlickrGeoInformationFetch(GeoLocation result) {
+		if (result == null) {
+			return;
+		}
+		mCurrentPhoto.setLocation(result);
+		notifyDataChanged();
+
+		//broadcast the message.
+		Message msg = new Message(Message.GEO_INFO_FETCHED,
+				mCurrentPhoto.getMediaSource(), mCurrentPhoto.getId(), result);
+		MessageBus.broadcastMessage(msg);
 	}
 
 }
