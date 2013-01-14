@@ -25,8 +25,7 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 
 /**
- * Represents the fragment to show the detail information of photo, currently
- * for both flickr photo and instagram photo
+ * Represents the fragment to show the detail information of photo
  * 
  * @author charles(charleszq@gmail.com)
  * 
@@ -61,7 +60,7 @@ public class PhotoDetailGeneralFragment extends
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.flickr_detail_general, container,
+		View v = inflater.inflate(R.layout.photo_detail_general, container,
 				false);
 		TextView title = (TextView) v
 				.findViewById(R.id.flickr_detail_general_photo_title);

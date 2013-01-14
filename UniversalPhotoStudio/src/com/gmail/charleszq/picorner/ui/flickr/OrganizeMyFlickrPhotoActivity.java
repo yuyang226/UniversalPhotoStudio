@@ -19,13 +19,13 @@ import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -64,18 +64,6 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 	private static final String TAG = OrganizeMyFlickrPhotoActivity.class
 			.getSimpleName();
 
-	private Button mCancelButton, mOkButton;
-	private OnClickListener mButtonClickListener = new OnClickListener() {
-
-		@Override
-		public void onClick(View v) {
-			if (v == mCancelButton) {
-				finish();
-			} else if (v == mOkButton) {
-				performOk();
-			}
-		}
-	};
 	private ImageView mImageView;
 	private ListView mListView;
 	private ProgressBar mProgressBar;
@@ -108,12 +96,6 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 		if (mPhotoId == null) {
 			Log.w(TAG, "no photo id passed in."); //$NON-NLS-1$
 		}
-
-		// buttons
-		mCancelButton = (Button) findViewById(R.id.button_org_my_f_cancel);
-		mCancelButton.setOnClickListener(mButtonClickListener);
-		mOkButton = (Button) findViewById(R.id.button_org_my_f_ok);
-		mOkButton.setOnClickListener(mButtonClickListener);
 
 		// the preview image
 		mImageView = (ImageView) findViewById(R.id.image_org_my_f_photo);
@@ -266,6 +248,16 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = new MenuInflater(this);
+		inflater.inflate(R.menu.menu_save, menu);
+		return true;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -273,10 +265,15 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 	 */
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == android.R.id.home) {
+		switch( item.getItemId() ) {
+		case android.R.id.home:
 			finish();
 			return true;
+		case R.id.menu_item_save:
+			performOk();
+			return true;
 		}
+		
 		return super.onOptionsItemSelected(item);
 	}
 

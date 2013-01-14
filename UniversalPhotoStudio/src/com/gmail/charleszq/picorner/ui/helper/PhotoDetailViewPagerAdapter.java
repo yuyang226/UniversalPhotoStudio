@@ -3,11 +3,13 @@ package com.gmail.charleszq.picorner.ui.helper;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.ui.PhotoDetailCommentsFragment;
@@ -15,6 +17,7 @@ import com.gmail.charleszq.picorner.ui.PhotoDetailExifDataFragment;
 import com.gmail.charleszq.picorner.ui.PhotoDetailGeneralFragment;
 import com.gmail.charleszq.picorner.ui.PhotoDetailLikesFragment;
 import com.gmail.charleszq.picorner.ui.PhotoDetailMapFragment;
+import com.gmail.charleszq.picorner.ui.flickr.MyFlickrPhotoGeneralFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -30,10 +33,16 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public Fragment getItem(int pos) {
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+				.getApplication();
 		List<Fragment> fragments = new ArrayList<Fragment>();
 		switch (mPhoto.getMediaSource()) {
 		case FLICKR:
-			fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
+			if (app.isMyOwnPhoto(mPhoto)) {
+				fragments.add(MyFlickrPhotoGeneralFragment.newInstance(mPhoto));
+			} else {
+				fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
+			}
 			fragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailExifDataFragment.newInstance(mPhoto));
 			fragments.add(PhotoDetailLikesFragment.newInstance(mPhoto));
