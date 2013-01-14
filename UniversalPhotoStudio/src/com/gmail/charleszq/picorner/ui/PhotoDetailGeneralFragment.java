@@ -156,7 +156,7 @@ public class PhotoDetailGeneralFragment extends
 								.getFavorites()));
 					}
 				});
-				ptask.execute(mCurrentPhoto.getId());
+				ptask.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());
 
 				if (mCurrentPhoto.getMediaSource() == MediaSourceType.FLICKR)
 					loadFlickrFavs(mCurrentPhoto.getId(), photoFavs);

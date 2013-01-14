@@ -29,6 +29,10 @@ public final class MediaObject implements Serializable {
 	private List<ExifData> mExifs = new ArrayList<ExifData>();
 
 	private boolean isUserLiked = false;
+	
+	/**
+	 * 500px
+	 */
 	private boolean isUserVoted = false;
 	
 	public boolean isUserVoted () {
@@ -200,5 +204,4 @@ public final class MediaObject implements Serializable {
 	public List<ExifData> getExifs() {
 		return mExifs;
 	}
-	
 }

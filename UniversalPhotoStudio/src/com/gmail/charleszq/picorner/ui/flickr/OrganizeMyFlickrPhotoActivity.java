@@ -152,6 +152,10 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 		t.execute(mPhotoId);
 	}
 
+	/**
+	 * Photo context means the photo sets and groups this photo belongs to.
+	 * @param result
+	 */
 	private void onPhotoContextFetched(List<PhotoPlace> result) {
 		Log.d(TAG,
 				"photo context fetched, size: " + (result == null ? 0 : result.size())); //$NON-NLS-1$

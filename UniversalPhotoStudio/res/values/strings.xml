@@ -55,6 +55,7 @@
     <string name="menu_item_ig_unfollow_user">Unfollow</string>
     <string name="menu_item_owner_photos">Owner Photos</string>
     <string name="menu_item_org_my_flickr_photo">Organize</string>
+    <string name="menu_item_prop_my_flickr_photo">Properties</string>
     <string name="menu_item_f_user_web_site">Owner\'s Website</string>
     <string name="menu_item_vote">Vote</string>
     <string name="main_menu_filter_hint">menu filter</string>

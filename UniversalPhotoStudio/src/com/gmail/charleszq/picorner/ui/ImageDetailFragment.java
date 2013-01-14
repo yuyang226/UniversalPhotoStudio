@@ -63,6 +63,7 @@ import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
 import com.gmail.charleszq.picorner.task.px500.PxLikePhotoTask;
 import com.gmail.charleszq.picorner.task.px500.PxVotePhotoTask;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
+import com.gmail.charleszq.picorner.ui.flickr.FlickrPhotoPropertyActivity;
 import com.gmail.charleszq.picorner.ui.flickr.OrganizeMyFlickrPhotoActivity;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ImageUtils;
@@ -489,6 +490,9 @@ public class ImageDetailFragment extends Fragment implements
 			MenuItem addToSetGroupItem = menu
 					.findItem(R.id.menu_item_add_my_flickr_photo_to_group);
 			addToSetGroupItem.setVisible(app.isMyOwnPhoto(mPhoto));
+			
+			MenuItem mngPropertyItem = menu.findItem(R.id.menu_item_my_f_photo_prop);
+			mngPropertyItem.setVisible(app.isMyOwnPhoto(mPhoto));
 		}
 
 		// hide 'owner photos' menu item for my own photos
@@ -522,6 +526,9 @@ public class ImageDetailFragment extends Fragment implements
 		switch (item.getItemId()) {
 		case R.id.menu_item_add_my_flickr_photo_to_group:
 			organizeFlickrPhoto();
+			return true;
+		case R.id.menu_item_my_f_photo_prop:
+			manageFlickrPhotoProperties();
 			return true;
 		case android.R.id.home:
 			getActivity().finish();
@@ -611,13 +618,22 @@ public class ImageDetailFragment extends Fragment implements
 	}
 
 	/**
-	 * shows the UI to organize my flickr photo. mainly change permission, and
-	 * add to set/groups
+	 * shows the UI to organize my flickr photo. 
 	 */
 	private void organizeFlickrPhoto() {
 		Intent i = new Intent(getActivity(),
 				OrganizeMyFlickrPhotoActivity.class);
 		i.putExtra(OrganizeMyFlickrPhotoActivity.PHOTO_ID_KEY, mPhoto.getId());
+		getActivity().startActivity(i);
+	}
+	
+	/**
+	 * Changes my flickr photo properties.
+	 */
+	private void manageFlickrPhotoProperties() {
+		Intent i = new Intent(getActivity(), FlickrPhotoPropertyActivity.class );
+		i.putExtra(FlickrPhotoPropertyActivity.PHOTO_ID_KEY, mPhoto.getId());
+		i.putExtra(FlickrPhotoPropertyActivity.PHOTO_SECRET_KEY, mPhoto.getSecret());
 		getActivity().startActivity(i);
 	}
 
