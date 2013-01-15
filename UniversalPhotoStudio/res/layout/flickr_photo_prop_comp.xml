@@ -106,6 +106,7 @@
             android:text="@string/flickr_photo_perm_title" />
 
         <RadioGroup
+            android:id="@+id/radio_group_perm"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical" >
