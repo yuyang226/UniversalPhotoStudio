@@ -73,7 +73,7 @@
             android:id="@+id/edit_f_p_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="3"
+            android:ems="1"
             android:imeOptions="actionNone"
             android:inputType="text" >
         </EditText>
@@ -90,7 +90,7 @@
             android:id="@+id/edit_f_p_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="3"
+            android:ems="1"
             android:gravity="left|top"
             android:inputType="textMultiLine"
             android:lines="8"

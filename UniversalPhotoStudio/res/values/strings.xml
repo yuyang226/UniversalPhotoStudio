@@ -107,6 +107,7 @@
 	<string name="msg_px_error_fetch_user_profile">Error to get my 500px user profile.</string>
 	<string name="msg_500px_photo_voted">Voted!</string>
 	<string name="msg_500px_photo_vote_failed">You may already voted!</string>
+	<string name="msg_fail_get_f_perm">Failed to get photo visibility information.</string>
 	
 	<!--  flickr tag search -->
 	<string name="msg_flickr_tag_search_label">Flickr tag search</string>
