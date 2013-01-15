@@ -13,7 +13,7 @@ import com.github.yuyang226.j500px.J500px;
 import com.github.yuyang226.j500px.photos.Comment;
 import com.gmail.charleszq.picorner.model.MediaObjectComment;
 import com.gmail.charleszq.picorner.task.AbstractGeneralTask;
-import com.gmail.charleszq.picorner.utils.IConstants;
+import com.gmail.charleszq.picorner.utils.J500pxHelper;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
 
 /**
@@ -28,7 +28,7 @@ public class PxFetchPhotoCommentsTask extends
 		String photoId = params[0];
 
 		try {
-			J500px px = new J500px(IConstants.PX500_CONSUMER_KEY);
+			J500px px = J500pxHelper.getJ500pxInstance();
 			List<Comment> pxComments = px.getPhotosInterface().getPhotoComments(Integer.parseInt(photoId), -1);
 			List<MediaObjectComment> comments = new ArrayList<MediaObjectComment>();
 

@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
+import com.gmail.charleszq.picorner.model.GeoLocation;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.msg.IMessageConsumer;
@@ -89,7 +90,8 @@ public abstract class AbstractPhotoGridFragment extends
 				mNoMoreData = true;
 			} else {
 				Object comparator = command.getAdapter(Comparator.class);
-				mPhotosProvider.loadData(t, comparator == null ? command : comparator);
+				mPhotosProvider.loadData(t, comparator == null ? command
+						: comparator);
 				mAdapter.notifyDataSetChanged();
 			}
 			if (mLoadingMessageText != null) {
@@ -97,12 +99,13 @@ public abstract class AbstractPhotoGridFragment extends
 			}
 		}
 	};
-	
+
 	protected IMessageConsumer mConsumer = new IMessageConsumer() {
 
 		@Override
 		public boolean consumeMessage(Message msg) {
-			if (msg.getMessageType() == Message.LIKE_PHOTO) {
+			switch (msg.getMessageType()) {
+			case Message.LIKE_PHOTO:
 				for (int i = 0; i < mPhotosProvider.getCurrentSize(); i++) {
 					MediaObject photo = mPhotosProvider.getMediaObject(i);
 					if (photo.getId().equals(msg.getPhotoId())) {
@@ -112,18 +115,27 @@ public abstract class AbstractPhotoGridFragment extends
 					}
 				}
 				return true;
-			}
-			if( msg.getMessageType() == Message.VOTE_PHOTO ) {
-				for( int i = 0; i < mPhotosProvider.getCurrentSize(); i ++ ) {
+			case Message.VOTE_PHOTO:
+				for (int i = 0; i < mPhotosProvider.getCurrentSize(); i++) {
 					MediaObject photo = mPhotosProvider.getMediaObject(i);
-					if( photo.getId().equals(msg.getPhotoId())) {
+					if (photo.getId().equals(msg.getPhotoId())) {
 						photo.setUserVoted(true);
 						break;
 					}
 				}
 				return true;
+			case Message.GEO_INFO_FETCHED:
+				for (int i = 0; i < mPhotosProvider.getCurrentSize(); i++) {
+					MediaObject photo = mPhotosProvider.getMediaObject(i);
+					if (photo.getId().equals(msg.getPhotoId())) {
+						photo.setLocation((GeoLocation) msg.getCoreData());
+						break;
+					}
+				}
+				return true;
+			default:
+				return false;
 			}
-			return false;
 		}
 	};
 
@@ -183,24 +195,22 @@ public abstract class AbstractPhotoGridFragment extends
 				new ViewTreeObserver.OnGlobalLayoutListener() {
 					@Override
 					public void onGlobalLayout() {
-//						if (mAdapter.getNumColumns() == 0) {
-							final int numColumns = (int) Math.floor(mGridView
-									.getWidth()
-									/ (mImageThumbSize + mImageThumbSpacing));
-							if (numColumns > 0) {
-								final int columnWidth = (mGridView.getWidth() / numColumns)
-										- mImageThumbSpacing;
-								mAdapter.setNumColumns(numColumns);
-								mAdapter.setItemHeight(columnWidth);
-							}
-//						}
+						final int numColumns = (int) Math.floor(mGridView
+								.getWidth()
+								/ (mImageThumbSize + mImageThumbSpacing));
+						if (numColumns > 0) {
+							final int columnWidth = (mGridView.getWidth() / numColumns)
+									- mImageThumbSpacing;
+							mAdapter.setNumColumns(numColumns);
+							mAdapter.setItemHeight(columnWidth);
+						}
 					}
 				});
 
 		bindData();
 		return v;
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -209,8 +219,10 @@ public abstract class AbstractPhotoGridFragment extends
 		}
 		MessageBus.addConsumer(mConsumer);
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onDetach()
 	 */
 	@Override

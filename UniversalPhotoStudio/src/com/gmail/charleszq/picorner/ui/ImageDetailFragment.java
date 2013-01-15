@@ -384,7 +384,8 @@ public class ImageDetailFragment extends Fragment implements
 			mImageView.setOnClickListener((OnClickListener) getActivity());
 			mUserInfoContainer
 					.setOnClickListener((OnClickListener) getActivity());
-			this.mPhotoTitle.setOnClickListener((OnClickListener) getActivity());
+			this.mPhotoTitle
+					.setOnClickListener((OnClickListener) getActivity());
 			this.mUserName.setOnClickListener((OnClickListener) getActivity());
 		}
 	}
@@ -470,8 +471,9 @@ public class ImageDetailFragment extends Fragment implements
 		PicornerApplication app = (PicornerApplication) getActivity()
 				.getApplication();
 
-		// for flickr, hide 'like' on my own photos.
-		if (mPhoto.getMediaSource() == MediaSourceType.FLICKR
+		// for flickr and 500px, hide 'like' on my own photos.
+		if ((mPhoto.getMediaSource() == MediaSourceType.FLICKR || mPhoto
+				.getMediaSource() == MediaSourceType.PX500)
 				&& app.isMyOwnPhoto(mPhoto)) {
 			likeItem.setVisible(false);
 		}
@@ -611,8 +613,7 @@ public class ImageDetailFragment extends Fragment implements
 	}
 
 	/**
-	 * shows the UI to organize my flickr photo. mainly change permission, and
-	 * add to set/groups
+	 * shows the UI to organize my flickr photo.
 	 */
 	private void organizeFlickrPhoto() {
 		Intent i = new Intent(getActivity(),

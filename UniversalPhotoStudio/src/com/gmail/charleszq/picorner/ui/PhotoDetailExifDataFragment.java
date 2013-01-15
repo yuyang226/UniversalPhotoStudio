@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gmail.charleszq.picorner.ui.flickr;
+package com.gmail.charleszq.picorner.ui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,6 @@ import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrPhotoExifTask;
 import com.gmail.charleszq.picorner.task.px500.PxFetchPhotoExifTask;
-import com.gmail.charleszq.picorner.ui.PhotoDetailActivity;
 import com.gmail.charleszq.picorner.ui.helper.ExifAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
 
@@ -32,9 +31,9 @@ import com.gmail.charleszq.picorner.utils.IConstants;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class FlickrExifDataFragment extends Fragment {
+public class PhotoDetailExifDataFragment extends Fragment {
 
-	private static final String TAG = FlickrExifDataFragment.class.getName();
+	private static final String TAG = PhotoDetailExifDataFragment.class.getName();
 
 	private MediaObject mCurrentPhoto;
 
@@ -48,11 +47,11 @@ public class FlickrExifDataFragment extends Fragment {
 	/**
 	 * 
 	 */
-	public FlickrExifDataFragment() {
+	public PhotoDetailExifDataFragment() {
 	}
 
-	public static FlickrExifDataFragment newInstance(MediaObject photo) {
-		FlickrExifDataFragment f = new FlickrExifDataFragment();
+	public static PhotoDetailExifDataFragment newInstance(MediaObject photo) {
+		PhotoDetailExifDataFragment f = new PhotoDetailExifDataFragment();
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY, photo);
 		f.setArguments(bundle);

@@ -33,27 +33,4 @@
         </ListView>
     </FrameLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/button_org_my_f_cancel"
-            style="@style/PicornerButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
-            android:text="@android:string/cancel" />
-
-        <Button
-            android:id="@+id/button_org_my_f_ok"
-            style="@style/PicornerButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@android:drawable/ic_menu_save"
-            android:text="@android:string/ok" />
-    </LinearLayout>
-
 </LinearLayout>

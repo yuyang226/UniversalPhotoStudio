@@ -10,8 +10,10 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotosInterface;
 
 /**
+ * Represents the task to fetch the general informaiton of flickr photo.
+ * 
  * @author charles(charleszq@gmail.com)
- *
+ * 
  */
 public class FlickrGetPhotoGeneralInfoTask extends
 		AbstractGeneralTask<String, Integer, Photo> {
@@ -19,10 +21,15 @@ public class FlickrGetPhotoGeneralInfoTask extends
 	@Override
 	protected Photo doInBackground(String... params) {
 		String id = params[0];
+		String secret = null;
+		if (params.length > 1) {
+			secret = params[1];
+		}
+
 		Flickr f = FlickrHelper.getInstance().getFlickr();
 		PhotosInterface pi = f.getPhotosInterface();
 		try {
-			Photo p = pi.getInfo(id, null);
+			Photo p = pi.getInfo(id, secret);
 			return p;
 		} catch (Exception e) {
 		}

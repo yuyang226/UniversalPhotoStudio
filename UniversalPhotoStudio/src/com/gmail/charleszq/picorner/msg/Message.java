@@ -13,6 +13,7 @@ public final class Message {
 	
 	public static final int LIKE_PHOTO = 100;
 	public static final int VOTE_PHOTO = 101;
+	public static final int GEO_INFO_FETCHED = 102;
 	
 	private int mMessageType;
 	private MediaSourceType mPhotoType;
