@@ -19,6 +19,9 @@
     <string name="ig_my_likes">My Likes</string>
     <string name="ig_my_photos">My Photos</string>
     
+    <string name="menu_item_text_default">Default</string>
+    <string name="menu_item_text_offline">Offline</string>
+    
     <string name="px_editors">Editors\' Choice</string>
     <string name="px_upcoming">Upcoming</string>
     <string name="px_fresh_today">Fresh Today</string>

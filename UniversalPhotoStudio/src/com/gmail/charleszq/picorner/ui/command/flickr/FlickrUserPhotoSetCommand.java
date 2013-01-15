@@ -9,6 +9,7 @@ import android.content.Context;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
+import com.gmail.charleszq.picorner.model.IOfflineViewAbility;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoSetPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -63,6 +64,9 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 		}
 		if( adapterClass == FlickrUserPhotoPool.class ) {
 			return PhotoPlace.SET + mPhotoSet.getId();
+		}
+		if( adapterClass == IOfflineViewAbility.class ) {
+			return true;
 		}
 		return super.getAdapter(adapterClass);
 	}

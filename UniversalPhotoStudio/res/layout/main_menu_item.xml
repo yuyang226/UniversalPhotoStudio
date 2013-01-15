@@ -1,24 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/menu_item_container"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="?android:attr/listPreferredItemHeight" >
 
-    <ImageView
-        android:id="@+id/nav_item_image"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_alignParentLeft="true"
-        android:contentDescription="@string/app_name"
-        android:paddingLeft="5dp"
-        android:scaleType="fitCenter" />
-
-    <TextView
-        android:id="@+id/nav_item_title"
+    <RelativeLayout
+        android:id="@+id/menu_item_container_2"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/nav_item_image"
-        android:paddingLeft="5dp"
-        android:textColor="@color/menu_item_text" />
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent" >
 
-</RelativeLayout>
+        <ImageView
+            android:id="@+id/nav_item_image"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentLeft="true"
+            android:contentDescription="@string/app_name"
+            android:paddingLeft="5dp"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/nav_item_title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/nav_item_image"
+            android:paddingLeft="5dp"
+            android:textColor="@color/menu_item_text" />
+    </RelativeLayout>
+
+</FrameLayout>

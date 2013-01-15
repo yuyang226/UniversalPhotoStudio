@@ -10,12 +10,14 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.model.IOfflineViewAbility;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
@@ -193,6 +195,26 @@ public class CommandSectionListAdapter extends BaseAdapter {
 				task.execute(mImageFetcher, image);
 			} else {
 			}
+		}
+
+		// offline view back view
+		Object offline = command.getAdapter(IOfflineViewAbility.class);
+		if (offline != null) {
+			final View backView = LayoutInflater.from(mContext).inflate(
+					R.layout.main_menu_item_backview, null);
+			ViewGroup container = (ViewGroup) view
+					.findViewById(R.id.menu_item_container);
+			final View container2 = view.findViewById(R.id.menu_item_container_2);
+			backView.setVisibility(View.INVISIBLE);
+			container.addView(backView);
+			text.setOnLongClickListener(new OnLongClickListener() {
+
+				@Override
+				public boolean onLongClick(View v) {
+					container2.setVisibility(View.INVISIBLE);
+					backView.setVisibility(View.VISIBLE);
+					return true;
+				}} );
 		}
 
 		return view;
