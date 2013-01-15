@@ -53,6 +53,11 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 	private RadioButton mRadioPrivate, mRadioPublic;
 	private CheckBox mCheckFriends, mCheckFamily;
 	private RadioGroup mRadioGroup;
+	private View mContainer;
+
+	private ProgressDialog mDialog;
+	private boolean mGeneralInfoLoaded = false;
+	private boolean mPermInfoLoaded = false;
 
 	/**
 	 * The marker to say that we can get the permission info from server,
@@ -136,6 +141,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 								getString(R.string.msg_photo_meta_save_fail),
 								Toast.LENGTH_SHORT).show();
 					}
+					
 				}
 			});
 
@@ -167,6 +173,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 		View v = inflater.inflate(R.layout.flickr_photo_prop_comp, container,
 				false);
 
+		mContainer = v.findViewById(R.id.f_p_container);
 		// text
 		mTextViews = (TextView) v.findViewById(R.id.flickr_detail_gen_views);
 		mTextComments = (TextView) v
@@ -186,6 +193,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 
 		enablePermControls(false);
 		hookListeners();
+		mContainer.setVisibility(View.INVISIBLE);
 		return v;
 	}
 
@@ -196,7 +204,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 		OnCheckedChangeListener lis = new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(RadioGroup group, int checkedId) {
-				switch( checkedId ) {
+				switch (checkedId) {
 				case R.id.rb_f_p_private:
 					mCheckFamily.setEnabled(true);
 					mCheckFriends.setEnabled(true);
@@ -210,7 +218,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 				}
 			}
 		};
-		
+
 		mRadioGroup.setOnCheckedChangeListener(lis);
 	}
 
@@ -230,6 +238,9 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 		// hide the keyboard by default.
 		getActivity().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+		mDialog = ProgressDialog.show(getActivity(),
+				"", getString(R.string.loading_photos)); //$NON-NLS-1$
 
 		// fetch comments/views/favs count
 		FlickrGetPhotoGeneralInfoTask ptask = new FlickrGetPhotoGeneralInfoTask();
@@ -254,6 +265,11 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 								: mCurrentPhoto.getFavorites()));
 				mEditTitle.setText(mCurrentPhoto.getTitle());
 				mEditDesc.setText(mCurrentPhoto.getDescription());
+				mGeneralInfoLoaded = true;
+				if (mGeneralInfoLoaded && mPermInfoLoaded) {
+					mDialog.cancel();
+					mContainer.setVisibility(View.VISIBLE);
+				}
 			}
 		});
 		ptask.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());
@@ -288,6 +304,11 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 					Toast.makeText(getActivity(),
 							getString(R.string.msg_fail_get_f_perm),
 							Toast.LENGTH_SHORT).show();
+				}
+				mPermInfoLoaded = true;
+				if (mGeneralInfoLoaded && mPermInfoLoaded) {
+					mDialog.cancel();
+					mContainer.setVisibility(View.VISIBLE);
 				}
 			}
 		});
