@@ -290,11 +290,11 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 			public void onTaskDone(Permissions result) {
 				if (result != null) {
 					isPermGetFromServer = true;
-					enablePermControls(true);
 					mRadioPublic.setChecked(result.isPublicFlag());
 					mRadioPrivate.setChecked(!result.isPublicFlag());
 					mCheckFamily.setChecked(result.isFamilyFlag());
 					mCheckFriends.setChecked(result.isFriendFlag());
+					enablePermControls(true);
 				} else {
 					Toast.makeText(getActivity(),
 							getString(R.string.msg_fail_get_f_perm),
@@ -312,8 +312,8 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 	private void enablePermControls(boolean enable) {
 		mRadioPublic.setEnabled(enable);
 		mRadioPrivate.setEnabled(enable);
-		mCheckFamily.setEnabled(!mRadioPrivate.isChecked());
-		mCheckFriends.setEnabled(!mRadioPrivate.isChecked());
+		mCheckFamily.setEnabled(mRadioPrivate.isChecked());
+		mCheckFriends.setEnabled(mRadioPrivate.isChecked());
 	}
 
 }
