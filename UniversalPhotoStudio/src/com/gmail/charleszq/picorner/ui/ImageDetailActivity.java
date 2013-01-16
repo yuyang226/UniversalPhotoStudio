@@ -110,8 +110,8 @@ public class ImageDetailActivity extends FragmentActivity implements
 			});
 
 			// Start low profile mode and hide ActionBar
-			mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-			actionBar.hide();
+//			mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+//			actionBar.hide();
 		}
 
 		// Set the current item based on the extra passed in to this activity
