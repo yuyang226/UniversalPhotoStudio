@@ -225,6 +225,8 @@ public class CommandSectionListAdapter extends BaseAdapter {
 					return true;
 				}
 			});
+			
+			text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_offline_indicator, 0);
 		}
 	}
 

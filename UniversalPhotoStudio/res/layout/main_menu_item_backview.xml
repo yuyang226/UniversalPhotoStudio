@@ -14,15 +14,6 @@
         android:src="@android:drawable/ic_menu_revert" />
 
     <CheckBox
-        android:id="@+id/checkBox1"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:textColor="@color/menu_item_text"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="@string/menu_item_text_default" />
-
-    <CheckBox
         android:id="@+id/checkBox2"
         android:layout_width="0dp"
         android:layout_weight="1"
