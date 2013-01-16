@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -263,6 +264,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 				mEditDesc.setText(mCurrentPhoto.getDescription());
 				mGeneralInfoLoaded = true;
 				if (mGeneralInfoLoaded && mPermInfoLoaded) {
+					mViewSwitcher.setInAnimation(AnimationUtils.makeInAnimation(getActivity(), false));
 					mViewSwitcher.showNext();
 				}
 			}
@@ -302,6 +304,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 				}
 				mPermInfoLoaded = true;
 				if (mGeneralInfoLoaded && mPermInfoLoaded) {
+					mViewSwitcher.setInAnimation(AnimationUtils.makeInAnimation(getActivity(), false));
 					mViewSwitcher.showNext();
 				}
 			}
