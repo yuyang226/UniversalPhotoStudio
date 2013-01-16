@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gmail.charleszq.picorner.ui.helper;
+package com.gmail.charleszq.picorner.ui.flickr;
 
 import android.app.Service;
 import android.content.Context;
@@ -22,6 +22,7 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter.FlickrTagSearchMode;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
+import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 
 /**
  * @author charles(charleszq@gmail.com)

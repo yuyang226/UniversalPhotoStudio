@@ -7,11 +7,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -197,15 +200,16 @@ public class CommandSectionListAdapter extends BaseAdapter {
 			}
 		}
 
-		prepareBackView(view, command, text );
+		prepareBackView(view, command, text);
 
 		return view;
 	}
 
-	private void prepareBackView(final View view, final ICommand<?> command, final TextView text) {
+	private void prepareBackView(final View view, final ICommand<?> command,
+			final TextView text) {
 		// offline view back view
 		Object offline = command.getAdapter(IOfflineViewAbility.class);
-		//TODO remove BuildConfig setting later.
+		// TODO remove BuildConfig setting later.
 		if (offline != null && BuildConfig.DEBUG) {
 			final View backView = LayoutInflater.from(mContext).inflate(
 					R.layout.main_menu_item_backview, null);
@@ -213,8 +217,25 @@ public class CommandSectionListAdapter extends BaseAdapter {
 					.findViewById(R.id.menu_item_container);
 			backView.setVisibility(View.INVISIBLE);
 			container.addView(backView);
-			
-			text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_offline_indicator, 0);
+
+			// find the back button and hook listener on it
+			ImageButton button = (ImageButton) view
+					.findViewById(R.id.btn_menu_item_back_view_back);
+			final View frontView = view
+					.findViewById(R.id.menu_item_container_2);
+			button.setOnClickListener(new OnClickListener() {
+
+				@Override
+				public void onClick(View v) {
+					backView.setVisibility(View.INVISIBLE);
+					frontView.setVisibility(View.VISIBLE);
+					ObjectAnimator
+							.ofFloat(frontView, "alpha", 0f, 1f).setDuration(1500).start(); //$NON-NLS-1$
+				}
+			});
+
+			text.setCompoundDrawablesWithIntrinsicBounds(0, 0,
+					R.drawable.ic_offline_indicator, 0);
 		}
 	}
 
