@@ -20,6 +20,7 @@ import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.MediaObject;
@@ -53,9 +54,8 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 	private RadioButton mRadioPrivate, mRadioPublic;
 	private CheckBox mCheckFriends, mCheckFamily;
 	private RadioGroup mRadioGroup;
-	private View mContainer;
+	private ViewSwitcher mViewSwitcher;
 
-	private ProgressDialog mDialog;
 	private boolean mGeneralInfoLoaded = false;
 	private boolean mPermInfoLoaded = false;
 
@@ -170,10 +170,10 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.flickr_photo_prop_comp, container,
+		View v = inflater.inflate(R.layout.frg_f_prop, container,
 				false);
+		mViewSwitcher = (ViewSwitcher) v;
 
-		mContainer = v.findViewById(R.id.f_p_container);
 		// text
 		mTextViews = (TextView) v.findViewById(R.id.flickr_detail_gen_views);
 		mTextComments = (TextView) v
@@ -193,7 +193,6 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 
 		enablePermControls(false);
 		hookListeners();
-		mContainer.setVisibility(View.INVISIBLE);
 		return v;
 	}
 
@@ -239,9 +238,6 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 		getActivity().getWindow().setSoftInputMode(
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-		mDialog = ProgressDialog.show(getActivity(),
-				"", getString(R.string.loading_photos)); //$NON-NLS-1$
-
 		// fetch comments/views/favs count
 		FlickrGetPhotoGeneralInfoTask ptask = new FlickrGetPhotoGeneralInfoTask();
 		ptask.addTaskDoneListener(new IGeneralTaskDoneListener<Photo>() {
@@ -267,8 +263,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 				mEditDesc.setText(mCurrentPhoto.getDescription());
 				mGeneralInfoLoaded = true;
 				if (mGeneralInfoLoaded && mPermInfoLoaded) {
-					mDialog.cancel();
-					mContainer.setVisibility(View.VISIBLE);
+					mViewSwitcher.showNext();
 				}
 			}
 		});
@@ -307,8 +302,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 				}
 				mPermInfoLoaded = true;
 				if (mGeneralInfoLoaded && mPermInfoLoaded) {
-					mDialog.cancel();
-					mContainer.setVisibility(View.VISIBLE);
+					mViewSwitcher.showNext();
 				}
 			}
 		});
