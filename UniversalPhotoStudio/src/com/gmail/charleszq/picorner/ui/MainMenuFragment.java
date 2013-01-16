@@ -26,6 +26,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -35,6 +36,7 @@ import com.github.yuyang226.j500px.J500px;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
+import com.gmail.charleszq.picorner.model.IOfflineViewAbility;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
@@ -202,6 +204,28 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			public void onScroll(AbsListView view, int firstVisibleItem,
 					int visibleItemCount, int totalItemCount) {
 
+			}
+		});
+		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				ListAdapter adapter = ((ListView) parent).getAdapter();
+				@SuppressWarnings("unchecked")
+				ICommand<Object> command = (ICommand<Object>) adapter
+						.getItem(position);
+				Object offline = command.getAdapter(IOfflineViewAbility.class);
+				if (offline == null) {
+					return false;
+				} else {
+					View frontView = view
+							.findViewById(R.id.menu_item_container_2);
+					View backView = view.findViewById(R.id.menu_item_back_view);
+					frontView.setVisibility(View.INVISIBLE);
+					backView.setVisibility(View.VISIBLE);
+					return true;
+				}
 			}
 		});
 		lv.setOnItemClickListener(new OnItemClickListener() {
@@ -438,11 +462,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			command = new Px500MyPhotosCommand(getActivity());
 			command.setCommandCategory(headerName);
 			commands.add(command);
-			
+
 			command = new PxMyFavPhotosCommand(getActivity());
 			command.setCommandCategory(headerName);
 			commands.add(command);
-			
+
 			command = new PxMyFlowCommand(getActivity());
 			command.setCommandCategory(headerName);
 			commands.add(command);

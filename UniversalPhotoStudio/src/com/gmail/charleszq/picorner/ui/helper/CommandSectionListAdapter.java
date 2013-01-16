@@ -10,7 +10,6 @@ import java.util.List;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -212,19 +211,8 @@ public class CommandSectionListAdapter extends BaseAdapter {
 					R.layout.main_menu_item_backview, null);
 			ViewGroup container = (ViewGroup) view
 					.findViewById(R.id.menu_item_container);
-			final View container2 = view
-					.findViewById(R.id.menu_item_container_2);
 			backView.setVisibility(View.INVISIBLE);
 			container.addView(backView);
-			text.setOnLongClickListener(new OnLongClickListener() {
-
-				@Override
-				public boolean onLongClick(View v) {
-					container2.setVisibility(View.INVISIBLE);
-					backView.setVisibility(View.VISIBLE);
-					return true;
-				}
-			});
 			
 			text.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_offline_indicator, 0);
 		}
