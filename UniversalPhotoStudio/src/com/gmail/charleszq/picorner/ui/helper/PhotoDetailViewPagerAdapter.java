@@ -25,106 +25,109 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 	private MediaObject mPhoto;
 	private Context mContext;
 
+	private List<Fragment> mFragments;
+	private List<String> mTitles;
+
 	public PhotoDetailViewPagerAdapter(FragmentManager fragmentManager,
 			MediaObject photo, Context context) {
 		super(fragmentManager);
 		mPhoto = photo;
 		mContext = context;
+
+		mFragments = new ArrayList<Fragment>();
+		mTitles = new ArrayList<String>();
+		prepareFragmentsAndTitles();
+	}
+
+	private void prepareFragmentsAndTitles() {
+		mFragments.clear();
+		mTitles.clear();
+
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+				.getApplication();
+
+		switch (mPhoto.getMediaSource()) {
+		case FLICKR:
+			if (app.isMyOwnPhoto(mPhoto)) {
+				mFragments
+						.add(MyFlickrPhotoGeneralFragment.newInstance(mPhoto));
+				mFragments.add(OrganizeMyFlickrPhotoFragment
+						.newInstance(mPhoto));
+			} else {
+				mFragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
+			}
+			mFragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
+			mFragments.add(PhotoDetailExifDataFragment.newInstance(mPhoto));
+			mFragments.add(PhotoDetailLikesFragment.newInstance(mPhoto));
+			break;
+		case INSTAGRAM:
+			mFragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
+			mFragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
+			mFragments.add(PhotoDetailLikesFragment.newInstance(mPhoto));
+			break;
+		case PX500:
+			mFragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
+			mFragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
+			mFragments.add(PhotoDetailExifDataFragment.newInstance(mPhoto));
+			break;
+		}
+		if (mPhoto.getLocation() != null)
+			mFragments.add(PhotoDetailMapFragment.newMyInstance(mPhoto));
+
+		switch (mPhoto.getMediaSource()) {
+		case FLICKR:
+			mTitles.add(mContext
+					.getString(R.string.flickr_detail_general_title));
+			if (app.isMyOwnPhoto(mPhoto)) {
+				mTitles.add(mContext
+						.getString(R.string.menu_item_org_my_flickr_photo));
+			}
+			mTitles.add(mContext
+					.getString(R.string.flickr_detail_comments_title));
+			mTitles.add(mContext.getString(R.string.flickr_detail_exif_title));
+			mTitles.add(mContext.getString(R.string.ig_like_users));
+			break;
+		case INSTAGRAM:
+			mTitles.add(mContext
+					.getString(R.string.flickr_detail_general_title));
+			mTitles.add(mContext
+					.getString(R.string.flickr_detail_comments_title));
+			mTitles.add(mContext.getString(R.string.ig_like_users));
+			break;
+		case PX500:
+			mTitles.add(mContext
+					.getString(R.string.flickr_detail_general_title));
+			mTitles.add(mContext
+					.getString(R.string.flickr_detail_comments_title));
+			mTitles.add(mContext.getString(R.string.flickr_detail_exif_title));
+			mTitles.add(mContext.getString(R.string.flickr_detail_map));
+			break;
+		}
+		if (mPhoto.getLocation() != null)
+			mTitles.add(mContext.getString(R.string.flickr_detail_map));
 	}
 
 	@Override
 	public Fragment getItem(int pos) {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		List<Fragment> fragments = new ArrayList<Fragment>();
-		switch (mPhoto.getMediaSource()) {
-		case FLICKR:
-			if (app.isMyOwnPhoto(mPhoto)) {
-				fragments.add(MyFlickrPhotoGeneralFragment.newInstance(mPhoto));
-				fragments
-						.add(OrganizeMyFlickrPhotoFragment.newInstance(mPhoto));
-			} else {
-				fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
-			}
-			fragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailExifDataFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailLikesFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailMapFragment.newMyInstance(mPhoto));
-			break;
-		case INSTAGRAM:
-			fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailLikesFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailMapFragment.newMyInstance(mPhoto));
-			break;
-		case PX500:
-			fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailCommentsFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailExifDataFragment.newInstance(mPhoto));
-			fragments.add(PhotoDetailMapFragment.newMyInstance(mPhoto));
-			break;
-		}
-		return fragments.get(pos);
+		return mFragments.get(pos);
 	}
 
 	@Override
 	public int getCount() {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		int count = 0;
-		switch (mPhoto.getMediaSource()) {
-		case INSTAGRAM:
-			count = 4;
-			break;
-		case FLICKR:
-			count = 5;
-			if (app.isMyOwnPhoto(mPhoto))
-				count++;
-			break;
-		case PX500:
-			count = 4;
-			break;
-		}
-		if (mPhoto.getLocation() == null) {
-			count--;
-		}
-		return count >= 0 ? count : 0;
+		return mFragments.size();
 	}
 
 	@Override
 	public CharSequence getPageTitle(int position) {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		List<CharSequence> titles = new ArrayList<CharSequence>();
-		switch (mPhoto.getMediaSource()) {
-		case FLICKR:
-			titles.add(mContext.getString(R.string.flickr_detail_general_title));
-			if (app.isMyOwnPhoto(mPhoto)) {
-				titles.add(mContext
-						.getString(R.string.menu_item_org_my_flickr_photo));
-			}
-			titles.add(mContext
-					.getString(R.string.flickr_detail_comments_title));
-			titles.add(mContext.getString(R.string.flickr_detail_exif_title));
-			titles.add(mContext.getString(R.string.ig_like_users));
-			titles.add(mContext.getString(R.string.flickr_detail_map));
-			break;
-		case INSTAGRAM:
-			titles.add(mContext.getString(R.string.flickr_detail_general_title));
-			titles.add(mContext
-					.getString(R.string.flickr_detail_comments_title));
-			titles.add(mContext.getString(R.string.ig_like_users));
-			titles.add(mContext.getString(R.string.flickr_detail_map));
-			break;
-		case PX500:
-			titles.add(mContext.getString(R.string.flickr_detail_general_title));
-			titles.add(mContext
-					.getString(R.string.flickr_detail_comments_title));
-			titles.add(mContext.getString(R.string.flickr_detail_exif_title));
-			titles.add(mContext.getString(R.string.flickr_detail_map));
-			break;
-		}
-		return titles.get(position);
+		return mTitles.get(position);
 	}
+
+	@Override
+	public void notifyDataSetChanged() {
+		prepareFragmentsAndTitles();
+		super.notifyDataSetChanged();
+	}
+	
+	
 
 }

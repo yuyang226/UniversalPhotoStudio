@@ -1,7 +1,9 @@
 What's new (version 1.1.2)
 1, bug fix: geo location information missed for some photos;
 2, manage flickr photo permissions, title and description;
-3, show actionbar by default when viewing image details
+3, show actionbar by default when viewing image details;
+4, move 'organize my flickr photo' feature into detail page;
+5, performance improvements
 
 What's new (version 1.1.1)
 1, hide user flickr photo set/group/gallery menu items by default;
