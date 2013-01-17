@@ -3,7 +3,6 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.IntentService;
@@ -38,27 +37,30 @@ public class OfflineHandleService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		IOfflineViewParameter param = (IOfflineViewParameter) intent
 				.getSerializableExtra(IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY);
+		boolean isAdd = Boolean
+				.parseBoolean(intent
+						.getStringExtra(IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_KEY));
 		if (param == null) {
 			return;
 		}
 		Log.d(TAG, param.toString());
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
 				.getExistingOfflineParameters();
-		if (params != null) {
-			if (params.contains(param)) {
-				Log.d(TAG, String.format(
-						"%s already in the repository.", param.toString())); //$NON-NLS-1$
-			} else {
+
+		if (isAdd) {
+			if (!params.contains(param))
 				params.add(param);
-			}
 		} else {
-			params = new ArrayList<IOfflineViewParameter>();
+			params.remove(param);
 		}
 		try {
 			OfflineControlFileUtil.save(params);
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 		}
-		// TODO start the task/service to fetch server information.
+
+		if (isAdd) {
+			// TODO start the task/service to fetch server information.
+		}
 	}
 }

@@ -128,4 +128,9 @@ public final class OfflineControlFileUtil {
 		writer.close();
 
 	}
+
+	public static boolean isOfflineViewEnabled(IOfflineViewParameter param) {
+		List<IOfflineViewParameter> params = getExistingOfflineParameters();
+		return params != null && params.contains(param);
+	}
 }

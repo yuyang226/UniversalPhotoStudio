@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
+import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
@@ -241,6 +242,8 @@ public class CommandSectionListAdapter extends BaseAdapter {
 			// the checkbox
 			CheckBox offlineCheckBox = (CheckBox) view
 					.findViewById(R.id.cb_offline);
+			offlineCheckBox.setChecked(OfflineControlFileUtil
+					.isOfflineViewEnabled(offline));
 			offlineCheckBox
 					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
@@ -253,6 +256,10 @@ public class CommandSectionListAdapter extends BaseAdapter {
 									.putExtra(
 											IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
 											offline);
+							serviceIntent
+									.putExtra(
+											IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_KEY,
+											Boolean.toString(isChecked));
 							mContext.startService(serviceIntent);
 
 						}
