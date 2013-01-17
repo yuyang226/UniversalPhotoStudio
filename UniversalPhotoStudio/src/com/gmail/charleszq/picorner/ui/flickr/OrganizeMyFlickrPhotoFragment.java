@@ -3,20 +3,13 @@
  */
 package com.gmail.charleszq.picorner.ui.flickr;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,12 +27,14 @@ import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
+import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrPhotoContextTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrOrganizePhotoTask;
+import com.gmail.charleszq.picorner.ui.AbstractFragmentWithImageFetcher;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserGroupCommand;
@@ -53,75 +48,62 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
- * @author charleszq
+ * @author charles(charleszq@gmail.com)
  * 
  */
-public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
-		OnItemClickListener {
+public class OrganizeMyFlickrPhotoFragment extends
+		AbstractFragmentWithImageFetcher implements OnItemClickListener {
 
-	public static final String PHOTO_ID_KEY = "photo.id.key"; //$NON-NLS-1$
-
-	private static final String TAG = OrganizeMyFlickrPhotoActivity.class
-			.getSimpleName();
-
-	private ImageView mImageView;
 	private ListView mListView;
 	private ProgressBar mProgressBar;
 	private OrganizeAdapter mAdapter;
+	private MediaObject mCurrentPhoto;
+	private Set<String> mCurrentPhotoContext;
+	private Set<String> mUpdatePhotoContext;
 
 	/**
-	 * The photo id. need to save this when configuration changes.
+	 * default constructor.
 	 */
-	private String mPhotoId;
+	public OrganizeMyFlickrPhotoFragment() {
+	}
 
-	/**
-	 * The current photo context, before doing the save.
-	 */
-	private Set<String> mCurrentPhotoContext = null;
+	public static OrganizeMyFlickrPhotoFragment newInstance(MediaObject photo) {
+		OrganizeMyFlickrPhotoFragment f = new OrganizeMyFlickrPhotoFragment();
+		final Bundle bundle = new Bundle();
+		bundle.putSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY, photo);
+		f.setArguments(bundle);
+		return f;
+	}
 
-	/**
-	 * This instance will be given to adapter to track the updates.
-	 */
-	private Set<String> mUpdatePhotoContext = null;
-
-	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.org_my_flickr_photo);
-
-		// get data from intent
-		Intent i = getIntent();
-		mPhotoId = i.getStringExtra(PHOTO_ID_KEY);
-		if (mPhotoId == null) {
-			Log.w(TAG, "no photo id passed in."); //$NON-NLS-1$
-		}
-
-		// the preview image
-		mImageView = (ImageView) findViewById(R.id.image_org_my_f_photo);
-		loadImage();
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		View v = inflater
+				.inflate(R.layout.frg_org_my_f_photo, container, false);
 
 		// the list view.
-		mListView = (ListView) findViewById(R.id.list_org_flickr_photo);
-		mAdapter = new OrganizeAdapter(this, ImageLoader.getInstance());
+		mListView = (ListView) v.findViewById(R.id.list_org_flickr_photo);
+		mAdapter = new OrganizeAdapter(getActivity(), mImageFetcher);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
 
 		// the progress bar
-		mProgressBar = (ProgressBar) findViewById(R.id.pb_org_flickr_photo);
-		getActionBar().setDisplayHomeAsUpEnabled(true);
-
+		mProgressBar = (ProgressBar) v.findViewById(R.id.pb_org_flickr_photo);
+		return v;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.support.v4.app.FragmentActivity#onStart()
-	 */
 	@Override
-	protected void onStart() {
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Bundle bundle = this.getArguments();
+		mCurrentPhoto = (MediaObject) bundle
+				.getSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY);
+		this.setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onStart() {
 		super.onStart();
-		getActionBar().setSubtitle(R.string.msg_org_flickr_photo_title);
 		FetchFlickrPhotoContextTask t = new FetchFlickrPhotoContextTask();
 		t.addTaskDoneListener(new IGeneralTaskDoneListener<List<PhotoPlace>>() {
 
@@ -131,14 +113,44 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 
 			}
 		});
-		t.execute(mPhotoId);
+		t.execute(mCurrentPhoto.getId());
 	}
 
-	/**
-	 * Photo context means the photo sets and groups this photo belongs to.
-	 * @param result
-	 */
-	private void onPhotoContextFetched(List<PhotoPlace> result) {
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.menu_save, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_item_save) {
+			performOk();
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	private void performOk() {
+		Set<String> add = new HashSet<String>();
+		Set<String> remove = new HashSet<String>();
+
+		for (String s : mUpdatePhotoContext) {
+			if (!mCurrentPhotoContext.contains(s)) {
+				add.add(s);
+			}
+		}
+
+		for (String ss : mCurrentPhotoContext) {
+			if (!mUpdatePhotoContext.contains(ss)) {
+				remove.add(ss);
+			}
+		}
+		FlickrOrganizePhotoTask task = new FlickrOrganizePhotoTask(
+				getActivity(), add, remove);
+		task.execute(mCurrentPhoto.getId());
+	}
+
+	protected void onPhotoContextFetched(List<PhotoPlace> result) {
 		Log.d(TAG,
 				"photo context fetched, size: " + (result == null ? 0 : result.size())); //$NON-NLS-1$
 
@@ -168,13 +180,19 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 		task.execute();
 	}
 
-	/**
-	 * my pool information is fetched, now need to populate the list.
-	 * 
-	 * @param result
-	 */
-	private void onPoolsFetched(List<Object> result) {
+	protected void fetchMySetsGroupsFromServer() {
+		FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
+				getActivity());
+		task.addTaskDoneListener(new IGeneralTaskDoneListener<List<Object>>() {
+			@Override
+			public void onTaskDone(List<Object> result) {
+				onPoolsFetched(result);
+			}
+		});
+		task.execute();
+	}
 
+	protected void onPoolsFetched(List<Object> result) {
 		List<ICommand<?>> commands = new ArrayList<ICommand<?>>();
 		List<ICommand<?>> psCommands = new ArrayList<ICommand<?>>();
 		List<ICommand<?>> groupCommands = new ArrayList<ICommand<?>>();
@@ -188,25 +206,26 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 			if (Photoset.class.isInstance(obj)) {
 				// photo set
 				FlickrUserPhotoSetCommand cmd = new FlickrUserPhotoSetCommand(
-						this, (Photoset) obj);
+						getActivity(), (Photoset) obj);
 				psCommands.add(cmd);
 			}
 
 			if (Group.class.isInstance(obj)) {
 				// group
-				FlickrUserGroupCommand cmd = new FlickrUserGroupCommand(this,
-						(Group) obj);
+				FlickrUserGroupCommand cmd = new FlickrUserGroupCommand(
+						getActivity(), (Group) obj);
 				groupCommands.add(cmd);
 			}
 		}
 		if (!psCommands.isEmpty()) {
-			MenuSectionHeaderCommand cmd = new MenuSectionHeaderCommand(this,
-					getString(R.string.menu_header_flickr_sets));
+			MenuSectionHeaderCommand cmd = new MenuSectionHeaderCommand(
+					getActivity(), getString(R.string.menu_header_flickr_sets));
 			psCommands.add(0, cmd);
 		}
 
 		if (!groupCommands.isEmpty()) {
-			MenuSectionHeaderCommand cmd = new MenuSectionHeaderCommand(this,
+			MenuSectionHeaderCommand cmd = new MenuSectionHeaderCommand(
+					getActivity(),
 					getString(R.string.menu_header_flickr_groups));
 			groupCommands.add(0, cmd);
 		}
@@ -218,93 +237,6 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 		if (mProgressBar != null) {
 			mProgressBar.setVisibility(View.INVISIBLE);
 		}
-	}
-
-	private void fetchMySetsGroupsFromServer() {
-		FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
-				this);
-		task.addTaskDoneListener(new IGeneralTaskDoneListener<List<Object>>() {
-			@Override
-			public void onTaskDone(List<Object> result) {
-				onPoolsFetched(result);
-			}
-		});
-		task.execute();
-	}
-
-	private void loadImage() {
-		File bsRoot = new File(Environment.getExternalStorageDirectory(),
-				IConstants.SD_CARD_FOLDER_NAME);
-		if (!bsRoot.exists() && !bsRoot.mkdir()) {
-			return;
-		}
-		File shareFile = new File(bsRoot, IConstants.SHARE_TEMP_FILE_NAME);
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream(shareFile);
-			Bitmap bmp = BitmapFactory.decodeFileDescriptor(fis.getFD());
-			mImageView.setImageBitmap(bmp);
-		} catch (Exception e) {
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
-	 */
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = new MenuInflater(this);
-		inflater.inflate(R.menu.menu_save, menu);
-		return true;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
-	 */
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch( item.getItemId() ) {
-		case android.R.id.home:
-			finish();
-			return true;
-		case R.id.menu_item_save:
-			performOk();
-			return true;
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
-
-	/**
-	 * Does the actual action to manage the photo's sets and groups.
-	 */
-	private void performOk() {
-		Set<String> add = new HashSet<String>();
-		Set<String> remove = new HashSet<String>();
-
-		for (String s : mUpdatePhotoContext) {
-			if (!mCurrentPhotoContext.contains(s)) {
-				add.add(s);
-			}
-		}
-
-		for (String ss : mCurrentPhotoContext) {
-			if (!mUpdatePhotoContext.contains(ss)) {
-				remove.add(ss);
-			}
-		}
-		FlickrOrganizePhotoTask task = new FlickrOrganizePhotoTask(this, add,
-				remove);
-		task.addTaskDoneListener(new IGeneralTaskDoneListener<Integer>() {
-
-			@Override
-			public void onTaskDone(Integer result) {
-				OrganizeMyFlickrPhotoActivity.this.finish();
-			}
-		});
-		task.execute(this.mPhotoId);
 	}
 
 	private static class OrganizeAdapter extends CommandSectionListAdapter {
@@ -386,7 +318,7 @@ public class OrganizeMyFlickrPhotoActivity extends FragmentActivity implements
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parentView, View view, int position,
+	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 		ICommand<?> cmd = (ICommand<?>) mAdapter.getItem(position);
 		if (cmd == null) {

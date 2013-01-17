@@ -63,7 +63,6 @@ import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
 import com.gmail.charleszq.picorner.task.px500.PxLikePhotoTask;
 import com.gmail.charleszq.picorner.task.px500.PxVotePhotoTask;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity.IActionBarVisibleListener;
-import com.gmail.charleszq.picorner.ui.flickr.OrganizeMyFlickrPhotoActivity;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ImageUtils;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -413,9 +412,6 @@ public class ImageDetailFragment extends Fragment implements
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_photo_detail, menu);
 
-		// the menu item to add my flickr photo to set/group
-		inflater.inflate(R.menu.flickr_org_my_photo, menu);
-
 		// MenuItem actionItem = menu
 		// .findItem(R.id.menu_item_share_action_provider_action_bar);
 		// ShareActionProvider actionProvider = (ShareActionProvider) actionItem
@@ -484,15 +480,6 @@ public class ImageDetailFragment extends Fragment implements
 			likeItem.setIcon(R.drawable.ic_menu_star);
 		}
 
-		// deal with flickr menu items.
-		if (!MediaSourceType.FLICKR.equals(mPhoto.getMediaSource())) {
-			menu.setGroupVisible(R.id.menu_group_photo_detail_flickr, false);
-		} else {
-			MenuItem addToSetGroupItem = menu
-					.findItem(R.id.menu_item_add_my_flickr_photo_to_group);
-			addToSetGroupItem.setVisible(app.isMyOwnPhoto(mPhoto));
-		}
-
 		// hide 'owner photos' menu item for my own photos
 		MenuItem ownerPhotoItem = menu
 				.findItem(R.id.menu_item_see_owner_photos);
@@ -522,9 +509,6 @@ public class ImageDetailFragment extends Fragment implements
 		}
 
 		switch (item.getItemId()) {
-		case R.id.menu_item_add_my_flickr_photo_to_group:
-			organizeFlickrPhoto();
-			return true;
 		case android.R.id.home:
 			getActivity().finish();
 			return true;
@@ -610,16 +594,6 @@ public class ImageDetailFragment extends Fragment implements
 			}
 		});
 		task.execute(mPhoto.getId());
-	}
-
-	/**
-	 * shows the UI to organize my flickr photo.
-	 */
-	private void organizeFlickrPhoto() {
-		Intent i = new Intent(getActivity(),
-				OrganizeMyFlickrPhotoActivity.class);
-		i.putExtra(OrganizeMyFlickrPhotoActivity.PHOTO_ID_KEY, mPhoto.getId());
-		getActivity().startActivity(i);
 	}
 
 	private void sharePhoto() {

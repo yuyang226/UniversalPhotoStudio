@@ -18,6 +18,7 @@ import com.gmail.charleszq.picorner.ui.PhotoDetailGeneralFragment;
 import com.gmail.charleszq.picorner.ui.PhotoDetailLikesFragment;
 import com.gmail.charleszq.picorner.ui.PhotoDetailMapFragment;
 import com.gmail.charleszq.picorner.ui.flickr.MyFlickrPhotoGeneralFragment;
+import com.gmail.charleszq.picorner.ui.flickr.OrganizeMyFlickrPhotoFragment;
 
 public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
@@ -40,6 +41,8 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 		case FLICKR:
 			if (app.isMyOwnPhoto(mPhoto)) {
 				fragments.add(MyFlickrPhotoGeneralFragment.newInstance(mPhoto));
+				fragments
+						.add(OrganizeMyFlickrPhotoFragment.newInstance(mPhoto));
 			} else {
 				fragments.add(PhotoDetailGeneralFragment.newInstance(mPhoto));
 			}
@@ -66,7 +69,8 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public int getCount() {
-
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+				.getApplication();
 		int count = 0;
 		switch (mPhoto.getMediaSource()) {
 		case INSTAGRAM:
@@ -74,6 +78,8 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 			break;
 		case FLICKR:
 			count = 5;
+			if (app.isMyOwnPhoto(mPhoto))
+				count++;
 			break;
 		case PX500:
 			count = 4;
@@ -87,10 +93,16 @@ public class PhotoDetailViewPagerAdapter extends FragmentPagerAdapter {
 
 	@Override
 	public CharSequence getPageTitle(int position) {
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+				.getApplication();
 		List<CharSequence> titles = new ArrayList<CharSequence>();
 		switch (mPhoto.getMediaSource()) {
 		case FLICKR:
 			titles.add(mContext.getString(R.string.flickr_detail_general_title));
+			if (app.isMyOwnPhoto(mPhoto)) {
+				titles.add(mContext
+						.getString(R.string.menu_item_org_my_flickr_photo));
+			}
 			titles.add(mContext
 					.getString(R.string.flickr_detail_comments_title));
 			titles.add(mContext.getString(R.string.flickr_detail_exif_title));
