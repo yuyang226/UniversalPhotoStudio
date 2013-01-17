@@ -38,8 +38,8 @@ import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
-import com.gmail.charleszq.picorner.model.IOfflineViewAbility;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
+import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
@@ -219,7 +219,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 					ICommand<Object> command = (ICommand<Object>) adapter
 							.getItem(position);
 					Object offline = command
-							.getAdapter(IOfflineViewAbility.class);
+							.getAdapter(IOfflineViewParameter.class);
 					if (offline == null) {
 						return false;
 					} else {

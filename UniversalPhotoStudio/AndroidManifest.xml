@@ -85,6 +85,7 @@
         <activity android:name="com.gmail.charleszq.picorner.ui.AboutActivity" >
         </activity>
         <activity android:name=".ui.flickr.OrganizeMyFlickrPhotoActivity"></activity>
+        <service android:name=".offline.OfflineHandleService" android:exported="false"></service>
     </application>
 
 </manifest>

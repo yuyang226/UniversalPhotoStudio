@@ -9,18 +9,22 @@ import java.util.List;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.model.IOfflineViewAbility;
+import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
+import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
@@ -208,9 +212,9 @@ public class CommandSectionListAdapter extends BaseAdapter {
 	private void prepareBackView(final View view, final ICommand<?> command,
 			final TextView text) {
 		// offline view back view
-		Object offline = command.getAdapter(IOfflineViewAbility.class);
-		// TODO remove BuildConfig setting later.
-		if (offline != null && BuildConfig.DEBUG) {
+		final IOfflineViewParameter offline = (IOfflineViewParameter) command
+				.getAdapter(IOfflineViewParameter.class);
+		if (offline != null) {
 			final View backView = LayoutInflater.from(mContext).inflate(
 					R.layout.main_menu_item_backview, null);
 			ViewGroup container = (ViewGroup) view
@@ -233,6 +237,26 @@ public class CommandSectionListAdapter extends BaseAdapter {
 							.ofFloat(frontView, "alpha", 0f, 1f).setDuration(1500).start(); //$NON-NLS-1$
 				}
 			});
+
+			// the checkbox
+			CheckBox offlineCheckBox = (CheckBox) view
+					.findViewById(R.id.cb_offline);
+			offlineCheckBox
+					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+						@Override
+						public void onCheckedChanged(CompoundButton buttonView,
+								boolean isChecked) {
+							Intent serviceIntent = new Intent(mContext,
+									OfflineHandleService.class);
+							serviceIntent
+									.putExtra(
+											IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
+											offline);
+							mContext.startService(serviceIntent);
+
+						}
+					});
 
 			text.setCompoundDrawablesWithIntrinsicBounds(0, 0,
 					R.drawable.ic_offline_indicator, 0);
