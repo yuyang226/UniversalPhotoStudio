@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
@@ -205,7 +206,8 @@ public class CommandSectionListAdapter extends BaseAdapter {
 			}
 		}
 
-		prepareBackView(view, command, text);
+		if (BuildConfig.DEBUG)
+			prepareBackView(view, command, text);
 
 		return view;
 	}
