@@ -60,6 +60,8 @@ public class OrganizeMyFlickrPhotoFragment extends
 	private MediaObject mCurrentPhoto;
 	private Set<String> mCurrentPhotoContext;
 	private Set<String> mUpdatePhotoContext;
+	
+	private List<ICommand<?>> mCommands;
 
 	/**
 	 * default constructor.
@@ -99,21 +101,34 @@ public class OrganizeMyFlickrPhotoFragment extends
 		mCurrentPhoto = (MediaObject) bundle
 				.getSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY);
 		this.setHasOptionsMenu(true);
+		this.setRetainInstance(true);
 	}
 
 	@Override
 	public void onStart() {
 		super.onStart();
-		FetchFlickrPhotoContextTask t = new FetchFlickrPhotoContextTask();
-		t.addTaskDoneListener(new IGeneralTaskDoneListener<List<PhotoPlace>>() {
+		if (this.mCurrentPhotoContext == null) {
+			FetchFlickrPhotoContextTask t = new FetchFlickrPhotoContextTask();
+			t.addTaskDoneListener(new IGeneralTaskDoneListener<List<PhotoPlace>>() {
 
-			@Override
-			public void onTaskDone(List<PhotoPlace> result) {
-				onPhotoContextFetched(result);
+				@Override
+				public void onTaskDone(List<PhotoPlace> result) {
+					onPhotoContextFetched(result);
 
+				}
+			});
+			t.execute(mCurrentPhoto.getId());
+		} else {
+			if( mProgressBar != null ) {
+				mProgressBar.setVisibility(View.INVISIBLE);
 			}
-		});
-		t.execute(mCurrentPhoto.getId());
+			if( mCommands != null ) {
+				mAdapter.clearSections();
+				mAdapter.setCurrentPhotoContext(mUpdatePhotoContext);
+				mAdapter.addCommands(mCommands);
+				mAdapter.notifyDataSetChanged();
+			}
+		}
 	}
 
 	@Override
@@ -180,7 +195,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 		task.execute();
 	}
 
-	protected void fetchMySetsGroupsFromServer() {
+	private void fetchMySetsGroupsFromServer() {
 		FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
 				getActivity());
 		task.addTaskDoneListener(new IGeneralTaskDoneListener<List<Object>>() {
@@ -192,8 +207,8 @@ public class OrganizeMyFlickrPhotoFragment extends
 		task.execute();
 	}
 
-	protected void onPoolsFetched(List<Object> result) {
-		List<ICommand<?>> commands = new ArrayList<ICommand<?>>();
+	private void onPoolsFetched(List<Object> result) {
+		mCommands = new ArrayList<ICommand<?>>();
 		List<ICommand<?>> psCommands = new ArrayList<ICommand<?>>();
 		List<ICommand<?>> groupCommands = new ArrayList<ICommand<?>>();
 
@@ -229,10 +244,10 @@ public class OrganizeMyFlickrPhotoFragment extends
 					getString(R.string.menu_header_flickr_groups));
 			groupCommands.add(0, cmd);
 		}
-		commands.addAll(psCommands);
-		commands.addAll(groupCommands);
+		mCommands.addAll(psCommands);
+		mCommands.addAll(groupCommands);
 
-		mAdapter.addCommands(commands);
+		mAdapter.addCommands(mCommands);
 		mAdapter.notifyDataSetChanged();
 		if (mProgressBar != null) {
 			mProgressBar.setVisibility(View.INVISIBLE);

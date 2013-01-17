@@ -59,6 +59,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 
 	private boolean mGeneralInfoLoaded = false;
 	private boolean mPermInfoLoaded = false;
+	private Permissions mPerm;
 
 	/**
 	 * The marker to say that we can get the permission info from server,
@@ -87,6 +88,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 		mCurrentPhoto = (MediaObject) bundle
 				.getSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY);
 		this.setHasOptionsMenu(true);
+		this.setRetainInstance(true);
 	}
 
 	/*
@@ -142,7 +144,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 								getString(R.string.msg_photo_meta_save_fail),
 								Toast.LENGTH_SHORT).show();
 					}
-					
+
 				}
 			});
 
@@ -171,8 +173,7 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View v = inflater.inflate(R.layout.frg_f_prop, container,
-				false);
+		View v = inflater.inflate(R.layout.frg_f_prop, container, false);
 		mViewSwitcher = (ViewSwitcher) v;
 
 		// text
@@ -240,76 +241,108 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 				WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
 		// fetch comments/views/favs count
-		FlickrGetPhotoGeneralInfoTask ptask = new FlickrGetPhotoGeneralInfoTask();
-		ptask.addTaskDoneListener(new IGeneralTaskDoneListener<Photo>() {
+		if (!this.mGeneralInfoLoaded) {
+			FlickrGetPhotoGeneralInfoTask ptask = new FlickrGetPhotoGeneralInfoTask();
+			ptask.addTaskDoneListener(new IGeneralTaskDoneListener<Photo>() {
 
-			@Override
-			public void onTaskDone(Photo result) {
-				if (result != null) {
-					mCurrentPhoto.setViews(result.getViews());
-					mCurrentPhoto.setComments(result.getComments());
-					mCurrentPhoto.setFavorites(result.getFavorites());
-					mCurrentPhoto.setTitle(result.getTitle());
-					mCurrentPhoto.setDescription(result.getDescription());
+				@Override
+				public void onTaskDone(Photo result) {
+					if (result != null) {
+						mCurrentPhoto.setViews(result.getViews());
+						mCurrentPhoto.setComments(result.getComments());
+						mCurrentPhoto.setFavorites(result.getFavorites());
+						mCurrentPhoto.setTitle(result.getTitle());
+						mCurrentPhoto.setDescription(result.getDescription());
+					}
+					mTextViews.setText(String
+							.valueOf(mCurrentPhoto.getViews() == -1 ? 0
+									: mCurrentPhoto.getViews()));
+					mTextComments.setText(String.valueOf(mCurrentPhoto
+							.getComments() == -1 ? 0 : mCurrentPhoto
+							.getComments()));
+					mTextFavs.setText(String.valueOf(mCurrentPhoto
+							.getFavorites() == -1 ? 0 : mCurrentPhoto
+							.getFavorites()));
+					mEditTitle.setText(mCurrentPhoto.getTitle());
+					mEditDesc.setText(mCurrentPhoto.getDescription());
+					mGeneralInfoLoaded = true;
+					if (mGeneralInfoLoaded && mPermInfoLoaded) {
+						mViewSwitcher.setInAnimation(AnimationUtils
+								.loadAnimation(getActivity(), R.anim.fade));
+						mViewSwitcher.showNext();
+					}
 				}
-				mTextViews.setText(String
-						.valueOf(mCurrentPhoto.getViews() == -1 ? 0
-								: mCurrentPhoto.getViews()));
-				mTextComments.setText(String.valueOf(mCurrentPhoto
-						.getComments() == -1 ? 0 : mCurrentPhoto.getComments()));
-				mTextFavs.setText(String
-						.valueOf(mCurrentPhoto.getFavorites() == -1 ? 0
-								: mCurrentPhoto.getFavorites()));
-				mEditTitle.setText(mCurrentPhoto.getTitle());
-				mEditDesc.setText(mCurrentPhoto.getDescription());
-				mGeneralInfoLoaded = true;
-				if (mGeneralInfoLoaded && mPermInfoLoaded) {
-					mViewSwitcher.setInAnimation(AnimationUtils.makeInAnimation(getActivity(), false));
-					mViewSwitcher.showNext();
-				}
-			}
-		});
-		ptask.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());
+			});
+			ptask.execute(mCurrentPhoto.getId(), mCurrentPhoto.getSecret());
+		} else {
+			mTextViews
+					.setText(String.valueOf(mCurrentPhoto.getViews() == -1 ? 0
+							: mCurrentPhoto.getViews()));
+			mTextComments
+					.setText(String.valueOf(mCurrentPhoto.getComments() == -1 ? 0
+							: mCurrentPhoto.getComments()));
+			mTextFavs
+					.setText(String.valueOf(mCurrentPhoto.getFavorites() == -1 ? 0
+							: mCurrentPhoto.getFavorites()));
+		}
 
 		// fav count
-		FlickrGetPhotoFavCountTask task = new FlickrGetPhotoFavCountTask();
-		task.addTaskDoneListener(new IGeneralTaskDoneListener<Integer>() {
+		if (!this.mGeneralInfoLoaded) {
+			FlickrGetPhotoFavCountTask task = new FlickrGetPhotoFavCountTask();
+			task.addTaskDoneListener(new IGeneralTaskDoneListener<Integer>() {
 
-			@Override
-			public void onTaskDone(Integer result) {
-				mCurrentPhoto.setFavorites(result);
-				mTextFavs.setText(String.valueOf(result));
-			}
-		});
-		task.execute(mCurrentPhoto.getId());
+				@Override
+				public void onTaskDone(Integer result) {
+					mCurrentPhoto.setFavorites(result);
+					mTextFavs.setText(String.valueOf(result));
+				}
+			});
+			task.execute(mCurrentPhoto.getId());
+		}
 
 		// permissions
-		FetchPhotoPermissionTask permTask = new FetchPhotoPermissionTask(
-				getActivity());
-		permTask.addTaskDoneListener(new IGeneralTaskDoneListener<Permissions>() {
+		if (!this.isPermGetFromServer) {
+			FetchPhotoPermissionTask permTask = new FetchPhotoPermissionTask(
+					getActivity());
+			permTask.addTaskDoneListener(new IGeneralTaskDoneListener<Permissions>() {
 
-			@Override
-			public void onTaskDone(Permissions result) {
-				if (result != null) {
-					isPermGetFromServer = true;
-					mRadioPublic.setChecked(result.isPublicFlag());
-					mRadioPrivate.setChecked(!result.isPublicFlag());
-					mCheckFamily.setChecked(result.isFamilyFlag());
-					mCheckFriends.setChecked(result.isFriendFlag());
-					enablePermControls(true);
-				} else {
-					Toast.makeText(getActivity(),
-							getString(R.string.msg_fail_get_f_perm),
-							Toast.LENGTH_SHORT).show();
+				@Override
+				public void onTaskDone(Permissions result) {
+					if (result != null) {
+						isPermGetFromServer = true;
+						mPerm = result;
+						mRadioPublic.setChecked(result.isPublicFlag());
+						mRadioPrivate.setChecked(!result.isPublicFlag());
+						mCheckFamily.setChecked(result.isFamilyFlag());
+						mCheckFriends.setChecked(result.isFriendFlag());
+						enablePermControls(true);
+					} else {
+						Toast.makeText(getActivity(),
+								getString(R.string.msg_fail_get_f_perm),
+								Toast.LENGTH_SHORT).show();
+					}
+					mPermInfoLoaded = true;
+					if (mGeneralInfoLoaded && mPermInfoLoaded) {
+						mViewSwitcher.setInAnimation(AnimationUtils
+								.loadAnimation(getActivity(), R.anim.fade));
+						mViewSwitcher.showNext();
+					}
 				}
-				mPermInfoLoaded = true;
-				if (mGeneralInfoLoaded && mPermInfoLoaded) {
-					mViewSwitcher.setInAnimation(AnimationUtils.makeInAnimation(getActivity(), false));
-					mViewSwitcher.showNext();
-				}
-			}
-		});
-		permTask.execute(mCurrentPhoto.getId());
+			});
+			permTask.execute(mCurrentPhoto.getId());
+		} else {
+			mRadioPublic.setChecked(mPerm.isPublicFlag());
+			mRadioPrivate.setChecked(!mPerm.isPublicFlag());
+			mCheckFamily.setChecked(mPerm.isFamilyFlag());
+			mCheckFriends.setChecked(mPerm.isFriendFlag());
+			enablePermControls(true);
+		}
+		
+		if (mGeneralInfoLoaded && mPermInfoLoaded) {
+			mViewSwitcher.setInAnimation(AnimationUtils
+					.loadAnimation(getActivity(), R.anim.fade));
+			mViewSwitcher.showNext();
+		}
 	}
 
 	private void enablePermControls(boolean enable) {
