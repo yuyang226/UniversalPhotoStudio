@@ -34,6 +34,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.github.yuyang226.j500px.J500px;
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
@@ -207,30 +208,33 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 			}
 		});
-		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
+		if (BuildConfig.DEBUG) //TODO remove this later.
+			lv.setOnItemLongClickListener(new OnItemLongClickListener() {
 
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				ListAdapter adapter = ((ListView) parent).getAdapter();
-				@SuppressWarnings("unchecked")
-				ICommand<Object> command = (ICommand<Object>) adapter
-						.getItem(position);
-				Object offline = command.getAdapter(IOfflineViewAbility.class);
-				if (offline == null) {
-					return false;
-				} else {
-					View frontView = view
-							.findViewById(R.id.menu_item_container_2);
-					View backView = view.findViewById(R.id.menu_item_back_view);
-					frontView.setVisibility(View.INVISIBLE);
-					backView.setVisibility(View.VISIBLE);
-					ObjectAnimator
-							.ofFloat(backView, "alpha", 0f, 1f).setDuration(1500).start(); //$NON-NLS-1$
-					return true;
+				@Override
+				public boolean onItemLongClick(AdapterView<?> parent,
+						View view, int position, long id) {
+					ListAdapter adapter = ((ListView) parent).getAdapter();
+					@SuppressWarnings("unchecked")
+					ICommand<Object> command = (ICommand<Object>) adapter
+							.getItem(position);
+					Object offline = command
+							.getAdapter(IOfflineViewAbility.class);
+					if (offline == null) {
+						return false;
+					} else {
+						View frontView = view
+								.findViewById(R.id.menu_item_container_2);
+						View backView = view
+								.findViewById(R.id.menu_item_back_view);
+						frontView.setVisibility(View.INVISIBLE);
+						backView.setVisibility(View.VISIBLE);
+						ObjectAnimator
+								.ofFloat(backView, "alpha", 0f, 1f).setDuration(1500).start(); //$NON-NLS-1$
+						return true;
+					}
 				}
-			}
-		});
+			});
 		lv.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
