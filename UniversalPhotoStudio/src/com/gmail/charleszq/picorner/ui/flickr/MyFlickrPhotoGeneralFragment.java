@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -59,6 +60,11 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 
 	private boolean mGeneralInfoLoaded = false;
 	private boolean mPermInfoLoaded = false;
+
+	/**
+	 * The loaded permission information, so next time we don't need to load
+	 * them again.
+	 */
 	private Permissions mPerm;
 
 	/**
@@ -269,7 +275,8 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 					if (mGeneralInfoLoaded && mPermInfoLoaded) {
 						mViewSwitcher.setInAnimation(AnimationUtils
 								.loadAnimation(getActivity(), R.anim.fade));
-						mViewSwitcher.showNext();
+						if (mViewSwitcher.getCurrentView() instanceof ProgressBar)
+							mViewSwitcher.showNext();
 					}
 				}
 			});
@@ -325,7 +332,8 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 					if (mGeneralInfoLoaded && mPermInfoLoaded) {
 						mViewSwitcher.setInAnimation(AnimationUtils
 								.loadAnimation(getActivity(), R.anim.fade));
-						mViewSwitcher.showNext();
+						if (mViewSwitcher.getCurrentView() instanceof ProgressBar)
+							mViewSwitcher.showNext();
 					}
 				}
 			});
@@ -337,11 +345,12 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 			mCheckFriends.setChecked(mPerm.isFriendFlag());
 			enablePermControls(true);
 		}
-		
+
 		if (mGeneralInfoLoaded && mPermInfoLoaded) {
-			mViewSwitcher.setInAnimation(AnimationUtils
-					.loadAnimation(getActivity(), R.anim.fade));
-			mViewSwitcher.showNext();
+			mViewSwitcher.setInAnimation(AnimationUtils.loadAnimation(
+					getActivity(), R.anim.fade));
+			if (mViewSwitcher.getCurrentView() instanceof ProgressBar)
+				mViewSwitcher.showNext();
 		}
 	}
 
