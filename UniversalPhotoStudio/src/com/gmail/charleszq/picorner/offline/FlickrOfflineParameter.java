@@ -30,4 +30,15 @@ public class FlickrOfflineParameter extends AbstractOfflineParameter {
 		super(MediaSourceType.FLICKR.ordinal(), collectionType, collectionId);
 	}
 
+	@Override
+	public IOfflinePhotoCollectionProcessor getPhotoCollectionProcessor() {
+		IOfflinePhotoCollectionProcessor processor = null;
+		switch (getPhotoCollectionType()) {
+		case PHOTO_SET:
+			processor = new FlickrPhotoSetOfflineProcessor();
+			break;
+		}
+		return processor;
+	}
+
 }

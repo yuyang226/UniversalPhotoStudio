@@ -69,19 +69,6 @@ public abstract class AbstractOfflineParameter implements IOfflineViewParameter 
 	@Override
 	public String getControlFileName() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(OFFLINE_CONTROL_FOLDER_NAME).append(File.separator);
-		switch (getPhotoSourceType()) {
-		case FLICKR:
-			sb.append(OFFLINE_FLICKR_FOLDER_NAME);
-			break;
-		case INSTAGRAM:
-			sb.append(OFFLINE_INSTAGRAM_FOLDER_NAME);
-			break;
-		case PX500:
-			sb.append(OFFLINE_500PX_FOLDER_NAME);
-			break;
-		}
-		sb.append(File.separator);
 		sb.append(getPhotoCollectionType().toString());
 		sb.append("_"); //$NON-NLS-1$
 		sb.append(getPhotoCollectionId()).append(".dat"); //$NON-NLS-1$

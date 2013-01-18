@@ -86,7 +86,7 @@ public final class OfflineControlFileUtil {
 		return params;
 	}
 
-	private static File createOfflineFolderIfNeccessary() {
+	static File createOfflineFolderIfNeccessary() {
 		File bsRoot = new File(Environment.getExternalStorageDirectory(),
 				IConstants.SD_CARD_FOLDER_NAME);
 		if (!bsRoot.exists() && !bsRoot.mkdir()) {
