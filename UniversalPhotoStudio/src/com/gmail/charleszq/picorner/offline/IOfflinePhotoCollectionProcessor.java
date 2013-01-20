@@ -25,4 +25,5 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * @param param
 	 */
 	void process(Context ctx, IOfflineViewParameter param);
+	
 }

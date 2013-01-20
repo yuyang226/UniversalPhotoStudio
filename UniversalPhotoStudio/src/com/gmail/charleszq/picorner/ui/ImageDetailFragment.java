@@ -56,6 +56,7 @@ import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.msg.Message;
 import com.gmail.charleszq.picorner.msg.MessageBus;
+import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.CheckUserLikePhotoTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
@@ -371,7 +372,8 @@ public class ImageDetailFragment extends Fragment implements
 		// Use the parent activity to load the image asynchronously into the
 		// ImageView (so a single
 		// cache can be used over all pages in the ViewPager
-		if (ImageDetailActivity.class.isInstance(getActivity())) {
+		boolean loadedFromOffline = OfflineControlFileUtil.loadImageFromCache(mPhoto, mImageView);
+		if( !loadedFromOffline && ImageDetailActivity.class.isInstance(getActivity())) {
 			mImageFetcher = ((ImageDetailActivity) getActivity())
 					.getImageFetcher();
 			mImageFetcher.displayImage(mImageUrl, mImageView,

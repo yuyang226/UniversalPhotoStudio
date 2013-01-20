@@ -70,7 +70,8 @@
         </activity>
         <activity
             android:name=".ui.ImageDetailActivity"
-            android:theme="@style/AppTheme.Black" android:uiOptions="splitActionBarWhenNarrow">
+            android:theme="@style/AppTheme.Black"
+            android:uiOptions="splitActionBarWhenNarrow" >
         </activity>
         <activity android:name=".ui.PhotoDetailActivity" >
         </activity>
@@ -84,7 +85,19 @@
         </activity>
         <activity android:name="com.gmail.charleszq.picorner.ui.AboutActivity" >
         </activity>
-        <service android:name=".offline.OfflineHandleService" android:exported="false"></service>
+
+        <service
+            android:name=".offline.OfflineHandleService"
+            android:exported="false" >
+        </service>
+
+        <receiver
+            android:name=".offline.BatteryStatusReceiver"
+            android:exported="false" >
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

@@ -133,9 +133,6 @@ public abstract class AbstractOfflineParameter implements IOfflineViewParameter 
 			sb.append(OFFLINE_500PX_FOLDER_NAME);
 			break;
 		}
-		sb.append(File.separator);
-		sb.append(OFFLINE_INSTAGRAM_FOLDER_NAME);
-		sb.append(File.separator);
 		return sb.toString();
 	}
 

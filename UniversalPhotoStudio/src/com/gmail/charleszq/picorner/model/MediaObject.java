@@ -29,16 +29,16 @@ public final class MediaObject implements Serializable {
 	private List<ExifData> mExifs = new ArrayList<ExifData>();
 
 	private boolean isUserLiked = false;
-	
+
 	/**
 	 * 500px
 	 */
 	private boolean isUserVoted = false;
-	
-	public boolean isUserVoted () {
+
+	public boolean isUserVoted() {
 		return isUserVoted;
 	}
-	
+
 	public void setUserVoted(boolean voted) {
 		this.isUserVoted = voted;
 	}
@@ -204,4 +204,41 @@ public final class MediaObject implements Serializable {
 	public List<ExifData> getExifs() {
 		return mExifs;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (!MediaObject.class.isInstance(o)) {
+			return false;
+		}
+		return toString().equals(o.toString());
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		return toString().hashCode();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(getMediaSource().toString());
+		sb.append(getId());
+		return sb.toString();
+	}
+
 }

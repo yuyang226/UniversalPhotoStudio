@@ -5,12 +5,10 @@ package com.gmail.charleszq.picorner.offline;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.StreamCorruptedException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +16,7 @@ import java.util.Set;
 
 import android.app.Service;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
@@ -25,6 +24,7 @@ import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
+import com.gmail.charleszq.picorner.utils.ImageUtils;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.people.User;
@@ -56,9 +56,6 @@ public class FlickrPhotoSetOfflineProcessor implements
 	 */
 	@Override
 	public void process(Context ctx, IOfflineViewParameter param) {
-
-		// TODO check wifi
-
 		File offlineFolder = createFlickrFolders();
 		if (offlineFolder == null) {
 			return; // should not happen
@@ -69,42 +66,120 @@ public class FlickrPhotoSetOfflineProcessor implements
 			List<MediaObject> read = readPhotos(param);
 			if (read != null) {
 				Log.d(TAG, read.size() + " photos saved in file before."); //$NON-NLS-1$
+				saveDeltaHandle(ctx, param, read);
 			}
 		} else {
-			int serverPhotoCount = getCurrentCollectionPhotoCount(ctx, param);
-			if (serverPhotoCount == -1) {
-				return;
+			firstTimeHandle(ctx, param);
+		}
+		
+		//starts the download
+		List<MediaObject> photos = readPhotos(param);
+		if( photos == null ) {
+			Log.e(TAG, "error to read cache photo collection file." ); //$NON-NLS-1$
+		}
+		
+		File parentFolder = this.createFlickrFolders();
+		File imageFolder = new File( parentFolder, IOfflineViewParameter.OFFLINE_IMAGE_FOLDER_NAME);
+		for( MediaObject photo : photos ) {
+			File destFile = new File(imageFolder, photo.getId() + ".png"); //$NON-NLS-1$
+			if( destFile.exists() ) {
+				Log.d(TAG, String.format( "photo %s was downloaded before.", photo.getId())); //$NON-NLS-1$
+				continue;
 			}
+			
+			String url = photo.getLargeUrl();
+			Bitmap bmp = ImageUtils.downloadImage(url);
+			if( bmp != null ) {
+				ImageUtils.saveImageToFile(destFile, bmp);
+				Log.d( TAG, String.format("photo %s saved for offline view later.", photo.getId())); //$NON-NLS-1$
+			} else {
+				Log.w(TAG, "unable to download the image: " + url); //$NON-NLS-1$
+			}
+		}
+	}
 
-			int lastPageNo = getLastPage(serverPhotoCount);
-			List<MediaObject> photos = new ArrayList<MediaObject>();
-			while (lastPageNo > 0
-					&& photos.size() < IConstants.DEF_MAX_TOTAL_PHOTOS) {
-				MediaObjectCollection col = getPhotoForPage(ctx, param,
-						lastPageNo);
-				if (col != null) {
-					MediaObject[] mos = col.getPhotos().toArray(
-							new MediaObject[col.getPhotos().size()]);
-					int index = mos.length - 1;
-					while (index >= 0) {
-						photos.add(mos[index]);
-						index--;
+	private void saveDeltaHandle(Context ctx, IOfflineViewParameter param,
+			List<MediaObject> photos) {
+		int serverPhotoCount = getCurrentCollectionPhotoCount(ctx, param);
+		if( serverPhotoCount <= photos.size() ) {
+			//no addition on server for this photo set.
+			Log.d(TAG, "no update for this photo set."); //$NON-NLS-1$
+			return;
+		}
+		
+		Log.d(TAG, String.format("before, there are %d photos", photos.size())); //$NON-NLS-1$
+		int delta = serverPhotoCount - photos.size();
+		int lastPage = getLastPage( serverPhotoCount, delta );
+		boolean duplicateFound = false;
+		while( lastPage > 0 ) {
+			MediaObjectCollection col = getPhotoForPage(ctx,param,lastPage,delta);
+			if( col != null ) {
+				for( MediaObject p : col.getPhotos() ) {
+					if( photos.contains(p)) {
+						duplicateFound = true;
+						break;
+					} else {
+						photos.add(0,p);
 					}
-				} else {
-					break;
 				}
-				lastPageNo--;
 			}
+			
+			if( duplicateFound ) 
+				break;
+			lastPage --;
+		}
+		Log.d(TAG, String.format("after,  there are %d photos.", photos.size())); //$NON-NLS-1$
+		
+		//if exceeded the limit, remove some old photos.
+		if( photos.size() > IConstants.DEF_MAX_TOTAL_PHOTOS) {
+			photos = photos.subList(0, IConstants.DEF_MAX_TOTAL_PHOTOS);
+		}
+		
+		savePhotoList(param,photos);
+	}
 
-			if (!photos.isEmpty()) {
-				savePhotoList(param, photos);
+	/**
+	 * Saves the whole photo information.
+	 * 
+	 * @param ctx
+	 * @param param
+	 */
+	private void firstTimeHandle(Context ctx, IOfflineViewParameter param) {
+		int serverPhotoCount = getCurrentCollectionPhotoCount(ctx, param);
+		if (serverPhotoCount == -1) {
+			return;
+		}
+
+		int lastPageNo = getLastPage(serverPhotoCount, PAGE_SIZE);
+		List<MediaObject> photos = new ArrayList<MediaObject>();
+		
+		int pageIndex = 0;
+		while (lastPageNo > 0) {
+			MediaObjectCollection col = getPhotoForPage(ctx, param, lastPageNo,
+					PAGE_SIZE);
+			
+			if (col != null) {
+				for( MediaObject p : col.getPhotos()) {
+					photos.add(pageIndex, p);
+					if( photos.size() >= IConstants.DEF_MAX_TOTAL_PHOTOS)
+						break;
+				}
+			} else {
+				break;
 			}
+			pageIndex = photos.size();
+			if (photos.size() >= IConstants.DEF_MAX_TOTAL_PHOTOS)
+				break;
+			lastPageNo--;
+		}
 
+		if (!photos.isEmpty()) {
+			savePhotoList(param, photos);
 		}
 	}
 
 	private MediaObjectCollection getPhotoForPage(Context ctx,
-			IOfflineViewParameter param, int pageNo) {
+			IOfflineViewParameter param, int pageNo, int pageSize) {
 		PicornerApplication app = (PicornerApplication) ((Service) ctx)
 				.getApplication();
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
@@ -115,7 +190,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 		try {
 			Photoset ps = f.getPhotosetsInterface().getPhotos(
 					param.getPhotoCollectionId(), mExtras,
-					Flickr.PRIVACY_LEVEL_NO_FILTER, PAGE_SIZE, pageNo);
+					Flickr.PRIVACY_LEVEL_NO_FILTER, pageSize, pageNo);
 			User user = ps.getOwner();
 			MediaObjectCollection col = ModelUtils.convertFlickrPhotoList(
 					ps.getPhotoList(), user);
@@ -131,9 +206,9 @@ public class FlickrPhotoSetOfflineProcessor implements
 	 * @param serverPhotoCount
 	 * @return
 	 */
-	private int getLastPage(int serverPhotoCount) {
-		int maxPage = serverPhotoCount / PAGE_SIZE;
-		int remain = serverPhotoCount % PAGE_SIZE;
+	private int getLastPage(int serverPhotoCount, int pageSize) {
+		int maxPage = serverPhotoCount / pageSize;
+		int remain = serverPhotoCount % pageSize;
 		if (remain > 0) {
 			maxPage++;
 		}
@@ -194,6 +269,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private List<MediaObject> readPhotos(IOfflineViewParameter param) {
 		File offlineFolder = createFlickrFolders();
 		if (offlineFolder == null) {

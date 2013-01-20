@@ -15,6 +15,7 @@
         android:src="@android:drawable/ic_menu_revert" />
 
     <CheckBox
+        android:layout_marginLeft="15dp"
         android:id="@+id/cb_offline"
         android:layout_width="0dp"
         android:layout_weight="1"

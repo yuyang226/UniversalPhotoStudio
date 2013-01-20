@@ -10,10 +10,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.JsonReader;
 import android.util.JsonWriter;
+import android.util.Log;
+import android.widget.ImageView;
 
+import com.gmail.charleszq.picorner.BuildConfig;
+import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.utils.IConstants;
 
@@ -22,6 +27,62 @@ import com.gmail.charleszq.picorner.utils.IConstants;
  * 
  */
 public final class OfflineControlFileUtil {
+
+	private static final String TAG = OfflineControlFileUtil.class
+			.getSimpleName();
+
+	/**
+	 * Tries to load the image from cache.
+	 * 
+	 * @param photo
+	 * @param imageView
+	 * @return
+	 */
+	public static boolean loadImageFromCache(MediaObject photo,
+			ImageView imageView) {
+		boolean result = false;
+		File offlineFolder = createOfflineFolderIfNeccessary();
+		if (offlineFolder == null) {
+			return result;
+		}
+
+		File photoSourceFolder = null;
+		switch (photo.getMediaSource()) {
+		case FLICKR:
+			photoSourceFolder = new File(offlineFolder,
+					IOfflineViewParameter.OFFLINE_FLICKR_FOLDER_NAME);
+			break;
+		case INSTAGRAM:
+			photoSourceFolder = new File(offlineFolder,
+					IOfflineViewParameter.OFFLINE_INSTAGRAM_FOLDER_NAME);
+			break;
+		case PX500:
+			photoSourceFolder = new File(offlineFolder,
+					IOfflineViewParameter.OFFLINE_500PX_FOLDER_NAME);
+			break;
+		}
+
+		File imageFolder = new File(photoSourceFolder,
+				IOfflineViewParameter.OFFLINE_IMAGE_FOLDER_NAME);
+		File imageFile = new File(imageFolder, photo.getId() + ".png"); //$NON-NLS-1$
+		if (!imageFile.exists()) {
+			return result;
+		}
+
+		result = true;
+		imageView.setImageBitmap(BitmapFactory.decodeFile(imageFile
+				.getAbsolutePath()));
+		if (BuildConfig.DEBUG) {
+			String title = photo.getTitle();
+			if (title == null) {
+				title = "no title"; //$NON-NLS-1$
+			}
+			Log.d(TAG,
+					String.format("photo %s loaded from offline cache.", title)); //$NON-NLS-1$
+
+		}
+		return result;
+	}
 
 	/**
 	 * 
@@ -80,6 +141,7 @@ public final class OfflineControlFileUtil {
 			reader.endArray();
 			reader.close();
 		} catch (IOException e) {
+			Log.e(TAG, e.getMessage());
 			return null;
 		}
 
