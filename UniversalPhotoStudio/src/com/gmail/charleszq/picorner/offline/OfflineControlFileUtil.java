@@ -20,6 +20,7 @@ import android.util.Log;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.utils.IConstants;
+import com.gmail.charleszq.picorner.utils.ImageUtils;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -69,6 +70,43 @@ public final class OfflineControlFileUtil {
 
 		result = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
 		return result;
+	}
+
+	public static void saveBitmapForOfflineView(Bitmap bmp, MediaObject photo) {
+		File offlineFolder = createOfflineFolderIfNeccessary();
+		if (offlineFolder == null) {
+			return;
+		}
+
+		File photoSourceFolder = null;
+		switch (photo.getMediaSource()) {
+		case FLICKR:
+			photoSourceFolder = new File(offlineFolder,
+					IOfflineViewParameter.OFFLINE_FLICKR_FOLDER_NAME);
+			break;
+		case INSTAGRAM:
+			photoSourceFolder = new File(offlineFolder,
+					IOfflineViewParameter.OFFLINE_INSTAGRAM_FOLDER_NAME);
+			break;
+		case PX500:
+			photoSourceFolder = new File(offlineFolder,
+					IOfflineViewParameter.OFFLINE_500PX_FOLDER_NAME);
+			break;
+		}
+
+		if (!photoSourceFolder.exists() && !photoSourceFolder.mkdir())
+			return;
+
+		File imageFolder = new File(photoSourceFolder,
+				IOfflineViewParameter.OFFLINE_IMAGE_FOLDER_NAME);
+		if (!imageFolder.exists() && !imageFolder.mkdir())
+			return;
+
+		File destFile = new File(imageFolder, photo.getId() + ".png"); //$NON-NLS-1$
+		ImageUtils.saveImageToFile(destFile, bmp);
+		Log.d(TAG, String.format(
+				"Photo %s saved for offline view.", photo.getId())); //$NON-NLS-1$
+
 	}
 
 	/**

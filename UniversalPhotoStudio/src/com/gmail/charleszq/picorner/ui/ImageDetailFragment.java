@@ -48,6 +48,7 @@ import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
@@ -130,6 +131,16 @@ public class ImageDetailFragment extends Fragment implements
 		@Override
 		public void onLoadingComplete(Bitmap loadedImage) {
 			mLoadedBitmap = loadedImage;
+			if( mIsOfflineEnabled ) {
+				if( BuildConfig.DEBUG ) {
+					Log.d(TAG, "offline enabled, saving photo..."); //$NON-NLS-1$
+				}
+				OfflineControlFileUtil.saveBitmapForOfflineView( mLoadedBitmap, mPhoto);
+			} else {
+				if( BuildConfig.DEBUG ) {
+					Log.d( TAG, "This command is not offline enabled."); //$NON-NLS-1$
+				}
+			}
 		}
 
 		@Override
@@ -153,6 +164,11 @@ public class ImageDetailFragment extends Fragment implements
 	private boolean mUserLikeThePhoto = false;
 
 	/**
+	 * offline enable?
+	 */
+	private boolean mIsOfflineEnabled = false;
+
+	/**
 	 * Factory method to generate a new instance of the fragment given an image
 	 * number.
 	 * 
@@ -161,13 +177,14 @@ public class ImageDetailFragment extends Fragment implements
 	 * @return A new instance of ImageDetailFragment with imageNum extras
 	 */
 	public static ImageDetailFragment newInstance(String imageUrl,
-			IPhotosProvider dp, int pos) {
+			IPhotosProvider dp, int pos, boolean offlineEnabled) {
 		final ImageDetailFragment f = new ImageDetailFragment();
 
 		final Bundle args = new Bundle();
 		args.putString(IMAGE_DATA_EXTRA, imageUrl);
 		args.putInt(MEDIA_OBJ_POS, pos);
 		args.putSerializable(ImageDetailActivity.DP_KEY, dp);
+		args.putBoolean(ImageDetailActivity.OFFLINE_COMMAND_KEY, offlineEnabled);
 		f.setArguments(args);
 
 		return f;
@@ -200,6 +217,9 @@ public class ImageDetailFragment extends Fragment implements
 				.showStubImage(R.drawable.empty_photo).cacheOnDisc()
 				.bitmapConfig(Bitmap.Config.RGB_565).build();
 
+		mIsOfflineEnabled = getArguments() != null ? (getArguments()
+				.getBoolean(ImageDetailActivity.OFFLINE_COMMAND_KEY, false))
+				: false;
 		mImageUrl = getArguments() != null ? getArguments().getString(
 				IMAGE_DATA_EXTRA) : null;
 		int pos = (getArguments() != null ? getArguments()

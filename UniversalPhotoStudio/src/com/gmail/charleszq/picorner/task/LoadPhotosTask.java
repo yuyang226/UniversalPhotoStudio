@@ -3,9 +3,13 @@
  */
 package com.gmail.charleszq.picorner.task;
 
+import java.util.List;
+
 import android.util.Log;
 
+import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
+import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -38,6 +42,23 @@ public class LoadPhotosTask extends
 		int pageNo = 0;
 		if (params.length == 1) {
 			pageNo = params[0];
+		}
+
+		IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCommand
+				.getAdapter(IOfflineViewParameter.class);
+		if (offlineParam != null) {
+			if (pageNo == 0) {
+				List<MediaObject> photos = offlineParam
+						.getPhotoCollectionProcessor().getCachedPhotos(
+								offlineParam);
+				MediaObjectCollection mc = new MediaObjectCollection();
+				for (MediaObject photo : photos) {
+					mc.addPhoto(photo);
+				}
+				return mc;
+			} else {
+				return null;
+			}
 		}
 
 		IPhotoService service = (IPhotoService) mCommand

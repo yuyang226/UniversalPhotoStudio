@@ -3,7 +3,11 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
+import java.util.List;
+
 import android.content.Context;
+
+import com.gmail.charleszq.picorner.model.MediaObject;
 
 /**
  * Represents the service to get the photo collection information back from
@@ -25,5 +29,13 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * @param param
 	 */
 	void process(Context ctx, IOfflineViewParameter param);
-	
+
+	/**
+	 * Returns the cached photos. if the photo collection information is not
+	 * ready upon the client call, return <code>null</code>
+	 * 
+	 * @return
+	 */
+	List<MediaObject> getCachedPhotos(IOfflineViewParameter param);
+
 }

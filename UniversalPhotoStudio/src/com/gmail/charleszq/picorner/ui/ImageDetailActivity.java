@@ -42,6 +42,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 		OnClickListener {
 	public static final String LARGE_IMAGE_POSITION = "extra_image"; //$NON-NLS-1$
 	public static final String DP_KEY = "data.provider"; //$NON-NLS-1$
+	public static final String OFFLINE_COMMAND_KEY = "is.command.support.offline"; //$NON-NLS-1$
 
 	private ImagePagerAdapter mAdapter;
 	private ImageLoader mImageFetcher;
@@ -50,6 +51,11 @@ public class ImageDetailActivity extends FragmentActivity implements
 	private Set<IActionBarVisibleListener> mActionBarListeners;
 
 	IPhotosProvider mPhotosProvider;
+	
+	/**
+	 * the marker to say if the current command is offline enabled.
+	 */
+	boolean mIsOfflineEnabled = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -64,12 +70,18 @@ public class ImageDetailActivity extends FragmentActivity implements
 				.memoryCache(new WeakMemoryCache())
 				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).build();
 		mImageFetcher.init(config);
+		
+		//is offline enabled
+		String isOfflineEnabledString = getIntent().getStringExtra(OFFLINE_COMMAND_KEY);
+		if( isOfflineEnabledString != null ) {
+			mIsOfflineEnabled = Boolean.parseBoolean(isOfflineEnabledString);
+		}
 
 		// Set up ViewPager and backing adapter
 		mPhotosProvider = (IPhotosProvider) getIntent().getExtras()
 				.getSerializable(DP_KEY);
 		mAdapter = new ImagePagerAdapter(mPhotosProvider,
-				getSupportFragmentManager(), mPhotosProvider.getCurrentSize());
+				getSupportFragmentManager(), mPhotosProvider.getCurrentSize(), mIsOfflineEnabled);
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPager.setAdapter(mAdapter);
 		mPager.setPageMargin((int) getResources().getDimension(
@@ -145,12 +157,14 @@ public class ImageDetailActivity extends FragmentActivity implements
 	private class ImagePagerAdapter extends FragmentStatePagerAdapter {
 		private final int mSize;
 		private IPhotosProvider mProvider;
+		private boolean mIsOfflineEnabled = false;
 
 		public ImagePagerAdapter(IPhotosProvider provider, FragmentManager fm,
-				int size) {
+				int size, boolean offlineEnabled) {
 			super(fm);
 			mSize = size;
 			this.mProvider = provider;
+			this.mIsOfflineEnabled = offlineEnabled;
 		}
 
 		@Override
@@ -163,7 +177,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 			MediaObject obj = mProvider.getMediaObject(position);
 			ImageDetailFragment frg = ImageDetailFragment.newInstance(
 					obj.getLargeUrl() == null ? obj.getThumbUrl() : obj
-							.getLargeUrl(), mProvider, position);
+							.getLargeUrl(), mProvider, position, mIsOfflineEnabled);
 			return frg;
 		}
 	}

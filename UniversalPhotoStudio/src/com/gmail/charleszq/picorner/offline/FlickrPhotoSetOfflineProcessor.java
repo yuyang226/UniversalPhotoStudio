@@ -71,27 +71,31 @@ public class FlickrPhotoSetOfflineProcessor implements
 		} else {
 			firstTimeHandle(ctx, param);
 		}
-		
-		//starts the download
+
+		// starts the download
 		List<MediaObject> photos = readPhotos(param);
-		if( photos == null ) {
-			Log.e(TAG, "error to read cache photo collection file." ); //$NON-NLS-1$
+		if (photos == null) {
+			Log.e(TAG, "error to read cache photo collection file."); //$NON-NLS-1$
 		}
-		
+
 		File parentFolder = this.createFlickrFolders();
-		File imageFolder = new File( parentFolder, IOfflineViewParameter.OFFLINE_IMAGE_FOLDER_NAME);
-		for( MediaObject photo : photos ) {
+		File imageFolder = new File(parentFolder,
+				IOfflineViewParameter.OFFLINE_IMAGE_FOLDER_NAME);
+		for (MediaObject photo : photos) {
 			File destFile = new File(imageFolder, photo.getId() + ".png"); //$NON-NLS-1$
-			if( destFile.exists() ) {
-				Log.d(TAG, String.format( "photo %s was downloaded before.", photo.getId())); //$NON-NLS-1$
+			if (destFile.exists()) {
+				Log.d(TAG, String.format(
+						"photo %s was downloaded before.", photo.getId())); //$NON-NLS-1$
 				continue;
 			}
-			
+
 			String url = photo.getLargeUrl();
 			Bitmap bmp = ImageUtils.downloadImage(url);
-			if( bmp != null ) {
+			if (bmp != null) {
 				ImageUtils.saveImageToFile(destFile, bmp);
-				Log.d( TAG, String.format("photo %s saved for offline view later.", photo.getId())); //$NON-NLS-1$
+				Log.d(TAG,
+						String.format(
+								"photo %s saved for offline view later.", photo.getId())); //$NON-NLS-1$
 			} else {
 				Log.w(TAG, "unable to download the image: " + url); //$NON-NLS-1$
 			}
@@ -101,41 +105,42 @@ public class FlickrPhotoSetOfflineProcessor implements
 	private void saveDeltaHandle(Context ctx, IOfflineViewParameter param,
 			List<MediaObject> photos) {
 		int serverPhotoCount = getCurrentCollectionPhotoCount(ctx, param);
-		if( serverPhotoCount <= photos.size() ) {
-			//no addition on server for this photo set.
+		if (serverPhotoCount <= photos.size()) {
+			// no addition on server for this photo set.
 			Log.d(TAG, "no update for this photo set."); //$NON-NLS-1$
 			return;
 		}
-		
+
 		Log.d(TAG, String.format("before, there are %d photos", photos.size())); //$NON-NLS-1$
 		int delta = serverPhotoCount - photos.size();
-		int lastPage = getLastPage( serverPhotoCount, delta );
+		int lastPage = getLastPage(serverPhotoCount, delta);
 		boolean duplicateFound = false;
-		while( lastPage > 0 ) {
-			MediaObjectCollection col = getPhotoForPage(ctx,param,lastPage,delta);
-			if( col != null ) {
-				for( MediaObject p : col.getPhotos() ) {
-					if( photos.contains(p)) {
+		while (lastPage > 0) {
+			MediaObjectCollection col = getPhotoForPage(ctx, param, lastPage,
+					delta);
+			if (col != null) {
+				for (MediaObject p : col.getPhotos()) {
+					if (photos.contains(p)) {
 						duplicateFound = true;
 						break;
 					} else {
-						photos.add(0,p);
+						photos.add(0, p);
 					}
 				}
 			}
-			
-			if( duplicateFound ) 
+
+			if (duplicateFound)
 				break;
-			lastPage --;
+			lastPage--;
 		}
 		Log.d(TAG, String.format("after,  there are %d photos.", photos.size())); //$NON-NLS-1$
-		
-		//if exceeded the limit, remove some old photos.
-		if( photos.size() > IConstants.DEF_MAX_TOTAL_PHOTOS) {
+
+		// if exceeded the limit, remove some old photos.
+		if (photos.size() > IConstants.DEF_MAX_TOTAL_PHOTOS) {
 			photos = photos.subList(0, IConstants.DEF_MAX_TOTAL_PHOTOS);
 		}
-		
-		savePhotoList(param,photos);
+
+		savePhotoList(param, photos);
 	}
 
 	/**
@@ -152,16 +157,16 @@ public class FlickrPhotoSetOfflineProcessor implements
 
 		int lastPageNo = getLastPage(serverPhotoCount, PAGE_SIZE);
 		List<MediaObject> photos = new ArrayList<MediaObject>();
-		
+
 		int pageIndex = 0;
 		while (lastPageNo > 0) {
 			MediaObjectCollection col = getPhotoForPage(ctx, param, lastPageNo,
 					PAGE_SIZE);
-			
+
 			if (col != null) {
-				for( MediaObject p : col.getPhotos()) {
+				for (MediaObject p : col.getPhotos()) {
 					photos.add(pageIndex, p);
-					if( photos.size() >= IConstants.DEF_MAX_TOTAL_PHOTOS)
+					if (photos.size() >= IConstants.DEF_MAX_TOTAL_PHOTOS)
 						break;
 				}
 			} else {
@@ -317,4 +322,8 @@ public class FlickrPhotoSetOfflineProcessor implements
 		return ffolder;
 	}
 
+	@Override
+	public List<MediaObject> getCachedPhotos(IOfflineViewParameter param) {
+		return readPhotos(param);
+	}
 }
