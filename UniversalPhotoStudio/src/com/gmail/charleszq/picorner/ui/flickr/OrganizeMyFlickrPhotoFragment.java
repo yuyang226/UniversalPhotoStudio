@@ -208,6 +208,11 @@ public class OrganizeMyFlickrPhotoFragment extends
 	}
 
 	private void onPoolsFetched(List<Object> result) {
+		
+		if( getActivity() == null ) {
+			return;
+		}
+		
 		mCommands = new ArrayList<ICommand<?>>();
 		List<ICommand<?>> psCommands = new ArrayList<ICommand<?>>();
 		List<ICommand<?>> groupCommands = new ArrayList<ICommand<?>>();

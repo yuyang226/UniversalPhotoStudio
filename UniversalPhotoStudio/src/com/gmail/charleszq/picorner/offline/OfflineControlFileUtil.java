@@ -10,14 +10,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.util.Log;
-import android.widget.ImageView;
 
-import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -38,9 +37,8 @@ public final class OfflineControlFileUtil {
 	 * @param imageView
 	 * @return
 	 */
-	public static boolean loadImageFromCache(MediaObject photo,
-			ImageView imageView) {
-		boolean result = false;
+	public static Bitmap loadImageFromCache(MediaObject photo) {
+		Bitmap result = null;
 		File offlineFolder = createOfflineFolderIfNeccessary();
 		if (offlineFolder == null) {
 			return result;
@@ -69,18 +67,7 @@ public final class OfflineControlFileUtil {
 			return result;
 		}
 
-		result = true;
-		imageView.setImageBitmap(BitmapFactory.decodeFile(imageFile
-				.getAbsolutePath()));
-		if (BuildConfig.DEBUG) {
-			String title = photo.getTitle();
-			if (title == null) {
-				title = "no title"; //$NON-NLS-1$
-			}
-			Log.d(TAG,
-					String.format("photo %s loaded from offline cache.", title)); //$NON-NLS-1$
-
-		}
+		result = BitmapFactory.decodeFile(imageFile.getAbsolutePath());
 		return result;
 	}
 

@@ -372,8 +372,10 @@ public class ImageDetailFragment extends Fragment implements
 		// Use the parent activity to load the image asynchronously into the
 		// ImageView (so a single
 		// cache can be used over all pages in the ViewPager
-		boolean loadedFromOffline = OfflineControlFileUtil.loadImageFromCache(mPhoto, mImageView);
-		if( !loadedFromOffline && ImageDetailActivity.class.isInstance(getActivity())) {
+		mLoadedBitmap = OfflineControlFileUtil.loadImageFromCache(mPhoto);
+		if (mLoadedBitmap != null) {
+			mImageView.setImageBitmap(mLoadedBitmap);
+		} else if (ImageDetailActivity.class.isInstance(getActivity())) {
 			mImageFetcher = ((ImageDetailActivity) getActivity())
 					.getImageFetcher();
 			mImageFetcher.displayImage(mImageUrl, mImageView,

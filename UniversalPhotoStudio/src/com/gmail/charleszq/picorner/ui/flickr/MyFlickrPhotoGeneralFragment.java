@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui.flickr;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -315,6 +316,8 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 
 				@Override
 				public void onTaskDone(Permissions result) {
+
+					Activity act = getActivity();
 					if (result != null) {
 						isPermGetFromServer = true;
 						mPerm = result;
@@ -324,14 +327,16 @@ public class MyFlickrPhotoGeneralFragment extends Fragment {
 						mCheckFriends.setChecked(result.isFriendFlag());
 						enablePermControls(true);
 					} else {
-						Toast.makeText(getActivity(),
-								getString(R.string.msg_fail_get_f_perm),
-								Toast.LENGTH_SHORT).show();
+						if (act != null)
+							Toast.makeText(act,
+									getString(R.string.msg_fail_get_f_perm),
+									Toast.LENGTH_SHORT).show();
 					}
 					mPermInfoLoaded = true;
 					if (mGeneralInfoLoaded && mPermInfoLoaded) {
-						mViewSwitcher.setInAnimation(AnimationUtils
-								.loadAnimation(getActivity(), R.anim.fade));
+						if (act != null)
+							mViewSwitcher.setInAnimation(AnimationUtils
+									.loadAnimation(act, R.anim.fade));
 						if (mViewSwitcher.getCurrentView() instanceof ProgressBar)
 							mViewSwitcher.showNext();
 					}
