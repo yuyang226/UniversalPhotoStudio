@@ -54,7 +54,6 @@ public class OfflineHandleService extends IntentService {
 		if (param == null) {
 			Log.d(TAG, "charging, start the download process."); //$NON-NLS-1$
 			downlaodPhotos();
-			return;
 		} else {
 			manageRepository(param, isAdd);
 		}
@@ -74,15 +73,15 @@ public class OfflineHandleService extends IntentService {
 			return;
 		}
 
-		if (BuildConfig.DEBUG) {
-			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-					this).setSmallIcon(R.drawable.ic_launcher)
-					.setContentTitle("Offline View") //$NON-NLS-1$
-					.setContentText("Downloading photos for offline view"); //$NON-NLS-1$
-			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.notify(DOWNLOAD_NOTIF_ID,
-					mBuilder.getNotification());
-		}
+		//shows the notification on status bar.
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this).setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle(getString(R.string.app_name)) 
+				.setContentText(getString(R.string.msg_offline_downloading)); 
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.notify(DOWNLOAD_NOTIF_ID,
+				mBuilder.getNotification());
+		
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
 				.getExistingOfflineParameters();
 		if (params == null) {

@@ -8,14 +8,19 @@ import java.io.File;
 
 import org.jinstagram.auth.model.Token;
 
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Environment;
+import android.util.Log;
 
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
+import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.oauth.OAuth;
@@ -36,6 +41,28 @@ public class PicornerApplication extends Application {
 	public void onCreate() {
 		super.onCreate();
 		enableHttpResponseCache();
+		scheduleOfflineDownload();
+	}
+
+	private PendingIntent getOfflineServicePendingIntent() {
+		Intent offlineIntent = new Intent(this, OfflineHandleService.class);
+		PendingIntent photoPendingIntent = PendingIntent.getService(
+				getApplicationContext(), 0, offlineIntent,
+				PendingIntent.FLAG_UPDATE_CURRENT);
+		return photoPendingIntent;
+	}
+
+	private void scheduleOfflineDownload() {
+		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
+		PendingIntent pendingIntent = getOfflineServicePendingIntent();
+		am.cancel(pendingIntent);
+		
+		//start 5 min from now, and repeat every 24 hours
+		am.setRepeating(AlarmManager.RTC_WAKEUP,
+				System.currentTimeMillis() + 5 * 60 * 1000L,
+				24 * 60 * 60 * 1000L, pendingIntent);
+		if (BuildConfig.DEBUG)
+			Log.d(getClass().getSimpleName(), "offline download scheduled."); //$NON-NLS-1$
 	}
 
 	private void enableHttpResponseCache() {
