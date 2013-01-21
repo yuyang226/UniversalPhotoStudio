@@ -242,12 +242,10 @@ public final class OfflineControlFileUtil {
 				break;
 			}
 
-			if (sourceFolder != null) {
-				if (!sourceFolder.exists() && !sourceFolder.mkdir()) {
-					File controlFile = new File(sourceFolder,
-							param.getControlFileName());
-					ready = controlFile.exists();
-				}
+			if (sourceFolder != null && sourceFolder.exists()) {
+				File controlFile = new File(sourceFolder,
+						param.getControlFileName());
+				ready = controlFile.exists();
 			}
 		}
 		if (BuildConfig.DEBUG) {
