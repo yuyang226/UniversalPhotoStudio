@@ -90,7 +90,7 @@ public class OfflineHandleService extends IntentService {
 			return;
 		}
 		for (IOfflineViewParameter param : params) {
-			this.processOfflineParameter(param, true);
+			this.processOfflineParameter(param, false);
 		}
 	}
 
@@ -111,13 +111,6 @@ public class OfflineHandleService extends IntentService {
 		if (add) {
 			if (!params.contains(param))
 				params.add(0, param);
-			else {
-				// use the saved version so we can check the time interval.
-				int index = params.indexOf(param);
-				if (index != -1) {
-					param = params.get(index);
-				}
-			}
 		} else {
 			params.remove(param);
 		}
@@ -150,13 +143,17 @@ public class OfflineHandleService extends IntentService {
 	private boolean longerThanAday(IOfflineViewParameter param) {
 		long lastUpdateTime = param.getLastUpdateTime();
 		if (lastUpdateTime == 0) {
-			// just got from UI, and this could not happen.
-			return false;
+			if (BuildConfig.DEBUG)
+				Log.d(TAG,
+						"the offline parameter has no last update time saved."); //$NON-NLS-1$
+			return true;
 		}
 
 		long delta = System.currentTimeMillis() - lastUpdateTime;
-		// TODO later need to put this into preference.
-		return delta > 24 * 60 * 60 * 1000;
+		boolean ret = delta > 24 * 60 * 60 * 1000;
+		if (BuildConfig.DEBUG)
+			Log.d(TAG, "longer than a day? " + Boolean.toString(ret)); //$NON-NLS-1$
+		return ret;
 	}
 
 	@Override

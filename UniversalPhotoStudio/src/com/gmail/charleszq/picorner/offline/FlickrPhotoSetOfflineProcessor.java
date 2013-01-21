@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
@@ -84,8 +85,9 @@ public class FlickrPhotoSetOfflineProcessor implements
 		for (MediaObject photo : photos) {
 			File destFile = new File(imageFolder, photo.getId() + ".png"); //$NON-NLS-1$
 			if (destFile.exists()) {
-				Log.d(TAG, String.format(
-						"photo %s was downloaded before.", photo.getId())); //$NON-NLS-1$
+				if (BuildConfig.DEBUG)
+					Log.d(TAG, String.format(
+							"photo %s was downloaded before.", photo.getId())); //$NON-NLS-1$
 				continue;
 			}
 
@@ -93,11 +95,13 @@ public class FlickrPhotoSetOfflineProcessor implements
 			Bitmap bmp = ImageUtils.downloadImage(url);
 			if (bmp != null) {
 				ImageUtils.saveImageToFile(destFile, bmp);
-				Log.d(TAG,
-						String.format(
-								"photo %s saved for offline view later.", photo.getId())); //$NON-NLS-1$
+				if (BuildConfig.DEBUG)
+					Log.d(TAG,
+							String.format(
+									"photo %s saved for offline view later.", photo.getId())); //$NON-NLS-1$
 			} else {
-				Log.w(TAG, "unable to download the image: " + url); //$NON-NLS-1$
+				if (BuildConfig.DEBUG)
+					Log.w(TAG, "unable to download the image: " + url); //$NON-NLS-1$
 			}
 		}
 	}
