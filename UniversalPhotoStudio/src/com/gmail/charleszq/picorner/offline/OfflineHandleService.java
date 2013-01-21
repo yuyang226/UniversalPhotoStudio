@@ -92,6 +92,13 @@ public class OfflineHandleService extends IntentService {
 		for (IOfflineViewParameter param : params) {
 			this.processOfflineParameter(param, false);
 		}
+		try {
+			OfflineControlFileUtil.save(params);
+		} catch (Exception e) {
+			if (BuildConfig.DEBUG)
+				Log.w(TAG,
+						"error to save offline control file: " + e.getMessage()); //$NON-NLS-1$
+		}
 	}
 
 	/**

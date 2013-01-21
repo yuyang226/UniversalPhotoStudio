@@ -208,7 +208,7 @@ public final class OfflineControlFileUtil {
 			writer.name(IOfflineViewParameter.KEY_PHOTO_COLLECTION_ID).value(
 					param.getPhotoCollectionId());
 			writer.name(IOfflineViewParameter.KEY_LAST_UPDATE_TS).value(
-					System.currentTimeMillis());
+					param.getLastUpdateTime());
 			writer.endObject();
 		}
 		writer.endArray();
