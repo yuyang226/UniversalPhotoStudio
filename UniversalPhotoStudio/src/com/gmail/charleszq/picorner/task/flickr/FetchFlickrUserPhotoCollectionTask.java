@@ -81,7 +81,9 @@ public class FetchFlickrUserPhotoCollectionTask extends
 		} catch (Exception e) {
 		}
 
-		cachePool(photosets);
+		if (!photosets.isEmpty()) {
+			cachePool(photosets);
+		}
 
 		return photosets;
 	}

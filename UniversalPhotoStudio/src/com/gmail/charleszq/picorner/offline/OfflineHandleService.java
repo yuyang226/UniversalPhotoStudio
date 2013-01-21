@@ -30,6 +30,8 @@ public class OfflineHandleService extends IntentService {
 	private static final String TAG = OfflineHandleService.class
 			.getSimpleName();
 
+	private static final int DOWNLOAD_NOTIF_ID = 100001;
+
 	/**
 	 * @param name
 	 */
@@ -59,31 +61,33 @@ public class OfflineHandleService extends IntentService {
 	}
 
 	private void downlaodPhotos() {
-		
-		//check network connection type
-		ConnectivityManager cm =
-		        (ConnectivityManager)this.getSystemService(Context.CONNECTIVITY_SERVICE);
-		 
+
+		// check network connection type
+		ConnectivityManager cm = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		boolean isConnected = activeNetwork.isConnectedOrConnecting();
 		boolean isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-		if( !isConnected || !isWifi ) {
+		if (!isConnected || !isWifi) {
 			Log.d(TAG, "Not wifi, don't start the offline download process."); //$NON-NLS-1$
 			return;
 		}
-		
+
 		if (BuildConfig.DEBUG) {
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 					this).setSmallIcon(R.drawable.ic_launcher)
 					.setContentTitle("Offline View") //$NON-NLS-1$
 					.setContentText("Downloading photos for offline view"); //$NON-NLS-1$
 			NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			mNotificationManager.notify(10001, mBuilder.getNotification());
+			mNotificationManager.notify(DOWNLOAD_NOTIF_ID,
+					mBuilder.getNotification());
 		}
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
 				.getExistingOfflineParameters();
 		if (params == null) {
 			Log.w(TAG, "repository file not found."); //$NON-NLS-1$
+			return;
 		}
 		for (IOfflineViewParameter param : params) {
 			this.processOfflineParameter(param, true);
@@ -154,4 +158,12 @@ public class OfflineHandleService extends IntentService {
 		// TODO later need to put this into preference.
 		return delta > 24 * 60 * 60 * 1000;
 	}
+
+	@Override
+	public void onDestroy() {
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.cancel(DOWNLOAD_NOTIF_ID);
+		super.onDestroy();
+	}
+
 }

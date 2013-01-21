@@ -17,6 +17,7 @@ import android.util.JsonReader;
 import android.util.JsonWriter;
 import android.util.Log;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -219,5 +220,40 @@ public final class OfflineControlFileUtil {
 	public static boolean isOfflineViewEnabled(IOfflineViewParameter param) {
 		List<IOfflineViewParameter> params = getExistingOfflineParameters();
 		return params != null && params.contains(param);
+	}
+
+	public static boolean isOfflineControlFileReady(IOfflineViewParameter param) {
+		boolean ready = false;
+		File offlineFolder = createOfflineFolderIfNeccessary();
+		if (offlineFolder != null) {
+			File sourceFolder = null;
+			switch (param.getPhotoSourceType()) {
+			case FLICKR:
+				sourceFolder = new File(offlineFolder,
+						IOfflineViewParameter.OFFLINE_FLICKR_FOLDER_NAME);
+				break;
+			case INSTAGRAM:
+				sourceFolder = new File(offlineFolder,
+						IOfflineViewParameter.OFFLINE_INSTAGRAM_FOLDER_NAME);
+				break;
+			case PX500:
+				sourceFolder = new File(offlineFolder,
+						IOfflineViewParameter.OFFLINE_500PX_FOLDER_NAME);
+				break;
+			}
+
+			if (sourceFolder != null) {
+				if (!sourceFolder.exists() && !sourceFolder.mkdir()) {
+					File controlFile = new File(sourceFolder,
+							param.getControlFileName());
+					ready = controlFile.exists();
+				}
+			}
+		}
+		if (BuildConfig.DEBUG) {
+			Log.d(TAG, String.format("Offline control file %s is ready? %s", //$NON-NLS-1$
+					param.getControlFileName(), Boolean.toString(ready)));
+		}
+		return ready;
 	}
 }
