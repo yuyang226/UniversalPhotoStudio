@@ -115,8 +115,7 @@ public class OfflineHandleService extends IntentService {
 			params.remove(param);
 		}
 		try {
-			if (!params.isEmpty())
-				OfflineControlFileUtil.save(params);
+			OfflineControlFileUtil.save(params);
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 		}
