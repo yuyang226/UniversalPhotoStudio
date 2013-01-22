@@ -32,6 +32,10 @@ public class OfflineHandleService extends IntentService {
 
 	private static final int DOWNLOAD_NOTIF_ID = 100001;
 
+	public static final int ADD_OFFLINE_PARAM = 1;
+	public static final int REMOVE_OFFLINE_PARAM = 2;
+	public static final int REFRESH_OFFLINE_PARAM = 3;
+
 	/**
 	 * @param name
 	 */
@@ -48,14 +52,21 @@ public class OfflineHandleService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		IOfflineViewParameter param = (IOfflineViewParameter) intent
 				.getSerializableExtra(IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY);
-		boolean isAdd = Boolean
-				.parseBoolean(intent
-						.getStringExtra(IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_KEY));
+		int actionType = intent
+				.getIntExtra(
+						IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
+						ADD_OFFLINE_PARAM);
 		if (param == null) {
 			Log.d(TAG, "charging, start the download process."); //$NON-NLS-1$
 			downlaodPhotos();
 		} else {
-			manageRepository(param, isAdd);
+			if (actionType != REFRESH_OFFLINE_PARAM)
+				manageRepository(param, actionType == ADD_OFFLINE_PARAM ? true
+						: false);
+			else {
+				if( BuildConfig.DEBUG ) 
+					Log.d(TAG, "Refresh the given offline parameter."); //$NON-NLS-1$
+			}
 		}
 	}
 
@@ -73,15 +84,15 @@ public class OfflineHandleService extends IntentService {
 			return;
 		}
 
-		//shows the notification on status bar.
+		// shows the notification on status bar.
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				this).setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle(getString(R.string.app_name)) 
-				.setContentText(getString(R.string.msg_offline_downloading)); 
+				.setContentTitle(getString(R.string.app_name))
+				.setContentText(getString(R.string.msg_offline_downloading));
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.notify(DOWNLOAD_NOTIF_ID,
 				mBuilder.getNotification());
-		
+
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
 				.getExistingOfflineParameters();
 		if (params == null) {

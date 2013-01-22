@@ -31,7 +31,7 @@ public interface IOfflineViewParameter extends Serializable {
 	 * The key of where we save the offline parameter into intent extra.
 	 */
 	static final String OFFLINE_PARAM_INTENT_KEY = "offline.param"; //$NON-NLS-1$
-	static final String OFFLINE_PARAM_INTENT_ADD_REMOVE_KEY = "offline.add.param"; //$NON-NLS-1$
+	static final String OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY = "offline.add.param"; //$NON-NLS-1$
 
 	/**
 	 * The key of photo source type for gson

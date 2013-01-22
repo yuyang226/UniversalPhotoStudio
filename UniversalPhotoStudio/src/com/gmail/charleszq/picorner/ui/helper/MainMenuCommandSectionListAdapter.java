@@ -77,7 +77,8 @@ public class MainMenuCommandSectionListAdapter extends
 				@Override
 				public void onClick(View v) {
 					// hook up action item with click listener.
-					prepareOfflineActionItem(backView, frontView, command, offline);
+					prepareOfflineActionItem(backView, frontView, command,
+							offline);
 					frontView.setVisibility(View.INVISIBLE);
 					backView.setVisibility(View.VISIBLE);
 				}
@@ -96,6 +97,19 @@ public class MainMenuCommandSectionListAdapter extends
 				case R.id.btn_offline_back:
 					backView.setVisibility(View.INVISIBLE);
 					frontView.setVisibility(View.VISIBLE);
+					break;
+				case R.id.btn_offline_refresh:
+					//TODO check to see if this parameter is enabled or not.
+					Intent serviceIntent = new Intent(mContext,
+							OfflineHandleService.class);
+					serviceIntent.putExtra(
+							IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
+							offline);
+					serviceIntent
+							.putExtra(
+									IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
+									OfflineHandleService.REFRESH_OFFLINE_PARAM);
+					mContext.startService(serviceIntent);
 					break;
 				}
 			}
@@ -122,8 +136,9 @@ public class MainMenuCommandSectionListAdapter extends
 								offline);
 				serviceIntent
 						.putExtra(
-								IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_KEY,
-								Boolean.toString(isChecked));
+								IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
+								isChecked ? OfflineHandleService.ADD_OFFLINE_PARAM
+										: OfflineHandleService.REMOVE_OFFLINE_PARAM);
 				mContext.startService(serviceIntent);
 			}
 		});
