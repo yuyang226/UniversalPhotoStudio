@@ -6,6 +6,7 @@ package com.gmail.charleszq.picorner.ui;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -134,7 +135,11 @@ public class PhotoDetailCommentsFragment extends
 	 * @return
 	 */
 	private MediaObjectComment makeDummyComment(String comment) {
-		PicornerApplication app = (PicornerApplication) getActivity()
+		Activity act = getActivity();
+		if( act ==  null ) {
+			return null;
+		}
+		PicornerApplication app = (PicornerApplication) act
 				.getApplication();
 
 		MediaObjectComment c = new MediaObjectComment();
@@ -173,6 +178,9 @@ public class PhotoDetailCommentsFragment extends
 				if (result) {
 					MediaObjectComment c = makeDummyComment(commentText
 							.toString());
+					if( c == null ) {
+						return;
+					}
 					mCurrentPhoto.getCommentList().add(c);
 					mAdapter.notifyDataSetChanged();
 					mProgressBar.setVisibility(View.INVISIBLE);

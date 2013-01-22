@@ -67,7 +67,10 @@ public class FlickrPhotoSetOfflineProcessor implements
 			List<MediaObject> read = readPhotos(param);
 			if (read != null) {
 				Log.d(TAG, read.size() + " photos saved in file before."); //$NON-NLS-1$
-				saveDeltaHandle(ctx, param, read);
+				boolean hasUpdatesOnServer = saveDeltaHandle(ctx, param, read);
+				if( !hasUpdatesOnServer ) {
+					return;
+				}
 			}
 		} else {
 			firstTimeHandle(ctx, param);
@@ -106,13 +109,21 @@ public class FlickrPhotoSetOfflineProcessor implements
 		}
 	}
 
-	private void saveDeltaHandle(Context ctx, IOfflineViewParameter param,
+	/**
+	 * Returns <code>false</code> if there is no update; <code>true</code> if there is, and update the local
+	 * cache photo collection control file.
+	 * @param ctx
+	 * @param param
+	 * @param photos
+	 * @return
+	 */
+	private boolean saveDeltaHandle(Context ctx, IOfflineViewParameter param,
 			List<MediaObject> photos) {
 		int serverPhotoCount = getCurrentCollectionPhotoCount(ctx, param);
 		if (serverPhotoCount <= photos.size()) {
 			// no addition on server for this photo set.
 			Log.d(TAG, "no update for this photo set."); //$NON-NLS-1$
-			return;
+			return false;
 		}
 
 		Log.d(TAG, String.format("before, there are %d photos", photos.size())); //$NON-NLS-1$
@@ -145,6 +156,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 		}
 
 		savePhotoList(param, photos);
+		return true;
 	}
 
 	/**

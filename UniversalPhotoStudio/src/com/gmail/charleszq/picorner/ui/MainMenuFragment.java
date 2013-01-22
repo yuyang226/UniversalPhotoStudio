@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.jinstagram.auth.model.Token;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -211,7 +212,17 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				return false;
+				View frontView = view
+						.findViewById(R.id.main_menu_item_front_view);
+				View backView = view.findViewById(R.id.menu_item_back_view);
+				if (backView == null) {
+					return false;
+				}
+				frontView.setVisibility(View.INVISIBLE);
+				backView.setVisibility(View.VISIBLE);
+				ObjectAnimator.ofFloat(backView, "alpha", 0f, 1f) //$NON-NLS-1$
+						.setDuration(1000).start();
+				return true;
 			}
 		});
 		lv.setOnItemClickListener(new OnItemClickListener() {

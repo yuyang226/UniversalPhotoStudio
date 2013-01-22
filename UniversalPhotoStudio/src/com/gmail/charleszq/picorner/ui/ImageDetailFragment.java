@@ -131,14 +131,15 @@ public class ImageDetailFragment extends Fragment implements
 		@Override
 		public void onLoadingComplete(Bitmap loadedImage) {
 			mLoadedBitmap = loadedImage;
-			if( mIsOfflineEnabled ) {
-				if( BuildConfig.DEBUG ) {
+			if (mIsOfflineEnabled) {
+				if (BuildConfig.DEBUG) {
 					Log.d(TAG, "offline enabled, saving photo..."); //$NON-NLS-1$
 				}
-				OfflineControlFileUtil.saveBitmapForOfflineView( mLoadedBitmap, mPhoto);
+				OfflineControlFileUtil.saveBitmapForOfflineView(mLoadedBitmap,
+						mPhoto);
 			} else {
-				if( BuildConfig.DEBUG ) {
-					Log.d( TAG, "This command is not offline enabled."); //$NON-NLS-1$
+				if (BuildConfig.DEBUG) {
+					Log.d(TAG, "This command is not offline enabled."); //$NON-NLS-1$
 				}
 			}
 		}
@@ -659,7 +660,8 @@ public class ImageDetailFragment extends Fragment implements
 		if (!saveFile.exists()) {
 			ImageUtils.saveImageToFile(saveFile, mLoadedBitmap);
 			String msg = getString(R.string.msg_photo_saved_locally);
-			msg = String.format(msg, sb.toString());
+			msg = String.format(msg, IConstants.SD_CARD_FOLDER_NAME
+					+ File.separator + sb.toString());
 			Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
 		} else {
 			Toast.makeText(getActivity(),

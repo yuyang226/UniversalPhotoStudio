@@ -58,19 +58,20 @@ public class OfflineHandleService extends IntentService {
 						ADD_OFFLINE_PARAM);
 		if (param == null) {
 			Log.d(TAG, "charging, start the download process."); //$NON-NLS-1$
-			downlaodPhotos();
+			downlaodPhotos(param);
 		} else {
 			if (actionType != REFRESH_OFFLINE_PARAM)
 				manageRepository(param, actionType == ADD_OFFLINE_PARAM ? true
 						: false);
 			else {
-				if( BuildConfig.DEBUG ) 
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Refresh the given offline parameter."); //$NON-NLS-1$
+				downlaodPhotos(param);
 			}
 		}
 	}
 
-	private void downlaodPhotos() {
+	private void downlaodPhotos(IOfflineViewParameter offline) {
 
 		// check network connection type
 		ConnectivityManager cm = (ConnectivityManager) this
@@ -99,8 +100,22 @@ public class OfflineHandleService extends IntentService {
 			Log.w(TAG, "repository file not found."); //$NON-NLS-1$
 			return;
 		}
-		for (IOfflineViewParameter param : params) {
-			this.processOfflineParameter(param, false);
+
+		if (offline != null) {
+			if (params.contains(offline)) {
+				int pos = params.indexOf(offline);
+				offline = params.get(pos);
+				((AbstractOfflineParameter) offline).setLastUpdateTime(System
+						.currentTimeMillis());
+				processOfflineParameter(offline, true);
+			} else {
+				// not enabled, just return
+				return;
+			}
+		} else {
+			for (IOfflineViewParameter param : params) {
+				this.processOfflineParameter(param, false);
+			}
 		}
 		try {
 			OfflineControlFileUtil.save(params);
@@ -146,7 +161,7 @@ public class OfflineHandleService extends IntentService {
 	 */
 	private void processOfflineParameter(IOfflineViewParameter param,
 			boolean doitnow) {
-		if (doitnow || longerThanAday(param)) {
+		if (doitnow || longerThanFiveHours(param)) {
 			// do it.
 			IOfflinePhotoCollectionProcessor p = param
 					.getPhotoCollectionProcessor();
@@ -156,7 +171,7 @@ public class OfflineHandleService extends IntentService {
 		}
 	}
 
-	private boolean longerThanAday(IOfflineViewParameter param) {
+	private boolean longerThanFiveHours(IOfflineViewParameter param) {
 		long lastUpdateTime = param.getLastUpdateTime();
 		if (lastUpdateTime == 0) {
 			if (BuildConfig.DEBUG)
@@ -166,9 +181,9 @@ public class OfflineHandleService extends IntentService {
 		}
 
 		long delta = System.currentTimeMillis() - lastUpdateTime;
-		boolean ret = delta > 24 * 60 * 60 * 1000;
+		boolean ret = delta > 5 * 60 * 60 * 1000;
 		if (BuildConfig.DEBUG)
-			Log.d(TAG, "longer than a day? " + Boolean.toString(ret)); //$NON-NLS-1$
+			Log.d(TAG, "longer than 5 hours? " + Boolean.toString(ret)); //$NON-NLS-1$
 		return ret;
 	}
 

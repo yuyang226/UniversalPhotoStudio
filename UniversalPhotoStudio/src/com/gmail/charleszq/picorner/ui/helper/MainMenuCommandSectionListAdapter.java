@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui.helper;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,10 +59,14 @@ public class MainMenuCommandSectionListAdapter extends
 				.getAdapter(IOfflineViewParameter.class);
 		if (offline != null) {
 			// prepare the back view
-			final View backView = LayoutInflater.from(mContext).inflate(
-					R.layout.main_menu_item_backview, null);
+			View bv = view.findViewById(R.id.menu_item_back_view);
+			if (bv == null) {
+				bv = LayoutInflater.from(mContext).inflate(
+						R.layout.main_menu_item_backview, null);
+				((ViewGroup) view).addView(bv);
+			}
+			final View backView = bv;
 			backView.setVisibility(View.INVISIBLE);
-			((ViewGroup) view).addView(backView);
 
 			// get the front view
 			final View frontView = view
@@ -76,11 +82,10 @@ public class MainMenuCommandSectionListAdapter extends
 			settingButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					// hook up action item with click listener.
-					prepareOfflineActionItem(backView, frontView, command,
-							offline);
 					frontView.setVisibility(View.INVISIBLE);
 					backView.setVisibility(View.VISIBLE);
+					ObjectAnimator.ofFloat(backView, "alpha", 0f, 1f) //$NON-NLS-1$
+							.setDuration(1000).start();
 				}
 			});
 		}
@@ -97,9 +102,19 @@ public class MainMenuCommandSectionListAdapter extends
 				case R.id.btn_offline_back:
 					backView.setVisibility(View.INVISIBLE);
 					frontView.setVisibility(View.VISIBLE);
+					ObjectAnimator.ofFloat(frontView, "alpha", 0f, 1f) //$NON-NLS-1$
+							.setDuration(1000).start();
 					break;
 				case R.id.btn_offline_refresh:
-					//TODO check to see if this parameter is enabled or not.
+					boolean isOfflineEnabled = OfflineControlFileUtil
+							.isOfflineViewEnabled(offline);
+					if (!isOfflineEnabled) {
+						Toast.makeText(
+								mContext,
+								mContext.getString(R.string.msg_pls_enable_offline_first),
+								Toast.LENGTH_SHORT).show();
+						break;
+					}
 					Intent serviceIntent = new Intent(mContext,
 							OfflineHandleService.class);
 					serviceIntent.putExtra(
@@ -110,6 +125,9 @@ public class MainMenuCommandSectionListAdapter extends
 									IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
 									OfflineHandleService.REFRESH_OFFLINE_PARAM);
 					mContext.startService(serviceIntent);
+					break;
+				case R.id.btn_offline_slide_show:
+					//TODO implement in next release.
 					break;
 				}
 			}

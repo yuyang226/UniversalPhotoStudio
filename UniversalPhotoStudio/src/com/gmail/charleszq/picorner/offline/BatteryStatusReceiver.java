@@ -27,10 +27,9 @@ public class BatteryStatusReceiver extends BroadcastReceiver {
 		float batteryPct = level / (float) scale;
 		Log.d(TAG, "battery percentage: " + batteryPct); //$NON-NLS-1$
 
-		if (batteryPct * 100 > 20f) {
+		if (batteryPct * 100 > 7f) {
 			Intent service = new Intent(context, OfflineHandleService.class);
 			context.startService(service);
 		}
 	}
-
 }

@@ -116,6 +116,7 @@
 	<string name="msg_photo_meta_save_done">Photo meta information updated!</string>
 	<string name="msg_photo_meta_save_fail">Errors encountered when update photo information.</string>
 	<string name="msg_offline_downloading">Downloading photos for offline view.</string>
+	<string name="msg_pls_enable_offline_first">Please enable offline view first.</string>
 	
 	<!--  flickr tag search -->
 	<string name="msg_flickr_tag_search_label">Flickr tag search</string>
