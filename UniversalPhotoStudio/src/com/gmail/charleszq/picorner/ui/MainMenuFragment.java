@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.jinstagram.auth.model.Token;
 
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -38,7 +37,6 @@ import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
-import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
@@ -71,7 +69,8 @@ import com.gmail.charleszq.picorner.ui.command.px500.PxMyFlowCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxPopularPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxSignInCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxUpcomingPhotosCommand;
-import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.MainMenuCommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.MainMenuTextFilter;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -92,7 +91,7 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
 @SuppressLint("DefaultLocale")
 public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
-	private CommandSectionListAdapter mSectionAdapter;
+	private AbstractCommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
 	private SearchView mSearchView;
 	private MainMenuTextFilter mTextMenuFilter;
@@ -185,7 +184,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		// menu list
 		ListView lv = (ListView) v.findViewById(R.id.listView1);
-		mSectionAdapter = new CommandSectionListAdapter(getActivity(),
+		mSectionAdapter = new MainMenuCommandSectionListAdapter(getActivity(),
 				mImageFetcher);
 		prepareSections();
 
@@ -212,24 +211,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				ListAdapter adapter = ((ListView) parent).getAdapter();
-				@SuppressWarnings("unchecked")
-				ICommand<Object> command = (ICommand<Object>) adapter
-						.getItem(position);
-				Object offline = command
-						.getAdapter(IOfflineViewParameter.class);
-				if (offline == null) {
-					return false;
-				} else {
-					View frontView = view
-							.findViewById(R.id.menu_item_container_2);
-					View backView = view.findViewById(R.id.menu_item_back_view);
-					frontView.setVisibility(View.INVISIBLE);
-					backView.setVisibility(View.VISIBLE);
-					ObjectAnimator
-							.ofFloat(backView, "alpha", 0f, 1f).setDuration(1500).start(); //$NON-NLS-1$
-					return true;
-				}
+				return false;
 			}
 		});
 		lv.setOnItemClickListener(new OnItemClickListener() {

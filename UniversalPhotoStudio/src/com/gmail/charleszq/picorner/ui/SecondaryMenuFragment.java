@@ -31,7 +31,7 @@ import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrTagSearchCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
-import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
 
@@ -46,7 +46,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 	private ListView mListView;
 	private FrameLayout mBackViewContainer;
-	private CommandSectionListAdapter mSectionAdapter;
+	private AbstractCommandSectionListAdapter mSectionAdapter;
 
 	private boolean mHideAnimation = true;
 
@@ -120,12 +120,12 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		mBackViewContainer = (FrameLayout) v
 				.findViewById(R.id.back_view_container);
 
-		mSectionAdapter = new CommandSectionListAdapter(getActivity(),
+		mSectionAdapter = new AbstractCommandSectionListAdapter(getActivity(),
 				mImageFetcher,false) {
 
 			@Override
 			public boolean isEnabled(int position) {
-				return getItemViewType(position) == CommandSectionListAdapter.ITEM_COMMAND;
+				return getItemViewType(position) == AbstractCommandSectionListAdapter.ITEM_COMMAND;
 			}
 		};
 		mListView.setAdapter(mSectionAdapter);

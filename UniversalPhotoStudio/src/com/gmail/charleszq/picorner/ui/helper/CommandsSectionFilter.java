@@ -16,7 +16,7 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
  */
 public class CommandsSectionFilter extends Filter {
 
-	private CommandSectionListAdapter mAdapter;
+	private AbstractCommandSectionListAdapter mAdapter;
 	private String mFilterStrig;
 
 	public CommandsSectionFilter(String filterString) {
@@ -30,7 +30,7 @@ public class CommandsSectionFilter extends Filter {
 	 *            <code>true</code> to apply this filter; <code>false</code> to
 	 *            cancel this filter.
 	 */
-	public final void doFilter(CommandSectionListAdapter adapter, boolean yes, ICommand<?> cmd) {
+	public final void doFilter(AbstractCommandSectionListAdapter adapter, boolean yes, ICommand<?> cmd) {
 		if (mFilterStrig == null) {
 			return;
 		}

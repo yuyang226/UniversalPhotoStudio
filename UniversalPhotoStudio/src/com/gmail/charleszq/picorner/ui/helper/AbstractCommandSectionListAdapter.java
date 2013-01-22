@@ -7,25 +7,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
-import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
-import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
@@ -38,7 +28,7 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  * @author Charles(charleszq@gmail.com)
  * 
  */
-public class CommandSectionListAdapter extends BaseAdapter {
+public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 
 	public static final int ITEM_HEADER = 0;
 	public static final int ITEM_COMMAND = 1;
@@ -59,12 +49,12 @@ public class CommandSectionListAdapter extends BaseAdapter {
 	/**
 	 * the marker to say whether we show the '^'/'v' sign on the header.
 	 */
-	private boolean mShowHeaderIndicator = true;
+	protected boolean mShowHeaderIndicator = true;
 
 	/**
 	 * Constructor.
 	 */
-	public CommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
+	public AbstractCommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
 		mContext = ctx;
 		mImageFetcher = fetcher;
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
@@ -76,7 +66,7 @@ public class CommandSectionListAdapter extends BaseAdapter {
 		mAllCommands = new ArrayList<ICommand<?>>();
 	}
 
-	public CommandSectionListAdapter(Context ctx, ImageLoader fetcher,
+	public AbstractCommandSectionListAdapter(Context ctx, ImageLoader fetcher,
 			boolean showHeaderMarker) {
 		this(ctx, fetcher);
 		mShowHeaderIndicator = showHeaderMarker;
@@ -156,6 +146,11 @@ public class CommandSectionListAdapter extends BaseAdapter {
 		return true;
 	}
 
+	public void clearSections() {
+		mCommands.clear();
+		mAllCommands.clear();
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -204,75 +199,7 @@ public class CommandSectionListAdapter extends BaseAdapter {
 			} else {
 			}
 		}
-
-		prepareBackView(view, command, text);
-
 		return view;
-	}
-
-	private void prepareBackView(final View view, final ICommand<?> command,
-			final TextView text) {
-		// offline view back view
-		final IOfflineViewParameter offline = (IOfflineViewParameter) command
-				.getAdapter(IOfflineViewParameter.class);
-		if (offline != null) {
-			final View backView = LayoutInflater.from(mContext).inflate(
-					R.layout.main_menu_item_backview, null);
-			ViewGroup container = (ViewGroup) view
-					.findViewById(R.id.menu_item_container);
-			backView.setVisibility(View.INVISIBLE);
-			container.addView(backView);
-
-			// find the back button and hook listener on it
-			ImageButton button = (ImageButton) view
-					.findViewById(R.id.btn_menu_item_back_view_back);
-			final View frontView = view
-					.findViewById(R.id.menu_item_container_2);
-			button.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					backView.setVisibility(View.INVISIBLE);
-					frontView.setVisibility(View.VISIBLE);
-					ObjectAnimator
-							.ofFloat(frontView, "alpha", 0f, 1f).setDuration(1500).start(); //$NON-NLS-1$
-				}
-			});
-
-			// the checkbox
-			CheckBox offlineCheckBox = (CheckBox) view
-					.findViewById(R.id.cb_offline);
-			offlineCheckBox.setChecked(OfflineControlFileUtil
-					.isOfflineViewEnabled(offline));
-			offlineCheckBox
-					.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
-						@Override
-						public void onCheckedChanged(CompoundButton buttonView,
-								boolean isChecked) {
-							Intent serviceIntent = new Intent(mContext,
-									OfflineHandleService.class);
-							serviceIntent
-									.putExtra(
-											IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
-											offline);
-							serviceIntent
-									.putExtra(
-											IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_KEY,
-											Boolean.toString(isChecked));
-							mContext.startService(serviceIntent);
-
-						}
-					});
-
-			text.setCompoundDrawablesWithIntrinsicBounds(0, 0,
-					R.drawable.ic_offline_indicator, 0);
-		}
-	}
-
-	public void clearSections() {
-		mCommands.clear();
-		mAllCommands.clear();
 	}
 
 	/**

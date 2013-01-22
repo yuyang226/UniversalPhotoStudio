@@ -20,12 +20,12 @@ import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
  */
 public class MainMenuTextFilter extends Filter {
 
-	private CommandSectionListAdapter mAdapter;
+	private AbstractCommandSectionListAdapter mAdapter;
 
 	/**
 	 * Constructor.
 	 */
-	public MainMenuTextFilter(CommandSectionListAdapter adapter) {
+	public MainMenuTextFilter(AbstractCommandSectionListAdapter adapter) {
 		this.mAdapter = adapter;
 	}
 

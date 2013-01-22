@@ -1,27 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/menu_item_back_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+    android:layout_height="match_parent" >
 
-    <ImageButton
-        android:id="@+id/btn_menu_item_back_view_back"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/picorner_button"
-        android:contentDescription="@string/app_name"
-        android:src="@android:drawable/ic_menu_revert" />
+        android:layout_height="match_parent"
+        android:background="@color/menu_frame_bg_color"
+        android:orientation="horizontal" >
 
-    <CheckBox
-        android:layout_marginLeft="15dp"
-        android:id="@+id/cb_offline"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:textColor="@color/menu_item_text"
-        android:layout_gravity="center"
-        android:text="@string/menu_item_text_offline" />
+        <TextView
+            android:id="@+id/btn_offline_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/offline_action_button_bg"
+            android:drawableLeft="@drawable/ic_action_back"
+            android:gravity="left|center"
+            android:padding="5dp"
+            android:text="@string/menu_item_back"
+            android:textColor="@color/comment_bg_color" />
 
-</LinearLayout>
+        <CheckBox
+            android:id="@+id/btn_enable_offline"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/offline_action_button_bg"
+            android:gravity="left|center"
+            android:text="@string/menu_item_offline_on_off"
+            android:textColor="@color/comment_bg_color"
+            android:padding="5dp"/>
+
+        <TextView
+            android:id="@+id/btn_offline_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/offline_action_button_bg"
+            android:drawableLeft="@drawable/ic_action_refresh"
+            android:gravity="left|center"
+            android:padding="5dp"
+            android:text="@string/menu_item_refresh"
+            android:textColor="@color/comment_bg_color" />
+
+        <TextView
+            android:id="@+id/btn_offline_slide_show"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/offline_action_button_bg"
+            android:drawableLeft="@drawable/ic_action_slide_show"
+            android:gravity="left|center"
+            android:padding="5dp"
+            android:text="@string/menu_item_slide_show"
+            android:textColor="@color/comment_bg_color" />
+    </LinearLayout>
+
+</HorizontalScrollView>

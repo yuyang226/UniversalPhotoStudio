@@ -61,6 +61,10 @@
     <string name="menu_item_f_user_web_site">Owner\'s Website</string>
     <string name="menu_item_vote">Vote</string>
     <string name="main_menu_filter_hint">menu filter</string>
+    <string name="menu_item_offline_on_off">Offline</string>
+    <string name="menu_item_refresh">Refresh</string>
+    <string name="menu_item_slide_show">Slide Show</string>
+    <string name="menu_item_back">Back</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>

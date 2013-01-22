@@ -5,7 +5,7 @@ package com.gmail.charleszq.picorner.ui.command;
 
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.CommandsSectionFilter;
 
 /**
@@ -37,9 +37,9 @@ public class MenuSectionHeaderCommand extends AbstractCommand<String> {
 		}
 
 		Object obj = objects[0];
-		if (obj instanceof CommandSectionListAdapter) {
+		if (obj instanceof AbstractCommandSectionListAdapter) {
 			CommandsSectionFilter filter = new CommandsSectionFilter(mLabel);
-			filter.doFilter((CommandSectionListAdapter) obj, !mFiltering, this);
+			filter.doFilter((AbstractCommandSectionListAdapter) obj, !mFiltering, this);
 			mFiltering = !mFiltering;
 			return true;
 		}
