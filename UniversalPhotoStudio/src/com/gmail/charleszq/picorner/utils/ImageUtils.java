@@ -15,6 +15,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
@@ -24,10 +25,11 @@ import com.nostra13.universalimageloader.core.assist.FlushedInputStream;
 
 /**
  * @author Charles(charleszq@gmail.com)
- *
+ * 
  */
 public final class ImageUtils {
 
+	
 	public static boolean saveImageToFile(File destFile, Bitmap bitmap) {
 
 		if (bitmap == null) {
@@ -53,7 +55,30 @@ public final class ImageUtils {
 		}
 		return true;
 	}
-	
+
+	public static boolean saveImageToFile(Context ctx, String filename,
+			Bitmap bitmap) {
+		if (bitmap == null) {
+			return false;
+		}
+		FileOutputStream fos = null;
+		try {
+			fos = ctx.openFileOutput(filename, Context.MODE_PRIVATE);
+			bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+		} catch (FileNotFoundException e) {
+			// will create if not exists
+			return false;
+		} finally {
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+				}
+			}
+		}
+		return true;
+	}
+
 	/**
 	 * This method must be called in a thread other than UI.
 	 * 

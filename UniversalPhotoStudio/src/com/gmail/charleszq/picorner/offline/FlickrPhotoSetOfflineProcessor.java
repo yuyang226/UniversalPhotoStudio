@@ -3,9 +3,6 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -57,18 +54,16 @@ public class FlickrPhotoSetOfflineProcessor implements
 	 */
 	@Override
 	public void process(Context ctx, IOfflineViewParameter param) {
-		File offlineFolder = createFlickrFolders();
-		if (offlineFolder == null) {
-			return; // should not happen
-		}
 
-		File controlFile = new File(offlineFolder, param.getControlFileName());
-		if (controlFile.exists()) {
-			List<MediaObject> read = readPhotos(param);
+		String controlFileName = param.getControlFileName();
+		boolean isControlFileExist = OfflineControlFileUtil.isFileExist(ctx,
+				controlFileName);
+		if (isControlFileExist) {
+			List<MediaObject> read = readPhotos(ctx, param);
 			if (read != null) {
 				Log.d(TAG, read.size() + " photos saved in file before."); //$NON-NLS-1$
 				boolean hasUpdatesOnServer = saveDeltaHandle(ctx, param, read);
-				if( !hasUpdatesOnServer ) {
+				if (!hasUpdatesOnServer) {
 					return;
 				}
 			}
@@ -77,17 +72,17 @@ public class FlickrPhotoSetOfflineProcessor implements
 		}
 
 		// starts the download
-		List<MediaObject> photos = readPhotos(param);
+		List<MediaObject> photos = readPhotos(ctx, param);
 		if (photos == null) {
-			Log.e(TAG, "error to read cache photo collection file."); //$NON-NLS-1$
+			if (BuildConfig.DEBUG)
+				Log.e(TAG, "error to read cache photo collection file."); //$NON-NLS-1$
+			return;
 		}
 
-		File parentFolder = this.createFlickrFolders();
-		File imageFolder = new File(parentFolder,
-				IOfflineViewParameter.OFFLINE_IMAGE_FOLDER_NAME);
 		for (MediaObject photo : photos) {
-			File destFile = new File(imageFolder, photo.getId() + ".png"); //$NON-NLS-1$
-			if (destFile.exists()) {
+			String photoFileName = OfflineControlFileUtil
+					.getOfflinePhotoFileName(photo);
+			if (OfflineControlFileUtil.isFileExist(ctx, photoFileName)) {
 				if (BuildConfig.DEBUG)
 					Log.d(TAG, String.format(
 							"photo %s was downloaded before.", photo.getId())); //$NON-NLS-1$
@@ -97,7 +92,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 			String url = photo.getLargeUrl();
 			Bitmap bmp = ImageUtils.downloadImage(url);
 			if (bmp != null) {
-				ImageUtils.saveImageToFile(destFile, bmp);
+				ImageUtils.saveImageToFile(ctx, photoFileName, bmp);
 				if (BuildConfig.DEBUG)
 					Log.d(TAG,
 							String.format(
@@ -110,8 +105,9 @@ public class FlickrPhotoSetOfflineProcessor implements
 	}
 
 	/**
-	 * Returns <code>false</code> if there is no update; <code>true</code> if there is, and update the local
-	 * cache photo collection control file.
+	 * Returns <code>false</code> if there is no update; <code>true</code> if
+	 * there is, and update the local cache photo collection control file.
+	 * 
 	 * @param ctx
 	 * @param param
 	 * @param photos
@@ -122,7 +118,8 @@ public class FlickrPhotoSetOfflineProcessor implements
 		int serverPhotoCount = getCurrentCollectionPhotoCount(ctx, param);
 		if (serverPhotoCount <= photos.size()) {
 			// no addition on server for this photo set.
-			Log.d(TAG, "no update for this photo set."); //$NON-NLS-1$
+			if (BuildConfig.DEBUG)
+				Log.d(TAG, "no update for this photo set."); //$NON-NLS-1$
 			return false;
 		}
 
@@ -148,14 +145,16 @@ public class FlickrPhotoSetOfflineProcessor implements
 				break;
 			lastPage--;
 		}
-		Log.d(TAG, String.format("after,  there are %d photos.", photos.size())); //$NON-NLS-1$
+		if (BuildConfig.DEBUG)
+			Log.d(TAG, String.format(
+					"after,  there are %d photos.", photos.size())); //$NON-NLS-1$
 
 		// if exceeded the limit, remove some old photos.
 		if (photos.size() > IConstants.DEF_MAX_TOTAL_PHOTOS) {
 			photos = photos.subList(0, IConstants.DEF_MAX_TOTAL_PHOTOS);
 		}
 
-		savePhotoList(param, photos);
+		savePhotoList(ctx, param, photos);
 		return true;
 	}
 
@@ -195,7 +194,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 		}
 
 		if (!photos.isEmpty()) {
-			savePhotoList(param, photos);
+			savePhotoList(ctx, param, photos);
 		}
 	}
 
@@ -245,11 +244,14 @@ public class FlickrPhotoSetOfflineProcessor implements
 		try {
 			Photoset ps = f.getPhotosetsInterface().getInfo(
 					param.getPhotoCollectionId());
-			Log.d(TAG, "offline photo set photo count: " + ps.getPhotoCount()); //$NON-NLS-1$
+			if (BuildConfig.DEBUG)
+				Log.d(TAG,
+						"offline photo set photo count: " + ps.getPhotoCount()); //$NON-NLS-1$
 			return ps.getPhotoCount();
 		} catch (Exception e) {
-			Log.w(TAG, "unable to get the photo set information: " //$NON-NLS-1$
-					+ e.getMessage());
+			if (BuildConfig.DEBUG)
+				Log.w(TAG, "unable to get the photo set information: " //$NON-NLS-1$
+						+ e.getMessage());
 			return -1;
 		}
 	}
@@ -265,17 +267,14 @@ public class FlickrPhotoSetOfflineProcessor implements
 		mExtras.add(Extras.DESCRIPTION);
 	}
 
-	private void savePhotoList(IOfflineViewParameter param,
+	private void savePhotoList(Context ctx, IOfflineViewParameter param,
 			List<MediaObject> photos) {
-		File offlineFolder = createFlickrFolders();
-		if (offlineFolder == null) {
-			return; // should not happen
-		}
 
-		File controlFile = new File(offlineFolder, param.getControlFileName());
+		String controlFileName = param.getControlFileName();
 		ObjectOutputStream oos = null;
 		try {
-			oos = new ObjectOutputStream(new FileOutputStream(controlFile));
+			oos = new ObjectOutputStream(ctx.openFileOutput(controlFileName,
+					Context.MODE_PRIVATE));
 			oos.writeObject(photos);
 		} catch (Exception e) {
 			Log.e(TAG, e.getMessage());
@@ -291,16 +290,15 @@ public class FlickrPhotoSetOfflineProcessor implements
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<MediaObject> readPhotos(IOfflineViewParameter param) {
-		File offlineFolder = createFlickrFolders();
-		if (offlineFolder == null) {
-			return null; // should not happen
+	private List<MediaObject> readPhotos(Context ctx,
+			IOfflineViewParameter param) {
+		String controlFileName = param.getControlFileName();
+		if (!OfflineControlFileUtil.isFileExist(ctx, controlFileName)) {
+			return null;
 		}
-
-		File controlFile = new File(offlineFolder, param.getControlFileName());
 		ObjectInputStream ois = null;
 		try {
-			ois = new ObjectInputStream(new FileInputStream(controlFile));
+			ois = new ObjectInputStream(ctx.openFileInput(controlFileName));
 			List<MediaObject> photos = (List<MediaObject>) ois.readObject();
 			return photos;
 		} catch (Exception e) {
@@ -316,30 +314,9 @@ public class FlickrPhotoSetOfflineProcessor implements
 		}
 	}
 
-	private File createFlickrFolders() {
-		File offlineFolder = OfflineControlFileUtil
-				.createOfflineFolderIfNeccessary();
-		if (offlineFolder == null) {
-			return null;
-		}
-
-		File ffolder = new File(offlineFolder,
-				IOfflineViewParameter.OFFLINE_FLICKR_FOLDER_NAME);
-		if (!ffolder.exists() && !ffolder.mkdir()) {
-			return null;
-		}
-
-		File imageFolder = new File(ffolder,
-				IOfflineViewParameter.OFFLINE_IMAGE_FOLDER_NAME);
-		if (!imageFolder.exists()) {
-			imageFolder.mkdir();
-		}
-
-		return ffolder;
-	}
-
 	@Override
-	public List<MediaObject> getCachedPhotos(IOfflineViewParameter param) {
-		return readPhotos(param);
+	public List<MediaObject> getCachedPhotos(Context ctx,
+			IOfflineViewParameter param) {
+		return readPhotos(ctx, param);
 	}
 }

@@ -16,11 +16,9 @@ public interface IOfflineViewParameter extends Serializable {
 	/**
 	 * The folder name of offline related control file, and image caches.
 	 */
-	static final String OFFLINE_CONTROL_FOLDER_NAME = "offline"; //$NON-NLS-1$
-	static final String OFFLINE_FLICKR_FOLDER_NAME = "f"; //$NON-NLS-1$
-	static final String OFFLINE_INSTAGRAM_FOLDER_NAME = "i"; //$NON-NLS-1$
-	static final String OFFLINE_500PX_FOLDER_NAME = "p"; //$NON-NLS-1$
-	static final String OFFLINE_IMAGE_FOLDER_NAME = "pic"; //$NON-NLS-1$
+	static final String OFFLINE_FLICKR_PHOTO_FILE_PREFIX = "f"; //$NON-NLS-1$
+	static final String OFFLINE_INSTAGRAM_PHOTO_FILE_PREFIX = "i"; //$NON-NLS-1$
+	static final String OFFLINE_500PX_PHOTO_FILE_PREFIX = "p"; //$NON-NLS-1$
 
 	/**
 	 * the control file for the offline repository control file.
@@ -72,14 +70,6 @@ public interface IOfflineViewParameter extends Serializable {
 	 * @return
 	 */
 	String getControlFileName();
-
-	/**
-	 * The saved image (big size) location, usually it should be: <br/>
-	 * <root>/offline/<photo source type>
-	 * 
-	 * @return
-	 */
-	String getOfflineImageLocation();
 
 	/**
 	 * Returns the photo collection id.

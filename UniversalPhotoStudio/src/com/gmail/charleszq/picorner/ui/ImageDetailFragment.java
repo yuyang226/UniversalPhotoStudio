@@ -135,8 +135,10 @@ public class ImageDetailFragment extends Fragment implements
 				if (BuildConfig.DEBUG) {
 					Log.d(TAG, "offline enabled, saving photo..."); //$NON-NLS-1$
 				}
-				OfflineControlFileUtil.saveBitmapForOfflineView(mLoadedBitmap,
-						mPhoto);
+				Context ctx = getActivity();
+				if (ctx != null)
+					OfflineControlFileUtil.saveBitmapForOfflineView(ctx,
+							mLoadedBitmap, mPhoto);
 			} else {
 				if (BuildConfig.DEBUG) {
 					Log.d(TAG, "This command is not offline enabled."); //$NON-NLS-1$
@@ -393,7 +395,7 @@ public class ImageDetailFragment extends Fragment implements
 		// Use the parent activity to load the image asynchronously into the
 		// ImageView (so a single
 		// cache can be used over all pages in the ViewPager
-		mLoadedBitmap = OfflineControlFileUtil.loadImageFromCache(mPhoto);
+		mLoadedBitmap = OfflineControlFileUtil.loadImageFromCache(getActivity(),mPhoto);
 		if (mLoadedBitmap != null) {
 			mImageView.setImageBitmap(mLoadedBitmap);
 		} else if (ImageDetailActivity.class.isInstance(getActivity())) {

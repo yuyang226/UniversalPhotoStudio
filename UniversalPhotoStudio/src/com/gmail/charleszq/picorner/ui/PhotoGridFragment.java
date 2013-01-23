@@ -164,7 +164,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 			boolean offlineEnabled = false;
 			if (offlineParam != null) {
 				offlineEnabled = OfflineControlFileUtil
-						.isOfflineViewEnabled(offlineParam);
+						.isOfflineViewEnabled(getActivity(),offlineParam);
 			}
 			i.putExtra(ImageDetailActivity.OFFLINE_COMMAND_KEY,
 					Boolean.toString(offlineEnabled));

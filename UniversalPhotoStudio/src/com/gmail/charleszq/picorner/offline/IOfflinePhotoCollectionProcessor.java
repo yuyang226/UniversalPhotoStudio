@@ -36,6 +36,6 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * 
 	 * @return
 	 */
-	List<MediaObject> getCachedPhotos(IOfflineViewParameter param);
+	List<MediaObject> getCachedPhotos(Context ctx, IOfflineViewParameter param);
 
 }

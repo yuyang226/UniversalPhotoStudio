@@ -78,6 +78,12 @@ public class OfflineHandleService extends IntentService {
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+		if( activeNetwork == null ) {
+			if( BuildConfig.DEBUG ) {
+				Log.d(TAG, "not network available."); //$NON-NLS-1$
+			}
+			return;
+		}
 		boolean isConnected = activeNetwork.isConnectedOrConnecting();
 		boolean isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
 		if (!isConnected || !isWifi) {
@@ -95,7 +101,7 @@ public class OfflineHandleService extends IntentService {
 				mBuilder.getNotification());
 
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
-				.getExistingOfflineParameters();
+				.getExistingOfflineParameters(this);
 		if (params == null) {
 			Log.w(TAG, "repository file not found."); //$NON-NLS-1$
 			return;
@@ -118,7 +124,7 @@ public class OfflineHandleService extends IntentService {
 			}
 		}
 		try {
-			OfflineControlFileUtil.save(params);
+			OfflineControlFileUtil.saveRepositoryControlFile(this, params);
 		} catch (Exception e) {
 			if (BuildConfig.DEBUG)
 				Log.w(TAG,
@@ -135,7 +141,7 @@ public class OfflineHandleService extends IntentService {
 	private void manageRepository(IOfflineViewParameter param, boolean add) {
 		Log.d(TAG, param.toString());
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
-				.getExistingOfflineParameters();
+				.getExistingOfflineParameters(this);
 		if (params == null) {
 			params = new ArrayList<IOfflineViewParameter>();
 		}
@@ -147,7 +153,7 @@ public class OfflineHandleService extends IntentService {
 			params.remove(param);
 		}
 		try {
-			OfflineControlFileUtil.save(params);
+			OfflineControlFileUtil.saveRepositoryControlFile(this,params);
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 		}

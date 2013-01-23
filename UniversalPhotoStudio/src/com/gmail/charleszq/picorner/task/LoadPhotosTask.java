@@ -5,6 +5,7 @@ package com.gmail.charleszq.picorner.task;
 
 import java.util.List;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
@@ -48,20 +49,22 @@ public class LoadPhotosTask extends
 
 		IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCommand
 				.getAdapter(IOfflineViewParameter.class);
+		Context ctx = (Context) mCommand.getAdapter(Context.class);
 		if (offlineParam != null
-				&& OfflineControlFileUtil.isOfflineViewEnabled(offlineParam)
-				&& OfflineControlFileUtil
-						.isOfflineControlFileReady(offlineParam)) {
+				&& OfflineControlFileUtil.isOfflineViewEnabled(ctx,
+						offlineParam)
+				&& OfflineControlFileUtil.isOfflineControlFileReady(ctx,
+						offlineParam)) {
 			if (pageNo == 0) {
 				List<MediaObject> photos = offlineParam
-						.getPhotoCollectionProcessor().getCachedPhotos(
+						.getPhotoCollectionProcessor().getCachedPhotos(ctx,
 								offlineParam);
 				if (photos != null) {
 					MediaObjectCollection mc = new MediaObjectCollection();
 					for (MediaObject photo : photos) {
 						mc.addPhoto(photo);
 					}
-					if( BuildConfig.DEBUG )
+					if (BuildConfig.DEBUG)
 						Log.e(TAG, "Returns photos from offline cache."); //$NON-NLS-1$
 					return mc;
 				}
@@ -70,7 +73,7 @@ public class LoadPhotosTask extends
 			}
 		}
 
-		if( BuildConfig.DEBUG )
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Trying to get photos from server."); //$NON-NLS-1$
 		IPhotoService service = (IPhotoService) mCommand
 				.getAdapter(IPhotoService.class);

@@ -107,7 +107,7 @@ public class MainMenuCommandSectionListAdapter extends
 					break;
 				case R.id.btn_offline_refresh:
 					boolean isOfflineEnabled = OfflineControlFileUtil
-							.isOfflineViewEnabled(offline);
+							.isOfflineViewEnabled(mContext,offline);
 					if (!isOfflineEnabled) {
 						Toast.makeText(
 								mContext,
@@ -140,7 +140,7 @@ public class MainMenuCommandSectionListAdapter extends
 		CheckBox btnOffline = (CheckBox) backView
 				.findViewById(R.id.btn_enable_offline);
 		btnOffline.setChecked(OfflineControlFileUtil
-				.isOfflineViewEnabled(offline));
+				.isOfflineViewEnabled(mContext,offline));
 		btnOffline.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override

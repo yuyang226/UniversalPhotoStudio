@@ -3,8 +3,6 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
-import java.io.File;
-
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 
 /**
@@ -116,24 +114,6 @@ public abstract class AbstractOfflineParameter implements IOfflineViewParameter 
 	 */
 	public void setLastUpdateTime(long time) {
 		this.mLastUpdateTime = time;
-	}
-
-	@Override
-	public String getOfflineImageLocation() {
-		StringBuilder sb = new StringBuilder();
-		sb.append(OFFLINE_CONTROL_FOLDER_NAME).append(File.separator);
-		switch (getPhotoSourceType()) {
-		case FLICKR:
-			sb.append(OFFLINE_FLICKR_FOLDER_NAME);
-			break;
-		case INSTAGRAM:
-			sb.append(OFFLINE_INSTAGRAM_FOLDER_NAME);
-			break;
-		case PX500:
-			sb.append(OFFLINE_500PX_FOLDER_NAME);
-			break;
-		}
-		return sb.toString();
 	}
 
 	@Override
