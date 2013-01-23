@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.util.Log;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
@@ -60,6 +61,8 @@ public class LoadPhotosTask extends
 					for (MediaObject photo : photos) {
 						mc.addPhoto(photo);
 					}
+					if( BuildConfig.DEBUG )
+						Log.e(TAG, "Returns photos from offline cache."); //$NON-NLS-1$
 					return mc;
 				}
 			} else {
@@ -67,6 +70,8 @@ public class LoadPhotosTask extends
 			}
 		}
 
+		if( BuildConfig.DEBUG )
+			Log.d(TAG, "Trying to get photos from server."); //$NON-NLS-1$
 		IPhotoService service = (IPhotoService) mCommand
 				.getAdapter(IPhotoService.class);
 		Integer total = (Integer) mCommand.getAdapter(Integer.class);
@@ -86,7 +91,7 @@ public class LoadPhotosTask extends
 			super.onPostExecute(result);
 			return;
 		}
-		Log.d(getClass().getName(),
+		Log.d(TAG,
 				String.format("%s photos returned.", result.getPhotos().size())); //$NON-NLS-1$
 		super.onPostExecute(result);
 	}

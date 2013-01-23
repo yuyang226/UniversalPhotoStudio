@@ -236,8 +236,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 						.getItem(pos);
 				if (command.getCommandType() == CommandType.MENU_HEADER_CMD) {
 					command.execute(adapter);
-					// view.animate().setDuration(3000).rotationX(90)
-					// .rotationX(180).rotationX(270).rotationX(360);
 				} else {
 					command.setCommndDoneListener(mCommandDoneListener);
 					command.execute();

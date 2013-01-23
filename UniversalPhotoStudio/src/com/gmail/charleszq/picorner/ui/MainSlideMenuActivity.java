@@ -3,9 +3,6 @@
  */
 package com.gmail.charleszq.picorner.ui;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -14,6 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -39,9 +37,7 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  */
 public class MainSlideMenuActivity extends SlidingFragmentActivity {
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(MainSlideMenuActivity.class);
-
+	private static final String TAG = MainSlideMenuActivity.class.getSimpleName();
 	private Fragment mContent;
 	private ICommand<MediaObjectCollection> mCommand;
 
@@ -168,7 +164,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 				((PhotoGridFragment) mContent).populatePhotoList(
 						(MediaObjectCollection) result, command);
 			} else {
-				logger.warn("Not photo grid fragment?"); //$NON-NLS-1$
+				Log.w(TAG, "Not photo grid fragment?"); //$NON-NLS-1$
 			}
 			break;
 		default:
@@ -282,7 +278,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 				// Please examine the error code and fix the error.
 				String result = String.format(
 						getString(R.string.application_error), errorCode);
-				logger.warn(result);
+				Log.w(TAG, result);
 			}
 		}
 	}
