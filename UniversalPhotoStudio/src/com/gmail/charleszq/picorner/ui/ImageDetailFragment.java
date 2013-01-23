@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -135,10 +136,8 @@ public class ImageDetailFragment extends Fragment implements
 				if (BuildConfig.DEBUG) {
 					Log.d(TAG, "offline enabled, saving photo..."); //$NON-NLS-1$
 				}
-				Context ctx = getActivity();
-				if (ctx != null)
-					OfflineControlFileUtil.saveBitmapForOfflineView(ctx,
-							mLoadedBitmap, mPhoto);
+				OfflineViewSavePhotoTask task = new OfflineViewSavePhotoTask(getActivity(), loadedImage, mPhoto);
+				task.execute();
 			} else {
 				if (BuildConfig.DEBUG) {
 					Log.d(TAG, "This command is not offline enabled."); //$NON-NLS-1$
@@ -151,6 +150,32 @@ public class ImageDetailFragment extends Fragment implements
 			mLoadedBitmap = null;
 		}
 	};
+	
+	private static class OfflineViewSavePhotoTask extends AsyncTask<Void,Integer,Void> {
+		
+		private Context mContext;
+		private Bitmap mBitmap;
+		private MediaObject mPhoto;
+		
+		OfflineViewSavePhotoTask(Context context, Bitmap bitmap, MediaObject photo) {
+			this.mContext = context;
+			this.mBitmap = bitmap;
+			this.mPhoto = photo;
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			if( mContext != null ) {
+				OfflineControlFileUtil.saveBitmapForOfflineView(mContext,
+						mBitmap, mPhoto);
+				if( BuildConfig.DEBUG ) {
+					Log.d(ImageDetailFragment.class.getSimpleName(), "Photo saved for offline view."); //$NON-NLS-1$
+				}
+			}
+			return null;
+		}
+		
+	}
 
 	private IActionBarVisibleListener mActionBarListener = new IActionBarVisibleListener() {
 

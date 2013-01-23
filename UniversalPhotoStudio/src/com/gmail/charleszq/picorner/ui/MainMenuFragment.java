@@ -11,9 +11,11 @@ import org.jinstagram.auth.model.Token;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.Service;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -48,6 +50,7 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrGalleryPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrIntestringCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrLoginCommand;
@@ -218,10 +221,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				if (backView == null) {
 					return false;
 				}
-				frontView.setVisibility(View.INVISIBLE);
-				backView.setVisibility(View.VISIBLE);
-				ObjectAnimator.ofFloat(backView, "alpha", 0f, 1f) //$NON-NLS-1$
-						.setDuration(1000).start();
+				showBackView(backView, frontView);
 				return true;
 			}
 		});
@@ -259,6 +259,37 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			}
 		});
 		return v;
+	}
+
+	private void showBackView(final View backView, final View frontView) {
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
+		if (!app.isOfflineEnabled()) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+			builder.setTitle(R.string.msg_enable_offline_dialog_title)
+					.setMessage(R.string.msg_pls_enable_offline_first);
+			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if (which == DialogInterface.BUTTON_POSITIVE) {
+						SettingsCommand cmd = new SettingsCommand(getActivity());
+						cmd.execute();
+					} else {
+						dialog.cancel();
+					}
+				}
+			};
+			builder.setPositiveButton(android.R.string.ok, listener);
+			builder.setNegativeButton(android.R.string.cancel, listener);
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		} else {
+			frontView.setVisibility(View.INVISIBLE);
+			backView.setVisibility(View.VISIBLE);
+			ObjectAnimator.ofFloat(backView, "alpha", 0f, 1f) //$NON-NLS-1$
+					.setDuration(1000).start();
+		}
 	}
 
 	private void prepareSections() {

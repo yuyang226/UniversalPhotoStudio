@@ -4,7 +4,10 @@
 package com.gmail.charleszq.picorner.ui.helper;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,16 +15,18 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.Toast;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
+import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -82,12 +87,47 @@ public class MainMenuCommandSectionListAdapter extends
 			settingButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					frontView.setVisibility(View.INVISIBLE);
-					backView.setVisibility(View.VISIBLE);
-					ObjectAnimator.ofFloat(backView, "alpha", 0f, 1f) //$NON-NLS-1$
-							.setDuration(1000).start();
+					showBackView(backView, frontView);
 				}
 			});
+		}
+	}
+
+	/**
+	 * Shows the back view, but first we need to check if user enables the
+	 * offline feature or not.
+	 * 
+	 * @param backView
+	 * @param frontView
+	 */
+	private void showBackView(View backView, View frontView) {
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+				.getApplication();
+		if (!app.isOfflineEnabled()) {
+			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+			builder.setTitle(R.string.msg_enable_offline_dialog_title)
+					.setMessage(R.string.msg_pls_enable_offline_first);
+			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if (which == DialogInterface.BUTTON_POSITIVE) {
+						SettingsCommand cmd = new SettingsCommand(mContext);
+						cmd.execute();
+					} else {
+						dialog.cancel();
+					}
+				}
+			};
+			builder.setPositiveButton(android.R.string.ok, listener);
+			builder.setNegativeButton(android.R.string.cancel, listener);
+			AlertDialog dialog = builder.create();
+			dialog.show();
+		} else {
+			frontView.setVisibility(View.INVISIBLE);
+			backView.setVisibility(View.VISIBLE);
+			ObjectAnimator.ofFloat(backView, "alpha", 0f, 1f) //$NON-NLS-1$
+					.setDuration(1000).start();
 		}
 	}
 
@@ -107,7 +147,7 @@ public class MainMenuCommandSectionListAdapter extends
 					break;
 				case R.id.btn_offline_refresh:
 					boolean isOfflineEnabled = OfflineControlFileUtil
-							.isOfflineViewEnabled(mContext,offline);
+							.isOfflineViewEnabled(mContext, offline);
 					if (!isOfflineEnabled) {
 						Toast.makeText(
 								mContext,
@@ -127,7 +167,7 @@ public class MainMenuCommandSectionListAdapter extends
 					mContext.startService(serviceIntent);
 					break;
 				case R.id.btn_offline_slide_show:
-					//TODO implement in next release.
+					// TODO implement in next release.
 					break;
 				}
 			}
@@ -139,8 +179,8 @@ public class MainMenuCommandSectionListAdapter extends
 
 		CheckBox btnOffline = (CheckBox) backView
 				.findViewById(R.id.btn_enable_offline);
-		btnOffline.setChecked(OfflineControlFileUtil
-				.isOfflineViewEnabled(mContext,offline));
+		btnOffline.setChecked(OfflineControlFileUtil.isOfflineViewEnabled(
+				mContext, offline));
 		btnOffline.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override

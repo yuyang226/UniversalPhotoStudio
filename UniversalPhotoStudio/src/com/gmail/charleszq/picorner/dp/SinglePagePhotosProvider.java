@@ -25,7 +25,7 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	/**
 	 * Log tag
 	 */
-	private static final String TAG = SinglePagePhotosProvider.class.getName();
+	private static final String TAG = SinglePagePhotosProvider.class.getSimpleName();
 
 	/**
 	 * The photo list.

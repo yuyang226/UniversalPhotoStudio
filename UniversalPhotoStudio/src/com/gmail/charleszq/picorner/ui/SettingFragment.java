@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.utils.IConstants;
 
@@ -47,7 +48,16 @@ public class SettingFragment extends PreferenceFragment implements
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-
+		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+		if( IConstants.PREF_OFFLINE_TIMER_IN_HOURS.equals(key)) {
+			app.scheduleOfflineDownload();
+			return;
+		}
+		
+		if( IConstants.PREF_PHOTO_CACHE_SIZE.equals(key)) {
+			app.initializesImageLoader();
+			return;
+		}
 	}
 
 	@Override

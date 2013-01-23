@@ -26,6 +26,9 @@ import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
+import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * Represents the main application.
@@ -34,14 +37,18 @@ import com.googlecode.flickrjandroid.people.User;
  */
 public class PicornerApplication extends Application {
 
+	private static final String TAG = PicornerApplication.class.getSimpleName();
 	private static final String FIRST_TIME_KEY = "first.time"; //$NON-NLS-1$
 	private static final String IS_LICENSED = "isLicensed"; //$NON-NLS-1$
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
+		initializesImageLoader();
 		enableHttpResponseCache();
 		scheduleOfflineDownload();
+
 	}
 
 	private PendingIntent getOfflineServicePendingIntent() {
@@ -52,17 +59,42 @@ public class PicornerApplication extends Application {
 		return photoPendingIntent;
 	}
 
+	/**
+	 * Initializes the image loader.
+	 */
+	public void initializesImageLoader() {
+		String cacheSize = getSharedPreferenceValue(
+				IConstants.PREF_PHOTO_CACHE_SIZE,
+				String.valueOf(IConstants.IMAGE_CACHE_SIZE));
+		// initializes the image loader
+		ImageLoader imageLoader = ImageLoader.getInstance();
+		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+				this).threadPoolSize(5)
+				.memoryCache(new WeakMemoryCache())
+				.discCacheSize(Integer.parseInt(cacheSize)).build();
+		imageLoader.init(config);
+		if(BuildConfig.DEBUG)
+			Log.d(TAG, "image cache size: " + cacheSize ); //$NON-NLS-1$
+	}
+
+	/**
+	 * Schedules the offline download time span.
+	 */
 	public void scheduleOfflineDownload() {
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		PendingIntent pendingIntent = getOfflineServicePendingIntent();
 		am.cancel(pendingIntent);
-		
-		//start 5 min from now, and repeat every 24 hours
+
+		String span = getSharedPreferenceValue(
+				IConstants.PREF_OFFLINE_TIMER_IN_HOURS, "24"); //$NON-NLS-1$
+
+		// start 5 min from now, and repeat every 24 hours
 		am.setRepeating(AlarmManager.RTC_WAKEUP,
 				System.currentTimeMillis() + 5 * 60 * 1000L,
-				24 * 60 * 60 * 1000L, pendingIntent);
+				Integer.valueOf(span) * 60 * 60 * 1000L, pendingIntent);
 		if (BuildConfig.DEBUG)
-			Log.d(getClass().getSimpleName(), "offline download scheduled."); //$NON-NLS-1$
+			Log.d(getClass().getSimpleName(), String.format(
+					"offline download scheduled, once every %s hours.", span)); //$NON-NLS-1$
 	}
 
 	private void enableHttpResponseCache() {
@@ -309,5 +341,27 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.PX_USER_NAME, name);
 		editor.putString(IConstants.PX_USER_BUDDY_ICON_URL, url);
 		editor.commit();
+	}
+	
+	/**
+	 * Is offline enabled?
+	 * @return
+	 */
+	public boolean isOfflineEnabled() {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_APPEND);
+		return sp.getBoolean(IConstants.PREF_ENABLE_OFFLINE, false);
+	}
+	
+	public boolean isDownloadingWhenChargingEnabled() {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_APPEND);
+		return sp.getBoolean(IConstants.PREF_DOWNLOAD_WHEN_CHARGING, true);
+	}
+	
+	public boolean isOfflineWifiOnly() {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_APPEND);
+		return sp.getBoolean(IConstants.PREF_OFFLINE_WIFI_ONLY, true);
 	}
 }

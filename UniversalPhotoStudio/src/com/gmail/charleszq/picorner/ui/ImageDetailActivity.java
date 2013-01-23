@@ -33,10 +33,7 @@ import android.view.WindowManager.LayoutParams;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
-import com.gmail.charleszq.picorner.utils.IConstants;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 public class ImageDetailActivity extends FragmentActivity implements
 		OnClickListener {
@@ -65,11 +62,11 @@ public class ImageDetailActivity extends FragmentActivity implements
 		// The ImageFetcher takes care of loading images into our ImageView
 		// children asynchronously
 		mImageFetcher = ImageLoader.getInstance();
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				getApplicationContext()).threadPoolSize(5)
-				.memoryCache(new WeakMemoryCache())
-				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).build();
-		mImageFetcher.init(config);
+//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//				getApplicationContext()).threadPoolSize(5)
+//				.memoryCache(new WeakMemoryCache())
+//				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).build();
+//		mImageFetcher.init(config);
 		
 		//is offline enabled
 		String isOfflineEnabledString = getIntent().getStringExtra(OFFLINE_COMMAND_KEY);

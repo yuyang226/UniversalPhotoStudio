@@ -29,6 +29,7 @@ public class BatteryStatusReceiver extends BroadcastReceiver {
 
 		if (batteryPct * 100 > 7f) {
 			Intent service = new Intent(context, OfflineHandleService.class);
+			service.putExtra(IOfflineViewParameter.OFFLINE_INVOKER_INTENT_KEY, BatteryStatusReceiver.class.getName());
 			context.startService(service);
 		}
 	}

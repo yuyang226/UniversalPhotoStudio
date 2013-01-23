@@ -15,11 +15,8 @@ import android.widget.ImageView;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
-import com.gmail.charleszq.picorner.utils.IConstants;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
@@ -47,11 +44,11 @@ public class PhotoGridAdapter extends BaseAdapter {
 		this.mPhotos = provider;
 		this.mImageFetcher = fetcher;
 
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				mContext.getApplicationContext())
-				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
-				.memoryCache(new WeakMemoryCache()).build();
-		mImageFetcher.init(config);
+//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//				mContext.getApplicationContext())
+//				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
+//				.memoryCache(new WeakMemoryCache()).build();
+//		mImageFetcher.init(config);
 		mImageViewLayoutParams = new GridView.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 

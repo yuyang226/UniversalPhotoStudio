@@ -106,8 +106,8 @@
     <string name="msg_pls_input_photo_title">Please input photo title.</string>
     <string name="msg_photo_meta_save_done">Photo meta information updated!</string>
     <string name="msg_photo_meta_save_fail">Errors encountered when update photo information.</string>
-    <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>
     <string name="msg_pls_enable_offline_first">Please enable offline view first.</string>
+    <string name="msg_enable_offline_dialog_title">Enable Offline</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
@@ -180,12 +180,17 @@
     <string name="msg_org_my_f_photo_done">Photo organized.</string>
     <string name="msg_org_my_f_photo_fail">Failed to organize photo.</string>
     <string name="msg_org_my_f_photo_partail_success">Photo organized with errors.</string>
+    
+    <!-- offline notification messages -->
+	<string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>
+	<string name="msg_offline_no_network">No network right now.</string>
+	<string name="msg_offline_not_wifi">Not wifi right now.</string>
 
     <!-- preference setting related -->
     <string name="cmd_setting_label">Settings</string>
     <string name="pref_cat_general">General</string>
     <string name="photo_grid_cache_size">Photo cache size (MB)</string>
-    <string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck space to be used as photo cache, in MB.</string>
+    <string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck space to be used as photo cache, by default, it\'s 100M.</string>
     
     <string name="pref_cat_offline">Offline</string>
     <string name="pref.enable.offfline">Enable offline view</string>

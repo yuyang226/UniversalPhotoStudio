@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 
 /**
@@ -31,6 +32,7 @@ public class OfflineHandleService extends IntentService {
 			.getSimpleName();
 
 	private static final int DOWNLOAD_NOTIF_ID = 100001;
+	private static final int DOWNLOAD_ERROR_MSG_ID = 100002;
 
 	public static final int ADD_OFFLINE_PARAM = 1;
 	public static final int REMOVE_OFFLINE_PARAM = 2;
@@ -50,6 +52,24 @@ public class OfflineHandleService extends IntentService {
 	 */
 	@Override
 	protected void onHandleIntent(Intent intent) {
+		// check if offline is enabled or not
+		PicornerApplication app = (PicornerApplication) this.getApplication();
+		if (!app.isOfflineEnabled()) {
+			return;
+		}
+
+		// get the caller information to see if the call comes from battery
+		// charging
+		String caller = intent
+				.getStringExtra(IOfflineViewParameter.OFFLINE_INVOKER_INTENT_KEY);
+		if (BatteryStatusReceiver.class.getName().equals(caller)
+				&& !app.isDownloadingWhenChargingEnabled()) {
+			if (BuildConfig.DEBUG)
+				Log.d(TAG, "user disabled the setting: download when charging."); //$NON-NLS-1$
+			return;
+		}
+
+		// process
 		IOfflineViewParameter param = (IOfflineViewParameter) intent
 				.getSerializableExtra(IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY);
 		int actionType = intent
@@ -57,7 +77,6 @@ public class OfflineHandleService extends IntentService {
 						IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
 						ADD_OFFLINE_PARAM);
 		if (param == null) {
-			Log.d(TAG, "charging, start the download process."); //$NON-NLS-1$
 			downlaodPhotos(param);
 		} else {
 			if (actionType != REFRESH_OFFLINE_PARAM)
@@ -71,6 +90,10 @@ public class OfflineHandleService extends IntentService {
 		}
 	}
 
+	/**
+	 * 
+	 * @param offline
+	 */
 	private void downlaodPhotos(IOfflineViewParameter offline) {
 
 		// check network connection type
@@ -78,27 +101,35 @@ public class OfflineHandleService extends IntentService {
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-		if( activeNetwork == null ) {
-			if( BuildConfig.DEBUG ) {
+		if (activeNetwork == null) {
+			if (BuildConfig.DEBUG) {
 				Log.d(TAG, "not network available."); //$NON-NLS-1$
 			}
+			sendNotification(DOWNLOAD_ERROR_MSG_ID, getString(R.string.msg_offline_no_network));
 			return;
 		}
+		PicornerApplication app = (PicornerApplication) getApplication();
+		boolean isWifiOnly = app.isOfflineWifiOnly();
 		boolean isConnected = activeNetwork.isConnectedOrConnecting();
 		boolean isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
-		if (!isConnected || !isWifi) {
-			Log.d(TAG, "Not wifi, don't start the offline download process."); //$NON-NLS-1$
+		if (!isConnected) {
+			sendNotification(DOWNLOAD_ERROR_MSG_ID, getString(R.string.msg_offline_no_network));
+			if (BuildConfig.DEBUG)
+				Log.d(TAG,
+						"network is not connected, don't start the offline download process."); //$NON-NLS-1$
 			return;
+		} else {
+			if (isWifiOnly && !isWifi) {
+				sendNotification(DOWNLOAD_ERROR_MSG_ID, getString(R.string.msg_offline_not_wifi));
+				if (BuildConfig.DEBUG)
+					Log.d(TAG,
+							"wifi only offline download, but the network is not wifi."); //$NON-NLS-1$
+				return;
+			}
 		}
 
-		// shows the notification on status bar.
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-				this).setSmallIcon(R.drawable.ic_launcher)
-				.setContentTitle(getString(R.string.app_name))
-				.setContentText(getString(R.string.msg_offline_downloading));
-		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.notify(DOWNLOAD_NOTIF_ID,
-				mBuilder.getNotification());
+		// nofify user in status bar.
+		sendNotification(DOWNLOAD_NOTIF_ID, getString(R.string.msg_offline_downloading));
 
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
 				.getExistingOfflineParameters(this);
@@ -132,6 +163,15 @@ public class OfflineHandleService extends IntentService {
 		}
 	}
 
+	private void sendNotification(int id, String msg) {
+		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+				this).setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle(getString(R.string.app_name))
+				.setContentText(msg);
+		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.notify(id, mBuilder.getNotification());
+	}
+
 	/**
 	 * Manages the repository.
 	 * 
@@ -153,7 +193,7 @@ public class OfflineHandleService extends IntentService {
 			params.remove(param);
 		}
 		try {
-			OfflineControlFileUtil.saveRepositoryControlFile(this,params);
+			OfflineControlFileUtil.saveRepositoryControlFile(this, params);
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 		}

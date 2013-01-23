@@ -89,5 +89,13 @@ public interface IConstants {
 	 */
 	static final String FLICKR_USER_POOL_FILE_NAME = "flickr_user_pool.dat"; //$NON-NLS-1$
 	static final String FLICKR_WEB_SITE_URL = "http://www.flickr.com/photos/"; //$NON-NLS-1$
-
+	
+	/**
+	 * Preference keys
+	 */
+	static final String PREF_PHOTO_CACHE_SIZE = "pref.key.photo.grid.cache.size"; //$NON-NLS-1$
+	static final String PREF_ENABLE_OFFLINE = "pref.key.enable.offline"; //$NON-NLS-1$
+	static final String PREF_OFFLINE_WIFI_ONLY = "pref_key_only_use_wifi"; //$NON-NLS-1$
+	static final String PREF_DOWNLOAD_WHEN_CHARGING = "pref_key_download_when_charging"; //$NON-NLS-1$
+	static final String PREF_OFFLINE_TIMER_IN_HOURS = "pref.key.offline.timer"; //$NON-NLS-1$
 }

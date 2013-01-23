@@ -19,10 +19,7 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
-import com.gmail.charleszq.picorner.utils.IConstants;
-import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 /**
  * @author Charles(charleszq@gmail.com)
@@ -57,11 +54,11 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 	public AbstractCommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
 		mContext = ctx;
 		mImageFetcher = fetcher;
-		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				mContext.getApplicationContext())
-				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
-				.memoryCache(new WeakMemoryCache()).build();
-		mImageFetcher.init(config);
+//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
+//				mContext.getApplicationContext())
+//				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
+//				.memoryCache(new WeakMemoryCache()).build();
+//		mImageFetcher.init(config);
 		mCommands = new ArrayList<ICommand<?>>();
 		mAllCommands = new ArrayList<ICommand<?>>();
 	}
