@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="photo_cache_size">
+		<item>100</item>
+		<item>200</item>
+		<item>300</item>
+	</string-array>
+	
+	<string-array name="offline_schedule_label">
+	    <item>Once a day</item>
+	    <item>Once two days</item>
+	    <item>Once a week</item>
+	</string-array>
+	
+	<string-array name="offline_schedule_value">
+	    <item>24</item>
+	    <item>48</item>
+	    <item>168</item>
+	</string-array>
+</resources>

@@ -52,7 +52,7 @@ public class PicornerApplication extends Application {
 		return photoPendingIntent;
 	}
 
-	private void scheduleOfflineDownload() {
+	public void scheduleOfflineDownload() {
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		PendingIntent pendingIntent = getOfflineServicePendingIntent();
 		am.cancel(pendingIntent);

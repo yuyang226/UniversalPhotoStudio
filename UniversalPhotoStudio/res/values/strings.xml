@@ -189,4 +189,20 @@
     <string name="msg_org_my_f_photo_done">Photo organized.</string>
     <string name="msg_org_my_f_photo_fail">Failed to organize photo.</string>
 	<string name="msg_org_my_f_photo_partail_success">Photo organized with errors.</string>
+	
+	<!-- preference setting related -->
+	<string name="cmd_setting_label">Settings</string>
+	<string name="pref_cat_general">General</string>
+	<string name="photo_grid_cache_size">Photo cache size (MB)</string>
+	<string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck capacity to be used as photo cache, in MB.</string>
+	
+	<string name="pref_cat_offline">Offline</string>
+	<string name="pref.enable.offfline">Enable offline view</string>
+	<string name="summary_pref.enable.offfline">Offline view is to let you viewing some of your own photos even if there is no network connection, but you need to know after you enable it, it will need disk space to store the photos.</string>
+	
+	<string name="pref_only_user_wifi">WIFI only</string>
+	<string name="summary_pref_only_user_wifi">Only use wifi to download photos, be careful if you want to uncheck this.</string>
+
+	<string name="offline_download_timer">Offline Timer</string>
+	<string name="summary_offline_download_timer">How often to check if there are updates for your offline photo sets.</string>
 </resources>

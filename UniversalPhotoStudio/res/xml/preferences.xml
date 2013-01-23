@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/pref_cat_general" >
+        <ListPreference
+            android:defaultValue="200"
+            android:dialogTitle="@string/photo_grid_cache_size"
+            android:entries="@array/photo_cache_size"
+            android:entryValues="@array/photo_cache_size"
+            android:key="pref.key.photo.grid.cache.size"
+            android:summary="@string/summary_photo_grid_cache_size"
+            android:title="@string/photo_grid_cache_size" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_cat_offline" >
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref.key.enable.offline"
+            android:summary="@string/summary_pref.enable.offfline"
+            android:title="@string/pref.enable.offfline" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="pref.key.enable.offline"
+            android:key="pref_key_only_use_wifi"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="@string/summary_pref_only_user_wifi"
+            android:title="@string/pref_only_user_wifi" />
+
+        <ListPreference
+            android:defaultValue="24"
+            android:dependency="pref.key.enable.offline"
+            android:dialogTitle="@string/offline_download_timer"
+            android:entries="@array/offline_schedule_label"
+            android:entryValues="@array/offline_schedule_value"
+            android:key="pref.key.offline.timer"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="@string/summary_offline_download_timer"
+            android:title="@string/offline_download_timer" />
+    </PreferenceCategory>
+
+    <!--
+	<PreferenceCategory android:title="@string/photo_list">
+		<ListPreference android:key="photo.grid.col.count"
+			android:title="@string/photo_grid_column_count" android:summary="@string/summary_photo_grid_column_count"
+			android:entries="@array/photo_grid_column_count" android:entryValues="@array/photo_grid_column_count"
+			android:defaultValue="3" android:dialogTitle="@string/photo_grid_column_count_dlg_title" />
+		<ListPreference android:key="photo.grid.page.size"
+			android:title="@string/photo_grid_page_size" android:summary="@string/summary_photo_grid_page_size"
+			android:entries="@array/photo_grid_page_size" android:entryValues="@array/photo_grid_page_size"
+			android:defaultValue="18" android:dialogTitle="@string/photo_grid_page_size_dlg_title" />
+
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="@string/app_caches">
+		<ListPreference android:key="photo.list.cache.size"
+			android:title="@string/photo_list_cache_size" android:summary="@string/summary_photo_list_cache_size"
+			android:entries="@array/app_cache_size" android:entryValues="@array/app_cache_size"
+			android:defaultValue="20" android:dialogTitle="@string/app_cache_size_dlg_title" />
+	</PreferenceCategory>
+
+	<PreferenceCategory android:title="@string/pref_notif_cat">
+		<CheckBoxPreference android:key="notif.enable.contact.upload"
+			android:defaultValue="true" android:title="@string/notif_enable_contact_upload"
+			android:summary="@string/summary_notif_enable_contact_upload" />
+		<ListPreference android:key="notif.contact.upload.interval"
+			android:dependency="notif.enable.contact.upload" android:layout="?android:attr/preferenceLayoutChild"
+			android:title="@string/notif_contact_upload_interval"
+			android:summary="@string/summary_notif_contact_upload_interval"
+			android:entries="@array/contact_upload_interval_title"
+			android:entryValues="@array/contact_upload_interval_value"
+			android:defaultValue="2"
+			android:dialogTitle="@string/notif_contact_upload_interval_dlg_title" />
+
+		<CheckBoxPreference android:key="notif.enable.photo.activity"
+			android:defaultValue="true" android:title="@string/notif_enable_photo_activity"
+			android:summary="@string/summary_notif_enable_photo_activity" />
+		<ListPreference android:key="notif.photo.activity.interval"
+			android:dependency="notif.enable.photo.activity" android:layout="?android:attr/preferenceLayoutChild"
+			android:title="@string/notif_photo_act_interval" android:summary="@string/summary_notif_photo_act_interval"
+			android:entries="@array/contact_upload_interval_title"
+			android:entryValues="@array/contact_upload_interval_value"
+			android:defaultValue="2" android:dialogTitle="@string/notif_photo_act_interval_dlg_title" />
+	</PreferenceCategory>
+    -->
+
+</PreferenceScreen>

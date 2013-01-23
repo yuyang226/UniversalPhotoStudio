@@ -29,6 +29,7 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrTagSearchCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
@@ -147,6 +148,9 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		commands.add(command);
 
 		command = new HelpCommand(getActivity());
+		commands.add(command);
+		
+		command = new SettingsCommand(getActivity());
 		commands.add(command);
 
 		// search
