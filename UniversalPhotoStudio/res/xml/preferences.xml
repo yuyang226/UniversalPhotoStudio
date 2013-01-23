@@ -24,6 +24,13 @@
             android:layout="?android:attr/preferenceLayoutChild"
             android:summary="@string/summary_pref_only_user_wifi"
             android:title="@string/pref_only_user_wifi" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:dependency="pref.key.enable.offline"
+            android:key="pref_key_download_when_charging"
+            android:layout="?android:attr/preferenceLayoutChild"
+            android:summary="@string/summary_pref_download_when_charging"
+            android:title="@string/pref_download_when_charging" />
 
         <ListPreference
             android:defaultValue="24"

@@ -1,9 +1,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    
+
     <string name="about_file_name">about.html</string>
     <string name="help_file_name">help.html</string>
     <string name="about_file_encoding">utf-8</string>
-    
     <string name="app_name">PiCorner</string>
     <string name="no_network_connection_toast">No network connection found</string>
     <string name="secondary_menus_general">General</string>
@@ -14,19 +13,15 @@
     <string name="f_my_fav">My Favorites</string>
     <string name="f_my_contacts">Friends\' Photos</string>
     <string name="f_my_popular">My Populars</string>
-    
     <string name="ig_my_feeds">My Feeds</string>
     <string name="ig_my_likes">My Likes</string>
     <string name="ig_my_photos">My Photos</string>
-    
     <string name="menu_item_text_default">Default</string>
     <string name="menu_item_text_offline">Offline</string>
-    
     <string name="px_editors">Editors\' Choice</string>
     <string name="px_upcoming">Upcoming</string>
     <string name="px_fresh_today">Fresh Today</string>
     <string name="px_my_flow">Friends\' Photos</string>
-    
     <string name="menu_header_flickr">Flickr</string>
     <string name="menu_header_flickr_sets">Photo Sets</string>
     <string name="menu_header_flickr_groups">Photo Groups</string>
@@ -35,11 +30,10 @@
     <string name="menu_header_ig">Instagram</string>
     <string name="menu_header_px500">500px</string>
     <string name="cmd_name_about">About</string>
-    
+
     <!-- search menu items -->
     <string name="cmd_name_flickr_tag_search">Flickr: Search</string>
     <string name="cmd_name_ig_loc_search">Instagram: Nearby Photos</string>
-    
     <string name="ig_following">Following</string>
     <string name="ig_follow">Follow</string>
 
@@ -72,109 +66,106 @@
     <string name="loading_photos" tools:ignore="TypographyEllipsis">Loading...</string>
     <string name="msg_wallpaper_changed">Wallpaper changed.</string>
     <string name="like_photo_done">Liked!</string>
-    
-	<!-- photo detail pager titles -->
-	<string name="flickr_detail_general_title">General</string>
-	<string name="flickr_detail_comments_title">Comments</string>
-	<string name="flickr_detail_exif_title">Exif</string>
-	<string name="flickr_detail_map">Map</string>
-	<string name="ig_like_users">Like Users</string>
-	
-	<string name="detail_gen_title_section">Title</string>
-	<string name="detail_gen_author_section">Author</string>
-	<string name="detail_gen_description_section">Description</string>
-	
-	<string name="photo_no_title">NO TITLE</string>
-	<string name="photo_no_desc">NO DESCRIPTION</string>
-	<string name="photo_no_comments">No comment now.</string>
-	<string name="photo_no_exif">No Exif Information.</string>
-	<string name="photo_no_like_users">No likes now.</string>
-	<string name="msg_comment_added">Comment added.</string>
-	<string name="hint_add_comment">comment here.</string>
-	
-	<string name="pls_sing_in_first">Please sign in first.</string>
-	
-	<!--  general messages  -->
-	<string name="msg_pls_turn_on_location">Please turn on your network location setting.</string>
-	<string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
-	<string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
-	<string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
-	<string name="msg_not_support_yet">Not supported yet.</string>
-	<string name="msg_by_author_name">by</string>
-	<string name="msg_your_own_photo">This is you.</string>
-	<string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
-	<string name="msg_no_photo_returned">Ooops, no photo returned for \'%s\'</string>
-	<string name="msg_photo_saved_locally">Photo saved as \'%s\'</string>
-	<string name="msg_photo_save_exists">Photo already saved.</string>
-	<string name="msg_photo">photo</string>
-	<string name="msg_px500_auth_fail">Failed to sign into 500px.</string>
-	<string name="msg_px_error_fetch_user_profile">Error to get my 500px user profile.</string>
-	<string name="msg_500px_photo_voted">Voted!</string>
-	<string name="msg_500px_photo_vote_failed">You may already voted!</string>
-	<string name="msg_fail_get_f_perm">Failed to get photo visibility information.</string>
-	<string name="msg_pls_input_photo_title">Please input photo title.</string>
-	<string name="msg_photo_meta_save_done">Photo meta information updated!</string>
-	<string name="msg_photo_meta_save_fail">Errors encountered when update photo information.</string>
-	<string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>
-	<string name="msg_pls_enable_offline_first">Please enable offline view first.</string>
-	
-	<!--  flickr tag search -->
-	<string name="msg_flickr_tag_search_label">Flickr tag search</string>
-	<string name="msg_flickr_tag_search_tags">Tags:</string>
-	<string name="msg_flickr_tag_search_mode">Search mode:</string>
-	<string name="msg_flickr_tag_search_hint">separate by space</string>
-	<string name="msg_flickr_tag_search_empty_tag">Please input tag to search.</string>
-	<string name="msg_flickr_tag_search_mode_and">and</string>
-	<string name="msg_flickr_tag_search_mode_or">or</string>
-	
-	<!-- help -->
-	<string name="try_swipe_left">Try swipe left</string>
-	<string name="try_swipe_right">Try swipe right</string>
-	
-	<!-- Command descritions -->
-	<!-- flickr -->
-	<string name="cd_flickr_interesting">flickr: explore</string>
-	<string name="cd_flickr_user_photos">flickr: photos of \'%s\'</string>
-	<string name="cd_flickr_my_favs">flickr: my favorites</string>
-	<string name="cd_flickr_my_populars">flickr: my popular photos</string>
-	<string name="cd_flickr_my_contact_photos">flickr: friends\' photos</string>
-	<string name="cd_flickr_photo_set_photos">flickr: photo set \'%s\'</string>
-	<string name="cd_flickr_group_photos">flickr: photo group \'%s\'</string>
-	<string name="cd_flickr_gallery_photos">flickr: photo gallery \'%s\'</string>
-	<string name="cd_flickr_my_photos">flickr: my photo stream</string>
-	<string name="cd_flickr_tag_search">flickr: search result \'%s\'</string>
-	
-	<!-- 500px -->
-	<string name="cd_500px_popular">500px: popular</string>
-	<string name="cd_500px_editor">500px: editors\' choice</string>
-	<string name="cd_500px_upcoming">500px: upcoming</string>
-	<string name="cd_500px_fresh_today">500px: fresh today</string>
-	<string name="cd_500px_user_photos">500px: photos of \'%s\'</string>
-	<string name="cd_500px_my_photos">500px: my photos</string>
-	<string name="cd_500px_my_favs">500px: my favorites</string>
-	<string name="cd_500px_my_flow">500px: friends\' photos</string>
-	
-	<!-- Instagram -->
-	<string name="cd_ig_popular">instagram: popular</string>
-	<string name="cd_ig_my_feeds">instagram: my feeds</string>
-	<string name="cd_ig_my_likes">instagram: my likes</string>
-	<string name="cd_ig_my_photos">instagram: my photos</string>
-	<string name="cd_ig_user_photos">instagram: photos of \'%s\'</string>
-	<string name="cd_ig_photos_nearby">instagram: nearby photos</string>
-	
-	<!-- use my own ig client -->
-	<string name="ig_client_id">Client ID</string>
-	<string name="ig_client_secret">Client Secret</string>
-	<string name="btn_help">Help</string>
-	
-	<!-- Licensing Check -->
-	<string name="application_error">Application error: %1$s</string>
-	<!-- Unlicensed dialog messages -->
+
+    <!-- photo detail pager titles -->
+    <string name="flickr_detail_general_title">General</string>
+    <string name="flickr_detail_comments_title">Comments</string>
+    <string name="flickr_detail_exif_title">Exif</string>
+    <string name="flickr_detail_map">Map</string>
+    <string name="ig_like_users">Like Users</string>
+    <string name="detail_gen_title_section">Title</string>
+    <string name="detail_gen_author_section">Author</string>
+    <string name="detail_gen_description_section">Description</string>
+    <string name="photo_no_title">NO TITLE</string>
+    <string name="photo_no_desc">NO DESCRIPTION</string>
+    <string name="photo_no_comments">No comment now.</string>
+    <string name="photo_no_exif">No Exif Information.</string>
+    <string name="photo_no_like_users">No likes now.</string>
+    <string name="msg_comment_added">Comment added.</string>
+    <string name="hint_add_comment">comment here.</string>
+    <string name="pls_sing_in_first">Please sign in first.</string>
+
+    <!-- general messages -->
+    <string name="msg_pls_turn_on_location">Please turn on your network location setting.</string>
+    <string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
+    <string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
+    <string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
+    <string name="msg_not_support_yet">Not supported yet.</string>
+    <string name="msg_by_author_name">by</string>
+    <string name="msg_your_own_photo">This is you.</string>
+    <string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
+    <string name="msg_no_photo_returned">Ooops, no photo returned for \'%s\'</string>
+    <string name="msg_photo_saved_locally">Photo saved as \'%s\'</string>
+    <string name="msg_photo_save_exists">Photo already saved.</string>
+    <string name="msg_photo">photo</string>
+    <string name="msg_px500_auth_fail">Failed to sign into 500px.</string>
+    <string name="msg_px_error_fetch_user_profile">Error to get my 500px user profile.</string>
+    <string name="msg_500px_photo_voted">Voted!</string>
+    <string name="msg_500px_photo_vote_failed">You may already voted!</string>
+    <string name="msg_fail_get_f_perm">Failed to get photo visibility information.</string>
+    <string name="msg_pls_input_photo_title">Please input photo title.</string>
+    <string name="msg_photo_meta_save_done">Photo meta information updated!</string>
+    <string name="msg_photo_meta_save_fail">Errors encountered when update photo information.</string>
+    <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>
+    <string name="msg_pls_enable_offline_first">Please enable offline view first.</string>
+
+    <!-- flickr tag search -->
+    <string name="msg_flickr_tag_search_label">Flickr tag search</string>
+    <string name="msg_flickr_tag_search_tags">Tags:</string>
+    <string name="msg_flickr_tag_search_mode">Search mode:</string>
+    <string name="msg_flickr_tag_search_hint">separate by space</string>
+    <string name="msg_flickr_tag_search_empty_tag">Please input tag to search.</string>
+    <string name="msg_flickr_tag_search_mode_and">and</string>
+    <string name="msg_flickr_tag_search_mode_or">or</string>
+
+    <!-- help -->
+    <string name="try_swipe_left">Try swipe left</string>
+    <string name="try_swipe_right">Try swipe right</string>
+
+    <!-- Command descritions -->
+    <!-- flickr -->
+    <string name="cd_flickr_interesting">flickr: explore</string>
+    <string name="cd_flickr_user_photos">flickr: photos of \'%s\'</string>
+    <string name="cd_flickr_my_favs">flickr: my favorites</string>
+    <string name="cd_flickr_my_populars">flickr: my popular photos</string>
+    <string name="cd_flickr_my_contact_photos">flickr: friends\' photos</string>
+    <string name="cd_flickr_photo_set_photos">flickr: photo set \'%s\'</string>
+    <string name="cd_flickr_group_photos">flickr: photo group \'%s\'</string>
+    <string name="cd_flickr_gallery_photos">flickr: photo gallery \'%s\'</string>
+    <string name="cd_flickr_my_photos">flickr: my photo stream</string>
+    <string name="cd_flickr_tag_search">flickr: search result \'%s\'</string>
+
+    <!-- 500px -->
+    <string name="cd_500px_popular">500px: popular</string>
+    <string name="cd_500px_editor">500px: editors\' choice</string>
+    <string name="cd_500px_upcoming">500px: upcoming</string>
+    <string name="cd_500px_fresh_today">500px: fresh today</string>
+    <string name="cd_500px_user_photos">500px: photos of \'%s\'</string>
+    <string name="cd_500px_my_photos">500px: my photos</string>
+    <string name="cd_500px_my_favs">500px: my favorites</string>
+    <string name="cd_500px_my_flow">500px: friends\' photos</string>
+
+    <!-- Instagram -->
+    <string name="cd_ig_popular">instagram: popular</string>
+    <string name="cd_ig_my_feeds">instagram: my feeds</string>
+    <string name="cd_ig_my_likes">instagram: my likes</string>
+    <string name="cd_ig_my_photos">instagram: my photos</string>
+    <string name="cd_ig_user_photos">instagram: photos of \'%s\'</string>
+    <string name="cd_ig_photos_nearby">instagram: nearby photos</string>
+
+    <!-- use my own ig client -->
+    <string name="ig_client_id">Client ID</string>
+    <string name="ig_client_secret">Client Secret</string>
+    <string name="btn_help">Help</string>
+
+    <!-- Licensing Check -->
+    <string name="application_error">Application error: %1$s</string>
+    <!-- Unlicensed dialog messages -->
     <string name="unlicensed_dialog_title">Application Not Licensed</string>
     <string name="unlicensed_dialog_body">This application is NOT licensed. Please purchase it from the Google Play Store.</string>
     <string name="buy_button">Purchase</string>
     <string name="quit_button">Exit</string>
-    
+
     <!-- change my flickr photo properties -->
     <string name="flickr_photo_perm_private">Only You</string>
     <string name="flickr_photo_perm_friend">Your friends</string>
@@ -182,27 +173,31 @@
     <string name="flickr_photo_perm_public">Anyone</string>
     <string name="flickr_photo_perm_title">Who can see this photo:</string>
     <string name="msg_flickr_photo_perm_hint">Note: Changing from public to private will remove all favorites.</string>
-    
+
     <!-- organize flickr photo -->
     <string name="msg_org_flickr_photo_title">organize photo</string>
     <string name="msg_org_my_f_photo_progress" tools:ignore="TypographyEllipsis">Organizing my photo...</string>
     <string name="msg_org_my_f_photo_done">Photo organized.</string>
     <string name="msg_org_my_f_photo_fail">Failed to organize photo.</string>
-	<string name="msg_org_my_f_photo_partail_success">Photo organized with errors.</string>
-	
-	<!-- preference setting related -->
-	<string name="cmd_setting_label">Settings</string>
-	<string name="pref_cat_general">General</string>
-	<string name="photo_grid_cache_size">Photo cache size (MB)</string>
-	<string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck capacity to be used as photo cache, in MB.</string>
-	
-	<string name="pref_cat_offline">Offline</string>
-	<string name="pref.enable.offfline">Enable offline view</string>
-	<string name="summary_pref.enable.offfline">Offline view is to let you viewing some of your own photos even if there is no network connection, but you need to know after you enable it, it will need disk space to store the photos.</string>
-	
-	<string name="pref_only_user_wifi">WIFI only</string>
-	<string name="summary_pref_only_user_wifi">Only use wifi to download photos, be careful if you want to uncheck this.</string>
+    <string name="msg_org_my_f_photo_partail_success">Photo organized with errors.</string>
 
-	<string name="offline_download_timer">Offline Timer</string>
-	<string name="summary_offline_download_timer">How often to check if there are updates for your offline photo sets.</string>
+    <!-- preference setting related -->
+    <string name="cmd_setting_label">Settings</string>
+    <string name="pref_cat_general">General</string>
+    <string name="photo_grid_cache_size">Photo cache size (MB)</string>
+    <string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck space to be used as photo cache, in MB.</string>
+    
+    <string name="pref_cat_offline">Offline</string>
+    <string name="pref.enable.offfline">Enable offline view</string>
+    <string name="summary_pref.enable.offfline">Offline view is to let you viewing some of your own photos even if there is no network connection, but you need to know after you enable it, it will need disk space to store the photos.</string>
+    
+    <string name="pref_only_user_wifi">WIFI only</string>
+    <string name="summary_pref_only_user_wifi">Only use wifi to download photos, be careful if you want to uncheck this.</string>
+    
+    <string name="pref_download_when_charging">Download when charging</string>
+    <string name="summary_pref_download_when_charging">When charging, check if there are updates for your offline photo sets, if yes, start downloading.</string>
+    
+    <string name="offline_download_timer">Offline Timer</string>
+    <string name="summary_offline_download_timer">How often to check if there are updates for your offline photo sets.</string>
+
 </resources>
