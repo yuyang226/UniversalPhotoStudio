@@ -27,8 +27,11 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * @param ctx
 	 *            the context from which we can get the auto information.
 	 * @param param
+	 * @param download
+	 *            <code>true</code> to download photos even if there is no
+	 *            update; <code>false</code> otherwise.
 	 */
-	void process(Context ctx, IOfflineViewParameter param);
+	void process(Context ctx, IOfflineViewParameter param, boolean download);
 
 	/**
 	 * Returns the cached photos. if the photo collection information is not
@@ -37,5 +40,15 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * @return
 	 */
 	List<MediaObject> getCachedPhotos(Context ctx, IOfflineViewParameter param);
+
+	/**
+	 * Removes all cached photos for the given <code>param</code>, returns the
+	 * photo count removed, -1 if the control file of this parameter does not
+	 * even exist or encountered errors when reading the control file.
+	 * 
+	 * @param param
+	 * @return
+	 */
+	int removeCachedPhotos(Context ctx, IOfflineViewParameter param);
 
 }

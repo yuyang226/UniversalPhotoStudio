@@ -138,6 +138,8 @@ public class MainMenuCommandSectionListAdapter extends
 
 			@Override
 			public void onClick(View v) {
+				boolean isOfflineEnabled = OfflineControlFileUtil
+						.isOfflineViewEnabled(mContext, offline);
 				switch (v.getId()) {
 				case R.id.btn_offline_back:
 					backView.setVisibility(View.INVISIBLE);
@@ -146,8 +148,6 @@ public class MainMenuCommandSectionListAdapter extends
 							.setDuration(1000).start();
 					break;
 				case R.id.btn_offline_refresh:
-					boolean isOfflineEnabled = OfflineControlFileUtil
-							.isOfflineViewEnabled(mContext, offline);
 					if (!isOfflineEnabled) {
 						Toast.makeText(
 								mContext,
@@ -168,6 +168,35 @@ public class MainMenuCommandSectionListAdapter extends
 					break;
 				case R.id.btn_offline_slide_show:
 					// TODO implement in next release.
+					break;
+				case R.id.btn_offline_download:
+					if (!isOfflineEnabled) {
+						Toast.makeText(
+								mContext,
+								mContext.getString(R.string.msg_pls_enable_offline_first),
+								Toast.LENGTH_SHORT).show();
+						break;
+					}
+					Intent download = new Intent(mContext,
+							OfflineHandleService.class);
+					download.putExtra(
+							IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
+							offline);
+					download.putExtra(
+							IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
+							OfflineHandleService.DOWNLOAD_OFFLINE_PARAM);
+					mContext.startService(download);
+					break;
+				case R.id.btn_offline_delete_photos:
+					Intent deletePhotos = new Intent(mContext,
+							OfflineHandleService.class);
+					deletePhotos.putExtra(
+							IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
+							offline);
+					deletePhotos.putExtra(
+							IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
+							OfflineHandleService.DELETE_OFFLINE_PHOTO_PARAM);
+					mContext.startService(deletePhotos);
 					break;
 				}
 			}
@@ -208,11 +237,13 @@ public class MainMenuCommandSectionListAdapter extends
 		TextView btnSlideShow = (TextView) backView
 				.findViewById(R.id.btn_offline_slide_show);
 		btnSlideShow.setOnClickListener(listener);
-		
-		TextView btnDownload = (TextView) backView.findViewById(R.id.btn_offline_download);
+
+		TextView btnDownload = (TextView) backView
+				.findViewById(R.id.btn_offline_download);
 		btnDownload.setOnClickListener(listener);
-		
-		TextView btnDeletePhoto = (TextView) backView.findViewById(R.id.btn_offline_delete_photos);
+
+		TextView btnDeletePhoto = (TextView) backView
+				.findViewById(R.id.btn_offline_delete_photos);
 		btnDeletePhoto.setOnClickListener(listener);
 	}
 }

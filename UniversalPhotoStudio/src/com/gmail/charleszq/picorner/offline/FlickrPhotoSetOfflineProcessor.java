@@ -36,14 +36,14 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
 public class FlickrPhotoSetOfflineProcessor implements
 		IOfflinePhotoCollectionProcessor {
 
-	private static final String TAG = FlickrPhotoSetOfflineProcessor.class
-			.getSimpleName();
-	private static final int PAGE_SIZE = 100;
+	private static final String	TAG			= FlickrPhotoSetOfflineProcessor.class
+													.getSimpleName();
+	private static final int	PAGE_SIZE	= 100;
 
 	/**
 	 * The extras.
 	 */
-	private Set<String> mExtras = null;
+	private Set<String>			mExtras		= null;
 
 	/*
 	 * (non-Javadoc)
@@ -53,7 +53,8 @@ public class FlickrPhotoSetOfflineProcessor implements
 	 * (com.gmail.charleszq.picorner.offline.IOfflineViewParameter)
 	 */
 	@Override
-	public void process(Context ctx, IOfflineViewParameter param) {
+	public void process(Context ctx, IOfflineViewParameter param,
+			boolean download) {
 
 		String controlFileName = param.getControlFileName();
 		boolean isControlFileExist = OfflineControlFileUtil.isFileExist(ctx,
@@ -63,7 +64,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 			if (read != null) {
 				Log.d(TAG, read.size() + " photos saved in file before."); //$NON-NLS-1$
 				boolean hasUpdatesOnServer = saveDeltaHandle(ctx, param, read);
-				if (!hasUpdatesOnServer) {
+				if (!hasUpdatesOnServer && !download) {
 					return;
 				}
 			}
@@ -318,5 +319,22 @@ public class FlickrPhotoSetOfflineProcessor implements
 	public List<MediaObject> getCachedPhotos(Context ctx,
 			IOfflineViewParameter param) {
 		return readPhotos(ctx, param);
+	}
+
+	@Override
+	public int removeCachedPhotos(Context ctx, IOfflineViewParameter param) {
+		List<MediaObject> photos = readPhotos(ctx, param);
+		if (photos == null) {
+			return -1;
+		}
+		int count = 0;
+		for (MediaObject photo : photos) {
+			String photoFileName = OfflineControlFileUtil
+					.getOfflinePhotoFileName(photo);
+			if (ctx.deleteFile(photoFileName)) {
+				count++;
+			}
+		}
+		return count;
 	}
 }

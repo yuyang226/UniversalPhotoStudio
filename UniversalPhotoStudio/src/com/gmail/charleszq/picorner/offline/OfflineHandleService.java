@@ -28,15 +28,18 @@ public class OfflineHandleService extends IntentService {
 	/**
 	 * The log tag
 	 */
-	private static final String TAG = OfflineHandleService.class
-			.getSimpleName();
+	private static final String	TAG								= OfflineHandleService.class
+																		.getSimpleName();
 
-	private static final int DOWNLOAD_NOTIF_ID = 100001;
-	private static final int DOWNLOAD_ERROR_MSG_ID = 100002;
+	private static final int	DOWNLOAD_NOTIF_ID				= 100001;
+	private static final int	DOWNLOAD_ERROR_MSG_ID			= 100002;
+	private static final int	REMOVE_OFFLINE_PHOTOS_MSG_ID	= 100003;
 
-	public static final int ADD_OFFLINE_PARAM = 1;
-	public static final int REMOVE_OFFLINE_PARAM = 2;
-	public static final int REFRESH_OFFLINE_PARAM = 3;
+	public static final int		ADD_OFFLINE_PARAM				= 1;
+	public static final int		REMOVE_OFFLINE_PARAM			= 2;
+	public static final int		REFRESH_OFFLINE_PARAM			= 3;
+	public static final int		DOWNLOAD_OFFLINE_PARAM			= 4;
+	public static final int		DELETE_OFFLINE_PHOTO_PARAM		= 5;
 
 	/**
 	 * @param name
@@ -77,24 +80,64 @@ public class OfflineHandleService extends IntentService {
 						IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
 						ADD_OFFLINE_PARAM);
 		if (param == null) {
-			downlaodPhotos(param);
+			downlaodPhotos(param, false);
 		} else {
-			if (actionType != REFRESH_OFFLINE_PARAM)
-				manageRepository(param, actionType == ADD_OFFLINE_PARAM ? true
-						: false);
-			else {
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Refresh the given offline parameter."); //$NON-NLS-1$
-				downlaodPhotos(param);
+			// if (actionType != REFRESH_OFFLINE_PARAM)
+			// manageRepository(param, actionType == ADD_OFFLINE_PARAM ? true
+			// : false);
+			// else {
+			// if (BuildConfig.DEBUG)
+			//					Log.d(TAG, "Refresh the given offline parameter."); //$NON-NLS-1$
+			// downlaodPhotos(param);
+			// }
+			switch (actionType) {
+			case ADD_OFFLINE_PARAM:
+				manageRepository(param, true);
+				break;
+			case REMOVE_OFFLINE_PARAM:
+				manageRepository(param, false);
+				break;
+			case REFRESH_OFFLINE_PARAM:
+				downlaodPhotos(param, false);
+				break;
+			case DOWNLOAD_OFFLINE_PARAM:
+				downlaodPhotos(param, true);
+				break;
+			case DELETE_OFFLINE_PHOTO_PARAM:
+				removeCachedPhotos(param);
+				break;
 			}
+		}
+	}
+
+	/**
+	 * Removes all the cached photos for the given <code>param</code>
+	 * 
+	 * @param param
+	 */
+	private void removeCachedPhotos(IOfflineViewParameter param) {
+		IOfflinePhotoCollectionProcessor p = param
+				.getPhotoCollectionProcessor();
+		int count = p.removeCachedPhotos(this, param);
+		if (count == -1) {
+			sendNotification(REMOVE_OFFLINE_PHOTOS_MSG_ID,
+					getString(R.string.msg_offline_delete_photos_minus_one));
+		} else {
+			String msg = getString(R.string.msg_offline_delete_photos);
+			msg = String.format(msg, count);
+			sendNotification(REMOVE_OFFLINE_PHOTOS_MSG_ID,msg);
 		}
 	}
 
 	/**
 	 * 
 	 * @param offline
+	 * @param redownload
+	 *            <code>true</code> to download photos even there is no update
+	 *            on server; <code>false</code> otherwise.
 	 */
-	private void downlaodPhotos(IOfflineViewParameter offline) {
+	private void downlaodPhotos(IOfflineViewParameter offline,
+			boolean redownload) {
 
 		// check network connection type
 		ConnectivityManager cm = (ConnectivityManager) this
@@ -105,7 +148,8 @@ public class OfflineHandleService extends IntentService {
 			if (BuildConfig.DEBUG) {
 				Log.d(TAG, "not network available."); //$NON-NLS-1$
 			}
-			sendNotification(DOWNLOAD_ERROR_MSG_ID, getString(R.string.msg_offline_no_network));
+			sendNotification(DOWNLOAD_ERROR_MSG_ID,
+					getString(R.string.msg_offline_no_network));
 			return;
 		}
 		PicornerApplication app = (PicornerApplication) getApplication();
@@ -113,14 +157,16 @@ public class OfflineHandleService extends IntentService {
 		boolean isConnected = activeNetwork.isConnectedOrConnecting();
 		boolean isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
 		if (!isConnected) {
-			sendNotification(DOWNLOAD_ERROR_MSG_ID, getString(R.string.msg_offline_no_network));
+			sendNotification(DOWNLOAD_ERROR_MSG_ID,
+					getString(R.string.msg_offline_no_network));
 			if (BuildConfig.DEBUG)
 				Log.d(TAG,
 						"network is not connected, don't start the offline download process."); //$NON-NLS-1$
 			return;
 		} else {
 			if (isWifiOnly && !isWifi) {
-				sendNotification(DOWNLOAD_ERROR_MSG_ID, getString(R.string.msg_offline_not_wifi));
+				sendNotification(DOWNLOAD_ERROR_MSG_ID,
+						getString(R.string.msg_offline_not_wifi));
 				if (BuildConfig.DEBUG)
 					Log.d(TAG,
 							"wifi only offline download, but the network is not wifi."); //$NON-NLS-1$
@@ -129,7 +175,8 @@ public class OfflineHandleService extends IntentService {
 		}
 
 		// nofify user in status bar.
-		sendNotification(DOWNLOAD_NOTIF_ID, getString(R.string.msg_offline_downloading));
+		sendNotification(DOWNLOAD_NOTIF_ID,
+				getString(R.string.msg_offline_downloading));
 
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
 				.getExistingOfflineParameters(this);
@@ -144,14 +191,14 @@ public class OfflineHandleService extends IntentService {
 				offline = params.get(pos);
 				((AbstractOfflineParameter) offline).setLastUpdateTime(System
 						.currentTimeMillis());
-				processOfflineParameter(offline, true);
+				processOfflineParameter(offline, true, redownload);
 			} else {
 				// not enabled, just return
 				return;
 			}
 		} else {
 			for (IOfflineViewParameter param : params) {
-				this.processOfflineParameter(param, false);
+				this.processOfflineParameter(param, false, redownload);
 			}
 		}
 		try {
@@ -206,14 +253,14 @@ public class OfflineHandleService extends IntentService {
 	 * @param param
 	 */
 	private void processOfflineParameter(IOfflineViewParameter param,
-			boolean doitnow) {
+			boolean doitnow, boolean redownload) {
 		if (doitnow || longerThanFiveHours(param)) {
 			// do it.
 			IOfflinePhotoCollectionProcessor p = param
 					.getPhotoCollectionProcessor();
 			((AbstractOfflineParameter) param).setLastUpdateTime(System
 					.currentTimeMillis());
-			p.process(this, param);
+			p.process(this, param, redownload);
 		}
 	}
 
