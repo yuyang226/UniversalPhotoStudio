@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui.command.flickr;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 
@@ -49,6 +50,9 @@ public class MyFlickrPopularPhotosCommand extends PhotoListCommand {
 		}
 		if (adapterClass == Integer.class) {
 			return 100; // the maximum value of flickr service.
+		}
+		if( adapterClass == ActionBar.class ) {
+			return Boolean.FALSE.toString();
 		}
 		return super.getAdapter(adapterClass);
 	}

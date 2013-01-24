@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui.command.flickr;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 
@@ -46,6 +47,9 @@ public class MyFlickrPhotosCommand extends PhotoListCommand {
 						app.getFlickrTokenSecret());
 			}
 			return mCurrentPhotoService;
+		}
+		if( adapterClass == ActionBar.class ) {
+			return Boolean.FALSE.toString();
 		}
 		return super.getAdapter(adapterClass);
 	}

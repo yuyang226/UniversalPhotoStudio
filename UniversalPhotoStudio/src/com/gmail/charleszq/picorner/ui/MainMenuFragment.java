@@ -10,6 +10,7 @@ import org.jinstagram.auth.model.Token;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -449,6 +450,13 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 					return getString(R.string.cd_ig_my_photos);
 				}
 
+				@Override
+				public Object getAdapter(Class<?> adapterClass) {
+					if( adapterClass == ActionBar.class ) {
+						return Boolean.FALSE.toString();
+					}
+					return super.getAdapter(adapterClass);
+				}
 			};
 			command.setCommandCategory(headerName);
 			commands.add(command);

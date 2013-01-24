@@ -18,6 +18,7 @@ package com.gmail.charleszq.picorner.ui;
 
 import java.util.Comparator;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -163,11 +164,18 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 					.getAdapter(IOfflineViewParameter.class);
 			boolean offlineEnabled = false;
 			if (offlineParam != null) {
-				offlineEnabled = OfflineControlFileUtil
-						.isOfflineViewEnabled(getActivity(),offlineParam);
+				offlineEnabled = OfflineControlFileUtil.isOfflineViewEnabled(
+						getActivity(), offlineParam);
 			}
 			i.putExtra(ImageDetailActivity.OFFLINE_COMMAND_KEY,
 					Boolean.toString(offlineEnabled));
+			Object showActionBarString = mCurrentCommand
+					.getAdapter(ActionBar.class);
+			if (showActionBarString == null) {
+				showActionBarString = Boolean.toString(true);
+			}
+			i.putExtra(ImageDetailActivity.SHOW_ACTION_BAR_KEY,
+					Boolean.parseBoolean(showActionBarString.toString()));
 		}
 		startActivity(i);
 	}

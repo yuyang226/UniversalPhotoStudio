@@ -41,6 +41,12 @@ public class ImageDetailActivity extends FragmentActivity implements
 	public static final String DP_KEY = "data.provider"; //$NON-NLS-1$
 	public static final String OFFLINE_COMMAND_KEY = "is.command.support.offline"; //$NON-NLS-1$
 
+	/**
+	 * The key to save intent value to indicate whether we show the action bar
+	 * by default
+	 */
+	public static final String SHOW_ACTION_BAR_KEY = "show.action.bar"; //$NON-NLS-1$
+
 	private ImagePagerAdapter mAdapter;
 	private ImageLoader mImageFetcher;
 	private ViewPager mPager;
@@ -48,12 +54,12 @@ public class ImageDetailActivity extends FragmentActivity implements
 	private Set<IActionBarVisibleListener> mActionBarListeners;
 
 	IPhotosProvider mPhotosProvider;
-	
+
 	/**
 	 * the marker to say if the current command is offline enabled.
 	 */
 	boolean mIsOfflineEnabled = false;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,15 +68,11 @@ public class ImageDetailActivity extends FragmentActivity implements
 		// The ImageFetcher takes care of loading images into our ImageView
 		// children asynchronously
 		mImageFetcher = ImageLoader.getInstance();
-//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//				getApplicationContext()).threadPoolSize(5)
-//				.memoryCache(new WeakMemoryCache())
-//				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).build();
-//		mImageFetcher.init(config);
-		
-		//is offline enabled
-		String isOfflineEnabledString = getIntent().getStringExtra(OFFLINE_COMMAND_KEY);
-		if( isOfflineEnabledString != null ) {
+
+		// is offline enabled
+		String isOfflineEnabledString = getIntent().getStringExtra(
+				OFFLINE_COMMAND_KEY);
+		if (isOfflineEnabledString != null) {
 			mIsOfflineEnabled = Boolean.parseBoolean(isOfflineEnabledString);
 		}
 
@@ -78,19 +80,17 @@ public class ImageDetailActivity extends FragmentActivity implements
 		mPhotosProvider = (IPhotosProvider) getIntent().getExtras()
 				.getSerializable(DP_KEY);
 		mAdapter = new ImagePagerAdapter(mPhotosProvider,
-				getSupportFragmentManager(), mPhotosProvider.getCurrentSize(), mIsOfflineEnabled);
+				getSupportFragmentManager(), mPhotosProvider.getCurrentSize(),
+				mIsOfflineEnabled);
 		mPager = (ViewPager) findViewById(R.id.pager);
 		mPager.setAdapter(mAdapter);
 		mPager.setPageMargin((int) getResources().getDimension(
 				R.dimen.image_detail_pager_margin));
 		mPager.setOffscreenPageLimit(2);
-		
+
 		// Set up activity to go full screen
 		getWindow().addFlags(LayoutParams.FLAG_FULLSCREEN);
 
-		// Enable some additional newer visibility and ActionBar features to
-		// create a more
-		// immersive photo viewing experience
 		{
 			final ActionBar actionBar = getActionBar();
 
@@ -119,8 +119,12 @@ public class ImageDetailActivity extends FragmentActivity implements
 			});
 
 			// Start low profile mode and hide ActionBar
-//			mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-//			actionBar.hide();
+			boolean showActionBar = getIntent().getBooleanExtra(
+					SHOW_ACTION_BAR_KEY, true);
+			if (!showActionBar) {
+				mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+				actionBar.hide();
+			}
 		}
 
 		// Set the current item based on the extra passed in to this activity
@@ -174,7 +178,8 @@ public class ImageDetailActivity extends FragmentActivity implements
 			MediaObject obj = mProvider.getMediaObject(position);
 			ImageDetailFragment frg = ImageDetailFragment.newInstance(
 					obj.getLargeUrl() == null ? obj.getThumbUrl() : obj
-							.getLargeUrl(), mProvider, position, mIsOfflineEnabled);
+							.getLargeUrl(), mProvider, position,
+					mIsOfflineEnabled);
 			return frg;
 		}
 	}

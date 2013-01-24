@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui.command.px500;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Context;
 
@@ -79,6 +80,9 @@ public class Px500MyPhotosCommand extends AbstractPx500PhotoListCommand {
 				return new PxUserPhotosService(token, getAuthTokenSecret(),
 						a.getUserId());
 			}
+		}
+		if( adapterClass == ActionBar.class ) {
+			return Boolean.FALSE.toString();
 		}
 		return super.getAdapter(adapterClass);
 	}
