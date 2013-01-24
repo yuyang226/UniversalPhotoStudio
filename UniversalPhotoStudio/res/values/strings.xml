@@ -108,8 +108,7 @@
     <string name="msg_pls_input_photo_title">Please input photo title.</string>
     <string name="msg_photo_meta_save_done">Photo meta information updated!</string>
     <string name="msg_photo_meta_save_fail">Errors encountered when update photo information.</string>
-    <string name="msg_pls_enable_offline_first">Please enable offline view first.</string>
-    <string name="msg_enable_offline_dialog_title">Enable Offline</string>
+    <string name="msg_pls_enable_offline_first">You need to enable the offline view feature first, hit \'OK\' to go the setting page to turn it on.</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
@@ -182,31 +181,31 @@
     <string name="msg_org_my_f_photo_done">Photo organized.</string>
     <string name="msg_org_my_f_photo_fail">Failed to organize photo.</string>
     <string name="msg_org_my_f_photo_partail_success">Photo organized with errors.</string>
-    
+
     <!-- offline notification messages -->
-	<string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>
-	<string name="msg_offline_no_network">Trying to download photos, but no network right now.</string>
-	<string name="msg_offline_not_wifi">Trying to download photos, but not wifi right now.</string>
-	<string name="msg_offline_delete_photos">%d cached offline photos deleted.</string>
-	<string name="msg_offline_delete_photos_minus_one">No photos downloaded for this photo set before.</string>
+    <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>
+    <string name="msg_offline_no_network">Trying to download photos, but no network right now.</string>
+    <string name="msg_offline_not_wifi">Trying to download photos, but not wifi right now.</string>
+    <string name="msg_offline_delete_photos">%d cached offline photos deleted.</string>
+    <string name="msg_offline_delete_photos_minus_one">No photos downloaded for this photo set before.</string>
+    <string name="msg_offline_delete_photo_dialog_msg">Are you sure to delete all downloaded photos for this photo set?</string>
 
     <!-- preference setting related -->
     <string name="cmd_setting_label">Settings</string>
     <string name="pref_cat_general">General</string>
     <string name="photo_grid_cache_size">Photo cache size (MB)</string>
     <string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck space to be used as photo cache, by default, it\'s 100M.</string>
-    
     <string name="pref_cat_offline">Offline</string>
     <string name="pref.enable.offfline">Enable offline view</string>
     <string name="summary_pref.enable.offfline">Offline view is to let you viewing some of your own photos even if there is no network connection, but you need to know after you enable it, it will need disk space to store the photos.</string>
-    
     <string name="pref_only_user_wifi">WIFI only</string>
     <string name="summary_pref_only_user_wifi">Only use wifi to download photos, be careful if you want to uncheck this.</string>
-    
     <string name="pref_download_when_charging">Download when charging</string>
     <string name="summary_pref_download_when_charging">When charging, check if there are updates for your offline photo sets, if yes, start downloading.</string>
-    
     <string name="offline_download_timer">Offline Timer</string>
     <string name="summary_offline_download_timer">How often to check if there are updates for your offline photo sets.</string>
 
+    <string name="photo_grid_max_size">Photo grid size</string>
+    <string name="photo_grid_max_size">Max photo grid size</string>
+    <string name="summary_photo_grid_max_size">The maxinum photos to be shown in the photo grid, too big size here might impact the performance.</string>
 </resources>

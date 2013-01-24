@@ -267,7 +267,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				.getApplication();
 		if (!app.isOfflineEnabled()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			builder.setTitle(R.string.msg_enable_offline_dialog_title)
+			builder.setTitle(android.R.string.dialog_alert_title)
 					.setMessage(R.string.msg_pls_enable_offline_first);
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 

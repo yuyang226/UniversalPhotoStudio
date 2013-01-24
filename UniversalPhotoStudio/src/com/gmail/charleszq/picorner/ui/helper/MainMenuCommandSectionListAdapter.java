@@ -105,7 +105,7 @@ public class MainMenuCommandSectionListAdapter extends
 				.getApplication();
 		if (!app.isOfflineEnabled()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-			builder.setTitle(R.string.msg_enable_offline_dialog_title)
+			builder.setTitle(android.R.string.dialog_alert_title)
 					.setMessage(R.string.msg_pls_enable_offline_first);
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
@@ -188,15 +188,34 @@ public class MainMenuCommandSectionListAdapter extends
 					mContext.startService(download);
 					break;
 				case R.id.btn_offline_delete_photos:
-					Intent deletePhotos = new Intent(mContext,
-							OfflineHandleService.class);
-					deletePhotos.putExtra(
-							IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
-							offline);
-					deletePhotos.putExtra(
-							IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
-							OfflineHandleService.DELETE_OFFLINE_PHOTO_PARAM);
-					mContext.startService(deletePhotos);
+					AlertDialog.Builder builder = new AlertDialog.Builder(
+							mContext).setTitle(
+							android.R.string.dialog_alert_title).setMessage(
+							R.string.msg_offline_delete_photo_dialog_msg);
+					DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							if (which == DialogInterface.BUTTON_POSITIVE) {
+								Intent deletePhotos = new Intent(mContext,
+										OfflineHandleService.class);
+								deletePhotos
+										.putExtra(
+												IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
+												offline);
+								deletePhotos
+										.putExtra(
+												IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
+												OfflineHandleService.DELETE_OFFLINE_PHOTO_PARAM);
+								mContext.startService(deletePhotos);
+							} else {
+								dialog.cancel();
+							}
+						}
+					};
+					builder.setPositiveButton(android.R.string.ok, listener);
+					builder.setNegativeButton(android.R.string.cancel, listener);
+					builder.create().show();
 					break;
 				}
 			}

@@ -37,9 +37,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  */
 public class PicornerApplication extends Application {
 
-	private static final String TAG = PicornerApplication.class.getSimpleName();
-	private static final String FIRST_TIME_KEY = "first.time"; //$NON-NLS-1$
-	private static final String IS_LICENSED = "isLicensed"; //$NON-NLS-1$
+	private static final String	TAG				= PicornerApplication.class
+														.getSimpleName();
+	private static final String	FIRST_TIME_KEY	= "first.time";			//$NON-NLS-1$
+	private static final String	IS_LICENSED		= "isLicensed";			//$NON-NLS-1$
 
 	@Override
 	public void onCreate() {
@@ -69,12 +70,11 @@ public class PicornerApplication extends Application {
 		// initializes the image loader
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				this).threadPoolSize(5)
-				.memoryCache(new WeakMemoryCache())
+				this).threadPoolSize(5).memoryCache(new WeakMemoryCache())
 				.discCacheSize(Integer.parseInt(cacheSize)).build();
 		imageLoader.init(config);
-		if(BuildConfig.DEBUG)
-			Log.d(TAG, "image cache size: " + cacheSize ); //$NON-NLS-1$
+		if (BuildConfig.DEBUG)
+			Log.d(TAG, "image cache size: " + cacheSize); //$NON-NLS-1$
 	}
 
 	/**
@@ -342,9 +342,10 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.PX_USER_BUDDY_ICON_URL, url);
 		editor.commit();
 	}
-	
+
 	/**
 	 * Is offline enabled?
+	 * 
 	 * @return
 	 */
 	public boolean isOfflineEnabled() {
@@ -352,16 +353,23 @@ public class PicornerApplication extends Application {
 				Context.MODE_APPEND);
 		return sp.getBoolean(IConstants.PREF_ENABLE_OFFLINE, false);
 	}
-	
+
 	public boolean isDownloadingWhenChargingEnabled() {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_APPEND);
 		return sp.getBoolean(IConstants.PREF_DOWNLOAD_WHEN_CHARGING, true);
 	}
-	
+
 	public boolean isOfflineWifiOnly() {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_APPEND);
 		return sp.getBoolean(IConstants.PREF_OFFLINE_WIFI_ONLY, true);
+	}
+
+	public int getMaxPhotoSize() {
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_APPEND);
+		return sp.getInt(IConstants.PREF_OFFLINE_MAX_PHOTO_GRID_SIZE,
+				IConstants.DEF_MAX_TOTAL_PHOTOS);
 	}
 }

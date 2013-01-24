@@ -10,6 +10,15 @@
             android:key="pref.key.photo.grid.cache.size"
             android:summary="@string/summary_photo_grid_cache_size"
             android:title="@string/photo_grid_cache_size" />
+        
+        <ListPreference
+            android:defaultValue="300"
+            android:dialogTitle="@string/photo_grid_max_size"
+            android:entries="@array/photo_grid_max_size"
+            android:entryValues="@array/photo_grid_max_size"
+            android:key="pref.key.photo.grid.max.size"
+            android:summary="@string/summary_photo_grid_max_size"
+            android:title="@string/photo_grid_max_size" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_offline" >
         <CheckBoxPreference

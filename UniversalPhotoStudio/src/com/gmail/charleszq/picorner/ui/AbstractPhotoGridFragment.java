@@ -17,6 +17,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
@@ -242,7 +243,7 @@ public abstract class AbstractPhotoGridFragment extends
 				currentPhotoSize));
 		boolean noMoreData = mNoMoreData;
 		noMoreData = noMoreData
-				| currentPhotoSize > IConstants.DEF_MAX_TOTAL_PHOTOS;
+				| currentPhotoSize > getMaxPhotoSize();
 		if (currentPhotoSize > 0) {
 			noMoreData = noMoreData
 					| currentPhotoSize < IConstants.DEF_MIN_PAGE_SIZE;
@@ -257,6 +258,11 @@ public abstract class AbstractPhotoGridFragment extends
 		mLoadingMessageText.setVisibility(View.VISIBLE);
 		if (mCurrentCommand != null)
 			mCurrentCommand.loadNextPage();
+	}
+	
+	private int getMaxPhotoSize() {
+		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+		return app.getMaxPhotoSize();
 	}
 
 	/**
