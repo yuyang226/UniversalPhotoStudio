@@ -369,7 +369,8 @@ public class PicornerApplication extends Application {
 	public int getMaxPhotoSize() {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
 				Context.MODE_APPEND);
-		return sp.getInt(IConstants.PREF_OFFLINE_MAX_PHOTO_GRID_SIZE,
-				IConstants.DEF_MAX_TOTAL_PHOTOS);
+		String size = sp.getString(IConstants.PREF_OFFLINE_MAX_PHOTO_GRID_SIZE,
+				Integer.toString(IConstants.DEF_MAX_TOTAL_PHOTOS));
+		return Integer.parseInt(size);
 	}
 }
