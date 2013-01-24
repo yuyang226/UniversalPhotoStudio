@@ -59,6 +59,8 @@
     <string name="menu_item_refresh">Refresh</string>
     <string name="menu_item_slide_show">Slide Show</string>
     <string name="menu_item_back">Back</string>
+    <string name="menu_item_offline_download">Download</string>
+    <string name="menu_item_offline_delete_photos">Delete Offline Photos</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>

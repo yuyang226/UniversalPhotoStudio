@@ -27,9 +27,9 @@
             android:layout_height="match_parent"
             android:background="@drawable/offline_action_button_bg"
             android:gravity="left|center"
+            android:padding="5dp"
             android:text="@string/menu_item_offline_on_off"
-            android:textColor="@color/comment_bg_color"
-            android:padding="5dp"/>
+            android:textColor="@color/comment_bg_color" />
 
         <TextView
             android:id="@+id/btn_offline_refresh"
@@ -44,7 +44,6 @@
 
         <TextView
             android:id="@+id/btn_offline_slide_show"
-            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -53,6 +52,31 @@
             android:gravity="left|center"
             android:padding="5dp"
             android:text="@string/menu_item_slide_show"
+            android:textColor="@color/comment_bg_color"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/btn_offline_download"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/offline_action_button_bg"
+            android:drawableLeft="@drawable/ic_action_refresh_download"
+            android:gravity="left|center"
+            android:padding="5dp"
+            android:text="@string/menu_item_offline_download"
+            android:textColor="@color/comment_bg_color" />
+
+        <TextView
+            android:id="@+id/btn_offline_delete_photos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/offline_action_button_bg"
+            android:drawableLeft="@drawable/ic_action_remove_offline_photo"
+            android:gravity="left|center"
+            android:padding="5dp"
+            android:text="@string/menu_item_offline_delete_photos"
             android:textColor="@color/comment_bg_color" />
     </LinearLayout>
 

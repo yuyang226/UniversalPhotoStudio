@@ -208,5 +208,11 @@ public class MainMenuCommandSectionListAdapter extends
 		TextView btnSlideShow = (TextView) backView
 				.findViewById(R.id.btn_offline_slide_show);
 		btnSlideShow.setOnClickListener(listener);
+		
+		TextView btnDownload = (TextView) backView.findViewById(R.id.btn_offline_download);
+		btnDownload.setOnClickListener(listener);
+		
+		TextView btnDeletePhoto = (TextView) backView.findViewById(R.id.btn_offline_delete_photos);
+		btnDeletePhoto.setOnClickListener(listener);
 	}
 }
