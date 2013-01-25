@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -78,7 +79,11 @@ public abstract class AbstractFetchIconUrlTask extends
 	}
 
 	protected void beforeExecute(Object... params) {
+		try {
 		mImageView = (View) params[0];
+		} catch(Exception ex) {
+			Log.d(TAG,ex.getMessage());
+		}
 	}
 
 }

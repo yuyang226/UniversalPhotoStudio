@@ -112,7 +112,7 @@ public class PhotoDetailGeneralFragment extends
 					FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
 							getActivity(), mCurrentPhoto.getAuthor()
 									.getUserId());
-					task.execute(mImageFetcher, image);
+					task.execute( image);
 				}
 			}
 			if (name != null) {

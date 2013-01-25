@@ -43,12 +43,12 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 		implements OnItemClickListener {
 
-	private MediaObject mCurrentPhoto;
-	private List<Author> mAuthors = new ArrayList<Author>();
+	private MediaObject		mCurrentPhoto;
+	private List<Author>	mAuthors	= new ArrayList<Author>();
 
 	// UI controls
-	private ProgressBar mProgressBar;
-	private TextView mNoLikesText;
+	private ProgressBar		mProgressBar;
+	private TextView		mNoLikesText;
 
 	/**
 	 * 
@@ -134,10 +134,10 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 	@SuppressLint("SimpleDateFormat")
 	private static class LikesListAdapter extends BaseAdapter {
 
-		private Context mContext;
-		private ImageLoader mFetcher;
-		private List<Author> mLikeUsers;
-		private MediaObject mCurrentPhoto;
+		private Context			mContext;
+		private ImageLoader		mFetcher;
+		private List<Author>	mLikeUsers;
+		private MediaObject		mCurrentPhoto;
 
 		LikesListAdapter(Context context, MediaObject photo,
 				List<Author> mAuthors, ImageLoader fetcher) {
@@ -195,7 +195,7 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 			case FLICKR:
 				FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
 						mContext, user.getUserId());
-				task.execute(mFetcher, image);
+				task.execute(image);
 				break;
 			case PX500:
 				break;

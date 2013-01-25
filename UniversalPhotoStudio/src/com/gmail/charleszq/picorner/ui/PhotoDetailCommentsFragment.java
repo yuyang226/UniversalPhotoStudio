@@ -379,7 +379,7 @@ public class PhotoDetailCommentsFragment extends
 				} else {
 					FetchFlickrUserIconUrlTask task = new FetchFlickrUserIconUrlTask(
 							mContext, comment.getAuthor().getUserId());
-					task.execute(mFetcher, image);
+					task.execute(image);
 				}
 				break;
 			case PX500:
