@@ -6,8 +6,10 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 import java.util.Comparator;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
 import com.gmail.charleszq.picorner.service.IPhotoService;
@@ -53,9 +55,9 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
 				mCurrentPhotoService = new FlickrTagSearchService();
-				((FlickrTagSearchService) mCurrentPhotoService)
-						.setSearchParameter(mCurrentSearchParameter);
 			}
+			((FlickrTagSearchService) mCurrentPhotoService)
+					.setSearchParameter(mCurrentSearchParameter);
 			return mCurrentPhotoService;
 		}
 		if (adapterClass == Comparator.class) {
@@ -77,7 +79,8 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 	@Override
 	public boolean execute(Object... params) {
 		mCurrentSearchParameter = (FlickrTagSearchParameter) params[0];
-
+		if (BuildConfig.DEBUG)
+			Log.d(TAG, mCurrentSearchParameter.toString());
 		// parent execute method requires the first parameter is page no
 		return super.execute();
 	}

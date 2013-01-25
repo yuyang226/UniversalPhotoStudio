@@ -16,6 +16,7 @@ import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 public abstract class AbstractCommand<T> implements ICommand<T> {
 
 	protected ICommandDoneListener<T> mListener;
+	protected String TAG = getClass().getSimpleName();
 
 	/**
 	 * the command section header title, used to identify which group this

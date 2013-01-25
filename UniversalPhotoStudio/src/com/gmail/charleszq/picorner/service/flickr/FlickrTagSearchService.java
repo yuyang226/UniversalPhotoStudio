@@ -29,6 +29,8 @@ public class FlickrTagSearchService extends FlickrAbstractPhotoListService {
 		mSearchParameter.setExtras( this.mExtras );
 		mSearchParameter.setMachineTagMode("any" ); //$NON-NLS-1$
 		mSearchParameter.setSort(SearchParameters.DATE_POSTED_DESC);
+		mSearchParameter.setHasGeo(false);
+		mSearchParameter.setInCommons(false);
 	}
 	
 	public void setSearchParameter( FlickrTagSearchParameter param ) {
