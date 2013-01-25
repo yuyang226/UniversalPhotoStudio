@@ -7,7 +7,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,16 +31,16 @@ public abstract class AbstractFetchIconUrlTask extends
 	/**
 	 * The log tag.
 	 */
-	protected String TAG = getClass().getSimpleName();
+	protected String	TAG	= getClass().getSimpleName();
 
 	/**
 	 * Should be an activity, so we can get access to Application.
 	 */
-	protected Context mContext;
+	protected Context	mContext;
 	/**
 	 * Either an ImageView or a TextView.
 	 */
-	protected View mImageView;
+	protected View		mImageView;
 
 	public AbstractFetchIconUrlTask(Context ctx) {
 		this.mContext = ctx;
@@ -79,11 +78,7 @@ public abstract class AbstractFetchIconUrlTask extends
 	}
 
 	protected void beforeExecute(Object... params) {
-		try {
 		mImageView = (View) params[0];
-		} catch(Exception ex) {
-			Log.d(TAG,ex.getMessage());
-		}
 	}
 
 }
