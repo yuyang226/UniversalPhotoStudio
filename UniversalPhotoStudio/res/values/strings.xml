@@ -137,7 +137,7 @@
     <string name="cd_flickr_group_photos">flickr: photo group \'%s\'</string>
     <string name="cd_flickr_gallery_photos">flickr: photo gallery \'%s\'</string>
     <string name="cd_flickr_my_photos">flickr: my photo stream</string>
-    <string name="cd_flickr_tag_search">flickr: tag search result</string>
+    <string name="cd_flickr_tag_search">flickr: tag search result \'%s\'</string>
 
     <!-- 500px -->
     <string name="cd_500px_popular">500px: popular</string>
