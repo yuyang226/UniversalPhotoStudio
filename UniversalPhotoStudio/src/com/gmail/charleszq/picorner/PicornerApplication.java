@@ -99,12 +99,9 @@ public class PicornerApplication extends Application {
 				IConstants.PREF_OFFLINE_TIMER_IN_HOURS, "24"); //$NON-NLS-1$
 
 		// start 5 min from now, and repeat every 24 hours
-		// am.setRepeating(AlarmManager.RTC_WAKEUP,
-		// System.currentTimeMillis() + 5 * 60 * 1000L,
-		// Integer.valueOf(span) * 60 * 60 * 1000L, pendingIntent);
 		am.setRepeating(AlarmManager.RTC_WAKEUP,
-				System.currentTimeMillis() + 30 * 1000L, 60 * 1000L,
-				pendingIntent);
+				System.currentTimeMillis() + 5 * 60 * 1000L,
+				Integer.valueOf(span) * 60 * 60 * 1000L, pendingIntent);
 		//save the marker
 		Editor editor = sp.edit();
 		editor.putBoolean(OFFLINE_SCHEDULED, true);
