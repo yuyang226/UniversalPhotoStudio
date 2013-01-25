@@ -438,7 +438,7 @@ public class ImageDetailFragment extends Fragment implements
 			File f = getActivity().getFileStreamPath(filename);
 			Uri uri = Uri.fromFile(f);
 			mImageFetcher.displayImage(uri.toString(), mImageView,
-					mImageDisplayOptions);
+					mImageDisplayOptions, mImageLoaderListener);
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Load thumb image from offline cache."); //$NON-NLS-1$
 		} else if (ImageDetailActivity.class.isInstance(getActivity())) {
