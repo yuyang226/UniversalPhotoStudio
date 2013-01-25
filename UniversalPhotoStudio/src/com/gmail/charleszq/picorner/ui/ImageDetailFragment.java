@@ -80,84 +80,94 @@ import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
 public class ImageDetailFragment extends Fragment implements
 		OnShareTargetSelectedListener {
 
-	private static final String IMAGE_DATA_EXTRA = "extra_image_data"; //$NON-NLS-1$
-	private static final String MEDIA_OBJ_POS = "media_object"; //$NON-NLS-1$
-	private static final String TAG = ImageDetailFragment.class.getSimpleName();
+	private static final String		IMAGE_DATA_EXTRA			= "extra_image_data";		//$NON-NLS-1$
+	private static final String		MEDIA_OBJ_POS				= "media_object";			//$NON-NLS-1$
+	private static final String		TAG							= ImageDetailFragment.class
+																		.getSimpleName();
 
 	// ui controls.
-	private String mImageUrl;
-	private MediaObject mPhoto;
-	private ImageView mImageView;
-	private ImageLoader mImageFetcher;
-	private View mUserInfoContainer;
-	private TextView mPhotoTitle;
-	private TextView mUserName;
+	private String					mImageUrl;
+	private MediaObject				mPhoto;
+	private ImageView				mImageView;
+	private ImageLoader				mImageFetcher;
+	private View					mUserInfoContainer;
+	private TextView				mPhotoTitle;
+	private TextView				mUserName;
 
 	/**
 	 * The current pos of the image in the photo list.
 	 */
-	private int mCurrentPos;
+	private int						mCurrentPos;
 
 	/**
 	 * The image display options
 	 */
-	private DisplayImageOptions mImageDisplayOptions;
+	private DisplayImageOptions		mImageDisplayOptions;
 
 	/**
 	 * The loaded bitmap
 	 */
-	private Bitmap mLoadedBitmap = null;
+	private Bitmap					mLoadedBitmap				= null;
 
 	/**
 	 * The current file name to store image so the share action can get the
 	 * image from it.
 	 */
-	private String mCurrentShareIntentFileName = null;
+	private String					mCurrentShareIntentFileName	= null;
 
 	/**
 	 * The image laoder listener.
 	 */
-	private ImageLoadingListener mImageLoaderListener = new ImageLoadingListener() {
+	private ImageLoadingListener	mImageLoaderListener		= new ImageLoadingListener() {
 
-		@Override
-		public void onLoadingStarted() {
-			mLoadedBitmap = null;
-		}
+																	@Override
+																	public void onLoadingStarted() {
+																		mLoadedBitmap = null;
+																	}
 
-		@Override
-		public void onLoadingFailed(FailReason failReason) {
-			mLoadedBitmap = null;
-		}
+																	@Override
+																	public void onLoadingFailed(
+																			FailReason failReason) {
+																		mLoadedBitmap = null;
+																	}
 
-		@Override
-		public void onLoadingComplete(Bitmap loadedImage) {
-			mLoadedBitmap = loadedImage;
-			if (mIsOfflineEnabled) {
-				if (BuildConfig.DEBUG) {
-					Log.d(TAG, "offline enabled, saving photo..."); //$NON-NLS-1$
-				}
-				OfflineViewSavePhotoTask task = new OfflineViewSavePhotoTask(getActivity(), loadedImage, mPhoto);
-				task.execute();
-			} else {
-				if (BuildConfig.DEBUG) {
-					Log.d(TAG, "This command is not offline enabled."); //$NON-NLS-1$
-				}
-			}
-		}
+																	@Override
+																	public void onLoadingComplete(
+																			Bitmap loadedImage) {
+																		mLoadedBitmap = loadedImage;
+																		if (mIsOfflineEnabled) {
+																			if (BuildConfig.DEBUG) {
+																				Log.d(TAG,
+																						"offline enabled, saving photo..."); //$NON-NLS-1$
+																			}
+																			OfflineViewSavePhotoTask task = new OfflineViewSavePhotoTask(
+																					getActivity(),
+																					loadedImage,
+																					mPhoto);
+																			task.execute();
+																		} else {
+																			if (BuildConfig.DEBUG) {
+																				Log.d(TAG,
+																						"This command is not offline enabled."); //$NON-NLS-1$
+																			}
+																		}
+																	}
 
-		@Override
-		public void onLoadingCancelled() {
-			mLoadedBitmap = null;
-		}
-	};
-	
-	private static class OfflineViewSavePhotoTask extends AsyncTask<Void,Integer,Void> {
-		
-		private Context mContext;
-		private Bitmap mBitmap;
-		private MediaObject mPhoto;
-		
-		OfflineViewSavePhotoTask(Context context, Bitmap bitmap, MediaObject photo) {
+																	@Override
+																	public void onLoadingCancelled() {
+																		mLoadedBitmap = null;
+																	}
+																};
+
+	private static class OfflineViewSavePhotoTask extends
+			AsyncTask<Void, Integer, Void> {
+
+		private Context		mContext;
+		private Bitmap		mBitmap;
+		private MediaObject	mPhoto;
+
+		OfflineViewSavePhotoTask(Context context, Bitmap bitmap,
+				MediaObject photo) {
 			this.mContext = context;
 			this.mBitmap = bitmap;
 			this.mPhoto = photo;
@@ -165,36 +175,39 @@ public class ImageDetailFragment extends Fragment implements
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			if( mContext != null ) {
+			if (mContext != null) {
 				OfflineControlFileUtil.saveBitmapForOfflineView(mContext,
 						mBitmap, mPhoto);
-				if( BuildConfig.DEBUG ) {
-					Log.d(ImageDetailFragment.class.getSimpleName(), "Photo saved for offline view."); //$NON-NLS-1$
+				if (BuildConfig.DEBUG) {
+					Log.d(ImageDetailFragment.class.getSimpleName(),
+							"Photo saved for offline view."); //$NON-NLS-1$
 				}
 			}
 			return null;
 		}
-		
+
 	}
 
-	private IActionBarVisibleListener mActionBarListener = new IActionBarVisibleListener() {
+	private IActionBarVisibleListener	mActionBarListener	= new IActionBarVisibleListener() {
 
-		@Override
-		public void onActionBarShown(boolean show) {
-			ImageDetailFragment.this.onActionBarShown(show);
+																@Override
+																public void onActionBarShown(
+																		boolean show) {
+																	ImageDetailFragment.this
+																			.onActionBarShown(show);
 
-		}
-	};
+																}
+															};
 
 	/**
 	 * If user likes this photo or not.
 	 */
-	private boolean mUserLikeThePhoto = false;
+	private boolean						mUserLikeThePhoto	= false;
 
 	/**
 	 * offline enable?
 	 */
-	private boolean mIsOfflineEnabled = false;
+	private boolean						mIsOfflineEnabled	= false;
 
 	/**
 	 * Factory method to generate a new instance of the fragment given an image
@@ -416,16 +429,19 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-
-		// Use the parent activity to load the image asynchronously into the
-		// ImageView (so a single
-		// cache can be used over all pages in the ViewPager
-		mLoadedBitmap = OfflineControlFileUtil.loadImageFromCache(getActivity(),mPhoto);
-		if (mLoadedBitmap != null) {
-			mImageView.setImageBitmap(mLoadedBitmap);
+		mImageFetcher = ((ImageDetailActivity) getActivity())
+				.getImageFetcher();
+		// show the image either from offline cache or from network.
+		String filename = OfflineControlFileUtil
+				.getOfflinePhotoFileName(mPhoto);
+		if (OfflineControlFileUtil.isFileExist(getActivity(), filename)) {
+			File f = getActivity().getFileStreamPath(filename);
+			Uri uri = Uri.fromFile(f);
+			mImageFetcher.displayImage(uri.toString(), mImageView,
+					mImageDisplayOptions);
+			if (BuildConfig.DEBUG)
+				Log.d(TAG, "Load thumb image from offline cache."); //$NON-NLS-1$
 		} else if (ImageDetailActivity.class.isInstance(getActivity())) {
-			mImageFetcher = ((ImageDetailActivity) getActivity())
-					.getImageFetcher();
 			mImageFetcher.displayImage(mImageUrl, mImageView,
 					mImageDisplayOptions, mImageLoaderListener);
 		}
