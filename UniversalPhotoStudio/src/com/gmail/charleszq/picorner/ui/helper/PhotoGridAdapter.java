@@ -3,8 +3,12 @@
  */
 package com.gmail.charleszq.picorner.ui.helper;
 
+import java.io.File;
+
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -12,9 +16,11 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
+import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -25,15 +31,15 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
  */
 public class PhotoGridAdapter extends BaseAdapter {
 
-	private Context mContext;
-	private IPhotosProvider mPhotos;
-	private ImageLoader mImageFetcher;
+	private Context									mContext;
+	private IPhotosProvider							mPhotos;
+	private ImageLoader								mImageFetcher;
 
-	private int mNumColumns = 0;
-	private int mItemHeight;
-	private android.widget.AbsListView.LayoutParams mImageViewLayoutParams;
+	private int										mNumColumns	= 0;
+	private int										mItemHeight;
+	private android.widget.AbsListView.LayoutParams	mImageViewLayoutParams;
 
-	private DisplayImageOptions mImageDisplayOptions;
+	private DisplayImageOptions						mImageDisplayOptions;
 
 	/**
 	 * 
@@ -44,11 +50,6 @@ public class PhotoGridAdapter extends BaseAdapter {
 		this.mPhotos = provider;
 		this.mImageFetcher = fetcher;
 
-//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//				mContext.getApplicationContext())
-//				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
-//				.memoryCache(new WeakMemoryCache()).build();
-//		mImageFetcher.init(config);
 		mImageViewLayoutParams = new GridView.LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 
@@ -113,10 +114,22 @@ public class PhotoGridAdapter extends BaseAdapter {
 		}
 
 		MediaObject photo = mPhotos.getMediaObject(position);
-		if (photo != null)
-			// mImageFetcher.loadImage(photo.getThumbUrl(), imageView);
-			mImageFetcher.displayImage(photo.getThumbUrl(), imageView,
-					mImageDisplayOptions);
+		if (photo != null) {
+			String filename = OfflineControlFileUtil
+					.getOfflinePhotoFileName(photo);
+			if (OfflineControlFileUtil.isFileExist(mContext, filename)) {
+				File f = mContext.getFileStreamPath(filename);
+				Uri uri = Uri.fromFile(f);
+				mImageFetcher.displayImage(uri.toString(), imageView,
+						mImageDisplayOptions);
+				if (BuildConfig.DEBUG)
+					Log.d(PhotoGridAdapter.class.getSimpleName(),
+							"Load thumb image from offline cache."); //$NON-NLS-1$
+			} else {
+				mImageFetcher.displayImage(photo.getThumbUrl(), imageView,
+						mImageDisplayOptions);
+			}
+		}
 		return imageView;
 	}
 

@@ -5,7 +5,6 @@ package com.gmail.charleszq.picorner.offline;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -14,7 +13,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
@@ -29,30 +27,6 @@ public final class OfflineControlFileUtil {
 
 	private static final String TAG = OfflineControlFileUtil.class
 			.getSimpleName();
-
-	/**
-	 * Tries to load the image from cache.
-	 * 
-	 * @param photo
-	 * @param imageView
-	 * @return
-	 */
-	public static Bitmap loadImageFromCache(Context ctx, MediaObject photo) {
-		Bitmap result = null;
-		String photoFileName = OfflineControlFileUtil
-				.getOfflinePhotoFileName(photo);
-		if (ctx != null && isFileExist(ctx, photoFileName)) {
-			try {
-				result = BitmapFactory.decodeStream(ctx
-						.openFileInput(photoFileName));
-			} catch (FileNotFoundException e) {
-				if (BuildConfig.DEBUG)
-					Log.w(TAG,
-							String.format("file %s not found.", photoFileName)); //$NON-NLS-1$
-			}
-		}
-		return result;
-	}
 
 	public static void saveBitmapForOfflineView(Context context, Bitmap bmp,
 			MediaObject photo) {
