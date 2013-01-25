@@ -57,11 +57,8 @@ public class FriendListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = convertView;
-		if (v == null) {
-			v = LayoutInflater.from(mContext).inflate(
-					R.layout.friend_list_item, null);
-		}
+		View v = LayoutInflater.from(mContext).inflate(
+				R.layout.friend_list_item, null);
 
 		ImageView avatar = (ImageView) v.findViewById(R.id.img_friend_avatar);
 		TextView text = (TextView) v.findViewById(R.id.txt_friend_name);
@@ -69,8 +66,8 @@ public class FriendListAdapter extends BaseAdapter {
 		text.setText(a.getUserName());
 		AbstractFetchIconUrlTask task = (AbstractFetchIconUrlTask) mCommand
 				.getAdapter(AbstractFetchIconUrlTask.class);
-		//this task is special
-		task.execute(a,avatar);
+		// this task is special
+		task.execute(a, avatar);
 		return v;
 	}
 
