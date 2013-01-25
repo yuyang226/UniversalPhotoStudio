@@ -37,10 +37,11 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  */
 public class PicornerApplication extends Application {
 
-	private static final String	TAG				= PicornerApplication.class
-														.getSimpleName();
-	private static final String	FIRST_TIME_KEY	= "first.time";			//$NON-NLS-1$
-	private static final String	IS_LICENSED		= "isLicensed";			//$NON-NLS-1$
+	private static final String	TAG					= PicornerApplication.class
+															.getSimpleName();
+	private static final String	FIRST_TIME_KEY		= "first.time";				//$NON-NLS-1$
+	private static final String	IS_LICENSED			= "isLicensed";				//$NON-NLS-1$
+	private static final String	OFFLINE_SCHEDULED	= "offline.download.scheduled"; //$NON-NLS-1$
 
 	@Override
 	public void onCreate() {
@@ -48,7 +49,7 @@ public class PicornerApplication extends Application {
 
 		initializesImageLoader();
 		enableHttpResponseCache();
-		scheduleOfflineDownload();
+		scheduleOfflineDownload(false);
 
 	}
 
@@ -80,18 +81,35 @@ public class PicornerApplication extends Application {
 	/**
 	 * Schedules the offline download time span.
 	 */
-	public void scheduleOfflineDownload() {
+	public void scheduleOfflineDownload(boolean cancel) {
+
+		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
+				Context.MODE_APPEND);
+		boolean scheduledBefore = sp.getBoolean(OFFLINE_SCHEDULED, false);
+		if (scheduledBefore && !cancel) {
+			return;
+		}
+
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 		PendingIntent pendingIntent = getOfflineServicePendingIntent();
-		am.cancel(pendingIntent);
+		if (cancel)
+			am.cancel(pendingIntent);
 
 		String span = getSharedPreferenceValue(
 				IConstants.PREF_OFFLINE_TIMER_IN_HOURS, "24"); //$NON-NLS-1$
 
 		// start 5 min from now, and repeat every 24 hours
+		// am.setRepeating(AlarmManager.RTC_WAKEUP,
+		// System.currentTimeMillis() + 5 * 60 * 1000L,
+		// Integer.valueOf(span) * 60 * 60 * 1000L, pendingIntent);
 		am.setRepeating(AlarmManager.RTC_WAKEUP,
-				System.currentTimeMillis() + 5 * 60 * 1000L,
-				Integer.valueOf(span) * 60 * 60 * 1000L, pendingIntent);
+				System.currentTimeMillis() + 30 * 1000L, 60 * 1000L,
+				pendingIntent);
+		//save the marker
+		Editor editor = sp.edit();
+		editor.putBoolean(OFFLINE_SCHEDULED, true);
+		editor.commit();
+		
 		if (BuildConfig.DEBUG)
 			Log.d(getClass().getSimpleName(), String.format(
 					"offline download scheduled, once every %s hours.", span)); //$NON-NLS-1$

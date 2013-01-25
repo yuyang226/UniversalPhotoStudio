@@ -50,7 +50,7 @@ public class SettingFragment extends PreferenceFragment implements
 			String key) {
 		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
 		if( IConstants.PREF_OFFLINE_TIMER_IN_HOURS.equals(key)) {
-			app.scheduleOfflineDownload();
+			app.scheduleOfflineDownload(true);
 			return;
 		}
 		
