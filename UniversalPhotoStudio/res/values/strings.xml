@@ -29,6 +29,7 @@
     <string name="ig_popular">Popular Photos</string>
     <string name="menu_header_ig">Instagram</string>
     <string name="menu_header_px500">500px</string>
+    <string name="menu_header_friends">Friends</string>
     <string name="cmd_name_about">About</string>
 
     <!-- search menu items -->

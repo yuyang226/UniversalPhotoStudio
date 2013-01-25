@@ -16,7 +16,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
@@ -26,19 +25,17 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter.FlickrTagSearchMode;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
-import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
+import com.gmail.charleszq.picorner.ui.helper.AbstractLinearLayoutHiddenView;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
+public class FlickrTagSearchView extends AbstractLinearLayoutHiddenView {
 
 	private Button						mCancelButton;
 	private Button						mSearchButton;
 	private EditText					mTagText;
-	private ICommand<?>					mCommand;
-	private IHiddenViewActionListener	mHideViewCancelListener;
 	private RadioButton					mRadioAnd, mRadioOr;
 	private CheckBox					mCheckInCommon, mCheckHasGeo;
 
@@ -106,8 +103,7 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 
 	@Override
 	public void init(ICommand<?> command, IHiddenViewActionListener listener) {
-		this.mCommand = command;
-		this.mHideViewCancelListener = listener;
+		super.init(command, listener);
 		mSearchParameter = new FlickrTagSearchParameter();
 
 		mTagText = (EditText) findViewById(R.id.txt_flickr_tag_search);
@@ -172,9 +168,7 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 		InputMethodManager imm = (InputMethodManager) getContext()
 				.getSystemService(Service.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(mTagText.getWindowToken(), 0);
-
-		// notify the listener.
-		mHideViewCancelListener.onAction(action, mCommand, this, data);
+		super.onAction(action, data);
 	}
 
 }

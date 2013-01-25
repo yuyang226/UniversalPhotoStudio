@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.gmail.charleszq.picorner.ui.flickr.FlickrContactsView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/list_f_friends"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" >
+    </ListView>
+    <Button
+            android:id="@+id/btn_cancel_friends"
+            style="@style/PicornerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+            android:text="@android:string/cancel" />
+
+</com.gmail.charleszq.picorner.ui.flickr.FlickrContactsView>
