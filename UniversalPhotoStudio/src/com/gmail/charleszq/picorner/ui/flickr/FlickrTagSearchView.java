@@ -5,12 +5,16 @@ package com.gmail.charleszq.picorner.ui.flickr;
 
 import android.app.Service;
 import android.content.Context;
+import android.text.Editable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -30,30 +34,51 @@ import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
  */
 public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 
-	private Button mCancelButton;
-	private Button mSearchButton;
-	private EditText mTagText;
-	private ICommand<?> mCommand;
-	private IHiddenViewActionListener mHideViewCancelListener;
-	private RadioButton mRadioAnd, mRadioOr;
+	private Button						mCancelButton;
+	private Button						mSearchButton;
+	private EditText					mTagText;
+	private ICommand<?>					mCommand;
+	private IHiddenViewActionListener	mHideViewCancelListener;
+	private RadioButton					mRadioAnd, mRadioOr;
+	private CheckBox					mCheckInCommon, mCheckHasGeo;
 
-	private FlickrTagSearchParameter mSearchParameter;
+	private FlickrTagSearchParameter	mSearchParameter;
 
-	private OnClickListener mOnClickListener = new OnClickListener() {
+	private OnClickListener				mOnClickListener			= new OnClickListener() {
 
-		@Override
-		public void onClick(View v) {
-			if (v == mCancelButton) {
-				onAction(ACTION_CANCEL);
-			} else if (v == mSearchButton) {
-				doSearch();
-			} else if (v == mRadioAnd) {
-				mSearchParameter.setSearchMode(FlickrTagSearchMode.ALL);
-			} else if (v == mRadioOr) {
-				mSearchParameter.setSearchMode(FlickrTagSearchMode.ANY);
-			}
-		}
-	};
+																		@Override
+																		public void onClick(
+																				View v) {
+																			if (v == mCancelButton) {
+																				onAction(ACTION_CANCEL);
+																			} else if (v == mSearchButton) {
+																				doSearch();
+																			} else if (v == mRadioAnd) {
+																				mSearchParameter
+																						.setSearchMode(FlickrTagSearchMode.ALL);
+																			} else if (v == mRadioOr) {
+																				mSearchParameter
+																						.setSearchMode(FlickrTagSearchMode.ANY);
+																			}
+																		}
+																	};
+
+	private OnCheckedChangeListener		mOnCheckedChangeListener	= new OnCheckedChangeListener() {
+
+																		@Override
+																		public void onCheckedChanged(
+																				CompoundButton buttonView,
+																				boolean isChecked) {
+																			if (buttonView == mCheckInCommon) {
+																				mSearchParameter
+																						.setSearchInCommon(isChecked);
+																			} else if (buttonView == mCheckHasGeo) {
+																				mSearchParameter
+																						.setHasGeoInformation(isChecked);
+																			}
+																		}
+
+																	};
 
 	/**
 	 * @param context
@@ -98,6 +123,9 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 				return false;
 			}
 		});
+		Editable tag = mTagText.getText();
+		if (tag != null)
+			mSearchParameter.setTags(tag.toString().trim());
 
 		mCancelButton = (Button) findViewById(R.id.btn_cancel_search);
 		mCancelButton.setOnClickListener(mOnClickListener);
@@ -109,6 +137,18 @@ public class FlickrTagSearchView extends LinearLayout implements IHiddenView {
 		mRadioAnd.setOnClickListener(mOnClickListener);
 		mRadioOr = (RadioButton) findViewById(R.id.radio_or);
 		mRadioOr.setOnClickListener(mOnClickListener);
+
+		mCheckInCommon = (CheckBox) findViewById(R.id.cb_f_search_in_common);
+		mCheckHasGeo = (CheckBox) findViewById(R.id.cb_f_search_has_geo);
+		mCheckInCommon.setOnCheckedChangeListener(mOnCheckedChangeListener);
+		mCheckHasGeo.setOnCheckedChangeListener(mOnCheckedChangeListener);
+
+		//initialize the values for the search parameter
+		mSearchParameter
+				.setSearchMode(mRadioAnd.isChecked() ? FlickrTagSearchMode.ALL
+						: FlickrTagSearchMode.ANY);
+		mSearchParameter.setHasGeoInformation(mCheckHasGeo.isChecked());
+		mSearchParameter.setSearchInCommon(mCheckInCommon.isChecked());
 	}
 
 	private void doSearch() {

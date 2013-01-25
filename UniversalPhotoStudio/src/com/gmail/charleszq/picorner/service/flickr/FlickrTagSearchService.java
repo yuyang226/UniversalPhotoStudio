@@ -31,10 +31,12 @@ public class FlickrTagSearchService extends FlickrAbstractPhotoListService {
 		mSearchParameter.setSort(SearchParameters.DATE_POSTED_DESC);
 	}
 	
-	public void setTags( FlickrTagSearchParameter param ) {
+	public void setSearchParameter( FlickrTagSearchParameter param ) {
 		String[] ts = param.getTags().split(" "); //$NON-NLS-1$
 		mSearchParameter.setTags(ts);
 		mSearchParameter.setTagMode(param.getSearchMode().toString());
+		mSearchParameter.setHasGeo(param.isHasGeoInformation());
+		mSearchParameter.setInCommons(param.isSearchInCommon());
 	}
 
 	/* (non-Javadoc)

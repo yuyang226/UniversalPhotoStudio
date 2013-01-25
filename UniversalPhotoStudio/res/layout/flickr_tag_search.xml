@@ -17,9 +17,9 @@
         android:textColor="@color/search_panel_bg" />
 
     <TextView
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="@string/msg_flickr_tag_search_tags" />
 
     <EditText
@@ -34,35 +34,46 @@
 
         <requestFocus />
     </EditText>
-    
+
     <TextView
-        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="@string/msg_flickr_tag_search_mode" />
 
     <RadioGroup
         android:id="@+id/radioGroup1"
-        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/radio_and"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:checked="true"
             android:text="@string/msg_flickr_tag_search_mode_and" />
 
         <RadioButton
             android:id="@+id/radio_or"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/msg_flickr_tag_search_mode_or" />
-
     </RadioGroup>
+
+    <CheckBox
+        android:id="@+id/cb_f_search_in_common"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/msg_flickr_tag_search_in_common" />
+
+    <CheckBox
+        android:id="@+id/cb_f_search_has_geo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/msg_flickr_tag_search_has_geo" />
 
     <Space
         android:layout_width="match_parent"
@@ -70,9 +81,9 @@
         android:layout_weight="1" />
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal" >
 
         <Button
@@ -92,7 +103,6 @@
             android:layout_weight="1"
             android:drawableLeft="@android:drawable/ic_menu_search"
             android:text="@android:string/search_go" />
-
     </LinearLayout>
 
 </com.gmail.charleszq.picorner.ui.flickr.FlickrTagSearchView>

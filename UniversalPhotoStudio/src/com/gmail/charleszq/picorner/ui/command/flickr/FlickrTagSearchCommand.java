@@ -21,8 +21,8 @@ import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
  */
 public class FlickrTagSearchCommand extends PhotoListCommand {
 
-	private IHiddenView mHiddenView;
-	private FlickrTagSearchParameter mCurrentSearchParameter;
+	private IHiddenView					mHiddenView;
+	private FlickrTagSearchParameter	mCurrentSearchParameter;
 
 	/**
 	 * @param context
@@ -54,7 +54,7 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 			if (mCurrentPhotoService == null) {
 				mCurrentPhotoService = new FlickrTagSearchService();
 				((FlickrTagSearchService) mCurrentPhotoService)
-						.setTags(mCurrentSearchParameter);
+						.setSearchParameter(mCurrentSearchParameter);
 			}
 			return mCurrentPhotoService;
 		}
@@ -85,8 +85,7 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 	@Override
 	public String getDescription() {
 		String s = mContext.getString(R.string.cd_flickr_tag_search);
-		return String.format(s,
-				mCurrentSearchParameter == null ? "" : mCurrentSearchParameter); //$NON-NLS-1$
+		return s;
 	}
 
 }
