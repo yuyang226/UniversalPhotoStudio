@@ -3,6 +3,8 @@ An Android photo viewer program for Flickr, Instagram and 500PX.
 
 ![High Res image](http://farm9.staticflickr.com/8360/8403039441_c16ed6a34c_m.jpg)
 
+![Featured image](http://farm9.staticflickr.com/8098/8413565682_f361c09d1f_z.jpg)
+
 # Download
 
 You can either build it by yourself or purchase/donate via the Google Play Store.
