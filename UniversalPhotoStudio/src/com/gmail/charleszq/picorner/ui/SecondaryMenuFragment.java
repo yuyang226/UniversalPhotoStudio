@@ -30,7 +30,7 @@ import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
-import com.gmail.charleszq.picorner.ui.command.flickr.FlickrFriendListCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.FlickrFriendPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrTagSearchCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
@@ -73,6 +73,9 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 				doCommand((ICommand<Object>) command, data);
 				mListView.animate().setDuration(500).rotationY(-270f)
 						.rotationY(0f);
+				break;
+			case IHiddenView.ACTION_JUST_CMD:
+				doCommand((ICommand<Object>) command, data);
 				break;
 			}
 		}
@@ -162,7 +165,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		command = new MenuSectionHeaderCommand(getActivity(), getString(R.string.menu_header_friends));
 		commands.add(command);
 		
-		command = new FlickrFriendListCommand(getActivity());
+		command = new FlickrFriendPhotosCommand(getActivity());
 		commands.add(command);
 		
 		// help & about

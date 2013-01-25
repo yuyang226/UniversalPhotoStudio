@@ -329,7 +329,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 				AbstractFetchIconUrlTask task = (AbstractFetchIconUrlTask) command
 						.getAdapter(AbstractFetchIconUrlTask.class);
 				if (task != null) {
-					task.execute(mImageFetcher, imageView);
+					task.execute(imageView);
 				} else {
 				}
 			}

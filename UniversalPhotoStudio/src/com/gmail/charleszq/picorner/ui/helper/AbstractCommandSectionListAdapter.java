@@ -54,11 +54,12 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 	public AbstractCommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
 		mContext = ctx;
 		mImageFetcher = fetcher;
-//		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-//				mContext.getApplicationContext())
-//				.discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
-//				.memoryCache(new WeakMemoryCache()).build();
-//		mImageFetcher.init(config);
+		// ImageLoaderConfiguration config = new
+		// ImageLoaderConfiguration.Builder(
+		// mContext.getApplicationContext())
+		// .discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
+		// .memoryCache(new WeakMemoryCache()).build();
+		// mImageFetcher.init(config);
 		mCommands = new ArrayList<ICommand<?>>();
 		mAllCommands = new ArrayList<ICommand<?>>();
 	}
@@ -147,7 +148,7 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 		mCommands.clear();
 		mAllCommands.clear();
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -192,7 +193,7 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 			AbstractFetchIconUrlTask task = (AbstractFetchIconUrlTask) command
 					.getAdapter(AbstractFetchIconUrlTask.class);
 			if (task != null) {
-				task.execute(mImageFetcher, image);
+				task.execute(image);
 			} else {
 			}
 		}

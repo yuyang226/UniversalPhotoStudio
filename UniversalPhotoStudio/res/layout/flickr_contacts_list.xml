@@ -6,17 +6,39 @@
 
     <ListView
         android:id="@+id/list_f_friends"
-        android:layout_weight="1"
         android:layout_width="match_parent"
-        android:layout_height="0dp" >
+        android:layout_height="0dp"
+        android:layout_weight="1" >
     </ListView>
-    <Button
-            android:id="@+id/btn_cancel_friends"
-            style="@style/PicornerButton"
+
+    <LinearLayout
+        android:id="@+id/empty_friend_view"
+        android:layout_width="match_parent"
+        android:padding="10dp"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:orientation="horizontal" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
-            android:text="@android:string/cancel" />
+            android:layout_height="match_parent"
+            android:paddingLeft="5dp"
+            android:gravity="left|center"
+            android:text="@string/msg_loading_my_friends" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_cancel_friends"
+        style="@style/PicornerButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_action_back"
+        android:gravity="center"
+        android:text="@string/menu_item_back"
+        android:visibility="invisible" />
 
 </com.gmail.charleszq.picorner.ui.flickr.FlickrContactsView>

@@ -31,17 +31,16 @@ public abstract class AbstractFetchIconUrlTask extends
 	/**
 	 * The log tag.
 	 */
-	protected String		TAG	= getClass().getSimpleName();
+	protected String TAG = getClass().getSimpleName();
 
 	/**
 	 * Should be an activity, so we can get access to Application.
 	 */
-	protected Context		mContext;
-	protected ImageLoader	mImageFetcher;
+	protected Context mContext;
 	/**
 	 * Either an ImageView or a TextView.
 	 */
-	protected View			mImageView;
+	protected View mImageView;
 
 	public AbstractFetchIconUrlTask(Context ctx) {
 		this.mContext = ctx;
@@ -54,19 +53,21 @@ public abstract class AbstractFetchIconUrlTask extends
 					.showStubImage(R.drawable.empty_photo).cacheInMemory()
 					.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
 					.imageScaleType(ImageScaleType.EXACTLY).build();
-			if (mImageFetcher != null && mImageView != null) {
+			if (mImageView != null) {
+				ImageLoader imageLoader = ImageLoader.getInstance();
 				if (ImageView.class.isInstance(mImageView)) {
-					mImageFetcher.displayImage(result, (ImageView) mImageView,
+					imageLoader.displayImage(result, (ImageView) mImageView,
 							options);
 				} else {
 					final TextView text = (TextView) mImageView;
-					mImageFetcher.loadImage(mContext, result,
+					imageLoader.loadImage(mContext, result,
 							new SimpleImageLoadingListener() {
 
 								@Override
 								public void onLoadingComplete(Bitmap loadedImage) {
 									BitmapDrawable drawable = new BitmapDrawable(
-											mContext.getResources(), loadedImage);
+											mContext.getResources(),
+											loadedImage);
 									text.setCompoundDrawables(drawable, null,
 											null, null);
 								}
@@ -77,10 +78,7 @@ public abstract class AbstractFetchIconUrlTask extends
 	}
 
 	protected void beforeExecute(Object... params) {
-		if (params.length == 2) {
-			mImageFetcher = (ImageLoader) params[0];
-			mImageView = (View) params[1];
-		}
+		mImageView = (View) params[0];
 	}
 
 }

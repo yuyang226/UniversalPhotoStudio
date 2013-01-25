@@ -11,9 +11,26 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
  */
 public interface IHiddenView {
 
+	/**
+	 * Cancel the hidden view.
+	 */
 	static final int	ACTION_CANCEL	= 0;
+	
+	/**
+	 * do the command and hide the UI
+	 */
 	static final int	ACTION_DO		= 1;
+	
+	/**
+	 * The variable to say just do the command, but don't hide the UI.
+	 */
+	static final int 	ACTION_JUST_CMD = 2;
 
+	/**
+	 * Initializes the hidden view.
+	 * @param command
+	 * @param listener
+	 */
 	void init(ICommand<?> command, IHiddenViewActionListener listener);
 
 	/**
