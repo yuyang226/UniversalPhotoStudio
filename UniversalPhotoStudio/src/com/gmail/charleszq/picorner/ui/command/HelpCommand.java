@@ -37,7 +37,7 @@ public class HelpCommand extends AbstractCommand<Void> {
 
 	@Override
 	public String getLabel() {
-		return mContext.getString(R.string.btn_help);
+		return mContext.getString(R.string.cmd_help_label);
 	}
 
 }

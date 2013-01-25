@@ -124,6 +124,7 @@
     <!-- help -->
     <string name="try_swipe_left">Try swipe left</string>
     <string name="try_swipe_right">Try swipe right</string>
+    <string name="cmd_help_label">Help</string>
 
     <!-- Command descritions -->
     <!-- flickr -->
@@ -155,11 +156,6 @@
     <string name="cd_ig_my_photos">instagram: my photos</string>
     <string name="cd_ig_user_photos">instagram: photos of \'%s\'</string>
     <string name="cd_ig_photos_nearby">instagram: nearby photos</string>
-
-    <!-- use my own ig client -->
-    <string name="ig_client_id">Client ID</string>
-    <string name="ig_client_secret">Client Secret</string>
-    <string name="btn_help">Help</string>
 
     <!-- Licensing Check -->
     <string name="application_error">Application error: %1$s</string>

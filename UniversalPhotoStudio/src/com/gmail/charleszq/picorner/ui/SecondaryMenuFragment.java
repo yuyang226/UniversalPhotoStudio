@@ -144,12 +144,6 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 				getString(R.string.secondary_menus_general));
 		commands.add(command);
 
-		command = new AboutCommand(getActivity());
-		commands.add(command);
-
-		command = new HelpCommand(getActivity());
-		commands.add(command);
-		
 		command = new SettingsCommand(getActivity());
 		commands.add(command);
 
@@ -161,6 +155,17 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		command = new InstagramSearchNearPhotosCommand(getActivity());
 		commands.add(command);
 		command = new FlickrTagSearchCommand(getActivity());
+		commands.add(command);
+		
+		// help & about
+		command = new MenuSectionHeaderCommand(getActivity(),
+				getString(R.string.cmd_help_label));
+		commands.add(command);
+		
+		command = new AboutCommand(getActivity());
+		commands.add(command);
+
+		command = new HelpCommand(getActivity());
 		commands.add(command);
 
 		mSectionAdapter.addCommands(commands);
