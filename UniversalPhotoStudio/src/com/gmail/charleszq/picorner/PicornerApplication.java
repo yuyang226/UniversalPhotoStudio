@@ -108,7 +108,7 @@ public class PicornerApplication extends Application {
 		editor.commit();
 		
 		if (BuildConfig.DEBUG)
-			Log.d(getClass().getSimpleName(), String.format(
+			Log.d(TAG, String.format(
 					"offline download scheduled, once every %s hours.", span)); //$NON-NLS-1$
 	}
 
