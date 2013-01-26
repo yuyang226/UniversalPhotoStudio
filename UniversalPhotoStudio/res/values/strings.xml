@@ -184,8 +184,6 @@
 
     <!-- offline notification messages -->
     <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>
-    <string name="msg_offline_no_network">Trying to download photos, but no network right now.</string>
-    <string name="msg_offline_not_wifi">Trying to download photos, but not wifi right now.</string>
     <string name="msg_offline_delete_photos">%d cached offline photos deleted.</string>
     <string name="msg_offline_delete_photos_minus_one">No photos downloaded for this photo set before.</string>
     <string name="msg_offline_delete_photo_dialog_msg">Are you sure to delete all downloaded photos for this photo set?</string>

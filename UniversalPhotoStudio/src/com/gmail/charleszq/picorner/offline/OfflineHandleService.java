@@ -32,7 +32,6 @@ public class OfflineHandleService extends IntentService {
 																		.getSimpleName();
 
 	private static final int	DOWNLOAD_NOTIF_ID				= 100001;
-	private static final int	DOWNLOAD_ERROR_MSG_ID			= 100002;
 	private static final int	REMOVE_OFFLINE_PHOTOS_MSG_ID	= 100003;
 
 	public static final int		ADD_OFFLINE_PARAM				= 1;
@@ -148,8 +147,6 @@ public class OfflineHandleService extends IntentService {
 			if (BuildConfig.DEBUG) {
 				Log.d(TAG, "not network available."); //$NON-NLS-1$
 			}
-			sendNotification(DOWNLOAD_ERROR_MSG_ID,
-					getString(R.string.msg_offline_no_network));
 			return;
 		}
 		PicornerApplication app = (PicornerApplication) getApplication();
@@ -157,16 +154,12 @@ public class OfflineHandleService extends IntentService {
 		boolean isConnected = activeNetwork.isConnectedOrConnecting();
 		boolean isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
 		if (!isConnected) {
-			sendNotification(DOWNLOAD_ERROR_MSG_ID,
-					getString(R.string.msg_offline_no_network));
 			if (BuildConfig.DEBUG)
 				Log.d(TAG,
 						"network is not connected, don't start the offline download process."); //$NON-NLS-1$
 			return;
 		} else {
 			if (isWifiOnly && !isWifi) {
-				sendNotification(DOWNLOAD_ERROR_MSG_ID,
-						getString(R.string.msg_offline_not_wifi));
 				if (BuildConfig.DEBUG)
 					Log.d(TAG,
 							"wifi only offline download, but the network is not wifi."); //$NON-NLS-1$
