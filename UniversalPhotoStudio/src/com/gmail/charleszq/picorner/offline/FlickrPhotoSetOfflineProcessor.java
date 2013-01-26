@@ -96,7 +96,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 				if (BuildConfig.DEBUG)
 					Log.d(TAG,
 							String.format(
-									"photo %s saved for offline view later.", photo.getId())); //$NON-NLS-1$
+									"photo %s saved for offline view later.", url)); //$NON-NLS-1$
 			} else {
 				if (BuildConfig.DEBUG)
 					Log.w(TAG, "unable to download the image: " + url); //$NON-NLS-1$

@@ -41,6 +41,8 @@ import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
+import com.gmail.charleszq.picorner.msg.Message;
+import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
@@ -766,6 +768,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 			}
 			prepareSections();
+			MessageBus.broadcastMessage(Message.PUBLIC_USER_LOGIN_MSG);
 		}
 	}
 

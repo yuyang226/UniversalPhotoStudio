@@ -166,7 +166,7 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.FLICKR_USER_ID, userId);
 		editor.putString(IConstants.FLICKR_USER_NAME, userName);
 		editor.commit();
-
+		
 		// delete the cached flickr pool information, user might login with
 		// anthor account.
 		File bsRoot = new File(Environment.getExternalStorageDirectory(),

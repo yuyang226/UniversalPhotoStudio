@@ -5,10 +5,12 @@ package com.gmail.charleszq.picorner.task;
 
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
@@ -25,7 +27,7 @@ import com.gmail.charleszq.picorner.utils.IConstants;
 public class LoadPhotosTask extends
 		AbstractGeneralTask<Integer, Integer, MediaObjectCollection> {
 
-	private ICommand<?> mCommand;
+	private ICommand<?>	mCommand;
 
 	/**
 	 * Constructor.
@@ -50,26 +52,30 @@ public class LoadPhotosTask extends
 		IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCommand
 				.getAdapter(IOfflineViewParameter.class);
 		Context ctx = (Context) mCommand.getAdapter(Context.class);
-		if (offlineParam != null
-				&& OfflineControlFileUtil.isOfflineViewEnabled(ctx,
-						offlineParam)
-				&& OfflineControlFileUtil.isOfflineControlFileReady(ctx,
-						offlineParam)) {
-			if (pageNo == 0) {
-				List<MediaObject> photos = offlineParam
-						.getPhotoCollectionProcessor().getCachedPhotos(ctx,
-								offlineParam);
-				if (photos != null) {
-					MediaObjectCollection mc = new MediaObjectCollection();
-					for (MediaObject photo : photos) {
-						mc.addPhoto(photo);
+		PicornerApplication app = (PicornerApplication) ((Activity) ctx)
+				.getApplication();
+		if (app.isOfflineEnabled()) {
+			if (offlineParam != null
+					&& OfflineControlFileUtil.isOfflineViewEnabled(ctx,
+							offlineParam)
+					&& OfflineControlFileUtil.isOfflineControlFileReady(ctx,
+							offlineParam)) {
+				if (pageNo == 0) {
+					List<MediaObject> photos = offlineParam
+							.getPhotoCollectionProcessor().getCachedPhotos(ctx,
+									offlineParam);
+					if (photos != null) {
+						MediaObjectCollection mc = new MediaObjectCollection();
+						for (MediaObject photo : photos) {
+							mc.addPhoto(photo);
+						}
+						if (BuildConfig.DEBUG)
+							Log.e(TAG, "Returns photos from offline cache."); //$NON-NLS-1$
+						return mc;
 					}
-					if (BuildConfig.DEBUG)
-						Log.e(TAG, "Returns photos from offline cache."); //$NON-NLS-1$
-					return mc;
+				} else {
+					return null;
 				}
-			} else {
-				return null;
 			}
 		}
 

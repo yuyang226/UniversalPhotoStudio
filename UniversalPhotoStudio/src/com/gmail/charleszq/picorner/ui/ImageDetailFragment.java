@@ -441,7 +441,7 @@ public class ImageDetailFragment extends Fragment implements
 					mImageDisplayOptions, mImageLoaderListener);
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Load thumb image from offline cache."); //$NON-NLS-1$
-		} else if (ImageDetailActivity.class.isInstance(getActivity())) {
+		} else {
 			mImageFetcher.displayImage(mImageUrl, mImageView,
 					mImageDisplayOptions, mImageLoaderListener);
 		}

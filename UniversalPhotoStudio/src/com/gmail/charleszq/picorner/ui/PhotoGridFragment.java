@@ -47,7 +47,7 @@ import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
  */
 public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
-	private static final String TAG = PhotoGridFragment.class.getName();
+	private static final String	TAG	= PhotoGridFragment.class.getName();
 
 	/**
 	 * Empty constructor as per the Fragment documentation
@@ -59,7 +59,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	 * In some cases, the command instance might be the same, this will provide
 	 * another way to tell whether we should populate a new result.
 	 */
-	private Object mCommandComparator = null;
+	private Object	mCommandComparator	= null;
 
 	/**
 	 * This method will be only be called from the menu fragment, after photos
@@ -160,15 +160,19 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		i.putExtra(ImageDetailActivity.DP_KEY, mPhotosProvider);
 		i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, (int) id);
 		if (mCurrentCommand != null) {
-			IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCurrentCommand
-					.getAdapter(IOfflineViewParameter.class);
-			boolean offlineEnabled = false;
-			if (offlineParam != null) {
-				offlineEnabled = OfflineControlFileUtil.isOfflineViewEnabled(
-						getActivity(), offlineParam);
+			PicornerApplication app = (PicornerApplication) getActivity()
+					.getApplication();
+			if (app.isOfflineEnabled()) {
+				IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCurrentCommand
+						.getAdapter(IOfflineViewParameter.class);
+				boolean offlineEnabled = false;
+				if (offlineParam != null) {
+					offlineEnabled = OfflineControlFileUtil
+							.isOfflineViewEnabled(getActivity(), offlineParam);
+				}
+				i.putExtra(ImageDetailActivity.OFFLINE_COMMAND_KEY,
+						Boolean.toString(offlineEnabled));
 			}
-			i.putExtra(ImageDetailActivity.OFFLINE_COMMAND_KEY,
-					Boolean.toString(offlineEnabled));
 			Object showActionBarString = mCurrentCommand
 					.getAdapter(ActionBar.class);
 			if (showActionBarString == null) {
