@@ -7,9 +7,10 @@ What's new (version 1.2.0)
 6, offline view my flickr photo set;
 7, show file path after save a photo locally;
 8, preference setting added;
-9, hide action bar for my own photos;
+9, hide action bar for my own photos in image detail page;
 10, enhance the flickr tag search, now you can search in flickr commons project;
-11, bug fixes.
+11, flickr friend list to see photos of each friend;
+12, bug fixes.
 
 What's new (version 1.1.1)
 1, hide user flickr photo set/group/gallery menu items by default;
