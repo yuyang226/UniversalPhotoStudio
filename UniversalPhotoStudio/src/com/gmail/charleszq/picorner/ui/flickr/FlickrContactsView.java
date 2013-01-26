@@ -80,6 +80,7 @@ public class FlickrContactsView extends AbstractLinearLayoutHiddenView implement
 			@Override
 			public void onClick(View v) {
 				onAction(ACTION_CANCEL);
+				mCancelButton.setVisibility(View.INVISIBLE);
 			}
 		});
 
