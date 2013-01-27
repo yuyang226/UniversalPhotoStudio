@@ -127,16 +127,17 @@ public class FlickrPhotoSetOfflineProcessor implements
 		int delta = serverPhotoCount - photos.size();
 		int lastPage = getLastPage(serverPhotoCount, delta);
 		boolean duplicateFound = false;
-		while (lastPage > 0) {
+		int newPhotoAdded = 0;
+		while (lastPage > 0 && newPhotoAdded < delta ) {
 			MediaObjectCollection col = getPhotoForPage(ctx, param, lastPage,
 					delta);
 			if (col != null) {
 				for (MediaObject p : col.getPhotos()) {
 					if (photos.contains(p)) {
-						duplicateFound = true;
-						break;
+						continue;
 					} else {
 						photos.add(0, p);
+						newPhotoAdded ++;
 					}
 				}
 			}
