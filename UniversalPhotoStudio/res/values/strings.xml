@@ -192,18 +192,18 @@
     <string name="cmd_setting_label">Settings</string>
     <string name="pref_cat_general">General</string>
     <string name="photo_grid_cache_size">Photo cache size (MB)</string>
-    <string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck space to be used as photo cache, by default, it\'s 100M.</string>
+    <string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck space to be used as photo cache.</string>
     <string name="pref_cat_offline">Offline</string>
     <string name="pref.enable.offfline">Enable offline view</string>
-    <string name="summary_pref.enable.offfline">Offline view is to let you viewing some of your own photos even if there is no network connection, but you need to know after you enable it, it will need disk space to store the photos.</string>
+    <string name="summary_pref.enable.offfline">Download your photo sets for offline view, this feature requires large disk space on your phone.</string>
     <string name="pref_only_user_wifi">WIFI only</string>
-    <string name="summary_pref_only_user_wifi">Only use wifi to download photos, be careful if you want to uncheck this.</string>
+    <string name="summary_pref_only_user_wifi">Only use wifi to download photos, Uncheck will download photos when connected to cellular network.</string>
     <string name="pref_download_when_charging">Download when charging</string>
-    <string name="summary_pref_download_when_charging">When charging, check if there are updates for your offline photo sets, if yes, start downloading.</string>
+    <string name="summary_pref_download_when_charging">Only download photos while your phone is charging.</string>
     <string name="offline_download_timer">Offline Timer</string>
-    <string name="summary_offline_download_timer">How often to check if there are updates for your offline photo sets.</string>
+    <string name="summary_offline_download_timer">How often to check photo set updates.</string>
 
     <string name="photo_grid_max_size">Photo grid size</string>
     <string name="photo_grid_max_size">Max photo grid size</string>
-    <string name="summary_photo_grid_max_size">The maxinum photos to be shown in the photo grid, too big size here might impact the performance.</string>
+    <string name="summary_photo_grid_max_size">The maxinum photos to be shown in the photo grid, large size might impact the performance.</string>
 </resources>
