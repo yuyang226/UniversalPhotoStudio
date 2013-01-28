@@ -8,6 +8,7 @@
         android:id="@+id/tag_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:queryHint="@string/msg_tag_filter"
         android:iconifiedByDefault="false" />
 
     <ListView
