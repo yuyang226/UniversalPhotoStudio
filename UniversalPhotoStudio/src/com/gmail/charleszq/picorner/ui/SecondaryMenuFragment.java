@@ -36,6 +36,7 @@ import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrFriendPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrTagSearchCommand;
+import com.gmail.charleszq.picorner.ui.command.ig.InstagramFollowingPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
@@ -232,17 +233,27 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		commands.add(command);
 		command = new FlickrTagSearchCommand(getActivity());
 		commands.add(command);
+		
+		int index = commands.size();
 
+		boolean accountReady = false;
 		if (app.getFlickrToken() != null) {
 			// friends
-			// TODO move this menu header out of this block later after you add
-			// instagram and 500px friends
-			command = new MenuSectionHeaderCommand(getActivity(),
-					getString(R.string.menu_header_friends));
-			commands.add(command);
-
 			command = new FlickrFriendPhotosCommand(getActivity());
 			commands.add(command);
+			accountReady = true;
+		}
+		
+		if( app.getInstagramUserId() != null ) {
+			command = new InstagramFollowingPhotosCommand(getActivity());
+			commands.add(command);
+			accountReady = true;
+		}
+		
+		if( accountReady ) {
+			command = new MenuSectionHeaderCommand(getActivity(),
+					getString(R.string.menu_header_friends));
+			commands.add(index, command);
 		}
 
 		// help & about

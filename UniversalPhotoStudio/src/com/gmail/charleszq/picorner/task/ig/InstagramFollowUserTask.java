@@ -14,6 +14,8 @@ import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.InstagramHelper;
 
 /**
+ * Represents the task to follow/unfollow an instagram user.
+ * 
  * @author charles(charleszq@gmail.com)
  * 
  */
