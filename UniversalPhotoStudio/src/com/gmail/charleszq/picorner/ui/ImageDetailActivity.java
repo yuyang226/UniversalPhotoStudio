@@ -18,9 +18,12 @@ package com.gmail.charleszq.picorner.ui;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.ActionBar;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -37,28 +40,36 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ImageDetailActivity extends FragmentActivity implements
 		OnClickListener {
-	public static final String LARGE_IMAGE_POSITION = "extra_image"; //$NON-NLS-1$
-	public static final String DP_KEY = "data.provider"; //$NON-NLS-1$
-	public static final String OFFLINE_COMMAND_KEY = "is.command.support.offline"; //$NON-NLS-1$
+	public static final String				LARGE_IMAGE_POSITION	= "extra_image";				//$NON-NLS-1$
+	public static final String				DP_KEY					= "data.provider";				//$NON-NLS-1$
+	public static final String				OFFLINE_COMMAND_KEY		= "is.command.support.offline"; //$NON-NLS-1$
+
+	/**
+	 * The intent key to say if we need to start the slide show.
+	 */
+	public static final String				SLIDE_SHOW_KEY			= "start.slide.show";			//$NON-NLS-1$
 
 	/**
 	 * The key to save intent value to indicate whether we show the action bar
 	 * by default
 	 */
-	public static final String SHOW_ACTION_BAR_KEY = "show.action.bar"; //$NON-NLS-1$
+	public static final String				SHOW_ACTION_BAR_KEY		= "show.action.bar";			//$NON-NLS-1$
 
-	private ImagePagerAdapter mAdapter;
-	private ImageLoader mImageFetcher;
-	private ViewPager mPager;
+	private ImagePagerAdapter				mAdapter;
+	private ImageLoader						mImageFetcher;
+	private ViewPager						mPager;
 
-	private Set<IActionBarVisibleListener> mActionBarListeners;
+	private Set<IActionBarVisibleListener>	mActionBarListeners;
 
-	IPhotosProvider mPhotosProvider;
+	IPhotosProvider							mPhotosProvider;
 
 	/**
 	 * the marker to say if the current command is offline enabled.
 	 */
-	boolean mIsOfflineEnabled = false;
+	boolean									mIsOfflineEnabled		= false;
+
+	private Timer							mTimer;
+	private Handler							mHandler				= new Handler();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -115,6 +126,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 							lis.onActionBarShown(shown);
 						}
 					}
+					
 				}
 			});
 
@@ -133,6 +145,29 @@ public class ImageDetailActivity extends FragmentActivity implements
 		if (extraCurrentItem != -1) {
 			mPager.setCurrentItem(extraCurrentItem);
 		}
+		boolean startSlide = getIntent().getBooleanExtra(SLIDE_SHOW_KEY, false);
+		if (startSlide) {
+			startSlideShow();
+		}
+	}
+	
+	void startSlideShow() {
+		mTimer = new Timer();
+		mTimer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				mHandler.post(new Runnable() {
+					@Override
+					public void run() {
+						int currentPosition = mPager.getCurrentItem();
+						mPager.setCurrentItem(++currentPosition);
+					}
+				});
+			}
+		}, 2000, 5000);
+		mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+		getActionBar().hide();
+		
 	}
 
 	@Override
@@ -156,9 +191,9 @@ public class ImageDetailActivity extends FragmentActivity implements
 	 * create/destroy them on the fly.
 	 */
 	private class ImagePagerAdapter extends FragmentStatePagerAdapter {
-		private final int mSize;
-		private IPhotosProvider mProvider;
-		private boolean mIsOfflineEnabled = false;
+		private final int		mSize;
+		private IPhotosProvider	mProvider;
+		private boolean			mIsOfflineEnabled	= false;
 
 		public ImagePagerAdapter(IPhotosProvider provider, FragmentManager fm,
 				int size, boolean offlineEnabled) {

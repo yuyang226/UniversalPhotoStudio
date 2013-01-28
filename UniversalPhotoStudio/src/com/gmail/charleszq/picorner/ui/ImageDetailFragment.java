@@ -583,6 +583,12 @@ public class ImageDetailFragment extends Fragment implements
 		case R.id.menu_item_share_action_provider_action_bar:
 			sharePhoto();
 			return true;
+		case R.id.menu_item_slide_show:
+			ImageDetailActivity act = (ImageDetailActivity) getActivity();
+			if( act != null ) {
+				act.startSlideShow();
+			}
+			return true;
 		case R.id.menu_item_see_owner_photos:
 			Intent i = new Intent(getActivity(), UserPhotoListActivity.class);
 			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
