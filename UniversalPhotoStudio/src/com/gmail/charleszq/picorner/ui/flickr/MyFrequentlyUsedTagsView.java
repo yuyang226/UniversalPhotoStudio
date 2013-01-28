@@ -11,22 +11,27 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.app.Service;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
+import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
+import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter.FlickrTagSearchMode;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.MyFrequentlyUsedTagsTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
@@ -40,24 +45,58 @@ import com.googlecode.flickrjandroid.tags.Tag;
 public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 		OnItemClickListener {
 
-	private ListView		mListView;
-	private Button			mCancelButton, mSearchButton;
-	private View			mButtonContainer;
-	private TagListAdapter	mAdapter;
-	private Set<String>		mSelectedTags		= new HashSet<String>();
+	private ListView						mListView;
+	private Button							mCancelButton, mSearchButton;
+	private View							mButtonContainer;
+	private TagListAdapter					mAdapter;
+	private Set<String>						mSelectedTags		= new HashSet<String>();
+	private SearchView						mTagFilter;
 
-	private OnClickListener	mOnClickListener	= new OnClickListener() {
+	private OnClickListener					mOnClickListener	= new OnClickListener() {
 
-													@Override
-													public void onClick(View v) {
-														if (v == mCancelButton) {
-															onAction(ACTION_CANCEL);
-														} else if (v == mSearchButton) {
-															doSearch(v
-																	.getContext());
-														}
-													}
-												};
+																	@Override
+																	public void onClick(
+																			View v) {
+																		if (v == mCancelButton) {
+																			onAction(ACTION_CANCEL);
+																		} else if (v == mSearchButton) {
+																			doSearch(v
+																					.getContext());
+																		}
+																	}
+																};
+	private SearchView.OnQueryTextListener	mQueryTextListener	= new SearchView.OnQueryTextListener() {
+
+																	@Override
+																	public boolean onQueryTextSubmit(
+																			String query) {
+																		if (query == null
+																				|| query.trim()
+																						.length() == 0)
+																			return false;
+																		TagFilter filter = new TagFilter(
+																				mAdapter);
+																		filter.filter(query);
+																		return true;
+																	}
+
+																	@Override
+																	public boolean onQueryTextChange(
+																			String newText) {
+																		if (newText == null
+																				|| newText
+																						.trim()
+																						.length() == 0) {
+																			mAdapter.mFilteredTags
+																					.clear();
+																			mAdapter.mFilteredTags
+																					.addAll(mAdapter.mTags);
+																			mAdapter.notifyDataSetChanged();
+																			return true;
+																		} else
+																			return false;
+																	}
+																};
 
 	/*
 	 * (non-Javadoc)
@@ -83,13 +122,14 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 		}
 		FlickrTagSearchParameter param = new FlickrTagSearchParameter();
 		StringBuilder sb = new StringBuilder();
-		for( String tag : mSelectedTags ) {
-			sb.append( tag );
-			sb.append( " "); //$NON-NLS-1$
+		for (String tag : mSelectedTags) {
+			sb.append(tag);
+			sb.append(" "); //$NON-NLS-1$
 		}
 		param.setTags(sb.toString().trim());
+		param.setSearchMode(FlickrTagSearchMode.ANY);
 		onAction(ACTION_DO, param);
-		
+
 	}
 
 	@Override
@@ -114,6 +154,16 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 		mCancelButton.setOnClickListener(mOnClickListener);
 		mSearchButton.setOnClickListener(mOnClickListener);
 
+		// filter
+		mTagFilter = (SearchView) mView.findViewById(R.id.tag_filter);
+		mTagFilter.setOnQueryTextListener(mQueryTextListener);
+		mSelectedTags.clear();
+
+		// hide the soft keyboard
+		InputMethodManager imm = (InputMethodManager) ctx
+				.getSystemService(Service.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mTagFilter.getWindowToken(), 0);
+
 		// load tags
 		loadTags(ctx);
 	}
@@ -137,7 +187,8 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 
 	private static class TagListAdapter extends BaseAdapter {
 
-		private List<Tag>	mTags	= new ArrayList<Tag>();
+		List<Tag>			mTags			= new ArrayList<Tag>();
+		List<Tag>			mFilteredTags	= new ArrayList<Tag>();
 		private Context		mContext;
 		private Set<String>	mSelectedTags;
 
@@ -148,12 +199,12 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 
 		@Override
 		public int getCount() {
-			return mTags.size();
+			return mFilteredTags.size();
 		}
 
 		@Override
 		public Object getItem(int position) {
-			return mTags.get(position);
+			return mFilteredTags.get(position);
 		}
 
 		@Override
@@ -179,6 +230,7 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 
 		void populateTags(Collection<Tag> tags) {
 			mTags.clear();
+			mFilteredTags.clear();
 			mTags.addAll(tags);
 			Collections.sort(mTags, new Comparator<Tag>() {
 				@Override
@@ -186,7 +238,45 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 					return rhs.getCount() - lhs.getCount();
 				}
 			});
+
+			mFilteredTags.addAll(mTags);
 			notifyDataSetChanged();
+		}
+
+		void pushlishResult() {
+			notifyDataSetChanged();
+		}
+
+	}
+
+	private static class TagFilter extends Filter {
+
+		private TagListAdapter	mAdapter;
+
+		TagFilter(TagListAdapter adapter) {
+			this.mAdapter = adapter;
+		}
+
+		@Override
+		protected FilterResults performFiltering(CharSequence constraint) {
+			mAdapter.mFilteredTags.clear();
+			String query = constraint.toString().toLowerCase();
+			for (Tag tag : mAdapter.mTags) {
+				if (tag.getValue().toLowerCase().contains(query)) {
+					mAdapter.mFilteredTags.add(tag);
+				}
+			}
+			FilterResults result = new FilterResults();
+			result.count = mAdapter.mFilteredTags.size();
+			result.values = mAdapter.mFilteredTags;
+			return result;
+		}
+
+		@Override
+		protected void publishResults(CharSequence constraint,
+				FilterResults results) {
+			mAdapter.pushlishResult();
+
 		}
 
 	}
