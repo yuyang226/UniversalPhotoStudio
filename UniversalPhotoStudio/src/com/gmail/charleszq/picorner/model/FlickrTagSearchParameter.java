@@ -21,6 +21,15 @@ public final class FlickrTagSearchParameter implements Serializable {
 	private FlickrTagSearchMode	mSearchMode			= FlickrTagSearchMode.ALL;
 	private boolean				mSearchInCommon		= false;
 	private boolean				mHasGeoInformation	= false;
+	private String mUserId;
+
+	public String getUserId() {
+		return mUserId;
+	}
+
+	public void setUserId(String mUserId) {
+		this.mUserId = mUserId;
+	}
 
 	public String getTags() {
 		return mTags;
@@ -62,6 +71,9 @@ public final class FlickrTagSearchParameter implements Serializable {
 		sb.append(")").append(mTags.trim()); //$NON-NLS-1$
 		sb.append(Boolean.toString(mSearchInCommon));
 		sb.append(Boolean.toString(mHasGeoInformation));
+		if( mUserId != null ) {
+			sb.append(mUserId);
+		}
 		return sb.toString();
 	}
 

@@ -11,7 +11,7 @@ import android.view.View;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.px500.Px500FetchFriendsTask;
-import com.gmail.charleszq.picorner.ui.AbstractContactsView;
+import com.gmail.charleszq.picorner.ui.helper.AbstractContactsView;
 
 /**
  * @author charles(charleszq@gmail.com)

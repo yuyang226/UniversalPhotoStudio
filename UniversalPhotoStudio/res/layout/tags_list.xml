@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ListView
+        android:id="@+id/list_f_tags"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </ListView>
+
+    <LinearLayout
+        android:id="@+id/empty_friend_view"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/listPreferredItemHeight"
+        android:orientation="horizontal"
+        android:padding="10dp" >
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="left|center"
+            android:paddingLeft="5dp"
+            android:text="@string/msg_loading_my_tags" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_cancel_search"
+            style="@style/PicornerButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+            android:text="@android:string/cancel" />
+
+        <Button
+            android:id="@+id/btn_search"
+            style="@style/PicornerButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_search"
+            android:text="@android:string/search_go" />
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gmail.charleszq.picorner.ui;
+package com.gmail.charleszq.picorner.ui.helper;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -15,15 +15,13 @@ import android.widget.ListView;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
-import com.gmail.charleszq.picorner.ui.helper.AbstractLinearLayoutHiddenView;
-import com.gmail.charleszq.picorner.ui.helper.FriendListAdapter;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
 public abstract class AbstractContactsView extends
-		AbstractLinearLayoutHiddenView implements OnItemClickListener {
+		AbstractHiddenView implements OnItemClickListener {
 
 	protected ListView			mListView;
 	protected Button			mCancelButton;

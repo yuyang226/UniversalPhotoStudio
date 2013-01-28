@@ -26,13 +26,13 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter.FlickrTagSearchMode;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
-import com.gmail.charleszq.picorner.ui.helper.AbstractLinearLayoutHiddenView;
+import com.gmail.charleszq.picorner.ui.helper.AbstractHiddenView;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class FlickrTagSearchView extends AbstractLinearLayoutHiddenView {
+public class FlickrTagSearchView extends AbstractHiddenView {
 
 	private Button						mCancelButton;
 	private Button						mSearchButton;

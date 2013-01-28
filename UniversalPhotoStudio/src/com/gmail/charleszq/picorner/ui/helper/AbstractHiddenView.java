@@ -11,7 +11,7 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public abstract class AbstractLinearLayoutHiddenView
+public abstract class AbstractHiddenView
 		implements IHiddenView {
 
 	protected ICommand<?>				mCommand;

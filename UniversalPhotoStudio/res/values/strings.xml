@@ -62,6 +62,7 @@
     <string name="menu_item_back">Back</string>
     <string name="menu_item_offline_download">Download</string>
     <string name="menu_item_offline_delete_photos">Delete Offline Photos</string>
+    <string name="menu_item_my_frequently_used_tags">My Flickr Tags</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
@@ -111,6 +112,7 @@
     <string name="msg_photo_meta_save_fail">Errors encountered when update photo information.</string>
     <string name="msg_pls_enable_offline_first">You need to enable the offline view feature first, hit \'OK\' to go the setting page to turn it on.</string>
     <string name="msg_loading_my_friends" tools:ignore="TypographyEllipsis">Loading friends...</string>
+    <string name="msg_loading_my_tags" tools:ignore="TypographyEllipsis">Loading my tags...</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
@@ -118,6 +120,7 @@
     <string name="msg_flickr_tag_search_mode">Search mode:</string>
     <string name="msg_flickr_tag_search_hint">separate by space</string>
     <string name="msg_flickr_tag_search_empty_tag">Please input tag to search.</string>
+    <string name="msg_flickr_my_tag_search">Please select at least one tag to search.</string>
     <string name="msg_flickr_tag_search_mode_and">and</string>
     <string name="msg_flickr_tag_search_mode_or">or</string>
     <string name="msg_flickr_tag_search_in_common">Search in Commons</string>
@@ -140,6 +143,7 @@
     <string name="cd_flickr_gallery_photos">flickr: photo gallery \'%s\'</string>
     <string name="cd_flickr_my_photos">flickr: my photo stream</string>
     <string name="cd_flickr_tag_search">flickr: tag search result \'%s\'</string>
+    <string name="cd_flickr_my_tags">Flickr: my tags \'%s\'</string>
 
     <!-- 500px -->
     <string name="cd_500px_popular">500px: popular</string>
