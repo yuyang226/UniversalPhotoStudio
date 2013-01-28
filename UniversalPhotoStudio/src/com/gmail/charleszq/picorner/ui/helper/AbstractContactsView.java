@@ -3,14 +3,17 @@
  */
 package com.gmail.charleszq.picorner.ui.helper;
 
+import android.app.Service;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
@@ -20,13 +23,44 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public abstract class AbstractContactsView extends
-		AbstractHiddenView implements OnItemClickListener {
+public abstract class AbstractContactsView extends AbstractHiddenView implements
+		OnItemClickListener {
 
 	protected ListView			mListView;
 	protected Button			mCancelButton;
 	protected FriendListAdapter	mAdapter;
 	protected View				mView;
+	protected SearchView		mSearchView;
+	
+	private SearchView.OnQueryTextListener	mQueryTextListener	= new SearchView.OnQueryTextListener() {
+
+		@Override
+		public boolean onQueryTextSubmit(
+				String query) {
+			if (query == null
+					|| query.trim()
+							.length() == 0)
+				return false;
+			FriendListFilter filter = new FriendListFilter(mAdapter);
+			filter.filter(query);
+			return true;
+		}
+
+		@Override
+		public boolean onQueryTextChange(
+				String newText) {
+			if (newText == null
+					|| newText
+							.trim()
+							.length() == 0) {
+				mAdapter.mFilteredOutFriends.clear();
+				mAdapter.mFilteredOutFriends.addAll(mAdapter.mFriends);
+				mAdapter.notifyDataSetChanged();
+				return true;
+			} else
+				return false;
+		}
+	};
 
 	/*
 	 * (non-Javadoc)
@@ -58,6 +92,14 @@ public abstract class AbstractContactsView extends
 				mCancelButton.setVisibility(View.INVISIBLE);
 			}
 		});
+
+		// filter
+		mSearchView = (SearchView) mView.findViewById(R.id.contact_filter);
+		mSearchView.setOnQueryTextListener(mQueryTextListener);
+		// hide the soft keyboard
+		InputMethodManager imm = (InputMethodManager) ctx
+				.getSystemService(Service.INPUT_METHOD_SERVICE);
+		imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
 		getContactList(ctx);
 	}

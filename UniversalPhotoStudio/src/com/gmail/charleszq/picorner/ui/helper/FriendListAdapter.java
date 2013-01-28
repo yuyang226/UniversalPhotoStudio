@@ -27,13 +27,14 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
  */
 public class FriendListAdapter extends BaseAdapter {
 
-	private List<Author>	mFriends	= new ArrayList<Author>();
-	private Context			mContext;
+	List<Author>		mFriends			= new ArrayList<Author>();
+	List<Author>		mFilteredOutFriends	= new ArrayList<Author>();
+	private Context		mContext;
 
 	/**
 	 * From it, we can know how to get the avator of this friend.
 	 */
-	private ICommand<?>		mCommand;
+	private ICommand<?>	mCommand;
 
 	public FriendListAdapter(Context ctx, ICommand<?> command) {
 		this.mContext = ctx;
@@ -42,12 +43,12 @@ public class FriendListAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return mFriends.size();
+		return mFilteredOutFriends.size();
 	}
 
 	@Override
 	public Object getItem(int position) {
-		return mFriends.get(position);
+		return mFilteredOutFriends.get(position);
 	}
 
 	@Override
@@ -74,6 +75,16 @@ public class FriendListAdapter extends BaseAdapter {
 	public void populateFriends(List<Author> friends) {
 		mFriends.clear();
 		mFriends.addAll(friends);
+		mFilteredOutFriends.clear();
+		mFilteredOutFriends.addAll(friends);
+		notifyDataSetChanged();
+	}
+
+	void publishFilterResult(Object results) {
+		@SuppressWarnings("unchecked")
+		List<Author> filtered = (List<Author>) results;
+		mFilteredOutFriends.clear();
+		mFilteredOutFriends.addAll(filtered);
 		notifyDataSetChanged();
 	}
 }

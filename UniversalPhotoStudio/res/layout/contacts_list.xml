@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
+    <SearchView
+        android:id="@+id/contact_filter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:queryHint="@string/msg_contact_filter"
+        android:iconifiedByDefault="false" />
+    
     <ListView
         android:id="@+id/list_f_friends"
         android:layout_width="match_parent"

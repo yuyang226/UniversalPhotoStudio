@@ -114,6 +114,7 @@
     <string name="msg_loading_my_friends" tools:ignore="TypographyEllipsis">Loading friends...</string>
     <string name="msg_loading_my_tags" tools:ignore="TypographyEllipsis">Loading my tags...</string>
     <string name="msg_tag_filter">Tag filter</string>
+    <string name="msg_contact_filter">Friend filter</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
