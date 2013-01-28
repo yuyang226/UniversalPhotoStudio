@@ -38,6 +38,7 @@ import com.gmail.charleszq.picorner.ui.command.flickr.FlickrFriendPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrTagSearchCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramFollowingPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.Px500FriendPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
@@ -235,8 +236,13 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		commands.add(command);
 		
 		int index = commands.size();
-
 		boolean accountReady = false;
+		if( app.getPxUserProfile() != null ) {
+			command = new Px500FriendPhotosCommand(getActivity());
+			commands.add(command);
+			accountReady = true;
+		}
+		
 		if (app.getFlickrToken() != null) {
 			// friends
 			command = new FlickrFriendPhotosCommand(getActivity());

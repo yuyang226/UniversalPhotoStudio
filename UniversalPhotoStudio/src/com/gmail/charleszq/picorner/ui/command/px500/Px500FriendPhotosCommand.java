@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.gmail.charleszq.picorner.ui.command.ig;
+package com.gmail.charleszq.picorner.ui.command.px500;
 
 import java.util.Comparator;
 
@@ -13,25 +13,25 @@ import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.service.IPhotoService;
-import com.gmail.charleszq.picorner.service.ig.InstagramUserPhotosService;
+import com.gmail.charleszq.picorner.service.px500.PxUserPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
-import com.gmail.charleszq.picorner.ui.ig.InstagramContactView;
+import com.gmail.charleszq.picorner.ui.px500.Px500FriendsView;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class InstagramFollowingPhotosCommand extends PhotoListCommand {
+public class Px500FriendPhotosCommand extends PhotoListCommand {
 
-	private Author		mFollowingFriend;
+	private Author		mFriend;
 	private IHiddenView	mHiddenView;
 
 	/**
 	 * @param context
 	 */
-	public InstagramFollowingPhotosCommand(Context context) {
+	public Px500FriendPhotosCommand(Context context) {
 		super(context);
 	}
 
@@ -45,12 +45,6 @@ public class InstagramFollowingPhotosCommand extends PhotoListCommand {
 		return R.drawable.ic_action_friends;
 	}
 
-	@Override
-	public boolean execute(Object... params) {
-		mFollowingFriend = (Author) params[0];
-		return super.execute();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -58,23 +52,29 @@ public class InstagramFollowingPhotosCommand extends PhotoListCommand {
 	 */
 	@Override
 	public String getLabel() {
-		return mContext.getString(R.string.menu_header_ig);
+		return mContext.getString(R.string.menu_header_px500);
+	}
+
+	@Override
+	public boolean execute(Object... params) {
+		mFriend = (Author) params[0];
+		return super.execute();
 	}
 
 	@Override
 	public String getDescription() {
-		String s = mContext.getString(R.string.cd_ig_user_photos);
+		String msg = mContext.getString(R.string.cd_500px_user_photos);
 		return String.format(
-				s,
-				mFollowingFriend.getUserName() == null ? mFollowingFriend
-						.getUserId() : mFollowingFriend.getUserName());
+				msg,
+				mFriend.getUserName() == null ? String.valueOf(mFriend
+						.getUserId()) : mFriend.getUserName());
 	}
 
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IHiddenView.class) {
 			if (mHiddenView == null) {
-				mHiddenView = new InstagramContactView();
+				mHiddenView = new Px500FriendsView();
 			}
 			return mHiddenView;
 		}
@@ -82,9 +82,9 @@ public class InstagramFollowingPhotosCommand extends PhotoListCommand {
 			Activity act = (Activity) mContext;
 			PicornerApplication app = (PicornerApplication) act
 					.getApplication();
-			mCurrentPhotoService = new InstagramUserPhotosService(
-					app.getInstagramAuthToken(),
-					Long.parseLong(mFollowingFriend.getUserId()));
+			mCurrentPhotoService = new PxUserPhotosService(
+					app.getPx500OauthToken(), app.getPx500OauthTokenSecret(),
+					mFriend.getUserId());
 			return mCurrentPhotoService;
 		}
 		if (adapterClass == AbstractFetchIconUrlTask.class) {
@@ -104,8 +104,9 @@ public class InstagramFollowingPhotosCommand extends PhotoListCommand {
 			return task;
 		}
 		if (adapterClass == Comparator.class) {
-			return this.mFollowingFriend;
+			return this.mFriend;
 		}
 		return super.getAdapter(adapterClass);
 	}
+
 }

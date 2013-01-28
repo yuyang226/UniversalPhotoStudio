@@ -9,6 +9,8 @@ import android.content.Context;
 import com.github.yuyang226.j500px.J500px;
 import com.github.yuyang226.j500px.users.User;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.msg.Message;
+import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.J500pxHelper;
 
@@ -57,6 +59,7 @@ public class PxFetchUserProfileTask extends
 					.getApplication();
 			app.savePxUserProfile(String.valueOf(result.getId()),
 					result.getUserName(), result.getUserPicUrl());
+			MessageBus.broadcastMessage(Message.PUBLIC_USER_LOGIN_MSG);
 		}
 		super.onPostExecute(result);
 	}
