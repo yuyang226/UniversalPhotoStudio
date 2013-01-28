@@ -3,6 +3,9 @@
  */
 package com.gmail.charleszq.picorner.ui.helper;
 
+import android.content.Context;
+import android.view.View;
+
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 
 /**
@@ -32,6 +35,13 @@ public interface IHiddenView {
 	 * @param listener
 	 */
 	void init(ICommand<?> command, IHiddenViewActionListener listener);
+	
+	/**
+	 * Returns the actual view of this hidden view.
+	 * @param ctx
+	 * @return
+	 */
+	View getView(Context ctx);
 
 	/**
 	 * 

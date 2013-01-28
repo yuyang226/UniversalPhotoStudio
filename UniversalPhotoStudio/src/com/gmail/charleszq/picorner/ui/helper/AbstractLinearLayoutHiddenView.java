@@ -3,9 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui.helper;
 
-import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.LinearLayout;
+import android.view.View;
 
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 
@@ -13,36 +11,12 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public abstract class AbstractLinearLayoutHiddenView extends LinearLayout
+public abstract class AbstractLinearLayoutHiddenView
 		implements IHiddenView {
 
 	protected ICommand<?>				mCommand;
 	protected IHiddenViewActionListener	mHideViewCancelListener;
-
-	/**
-	 * @param context
-	 */
-	public AbstractLinearLayoutHiddenView(Context context) {
-		super(context);
-	}
-
-	/**
-	 * @param context
-	 * @param attrs
-	 */
-	public AbstractLinearLayoutHiddenView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
-
-	/**
-	 * @param context
-	 * @param attrs
-	 * @param defStyle
-	 */
-	public AbstractLinearLayoutHiddenView(Context context, AttributeSet attrs,
-			int defStyle) {
-		super(context, attrs, defStyle);
-	}
+	protected View mView;
 
 	/*
 	 * (non-Javadoc)

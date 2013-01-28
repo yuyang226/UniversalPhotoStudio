@@ -278,18 +278,18 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		@SuppressWarnings("unchecked")
 		ICommand<Object> command = (ICommand<Object>) parent.getAdapter()
 				.getItem(position);
+		Context ctx = (Context) command.getAdapter(Context.class);
 
 		IHiddenView hiddenView = (IHiddenView) command
 				.getAdapter(IHiddenView.class);
 		if (hiddenView == null) {
 			doCommand(command);
 		} else {
-			View hv = (View) hiddenView;
 			hiddenView.init(command, mHideViewCancelListener);
-
 			FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(
 					LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT,
 					Gravity.CENTER_VERTICAL);
+			View hv = hiddenView.getView(ctx);
 			hv.setLayoutParams(param);
 			hv.setVisibility(View.INVISIBLE);
 			mBackViewContainer.addView(hv);

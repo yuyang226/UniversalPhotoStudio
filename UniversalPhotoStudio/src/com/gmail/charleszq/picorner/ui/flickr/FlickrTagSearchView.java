@@ -6,9 +6,10 @@ package com.gmail.charleszq.picorner.ui.flickr;
 import android.app.Service;
 import android.content.Context;
 import android.text.Editable;
-import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -46,10 +47,20 @@ public class FlickrTagSearchView extends AbstractLinearLayoutHiddenView {
 																		@Override
 																		public void onClick(
 																				View v) {
+																			// hide
+																			// the
+																			// soft
+																			// keyboard
+																			InputMethodManager imm = (InputMethodManager)v.getContext()
+																					.getSystemService(
+																							Service.INPUT_METHOD_SERVICE);
+																			imm.hideSoftInputFromWindow(
+																					mTagText.getWindowToken(),
+																					0);
 																			if (v == mCancelButton) {
 																				onAction(ACTION_CANCEL);
 																			} else if (v == mSearchButton) {
-																				doSearch();
+																				doSearch(v.getContext());
 																			} else if (v == mRadioAnd) {
 																				mSearchParameter
 																						.setSearchMode(FlickrTagSearchMode.ALL);
@@ -77,43 +88,23 @@ public class FlickrTagSearchView extends AbstractLinearLayoutHiddenView {
 
 																	};
 
-	/**
-	 * @param context
-	 */
-	public FlickrTagSearchView(Context context) {
-		super(context);
-	}
-
-	/**
-	 * @param context
-	 * @param attrs
-	 */
-	public FlickrTagSearchView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
-
-	/**
-	 * @param context
-	 * @param attrs
-	 * @param defStyle
-	 */
-	public FlickrTagSearchView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-	}
-
 	@Override
 	public void init(ICommand<?> command, IHiddenViewActionListener listener) {
 		super.init(command, listener);
 		mSearchParameter = new FlickrTagSearchParameter();
 
-		mTagText = (EditText) findViewById(R.id.txt_flickr_tag_search);
+		Context ctx = (Context) command.getAdapter(Context.class);
+		if (mView == null) {
+			getView(ctx);
+		}
+		mTagText = (EditText) mView.findViewById(R.id.txt_flickr_tag_search);
 		mTagText.setOnEditorActionListener(new OnEditorActionListener() {
 
 			@Override
 			public boolean onEditorAction(TextView v, int actionId,
 					KeyEvent event) {
 				if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-					doSearch();
+					doSearch(v.getContext());
 					return true;
 				}
 				return false;
@@ -123,23 +114,24 @@ public class FlickrTagSearchView extends AbstractLinearLayoutHiddenView {
 		if (tag != null)
 			mSearchParameter.setTags(tag.toString().trim());
 
-		mCancelButton = (Button) findViewById(R.id.btn_cancel_search);
+		mCancelButton = (Button) mView.findViewById(R.id.btn_cancel_search);
 		mCancelButton.setOnClickListener(mOnClickListener);
 
-		mSearchButton = (Button) findViewById(R.id.btn_search);
+		mSearchButton = (Button) mView.findViewById(R.id.btn_search);
 		mSearchButton.setOnClickListener(mOnClickListener);
 
-		mRadioAnd = (RadioButton) findViewById(R.id.radio_and);
+		mRadioAnd = (RadioButton) mView.findViewById(R.id.radio_and);
 		mRadioAnd.setOnClickListener(mOnClickListener);
-		mRadioOr = (RadioButton) findViewById(R.id.radio_or);
+		mRadioOr = (RadioButton) mView.findViewById(R.id.radio_or);
 		mRadioOr.setOnClickListener(mOnClickListener);
 
-		mCheckInCommon = (CheckBox) findViewById(R.id.cb_f_search_in_common);
-		mCheckHasGeo = (CheckBox) findViewById(R.id.cb_f_search_has_geo);
+		mCheckInCommon = (CheckBox) mView
+				.findViewById(R.id.cb_f_search_in_common);
+		mCheckHasGeo = (CheckBox) mView.findViewById(R.id.cb_f_search_has_geo);
 		mCheckInCommon.setOnCheckedChangeListener(mOnCheckedChangeListener);
 		mCheckHasGeo.setOnCheckedChangeListener(mOnCheckedChangeListener);
 
-		//initialize the values for the search parameter
+		// initialize the values for the search parameter
 		mSearchParameter
 				.setSearchMode(mRadioAnd.isChecked() ? FlickrTagSearchMode.ALL
 						: FlickrTagSearchMode.ANY);
@@ -147,13 +139,11 @@ public class FlickrTagSearchView extends AbstractLinearLayoutHiddenView {
 		mSearchParameter.setSearchInCommon(mCheckInCommon.isChecked());
 	}
 
-	private void doSearch() {
+	private void doSearch(Context ctx) {
 		String s = mTagText.getText().toString();
 		if (s == null || s.trim().length() == 0) {
-			Toast.makeText(
-					getContext(),
-					getContext().getString(
-							R.string.msg_flickr_tag_search_empty_tag),
+			Toast.makeText(ctx,
+					ctx.getString(R.string.msg_flickr_tag_search_empty_tag),
 					Toast.LENGTH_LONG).show();
 			return;
 		}
@@ -163,12 +153,12 @@ public class FlickrTagSearchView extends AbstractLinearLayoutHiddenView {
 	}
 
 	@Override
-	public void onAction(int action, Object... data) {
-		// hide the soft keyboard
-		InputMethodManager imm = (InputMethodManager) getContext()
-				.getSystemService(Service.INPUT_METHOD_SERVICE);
-		imm.hideSoftInputFromWindow(mTagText.getWindowToken(), 0);
-		super.onAction(action, data);
+	public View getView(Context ctx) {
+		if (mView == null) {
+			mView = LayoutInflater.from(ctx).inflate(
+					R.layout.flickr_tag_search, null);
+		}
+		return mView;
 	}
 
 }

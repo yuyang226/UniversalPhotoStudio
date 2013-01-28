@@ -4,8 +4,9 @@
 package com.gmail.charleszq.picorner.ui;
 
 import android.content.Context;
-import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -27,31 +28,7 @@ public abstract class AbstractContactsView extends
 	protected ListView			mListView;
 	protected Button			mCancelButton;
 	protected FriendListAdapter	mAdapter;
-
-	/**
-	 * @param context
-	 */
-	public AbstractContactsView(Context context) {
-		super(context);
-	}
-
-	/**
-	 * @param context
-	 * @param attrs
-	 */
-	public AbstractContactsView(Context context, AttributeSet attrs) {
-		super(context, attrs);
-	}
-
-	/**
-	 * @param context
-	 * @param attrs
-	 * @param defStyle
-	 */
-	public AbstractContactsView(Context context, AttributeSet attrs,
-			int defStyle) {
-		super(context, attrs, defStyle);
-	}
+	protected View				mView;
 
 	/*
 	 * (non-Javadoc)
@@ -65,15 +42,17 @@ public abstract class AbstractContactsView extends
 	@Override
 	public void init(ICommand<?> command, IHiddenViewActionListener listener) {
 		super.init(command, listener);
-		View emptyView = findViewById(R.id.empty_friend_view);
+		Context ctx = (Context) command.getAdapter(Context.class);
+		mView = getView(ctx);
+		View emptyView = mView.findViewById(R.id.empty_friend_view);
 
-		mListView = (ListView) findViewById(R.id.list_f_friends);
-		mAdapter = new FriendListAdapter(getContext(), command);
+		mListView = (ListView) mView.findViewById(R.id.list_f_friends);
+		mAdapter = new FriendListAdapter(ctx, command);
 		mListView.setEmptyView(emptyView);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
 
-		mCancelButton = (Button) findViewById(R.id.btn_cancel_friends);
+		mCancelButton = (Button) mView.findViewById(R.id.btn_cancel_friends);
 		mCancelButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -82,7 +61,7 @@ public abstract class AbstractContactsView extends
 			}
 		});
 
-		getContactList();
+		getContactList(ctx);
 	}
 
 	@Override
@@ -92,5 +71,14 @@ public abstract class AbstractContactsView extends
 		onAction(ACTION_JUST_CMD, friend);
 	}
 
-	protected abstract void getContactList();
+	@Override
+	public View getView(Context ctx) {
+		if (mView == null) {
+			mView = LayoutInflater.from(ctx).inflate(R.layout.contacts_list,
+					null);
+		}
+		return mView;
+	}
+
+	protected abstract void getContactList(Context ctx);
 }

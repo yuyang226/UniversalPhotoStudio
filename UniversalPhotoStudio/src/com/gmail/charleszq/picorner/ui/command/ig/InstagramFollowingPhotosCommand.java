@@ -7,7 +7,6 @@ import java.util.Comparator;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
@@ -18,6 +17,7 @@ import com.gmail.charleszq.picorner.service.ig.InstagramUserPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
+import com.gmail.charleszq.picorner.ui.ig.InstagramContactView;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -74,8 +74,7 @@ public class InstagramFollowingPhotosCommand extends PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IHiddenView.class) {
 			if (mHiddenView == null) {
-				mHiddenView = (IHiddenView) LayoutInflater.from(mContext)
-						.inflate(R.layout.instagram_contacts_list, null);
+				mHiddenView = new InstagramContactView();
 			}
 			return mHiddenView;
 		}

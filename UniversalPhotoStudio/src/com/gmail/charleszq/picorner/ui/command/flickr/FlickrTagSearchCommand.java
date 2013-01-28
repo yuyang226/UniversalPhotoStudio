@@ -7,7 +7,6 @@ import java.util.Comparator;
 
 import android.content.Context;
 import android.util.Log;
-import android.view.LayoutInflater;
 
 import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
@@ -15,6 +14,7 @@ import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrTagSearchService;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.gmail.charleszq.picorner.ui.flickr.FlickrTagSearchView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 
 /**
@@ -47,8 +47,7 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IHiddenView.class) {
 			if (mHiddenView == null) {
-				mHiddenView = (IHiddenView) LayoutInflater.from(mContext)
-						.inflate(R.layout.flickr_tag_search, null);
+				mHiddenView = new FlickrTagSearchView();
 			}
 			return mHiddenView;
 		}

@@ -7,7 +7,6 @@ import java.util.Comparator;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
@@ -17,6 +16,7 @@ import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrUserPhotoStreamService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.gmail.charleszq.picorner.ui.flickr.FlickrContactsView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 
 /**
@@ -59,8 +59,7 @@ public class FlickrFriendPhotosCommand extends PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IHiddenView.class) {
 			if (mHiddenView == null) {
-				mHiddenView = (IHiddenView) LayoutInflater.from(mContext)
-						.inflate(R.layout.flickr_contacts_list, null);
+				mHiddenView = new FlickrContactsView();
 			}
 			return mHiddenView;
 		}
