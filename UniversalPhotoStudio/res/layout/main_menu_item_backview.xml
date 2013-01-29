@@ -52,8 +52,7 @@
             android:gravity="left|center"
             android:padding="5dp"
             android:text="@string/menu_item_slide_show"
-            android:textColor="@color/comment_bg_color"
-            android:visibility="gone" />
+            android:textColor="@color/comment_bg_color" />
 
         <TextView
             android:id="@+id/btn_offline_download"

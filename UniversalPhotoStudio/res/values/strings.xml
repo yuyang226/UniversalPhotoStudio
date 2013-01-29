@@ -58,7 +58,7 @@
     <string name="main_menu_filter_hint">menu filter</string>
     <string name="menu_item_offline_on_off">Offline</string>
     <string name="menu_item_refresh">Refresh</string>
-    <string name="menu_item_slide_show">Slide Show</string>
+    <string name="menu_item_slide_show">Slideshow</string>
     <string name="menu_item_back">Back</string>
     <string name="menu_item_offline_download">Download</string>
     <string name="menu_item_offline_delete_photos">Delete Offline Photos</string>

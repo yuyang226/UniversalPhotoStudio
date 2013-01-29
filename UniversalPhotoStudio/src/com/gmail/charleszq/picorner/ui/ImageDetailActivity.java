@@ -107,41 +107,39 @@ public class ImageDetailActivity extends FragmentActivity implements
 		// Set up activity to go full screen
 		getWindow().addFlags(LayoutParams.FLAG_FULLSCREEN);
 
-		{
-			final ActionBar actionBar = getActionBar();
+		final ActionBar actionBar = getActionBar();
 
-			// Hide title text and set home as up
-			actionBar.setDisplayHomeAsUpEnabled(true);
-			// actionBar.setDisplayShowTitleEnabled(false);
+		// Hide title text and set home as up
+		actionBar.setDisplayHomeAsUpEnabled(true);
+		// actionBar.setDisplayShowTitleEnabled(false);
 
-			// Hide and show the ActionBar as the visibility changes
-			mPager.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
-				@Override
-				public void onSystemUiVisibilityChange(int vis) {
-					boolean shown = true;
-					if ((vis & View.SYSTEM_UI_FLAG_LOW_PROFILE) != 0) {
-						actionBar.hide();
-						shown = false;
-					} else {
-						actionBar.show();
-					}
-
-					if (mActionBarListeners != null) {
-						for (IActionBarVisibleListener lis : mActionBarListeners) {
-							lis.onActionBarShown(shown);
-						}
-					}
-
+		// Hide and show the ActionBar as the visibility changes
+		mPager.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+			@Override
+			public void onSystemUiVisibilityChange(int vis) {
+				boolean shown = true;
+				if ((vis & View.SYSTEM_UI_FLAG_LOW_PROFILE) != 0) {
+					actionBar.hide();
+					shown = false;
+				} else {
+					actionBar.show();
 				}
-			});
 
-			// Start low profile mode and hide ActionBar
-			boolean showActionBar = getIntent().getBooleanExtra(
-					SHOW_ACTION_BAR_KEY, true);
-			if (!showActionBar) {
-				mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-				actionBar.hide();
+				if (mActionBarListeners != null) {
+					for (IActionBarVisibleListener lis : mActionBarListeners) {
+						lis.onActionBarShown(shown);
+					}
+				}
+
 			}
+		});
+
+		// Start low profile mode and hide ActionBar
+		boolean showActionBar = getIntent().getBooleanExtra(
+				SHOW_ACTION_BAR_KEY, true);
+		if (!showActionBar) {
+			mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+			actionBar.hide();
 		}
 
 		// Set the current item based on the extra passed in to this activity
@@ -166,20 +164,14 @@ public class ImageDetailActivity extends FragmentActivity implements
 					@Override
 					public void run() {
 						int currentPosition = mPager.getCurrentItem();
-						if (BuildConfig.DEBUG) {
-							Log.d(TAG, "current page position: " //$NON-NLS-1$
-									+ currentPosition);
-							Log.d(TAG,
-									"total pager child count: " + mPager.getChildCount()); //$NON-NLS-1$
-						}
 						currentPosition++;
-						if( currentPosition >= mAdapter.getCount())
+						if (currentPosition >= mAdapter.getCount())
 							currentPosition = 0;
 						mPager.setCurrentItem(currentPosition);
 					}
 				});
 			}
-		}, 2000, 8000);
+		}, 8000, 8000);
 		mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		getActionBar().hide();
 		if (BuildConfig.DEBUG)

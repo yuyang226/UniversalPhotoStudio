@@ -3,6 +3,8 @@
  */
 package com.gmail.charleszq.picorner.ui.helper;
 
+import java.util.List;
+
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -22,9 +24,13 @@ import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
+import com.gmail.charleszq.picorner.model.MediaObject;
+import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.offline.OfflineHandleService;
+import com.gmail.charleszq.picorner.ui.ImageDetailActivity;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -105,8 +111,8 @@ public class MainMenuCommandSectionListAdapter extends
 				.getApplication();
 		if (!app.isOfflineEnabled()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-			builder.setTitle(android.R.string.dialog_alert_title)
-					.setMessage(R.string.msg_pls_enable_offline_first);
+			builder.setTitle(android.R.string.dialog_alert_title).setMessage(
+					R.string.msg_pls_enable_offline_first);
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
 				@Override
@@ -167,7 +173,24 @@ public class MainMenuCommandSectionListAdapter extends
 					mContext.startService(serviceIntent);
 					break;
 				case R.id.btn_offline_slide_show:
-					// TODO implement in next release.
+					Intent slideshow = new Intent(v.getContext(),
+							ImageDetailActivity.class);
+					slideshow.putExtra(ImageDetailActivity.OFFLINE_COMMAND_KEY,
+							Boolean.toString(isOfflineEnabled));
+					slideshow.putExtra(ImageDetailActivity.SHOW_ACTION_BAR_KEY,
+							false);
+					slideshow.putExtra(
+							ImageDetailActivity.LARGE_IMAGE_POSITION, 0);
+					slideshow
+							.putExtra(ImageDetailActivity.SLIDE_SHOW_KEY, true);
+					List<MediaObject> photos = offline.getPhotoCollectionProcessor().getCachedPhotos(backView.getContext(), offline);
+					MediaObjectCollection col = new MediaObjectCollection();
+					for( MediaObject photo : photos ) {
+						col.addPhoto(photo);
+					}
+					SinglePagePhotosProvider dp = new SinglePagePhotosProvider(col);
+					slideshow.putExtra(ImageDetailActivity.DP_KEY, dp);
+					v.getContext().startActivity(slideshow);
 					break;
 				case R.id.btn_offline_download:
 					if (!isOfflineEnabled) {
@@ -256,6 +279,9 @@ public class MainMenuCommandSectionListAdapter extends
 		TextView btnSlideShow = (TextView) backView
 				.findViewById(R.id.btn_offline_slide_show);
 		btnSlideShow.setOnClickListener(listener);
+		btnSlideShow.setVisibility(OfflineControlFileUtil
+				.isOfflineControlFileReady(backView.getContext(), offline) ? View.VISIBLE
+				: View.GONE);
 
 		TextView btnDownload = (TextView) backView
 				.findViewById(R.id.btn_offline_download);
