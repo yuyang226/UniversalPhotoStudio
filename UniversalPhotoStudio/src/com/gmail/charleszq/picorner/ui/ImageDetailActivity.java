@@ -31,6 +31,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
 import com.gmail.charleszq.picorner.R;
@@ -152,6 +153,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 	}
 	
 	void startSlideShow() {
+		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		mTimer = new Timer();
 		mTimer.scheduleAtFixedRate(new TimerTask() {
 			@Override
@@ -160,11 +162,15 @@ public class ImageDetailActivity extends FragmentActivity implements
 					@Override
 					public void run() {
 						int currentPosition = mPager.getCurrentItem();
-						mPager.setCurrentItem(++currentPosition);
+						currentPosition++;
+						if( currentPosition >= mPager.getChildCount()) {
+							currentPosition = 0;
+						}
+						mPager.setCurrentItem(currentPosition);
 					}
 				});
 			}
-		}, 2000, 5000);
+		}, 2000, 8000);
 		mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		getActionBar().hide();
 		
@@ -231,6 +237,10 @@ public class ImageDetailActivity extends FragmentActivity implements
 		} else {
 			mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		}
+		if(mTimer!=null) {
+			mTimer.cancel();
+		}
+		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
 
 	void addActionBarListener(IActionBarVisibleListener lis) {
