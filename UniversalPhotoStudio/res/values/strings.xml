@@ -212,7 +212,7 @@
     <string name="summary_offline_download_timer">How often to check photo set updates.</string>
     
     <string name="pref_cat_slideshow">Slideshow</string>
-    <string name="pref.donot.show.shlideshow.dialog">Don\'t show slideshow setting dialog</string>
+    <string name="pref.donot.show.shlideshow.dialog">Show slideshow setting dialog</string>
     <string name="summary_pref.donot.show.shlideshow.dialog">Whether show the slideshow interval dialog when starting the slideshow.</string>
 	<string name="slide_show_interval_dlg_title">Slideshow Interval</string>
 	<string name="pref_slideshow_interval">Slideshow interval</string>

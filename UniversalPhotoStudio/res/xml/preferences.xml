@@ -21,7 +21,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_slideshow">
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:key="pref.do.not.show.slideshow.dlg"
             android:summary="@string/summary_pref.donot.show.shlideshow.dialog"
             android:title="@string/pref.donot.show.shlideshow.dialog" />
