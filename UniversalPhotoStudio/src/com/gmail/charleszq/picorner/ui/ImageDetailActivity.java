@@ -29,11 +29,13 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
@@ -41,6 +43,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ImageDetailActivity extends FragmentActivity implements
 		OnClickListener {
+	private static final String				TAG						= ImageDetailActivity.class
+																			.getSimpleName();
 	public static final String				LARGE_IMAGE_POSITION	= "extra_image";				//$NON-NLS-1$
 	public static final String				DP_KEY					= "data.provider";				//$NON-NLS-1$
 	public static final String				OFFLINE_COMMAND_KEY		= "is.command.support.offline"; //$NON-NLS-1$
@@ -127,7 +131,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 							lis.onActionBarShown(shown);
 						}
 					}
-					
+
 				}
 			});
 
@@ -151,7 +155,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 			startSlideShow();
 		}
 	}
-	
+
 	void startSlideShow() {
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		mTimer = new Timer();
@@ -162,10 +166,15 @@ public class ImageDetailActivity extends FragmentActivity implements
 					@Override
 					public void run() {
 						int currentPosition = mPager.getCurrentItem();
-						currentPosition++;
-						if( currentPosition >= mPager.getChildCount()) {
-							currentPosition = 0;
+						if (BuildConfig.DEBUG) {
+							Log.d(TAG, "current page position: " //$NON-NLS-1$
+									+ currentPosition);
+							Log.d(TAG,
+									"total pager child count: " + mPager.getChildCount()); //$NON-NLS-1$
 						}
+						currentPosition++;
+						if( currentPosition >= mAdapter.getCount())
+							currentPosition = 0;
 						mPager.setCurrentItem(currentPosition);
 					}
 				});
@@ -173,7 +182,8 @@ public class ImageDetailActivity extends FragmentActivity implements
 		}, 2000, 8000);
 		mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		getActionBar().hide();
-		
+		if (BuildConfig.DEBUG)
+			Log.d(TAG, "slide show starts..."); //$NON-NLS-1$
 	}
 
 	@Override
@@ -237,8 +247,10 @@ public class ImageDetailActivity extends FragmentActivity implements
 		} else {
 			mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		}
-		if(mTimer!=null) {
+		if (mTimer != null) {
 			mTimer.cancel();
+			if (BuildConfig.DEBUG)
+				Log.d(TAG, "slide show stoped..."); //$NON-NLS-1$
 		}
 		getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 	}
