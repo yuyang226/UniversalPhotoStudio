@@ -99,4 +99,11 @@ public interface IConstants {
 	static final String	PREF_DOWNLOAD_WHEN_CHARGING			= "pref_key_download_when_charging";			//$NON-NLS-1$
 	static final String	PREF_OFFLINE_TIMER_IN_HOURS			= "pref.key.offline.timer";					//$NON-NLS-1$
 	static final String	PREF_OFFLINE_MAX_PHOTO_GRID_SIZE	= "pref.key.photo.grid.max.size";				//$NON-NLS-1$
+
+	/**
+	 * Slideshow related
+	 */
+	static final String	PREF_DONT_SHOW_SLIDE_SHOW_DLG		= "pref.do.not.show.slideshow.dlg";			//$NON-NLS-1$
+	static final String	PREF_SLIDE_SHOW_INTERVAL			= "pref.slide.show.interval";					//$NON-NLS-1$
+	static final String	DEF_SLIDE_SHOW_INTERVAL				= "8000";										//$NON-NLS-1$
 }

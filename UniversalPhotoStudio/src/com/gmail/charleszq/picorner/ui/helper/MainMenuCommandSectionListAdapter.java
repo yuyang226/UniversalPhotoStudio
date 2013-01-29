@@ -11,6 +11,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,6 +22,8 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +38,7 @@ import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
+import com.gmail.charleszq.picorner.utils.IConstants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -144,7 +150,7 @@ public class MainMenuCommandSectionListAdapter extends
 
 			@Override
 			public void onClick(View v) {
-				boolean isOfflineEnabled = OfflineControlFileUtil
+				final boolean isOfflineEnabled = OfflineControlFileUtil
 						.isOfflineViewEnabled(mContext, offline);
 				switch (v.getId()) {
 				case R.id.btn_offline_back:
@@ -173,24 +179,8 @@ public class MainMenuCommandSectionListAdapter extends
 					mContext.startService(serviceIntent);
 					break;
 				case R.id.btn_offline_slide_show:
-					Intent slideshow = new Intent(v.getContext(),
-							ImageDetailActivity.class);
-					slideshow.putExtra(ImageDetailActivity.OFFLINE_COMMAND_KEY,
-							Boolean.toString(isOfflineEnabled));
-					slideshow.putExtra(ImageDetailActivity.SHOW_ACTION_BAR_KEY,
-							false);
-					slideshow.putExtra(
-							ImageDetailActivity.LARGE_IMAGE_POSITION, 0);
-					slideshow
-							.putExtra(ImageDetailActivity.SLIDE_SHOW_KEY, true);
-					List<MediaObject> photos = offline.getPhotoCollectionProcessor().getCachedPhotos(backView.getContext(), offline);
-					MediaObjectCollection col = new MediaObjectCollection();
-					for( MediaObject photo : photos ) {
-						col.addPhoto(photo);
-					}
-					SinglePagePhotosProvider dp = new SinglePagePhotosProvider(col);
-					slideshow.putExtra(ImageDetailActivity.DP_KEY, dp);
-					v.getContext().startActivity(slideshow);
+					final Context ctx = backView.getContext();
+					startSlideshow(ctx, offline);
 					break;
 				case R.id.btn_offline_download:
 					if (!isOfflineEnabled) {
@@ -279,9 +269,10 @@ public class MainMenuCommandSectionListAdapter extends
 		TextView btnSlideShow = (TextView) backView
 				.findViewById(R.id.btn_offline_slide_show);
 		btnSlideShow.setOnClickListener(listener);
-		btnSlideShow.setVisibility(OfflineControlFileUtil
-				.isOfflineControlFileReady(backView.getContext(), offline) ? View.VISIBLE
-				: View.GONE);
+		btnSlideShow
+				.setVisibility(OfflineControlFileUtil
+						.isOfflineControlFileReady(backView.getContext(),
+								offline) ? View.VISIBLE : View.GONE);
 
 		TextView btnDownload = (TextView) backView
 				.findViewById(R.id.btn_offline_download);
@@ -290,5 +281,112 @@ public class MainMenuCommandSectionListAdapter extends
 		TextView btnDeletePhoto = (TextView) backView
 				.findViewById(R.id.btn_offline_delete_photos);
 		btnDeletePhoto.setOnClickListener(listener);
+	}
+
+	/**
+	 * Starts the slideshow.
+	 * 
+	 * @param ctx
+	 * @param offline
+	 */
+	private void startSlideshow(final Context ctx,
+			final IOfflineViewParameter offline) {
+		final SharedPreferences sp = ctx.getSharedPreferences(
+				IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
+		boolean donotShowSlideshowDialog = sp.getBoolean(
+				IConstants.PREF_DONT_SHOW_SLIDE_SHOW_DLG, false);
+		if (donotShowSlideshowDialog) {
+			startSlideshowRightnow(ctx, offline);
+		} else {
+			// show the dialog
+			View dialogView = LayoutInflater.from(ctx).inflate(
+					R.layout.slideshow_setting_dlg, null);
+			final CheckBox checkDonotShow = (CheckBox) dialogView
+					.findViewById(R.id.cb_not_show_slideshow_dlg);
+			final SeekBar seekbar = (SeekBar) dialogView
+					.findViewById(R.id.seekBar1);
+			int interval = Integer.valueOf(sp.getString(
+					IConstants.PREF_SLIDE_SHOW_INTERVAL,
+					IConstants.DEF_SLIDE_SHOW_INTERVAL));
+			seekbar.setProgress(interval / 1000);
+			seekbar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress,
+						boolean fromUser) {
+					if (progress < 5) {
+						seekBar.setProgress(5);
+					}
+				}
+
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+
+				}
+
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+
+				}
+			});
+
+			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					if (which == DialogInterface.BUTTON_NEGATIVE) {
+						dialog.cancel();
+					} else {
+						if (checkDonotShow.isChecked()) {
+							// save settings
+							Editor editor = sp.edit();
+							editor.putBoolean(
+									IConstants.PREF_DONT_SHOW_SLIDE_SHOW_DLG,
+									true);
+							editor.putString(
+									IConstants.PREF_SLIDE_SHOW_INTERVAL,
+									Integer.toString(seekbar.getProgress() * 1000));
+							editor.commit();
+						}
+						startSlideshowRightnow(ctx, offline);
+					}
+				}
+			};
+			AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
+			builder.setTitle(android.R.string.dialog_alert_title);
+			builder.setView(dialogView);
+			builder.setPositiveButton(android.R.string.ok, listener);
+			builder.setNegativeButton(android.R.string.cancel, listener);
+			builder.create().show();
+		}
+	}
+
+	private void startSlideshowRightnow(final Context ctx,
+			final IOfflineViewParameter offline) {
+		final boolean isOfflineViewEnabled = OfflineControlFileUtil
+				.isOfflineViewEnabled(ctx, offline);
+		new Handler().post(new Runnable() {
+
+			@Override
+			public void run() {
+				Intent slideshow = new Intent(ctx, ImageDetailActivity.class);
+				slideshow.putExtra(ImageDetailActivity.OFFLINE_COMMAND_KEY,
+						Boolean.toString(isOfflineViewEnabled));
+				slideshow.putExtra(ImageDetailActivity.SHOW_ACTION_BAR_KEY,
+						false);
+				slideshow.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, 0);
+				slideshow.putExtra(ImageDetailActivity.SLIDE_SHOW_KEY, true);
+				List<MediaObject> photos = offline
+						.getPhotoCollectionProcessor().getCachedPhotos(ctx,
+								offline);
+				MediaObjectCollection col = new MediaObjectCollection();
+				for (MediaObject photo : photos) {
+					col.addPhoto(photo);
+				}
+				SinglePagePhotosProvider dp = new SinglePagePhotosProvider(col);
+				slideshow.putExtra(ImageDetailActivity.DP_KEY, dp);
+				ctx.startActivity(slideshow);
+			}
+		});
 	}
 }

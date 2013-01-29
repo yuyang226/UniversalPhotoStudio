@@ -32,4 +32,22 @@
 	    <item>400</item>
 	    <item>500</item>
 	</string-array>
+	
+	<string-array name="slideshow_interval_label">
+	    <item>5 seconds</item>
+	    <item>8 seconds</item>
+	    <item>10 seconds</item>
+	    <item>12 seconds</item>
+	    <item>15 seconds</item>
+	    <item>20 seconds</item>
+	</string-array>
+	
+	<string-array name="slideshow_interval_values">
+	    <item>5000</item>
+	    <item>8000</item>
+	    <item>10000</item>
+	    <item>12000</item>
+	    <item>15000</item>
+	    <item>20000</item>
+	</string-array>
 </resources>

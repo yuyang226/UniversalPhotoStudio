@@ -10,7 +10,6 @@
             android:key="pref.key.photo.grid.cache.size"
             android:summary="@string/summary_photo_grid_cache_size"
             android:title="@string/photo_grid_cache_size" />
-        
         <ListPreference
             android:defaultValue="300"
             android:dialogTitle="@string/photo_grid_max_size"
@@ -19,6 +18,21 @@
             android:key="pref.key.photo.grid.max.size"
             android:summary="@string/summary_photo_grid_max_size"
             android:title="@string/photo_grid_max_size" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/pref_cat_slideshow">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="pref.do.not.show.slideshow.dlg"
+            android:summary="@string/summary_pref.donot.show.shlideshow.dialog"
+            android:title="@string/pref.donot.show.shlideshow.dialog" />
+       <ListPreference
+            android:defaultValue="8000"
+            android:dialogTitle="@string/slide_show_interval_dlg_title"
+            android:entries="@array/slideshow_interval_label"
+            android:entryValues="@array/slideshow_interval_values"
+            android:key="pref.slide.show.interval"
+            android:summary="@string/summary_pref_slideshow_interval"
+            android:title="@string/pref_slideshow_interval" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_offline" >
         <CheckBoxPreference
