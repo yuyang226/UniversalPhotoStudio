@@ -586,7 +586,7 @@ public class ImageDetailFragment extends Fragment implements
 		case R.id.menu_item_slide_show:
 			ImageDetailActivity act = (ImageDetailActivity) getActivity();
 			if( act != null ) {
-				act.startSlideShow();
+				act.startSlideShow(0);
 			}
 			return true;
 		case R.id.menu_item_see_owner_photos:

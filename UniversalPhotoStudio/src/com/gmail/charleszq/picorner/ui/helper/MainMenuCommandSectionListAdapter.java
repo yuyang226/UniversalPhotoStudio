@@ -11,7 +11,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +34,6 @@ import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
-import com.gmail.charleszq.picorner.utils.IConstants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
@@ -287,31 +285,6 @@ public class MainMenuCommandSectionListAdapter extends
 	 * @param offline
 	 */
 	private void startSlideshow(final Context ctx,
-			final IOfflineViewParameter offline) {
-		final SharedPreferences sp = ctx.getSharedPreferences(
-				IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
-		boolean showSettingDialog = sp.getBoolean(
-				IConstants.PREF_DONT_SHOW_SLIDE_SHOW_DLG, true);
-		if (!showSettingDialog) {
-			startSlideshowRightnow(ctx, offline);
-		} else {
-
-			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
-
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					if (which == DialogInterface.BUTTON_NEGATIVE) {
-						dialog.cancel();
-					} else {
-						startSlideshowRightnow(ctx, offline);
-					}
-				}
-			};
-			SlideShowUtil.showSlideshowDialog(ctx, listener);
-		}
-	}
-
-	private void startSlideshowRightnow(final Context ctx,
 			final IOfflineViewParameter offline) {
 		final boolean isOfflineViewEnabled = OfflineControlFileUtil
 				.isOfflineViewEnabled(ctx, offline);

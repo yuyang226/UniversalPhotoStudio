@@ -20,14 +20,9 @@
             android:title="@string/photo_grid_max_size" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_slideshow">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="pref.do.not.show.slideshow.dlg"
-            android:summary="@string/summary_pref.donot.show.shlideshow.dialog"
-            android:title="@string/pref.donot.show.shlideshow.dialog" />
        <ListPreference
-            android:defaultValue="8000"
-            android:dialogTitle="@string/slide_show_interval_dlg_title"
+            android:defaultValue="5000"
+            android:dialogTitle="@string/pref_slideshow_interval"
             android:entries="@array/slideshow_interval_label"
             android:entryValues="@array/slideshow_interval_values"
             android:key="pref.slide.show.interval"

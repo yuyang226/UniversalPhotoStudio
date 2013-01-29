@@ -22,6 +22,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.ActionBar;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -39,6 +41,7 @@ import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
+import com.gmail.charleszq.picorner.utils.IConstants;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 public class ImageDetailActivity extends FragmentActivity implements
@@ -150,11 +153,20 @@ public class ImageDetailActivity extends FragmentActivity implements
 		}
 		boolean startSlide = getIntent().getBooleanExtra(SLIDE_SHOW_KEY, false);
 		if (startSlide) {
-			startSlideShow();
+			startSlideShow(1);
 		}
 	}
 
-	void startSlideShow() {
+	/**
+	 * If slide show command comes directly from the offline menu item, set the 'delay' to the same as
+	 * the interval, otherwise, it means the command comes from this activity itself, then just delay for
+	 * 2 seconds.
+	 * @param delay
+	 */
+	void startSlideShow(int delay) {
+		SharedPreferences sp = this.getSharedPreferences(IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
+		int interval = Integer.parseInt(sp.getString(IConstants.PREF_SLIDE_SHOW_INTERVAL, IConstants.DEF_SLIDE_SHOW_INTERVAL));
+		
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 		mTimer = new Timer();
 		mTimer.scheduleAtFixedRate(new TimerTask() {
@@ -171,7 +183,7 @@ public class ImageDetailActivity extends FragmentActivity implements
 					}
 				});
 			}
-		}, 8000, 8000);
+		}, delay == 1 ? interval : 2000, interval);
 		mPager.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
 		getActionBar().hide();
 		if (BuildConfig.DEBUG)

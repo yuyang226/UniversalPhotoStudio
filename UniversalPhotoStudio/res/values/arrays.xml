@@ -34,20 +34,26 @@
 	</string-array>
 	
 	<string-array name="slideshow_interval_label">
+	    <item>3 seconds</item>
 	    <item>5 seconds</item>
 	    <item>8 seconds</item>
 	    <item>10 seconds</item>
 	    <item>12 seconds</item>
 	    <item>15 seconds</item>
 	    <item>20 seconds</item>
+	    <item>30 seconds</item>
+	    <item>1 minute</item>
 	</string-array>
 	
 	<string-array name="slideshow_interval_values">
+	    <item>3000</item>
 	    <item>5000</item>
 	    <item>8000</item>
 	    <item>10000</item>
 	    <item>12000</item>
 	    <item>15000</item>
 	    <item>20000</item>
+	    <item>30000</item>
+	    <item>60000</item>
 	</string-array>
 </resources>
