@@ -56,4 +56,42 @@
 	    <item>30000</item>
 	    <item>60000</item>
 	</string-array>
+	
+	<string-array name="daydream_main_photo_source_label">
+	    <item>Offline Photos</item>
+	    <item>500px Popular</item>
+	    <item>500px Editors\' Choice</item>
+	    <item>500px Upcoming</item>
+	    <item>500px Fresh Today</item>
+	    <item>Flickr Interesting</item>
+	    <item>Instagram Popular</item>
+	</string-array>
+	
+	<string-array name="daydream_main_photo_source_values">
+	    <item>0</item>
+	    <item>1</item>
+	    <item>2</item>
+	    <item>3</item>
+	    <item>4</item>
+	    <item>5</item>
+	    <item>6</item>
+	</string-array>
+	
+	<string-array name="daydream_secondary_photo_source_label">
+	    <item>500px Popular</item>
+	    <item>500px Editors\' Choice</item>
+	    <item>500px Upcoming</item>
+	    <item>500px Fresh Today</item>
+	    <item>Flickr Interesting</item>
+	    <item>Instagram Popular</item>
+	</string-array>
+	
+	<string-array name="daydream_secondary_photo_source_values">
+	    <item>1</item>
+	    <item>2</item>
+	    <item>3</item>
+	    <item>4</item>
+	    <item>5</item>
+	    <item>6</item>
+	</string-array>
 </resources>

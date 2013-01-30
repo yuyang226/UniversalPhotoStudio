@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
+    <PreferenceCategory
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:title="@string/pref_cat_day_dream" >
+        <ListPreference
+            android:defaultValue="0"
+            android:dialogTitle="@string/pref_daydream_main_src_dlg_title"
+            android:entries="@array/daydream_main_photo_source_label"
+            android:entryValues="@array/daydream_main_photo_source_values"
+            android:key="pref.key.daydream.photo.src.main"
+            android:summary="@string/summary_pref_daydream_main_src"
+            android:title="@string/pref_daydream_main_src" />
+        <ListPreference
+            android:defaultValue="1"
+            android:dialogTitle="pref_daydream_secondary_src_dlg_title"
+            android:entries="@array/daydream_secondary_photo_source_label"
+            android:entryValues="@array/daydream_secondary_photo_source_values"
+            android:key="pref.key.daydream.photo.src.secondary"
+            android:summary="@string/summary_pref_daydream_secondary_src"
+            android:title="@string/pref_daydream_secondary_src" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/pref_cat_general" >
         <ListPreference
             android:defaultValue="100000000"

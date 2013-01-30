@@ -12,9 +12,10 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.service.dreams.DreamService;
 import android.util.Log;
 import android.widget.ImageView;
@@ -25,6 +26,13 @@ import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrInterestingPhotosService;
+import com.gmail.charleszq.picorner.service.ig.InstagramPopularsService;
+import com.gmail.charleszq.picorner.service.px500.Px500EditorsPhotosService;
+import com.gmail.charleszq.picorner.service.px500.Px500FreshTodayPhotosService;
+import com.gmail.charleszq.picorner.service.px500.Px500PopularPhotosService;
+import com.gmail.charleszq.picorner.service.px500.Px500UpcomingPhotosService;
+import com.gmail.charleszq.picorner.task.AbstractGeneralTask;
+import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -37,8 +45,6 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 @TargetApi(17)
 public class PicornerDaydream extends DreamService {
 
-	private static final String	TAG							= PicornerDaydream.class
-																	.getSimpleName();
 	private List<String>		mPhotoUrls;
 	private DisplayImageOptions	mImageDisplayOption			= null;
 	private ImageLoader			mImageLoader;
@@ -98,55 +104,19 @@ public class PicornerDaydream extends DreamService {
 	}
 
 	private void preparePhotos() {
-		mPhotoUrls = new ArrayList<String>();
 
-		if (mPhotoUrls.isEmpty()) {
-			AsyncTask<Void, Integer, List<String>> task = new AsyncTask<Void, Integer, List<String>>() {
-				@Override
-				protected List<String> doInBackground(Void... params) {
-					List<String> urls = new ArrayList<String>();
-					File[] files = PicornerDaydream.this.getFilesDir()
-							.listFiles();
-					for (File f : files) {
-						String name = f.getName();
-						if (name.contains(".png")) { //$NON-NLS-1$
-							String url = Uri.fromFile(f).toString();
-							urls.add(url);
-							if (BuildConfig.DEBUG) {
-								Log.d(TAG, "foudn offline photo: " + url); //$NON-NLS-1$
-							}
-						}
-					}
-
-					if (urls.isEmpty()) {
-						MediaObjectCollection col = null;
-						IPhotoService ps = new FlickrInterestingPhotosService();
-						try {
-							col = ps.getPhotos(IConstants.DEF_500PX_PAGE_SIZE,
-									0);
-							for( MediaObject photo : col.getPhotos()) {
-								urls.add(photo.getLargeUrl());
-							}
-						} catch (Exception e) {
-							if (BuildConfig.DEBUG) {
-								Log.e(TAG,
-										"Unable to get the photos for daydream: " + e.getMessage()); //$NON-NLS-1$
-							}
-						}
-					}
-					return urls;
+		PhotoTask task = new PhotoTask(this);
+		task.addTaskDoneListener(new IGeneralTaskDoneListener<List<String>>() {
+			@Override
+			public void onTaskDone(List<String> result) {
+				if (result != null) {
+					mPhotoUrls = new ArrayList<String>();
+					mPhotoUrls.addAll(result);
+					start();
 				}
-
-				@Override
-				protected void onPostExecute(List<String> result) {
-					if (result != null) {
-						mPhotoUrls.addAll(result);
-						start();
-					}
-				}
-			};
-			task.execute();
-		}
+			}
+		});
+		task.execute();
 	}
 
 	private void startAnimation() {
@@ -198,5 +168,103 @@ public class PicornerDaydream extends DreamService {
 		}
 		mAnimatorSet.playTogether(o1, o2);
 		mAnimatorSet.start();
+	}
+
+	private static class PhotoTask extends
+			AbstractGeneralTask<Void, Integer, List<String>> {
+
+		private Context	mContext;
+
+		PhotoTask(Context ctx) {
+			this.mContext = ctx;
+		}
+
+		private int getMainPhotoSource() {
+			SharedPreferences sp = mContext.getSharedPreferences(
+					IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
+			String src = sp.getString(IConstants.PREF_DAY_DREAM_MAIN_SRC, "0"); //$NON-NLS-1$
+			return Integer.parseInt(src);
+		}
+
+		private int getSecondaryPhotoSource() {
+			SharedPreferences sp = mContext.getSharedPreferences(
+					IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
+			String src = sp.getString(IConstants.PREF_DAY_DREAM_SECONDARY_SRC,
+					"1"); //$NON-NLS-1$
+			return Integer.parseInt(src);
+		}
+
+		private IPhotoService getNetworkPhotoSourceService(int which) {
+			switch (which) {
+			case 1:
+				return new Px500PopularPhotosService();
+			case 2:
+				return new Px500EditorsPhotosService();
+			case 3:
+				return new Px500UpcomingPhotosService();
+			case 4:
+				return new Px500FreshTodayPhotosService();
+			case 5:
+				return new FlickrInterestingPhotosService();
+			default:
+				return new InstagramPopularsService();
+			}
+		}
+
+		private int getPageSize(int which) {
+			switch (which) {
+			case 5:
+				return IConstants.DEF_SERVICE_PAGE_SIZE;
+			case 6:
+				return IConstants.DEF_IG_PAGE_SIZE;
+			default:
+				return IConstants.DEF_500PX_PAGE_SIZE;
+			}
+		}
+
+		@Override
+		protected List<String> doInBackground(Void... params) {
+			int mainSource = getMainPhotoSource();
+			if (mainSource == 0) {
+				List<String> urls = new ArrayList<String>();
+				File[] files = mContext.getFilesDir().listFiles();
+				for (File f : files) {
+					String name = f.getName();
+					if (name.contains(".png")) { //$NON-NLS-1$
+						String url = Uri.fromFile(f).toString();
+						urls.add(url);
+						if (BuildConfig.DEBUG) {
+							Log.d(TAG, "foudn offline photo: " + url); //$NON-NLS-1$
+						}
+					}
+				}
+
+				if (urls.isEmpty()) {
+					return getNetworkPhotos(getSecondaryPhotoSource());
+				} else
+					return urls;
+
+			} else {
+				return getNetworkPhotos(mainSource);
+			}
+		}
+
+		private List<String> getNetworkPhotos(int which) {
+			List<String> urls = new ArrayList<String>();
+			MediaObjectCollection col = null;
+			IPhotoService ps = getNetworkPhotoSourceService(which);
+			try {
+				col = ps.getPhotos(getPageSize(which), 0);
+				for (MediaObject photo : col.getPhotos()) {
+					urls.add(photo.getLargeUrl());
+				}
+			} catch (Exception e) {
+				if (BuildConfig.DEBUG) {
+					Log.e(TAG,
+							"Unable to get the photos for daydream: " + e.getMessage()); //$NON-NLS-1$
+				}
+			}
+			return urls;
+		}
 	}
 }
