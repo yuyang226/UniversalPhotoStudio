@@ -5,7 +5,7 @@ What's new (version 1.2.1)
 4, slideshow from image detail page;
 5, slideshow directly from the offline photo set menu item;
 6, slideshow interval preference setting added;
-7, daydream
+7, daydream and daydream settings
 
 What's new (version 1.2.0)
 1, bug fix: geo location information missed for some photos;
