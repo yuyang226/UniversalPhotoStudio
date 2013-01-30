@@ -115,8 +115,6 @@
     <string name="msg_loading_my_tags" tools:ignore="TypographyEllipsis">Loading my tags...</string>
     <string name="msg_tag_filter">Tag filter</string>
     <string name="msg_contact_filter">Friend filter</string>
-    <string name="msg_slideshow_interval">Slideshow Interval in seconds</string>
-    <string name="msg_dont_show_dlg">Save this interval and don\'t show this next time</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
@@ -211,7 +209,6 @@
     <string name="offline_download_timer">Offline Timer</string>
     <string name="summary_offline_download_timer">How often to check photo set updates.</string>
     
-    <string name="pref_cat_slideshow">Slideshow</string>
 	<string name="pref_slideshow_interval">Slideshow interval</string>
 	<string name="summary_pref_slideshow_interval">Set the time interval of slideshow</string>
 	
