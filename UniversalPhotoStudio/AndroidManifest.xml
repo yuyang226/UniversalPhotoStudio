@@ -103,7 +103,7 @@
             android:name=".ui.PicornerDaydream"
             android:exported="true"
             android:label="@string/app_name"
-            android:permission="android.permission.READ_EXTERNAL_STORAGE" >
+            android:permission="android.permission.INTERNET" >
             <intent-filter>
                 <action android:name="android.service.dreams.DreamService" />
 

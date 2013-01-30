@@ -14,6 +14,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.service.dreams.DreamService;
 import android.util.Log;
 import android.widget.ImageView;
@@ -23,7 +24,7 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.service.IPhotoService;
-import com.gmail.charleszq.picorner.service.px500.Px500PopularPhotosService;
+import com.gmail.charleszq.picorner.service.flickr.FlickrInterestingPhotosService;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -60,8 +61,12 @@ public class PicornerDaydream extends DreamService {
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
 				.imageScaleType(ImageScaleType.EXACTLY).build();
 		mImageLoader = ImageLoader.getInstance();
+	}
 
-		int secondaryIndex = mCurrentShowingPhotoIndex++;
+	private void start() {
+		if (mPhotoUrls.isEmpty())
+			return;
+		int secondaryIndex = mCurrentShowingPhotoIndex + 1;
 		if (secondaryIndex >= mPhotoUrls.size()) {
 			secondaryIndex = 0;
 		}
@@ -79,7 +84,6 @@ public class PicornerDaydream extends DreamService {
 		this.setContentView(R.layout.day_dream);
 		mImageView1 = (ImageView) findViewById(R.id.img_dream_1);
 		mImageView2 = (ImageView) findViewById(R.id.img_dream_2);
-		mImageView2.setAlpha(0f);
 		mFadeView = mImageView1;
 		mInView = mImageView2;
 	}
@@ -88,35 +92,60 @@ public class PicornerDaydream extends DreamService {
 	public void onDreamingStopped() {
 		mImageDisplayOption = null;
 		mPhotoUrls = null;
-		mAnimatorSet.cancel();
+		if (mAnimatorSet != null)
+			mAnimatorSet.cancel();
 		super.onDreamingStopped();
 	}
 
 	private void preparePhotos() {
 		mPhotoUrls = new ArrayList<String>();
-		File[] files = this.getFilesDir().listFiles();
-		for (File f : files) {
-			String name = f.getName();
-			if (name.contains(".png")) { //$NON-NLS-1$
-				String url = Uri.fromFile(f).toString();
-				mPhotoUrls.add(url);
-				if (BuildConfig.DEBUG) {
-					Log.d(TAG, "foudn offline photo: " + url); //$NON-NLS-1$
-				}
-			}
-		}
 
 		if (mPhotoUrls.isEmpty()) {
-			MediaObjectCollection col = null;
-			IPhotoService ps = new Px500PopularPhotosService();
-			try {
-				col = ps.getPhotos(IConstants.DEF_500PX_PAGE_SIZE, 0);
-				for (MediaObject photo : col.getPhotos()) {
-					mPhotoUrls.add(photo.getLargeUrl());
+			AsyncTask<Void, Integer, List<String>> task = new AsyncTask<Void, Integer, List<String>>() {
+				@Override
+				protected List<String> doInBackground(Void... params) {
+					List<String> urls = new ArrayList<String>();
+					File[] files = PicornerDaydream.this.getFilesDir()
+							.listFiles();
+					for (File f : files) {
+						String name = f.getName();
+						if (name.contains(".png")) { //$NON-NLS-1$
+							String url = Uri.fromFile(f).toString();
+							urls.add(url);
+							if (BuildConfig.DEBUG) {
+								Log.d(TAG, "foudn offline photo: " + url); //$NON-NLS-1$
+							}
+						}
+					}
+
+					if (urls.isEmpty()) {
+						MediaObjectCollection col = null;
+						IPhotoService ps = new FlickrInterestingPhotosService();
+						try {
+							col = ps.getPhotos(IConstants.DEF_500PX_PAGE_SIZE,
+									0);
+							for( MediaObject photo : col.getPhotos()) {
+								urls.add(photo.getLargeUrl());
+							}
+						} catch (Exception e) {
+							if (BuildConfig.DEBUG) {
+								Log.e(TAG,
+										"Unable to get the photos for daydream: " + e.getMessage()); //$NON-NLS-1$
+							}
+						}
+					}
+					return urls;
 				}
-			} catch (Exception e) {
-				// TODO
-			}
+
+				@Override
+				protected void onPostExecute(List<String> result) {
+					if (result != null) {
+						mPhotoUrls.addAll(result);
+						start();
+					}
+				}
+			};
+			task.execute();
 		}
 	}
 
@@ -132,7 +161,7 @@ public class PicornerDaydream extends DreamService {
 
 				@Override
 				public void onAnimationStart(Animator animation) {
-					int secondaryIndex = mCurrentShowingPhotoIndex++;
+					int secondaryIndex = mCurrentShowingPhotoIndex + 1;
 					if (secondaryIndex >= mPhotoUrls.size()) {
 						secondaryIndex = 0;
 					}
