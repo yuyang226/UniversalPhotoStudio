@@ -155,7 +155,7 @@ public abstract class AbstractPhotoGridFragment extends
 		@Override
 		protected void loadMoreData() {
 			mPullToRefreshGridView.setShowViewWhileRefreshing(true);
-			loadMoreData();
+			AbstractPhotoGridFragment.this.loadMoreData();
 		}
 	};
 
@@ -204,13 +204,6 @@ public abstract class AbstractPhotoGridFragment extends
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnItemClickListener(this);
 
-		// This listener is used to get the final width of the GridView and then
-		// calculate the
-		// number of columns and the width of each column. The width of each
-		// column is variable
-		// as the GridView has stretchMode=columnWidth. The column width is used
-		// to set the height
-		// of each view so we get nice square thumbnails.
 		mGridView.getViewTreeObserver().addOnGlobalLayoutListener(
 				new ViewTreeObserver.OnGlobalLayoutListener() {
 					@Override
