@@ -63,6 +63,7 @@
     <string name="menu_item_offline_download">Download</string>
     <string name="menu_item_offline_delete_photos">Delete Offline Photos</string>
     <string name="menu_item_my_frequently_used_tags">My Flickr Tags</string>
+    <string name="menu_item_rate">Rate</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
@@ -115,6 +116,7 @@
     <string name="msg_loading_my_tags" tools:ignore="TypographyEllipsis">Loading my tags...</string>
     <string name="msg_tag_filter">Tag filter</string>
     <string name="msg_contact_filter">Friend filter</string>
+    <string name="msg_thanks_rating">Thank you for rating.</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
