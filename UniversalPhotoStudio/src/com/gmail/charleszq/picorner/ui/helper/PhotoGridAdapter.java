@@ -55,6 +55,7 @@ public class PhotoGridAdapter extends BaseAdapter {
 
 		mImageDisplayOptions = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.empty_photo).cacheInMemory()
+				.showImageForEmptyUri(R.drawable.empty_photo)
 				.showImageForEmptyUri(R.drawable.empty_photo).cacheOnDisc()
 				.imageScaleType(ImageScaleType.EXACTLY)
 				.bitmapConfig(Bitmap.Config.RGB_565).build();
