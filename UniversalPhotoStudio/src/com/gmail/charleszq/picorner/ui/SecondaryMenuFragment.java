@@ -54,127 +54,64 @@ import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListe
 public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		implements OnItemClickListener, IMessageConsumer {
 
-	private ListView							mListView;
-	private FrameLayout							mBackViewContainer;
-	private AbstractCommandSectionListAdapter	mSectionAdapter;
+	private ListView mListView;
+	private FrameLayout mBackViewContainer;
+	private AbstractCommandSectionListAdapter mSectionAdapter;
 
-	private boolean								mHideAnimation			= true;
+	private boolean mHideAnimation = true;
 
-	private ProgressDialog						mProgressDialog;
+	private ProgressDialog mProgressDialog;
 
 	/**
 	 * The listener to cancel the hidden view.
 	 */
-	private IHiddenViewActionListener			mHideViewCancelListener	= new IHiddenViewActionListener() {
+	private IHiddenViewActionListener mHideViewCancelListener = new IHiddenViewActionListener() {
 
-																			@SuppressWarnings("unchecked")
-																			@Override
-																			public void onAction(
-																					int action,
-																					ICommand<?> command,
-																					IHiddenView view,
-																					Object... data) {
-																				switch (action) {
-																				case IHiddenView.ACTION_CANCEL:
-																					// animation
-																					// to
-																					// show
-																					// the
-																					// list
-																					mListView
-																							.animate()
-																							.setDuration(
-																									500)
-																							.rotationY(
-																									-270f)
-																							.rotationY(
-																									0f);
-																					break;
-																				case IHiddenView.ACTION_DO:
-																					doCommand(
-																							(ICommand<Object>) command,
-																							data);
-																					mListView
-																							.animate()
-																							.setDuration(
-																									500)
-																							.rotationY(
-																									-270f)
-																							.rotationY(
-																									0f);
-																					break;
-																				case IHiddenView.ACTION_JUST_CMD:
-																					doCommand(
-																							(ICommand<Object>) command,
-																							data);
-																					break;
-																				}
-																			}
+		@SuppressWarnings("unchecked")
+		@Override
+		public void onAction(int action, ICommand<?> command, IHiddenView view,
+				Object... data) {
+			switch (action) {
+			case IHiddenView.ACTION_CANCEL:
+				mListView.animate().setDuration(500).rotationY(-270f)
+						.rotationY(0f);
+				break;
+			case IHiddenView.ACTION_DO:
+				doCommand((ICommand<Object>) command, data);
+				mListView.animate().setDuration(500).rotationY(-270f)
+						.rotationY(0f);
+				break;
+			case IHiddenView.ACTION_JUST_CMD:
+				doCommand((ICommand<Object>) command, data);
+				break;
+			}
+		}
 
-																		};
+	};
 
-	private ICommandDoneListener<Object>		mCommandDoneListener	= new ICommandDoneListener<Object>() {
+	private ICommandDoneListener<Object> mCommandDoneListener = new ICommandDoneListener<Object>() {
 
-																			@Override
-																			public void onCommandDone(
-																					ICommand<Object> command,
-																					Object t) {
-																				MainSlideMenuActivity act = (MainSlideMenuActivity) SecondaryMenuFragment.this
-																						.getActivity();
-																				if (act == null) {
-																					// when
-																					// configuration
-																					// changed,
-																					// the
-																					// activity
-																					// of
-																					// this
-																					// fragement
-																					// might
-																					// be
-																					// null,
-																					// then
-																					// try
-																					// to
-																					// get
-																					// it
-																					// from
-																					// the
-																					// command.
-																					Context ctx = (Context) command
-																							.getAdapter(Context.class);
-																					if (ctx != null
-																							&& ctx instanceof MainSlideMenuActivity) {
-																						act = (MainSlideMenuActivity) ctx;
-																					}
-																				}
-																				if (act != null)
-																					act.onCommandDone(
-																							command,
-																							t);
+		@Override
+		public void onCommandDone(ICommand<Object> command, Object t) {
+			MainSlideMenuActivity act = (MainSlideMenuActivity) SecondaryMenuFragment.this
+					.getActivity();
+			if (act == null) {
+				Context ctx = (Context) command.getAdapter(Context.class);
+				if (ctx != null && ctx instanceof MainSlideMenuActivity) {
+					act = (MainSlideMenuActivity) ctx;
+				}
+			}
+			if (act != null)
+				act.onCommandDone(command, t);
 
-																				if (mProgressDialog != null
-																						&& mProgressDialog
-																								.isShowing()) {
-																					try {
-																						mProgressDialog
-																								.cancel();
-																					} catch (Exception e) {
-																						// do
-																						// nothing,
-																						// when
-																						// configuration
-																						// changes,
-																						// this
-																						// might
-																						// happend,
-																						// but
-																						// no
-																						// harm.
-																					}
-																				}
-																			}
-																		};
+			if (mProgressDialog != null && mProgressDialog.isShowing()) {
+				try {
+					mProgressDialog.cancel();
+				} catch (Exception e) {
+				}
+			}
+		}
+	};
 
 	/**
 	 * 
@@ -202,8 +139,10 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		mListView.setOnItemClickListener(this);
 		return v;
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see android.support.v4.app.Fragment#onResume()
 	 */
 	@Override
@@ -226,7 +165,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 		command = new SettingsCommand(getActivity());
 		commands.add(command);
-		
+
 		command = new RateCommand(getActivity());
 		commands.add(command);
 
@@ -239,34 +178,34 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		commands.add(command);
 		command = new FlickrTagSearchCommand(getActivity());
 		commands.add(command);
-		
-		if( app.getFlickrToken() != null ) {
+
+		if (app.getFlickrToken() != null) {
 			command = new MyFrequentlyUsedTagsCommand(getActivity());
 			commands.add(command);
 		}
-		
+
 		int index = commands.size();
 		boolean accountReady = false;
-		if( app.getPxUserProfile() != null ) {
+		if (app.getPxUserProfile() != null) {
 			command = new Px500FriendPhotosCommand(getActivity());
 			commands.add(command);
 			accountReady = true;
 		}
-		
+
 		if (app.getFlickrToken() != null) {
 			// friends
 			command = new FlickrFriendPhotosCommand(getActivity());
 			commands.add(command);
 			accountReady = true;
 		}
-		
-		if( app.getInstagramUserId() != null ) {
+
+		if (app.getInstagramUserId() != null) {
 			command = new InstagramFollowingPhotosCommand(getActivity());
 			commands.add(command);
 			accountReady = true;
 		}
-		
-		if( accountReady ) {
+
+		if (accountReady) {
 			command = new MenuSectionHeaderCommand(getActivity(),
 					getString(R.string.menu_header_friends));
 			commands.add(index, command);
@@ -373,15 +312,19 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 	@Override
 	public boolean consumeMessage(Message msg) {
-		if( msg.getMessageType() == Message.USER_LOGIN_IN ) {
+		if (msg.getMessageType() == Message.USER_LOGIN_IN) {
 			prepareMenuItems();
 		}
-		//return false, so other UI might also be interested in this message.
+		// return false, so other UI might also be interested in this message.
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see com.gmail.charleszq.picorner.ui.AbstractFragmentWithImageFetcher#onCreate(android.os.Bundle)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.gmail.charleszq.picorner.ui.AbstractFragmentWithImageFetcher#onCreate
+	 * (android.os.Bundle)
 	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -389,14 +332,17 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		MessageBus.addConsumer(this);
 	}
 
-	/* (non-Javadoc)
-	 * @see com.gmail.charleszq.picorner.ui.AbstractFragmentWithImageFetcher#onDestroy()
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.gmail.charleszq.picorner.ui.AbstractFragmentWithImageFetcher#onDestroy
+	 * ()
 	 */
 	@Override
 	public void onDestroy() {
 		MessageBus.removeConsumer(this);
 		super.onDestroy();
 	}
-	
-	
+
 }

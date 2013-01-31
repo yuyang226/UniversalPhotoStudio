@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -26,12 +25,13 @@ import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.msg.Message;
 import com.gmail.charleszq.picorner.msg.MessageBus;
+import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchGeoLocationTask;
 import com.gmail.charleszq.picorner.ui.helper.PhotoDetailViewPagerAdapter;
-import com.gmail.charleszq.picorner.utils.IConstants;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.viewpagerindicator.TitlePageIndicator;
 
 /**
@@ -51,6 +51,8 @@ public class PhotoDetailActivity extends FragmentActivity {
 
 	private int mCurrentPos;
 	private MediaObject mCurrentPhoto;
+
+	private DisplayImageOptions mImageDisplayOption;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -87,22 +89,21 @@ public class PhotoDetailActivity extends FragmentActivity {
 	}
 
 	private void loadImage() {
-		File bsRoot = new File(Environment.getExternalStorageDirectory(),
-				IConstants.SD_CARD_FOLDER_NAME);
-		if (!bsRoot.exists() && !bsRoot.mkdir()) {
-			return;
-		}
-		File shareFile = new File(bsRoot, IConstants.SHARE_TEMP_FILE_NAME);
 		ImageLoader loader = ImageLoader.getInstance();
-		loader.loadImage(this, Uri.fromFile(shareFile).toString(),
-				new SimpleImageLoadingListener() {
-
-					@Override
-					public void onLoadingComplete(Bitmap loadedImage) {
-						mImageView.setImageBitmap(loadedImage);
-					}
-
-				});
+		if (mImageDisplayOption == null)
+			mImageDisplayOption = new DisplayImageOptions.Builder()
+					.cacheInMemory().cacheOnDisc()
+					.bitmapConfig(Bitmap.Config.RGB_565)
+					.imageScaleType(ImageScaleType.EXACTLY).build();
+		
+		String filename = OfflineControlFileUtil.getOfflinePhotoFileName(mCurrentPhoto);
+		File offlineFile = this.getFileStreamPath(filename);
+		String url = mCurrentPhoto.getLargeUrl();
+		if( offlineFile.exists() ) {
+			url = Uri.fromFile(offlineFile).toString();
+		}
+		loader.displayImage(url, mImageView,
+				mImageDisplayOption);
 	}
 
 	/**

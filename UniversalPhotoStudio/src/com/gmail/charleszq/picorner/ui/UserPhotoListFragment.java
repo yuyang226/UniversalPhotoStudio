@@ -71,6 +71,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	@Override
 	protected void loadFirstPage() {
 		super.loadFirstPage();
+		mProgressBar.setVisibility(View.VISIBLE);
 		if (mMediaSourceType == MediaSourceType.FLICKR.ordinal()) {
 			mCurrentCommand = new FlickrUserPhotosCommand(getActivity(),
 					mCurrentUser);
@@ -144,7 +145,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 					}
 				}
 			};
-			AbstractContextAwareTask<String, Integer,Boolean> followTask = null;
+			AbstractContextAwareTask<String, Integer, Boolean> followTask = null;
 			if (mMediaSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
 				followTask = new InstagramFollowUserTask(getActivity());
 			} else if (mMediaSourceType == MediaSourceType.PX500.ordinal()) {

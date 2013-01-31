@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
@@ -30,7 +31,6 @@ import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
-import com.gmail.charleszq.picorner.ui.helper.OneTimeScrollListener;
 import com.gmail.charleszq.picorner.ui.helper.PhotoGridAdapter;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -51,6 +51,7 @@ public abstract class AbstractPhotoGridFragment extends
 	 */
 	protected PullToRefreshGridView mPullToRefreshGridView;
 	protected GridView mGridView;
+	protected ProgressBar mProgressBar;
 
 	/**
 	 * Photo grid size information.
@@ -94,8 +95,9 @@ public abstract class AbstractPhotoGridFragment extends
 				Object comparator = command.getAdapter(Comparator.class);
 				mPhotosProvider.loadData(t, comparator == null ? command
 						: comparator);
-				mAdapter.notifyDataSetChanged();
 			}
+			mAdapter.notifyDataSetChanged();
+			mProgressBar.setVisibility(View.INVISIBLE);
 		}
 	};
 
@@ -151,14 +153,6 @@ public abstract class AbstractPhotoGridFragment extends
 		}
 	};
 
-	private OneTimeScrollListener mScrollListener = new OneTimeScrollListener() {
-		@Override
-		protected void loadMoreData() {
-			mPullToRefreshGridView.setShowViewWhileRefreshing(true);
-			AbstractPhotoGridFragment.this.loadMoreData();
-		}
-	};
-
 	/**
 	 * 
 	 */
@@ -170,10 +164,6 @@ public abstract class AbstractPhotoGridFragment extends
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		initialIntentData(getActivity().getIntent());
-
-		if (mGridView != null) {
-			mGridView.setOnScrollListener(null);
-		}
 		if (mCurrentCommand != null) {
 			mCurrentCommand.attacheContext(getActivity());
 		}
@@ -185,12 +175,11 @@ public abstract class AbstractPhotoGridFragment extends
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.user_photo_list_fragment, null);
 		// layout ui controls
+		mProgressBar = (ProgressBar) v.findViewById(R.id.progressBar1);
 		mPullToRefreshGridView = (PullToRefreshGridView) v
 				.findViewById(R.id.grid_user_photos);
 		mPullToRefreshGridView.setOnRefreshListener(mOnPullToRefreshListener);
-
 		mGridView = mPullToRefreshGridView.getRefreshableView();
-		mGridView.setOnScrollListener(mScrollListener);
 
 		mImageThumbSize = getResources().getDimensionPixelSize(
 				R.dimen.image_thumbnail_size);
@@ -280,11 +269,8 @@ public abstract class AbstractPhotoGridFragment extends
 	 * Loads the first page
 	 */
 	protected void loadFirstPage() {
-		if (mPullToRefreshGridView != null) {
-			mPullToRefreshGridView.setRefreshing(false);
-			mPullToRefreshGridView.onRefreshComplete();
-			mPullToRefreshGridView.setMode(Mode.BOTH);
-		}
+		mPullToRefreshGridView.onRefreshComplete();
+		mPullToRefreshGridView.setMode(Mode.BOTH);
 	}
 
 	/**
