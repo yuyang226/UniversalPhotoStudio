@@ -4,11 +4,10 @@
 package com.gmail.charleszq.picorner.ui;
 
 import java.io.File;
-import java.io.FileInputStream;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.FragmentActivity;
@@ -31,6 +30,8 @@ import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchGeoLocationTask;
 import com.gmail.charleszq.picorner.ui.helper.PhotoDetailViewPagerAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
 import com.viewpagerindicator.TitlePageIndicator;
 
 /**
@@ -92,13 +93,16 @@ public class PhotoDetailActivity extends FragmentActivity {
 			return;
 		}
 		File shareFile = new File(bsRoot, IConstants.SHARE_TEMP_FILE_NAME);
-		FileInputStream fis;
-		try {
-			fis = new FileInputStream(shareFile);
-			Bitmap bmp = BitmapFactory.decodeFileDescriptor(fis.getFD());
-			mImageView.setImageBitmap(bmp);
-		} catch (Exception e) {
-		}
+		ImageLoader loader = ImageLoader.getInstance();
+		loader.loadImage(this, Uri.fromFile(shareFile).toString(),
+				new SimpleImageLoadingListener() {
+
+					@Override
+					public void onLoadingComplete(Bitmap loadedImage) {
+						mImageView.setImageBitmap(loadedImage);
+					}
+
+				});
 	}
 
 	/**
