@@ -63,7 +63,7 @@ public class PicornerDaydream extends DreamService {
 		super.onDreamingStarted();
 		preparePhotos();
 		mImageDisplayOption = new DisplayImageOptions.Builder()
-				.showStubImage(R.drawable.empty_photo).cacheInMemory()
+				.showStubImage(R.drawable.ic_launcher).cacheInMemory()
 				.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
 				.imageScaleType(ImageScaleType.EXACTLY).build();
 		mImageLoader = ImageLoader.getInstance();
