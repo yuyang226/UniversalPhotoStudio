@@ -28,7 +28,6 @@ public interface IConstants {
 	 * Use this as the marker to say there is no more data, if server returns
 	 * photos less than this, we say there is no more there.
 	 */
-	static final int	DEF_MIN_PAGE_SIZE					= 10;
 	static final int	DEF_MAX_TOTAL_PHOTOS				= 300;
 
 	static final String	SD_CARD_FOLDER_NAME					= "picorner";									//$NON-NLS-1$

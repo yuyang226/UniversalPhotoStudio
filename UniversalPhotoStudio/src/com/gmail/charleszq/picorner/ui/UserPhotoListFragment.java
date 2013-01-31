@@ -70,6 +70,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 
 	@Override
 	protected void loadFirstPage() {
+		super.loadFirstPage();
 		if (mMediaSourceType == MediaSourceType.FLICKR.ordinal()) {
 			mCurrentCommand = new FlickrUserPhotosCommand(getActivity(),
 					mCurrentUser);
@@ -104,15 +105,6 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 
 	@Override
 	protected void bindData() {
-		if (mCurrentUser != null && mLoadingMessageText != null) {
-			String s = String.format(mLoadingMessage,
-					mCurrentUser.getUserName());
-			mLoadingMessageText.setText(s);
-			if (mCurrentCommand != null) {
-				// configuraton change
-				mLoadingMessageText.setVisibility(View.GONE);
-			}
-		}
 	}
 
 	@Override

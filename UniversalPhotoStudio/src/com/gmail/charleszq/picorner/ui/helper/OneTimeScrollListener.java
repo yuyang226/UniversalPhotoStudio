@@ -42,8 +42,6 @@ public abstract class OneTimeScrollListener implements OnScrollListener {
 	public void onScroll(AbsListView view, int firstVisibleItem,
 			int visibleItemCount, int totalItemCount) {
 		if (mLoading) {
-			//			Log.d(TAG, String.format("previous total: %s, current total %s", //$NON-NLS-1$
-			// mPreviousTotal, totalItemCount));
 			if (totalItemCount > mPreviousTotal) {
 				mLoading = false;
 				mPreviousTotal = totalItemCount;
@@ -56,10 +54,10 @@ public abstract class OneTimeScrollListener implements OnScrollListener {
 		}
 
 	}
-
+	
 	@Override
 	public void onScrollStateChanged(AbsListView view, int scrollState) {
-		showGridTitle( scrollState != OnScrollListener.SCROLL_STATE_IDLE);
+		//do nothing.
 	}
 
 	/**
@@ -67,10 +65,4 @@ public abstract class OneTimeScrollListener implements OnScrollListener {
 	 * needs to do another stuffs like hiding the messsages.
 	 */
 	abstract protected void loadMoreData();
-	
-	/**
-	 * Shows/Hides the grid title.
-	 * @param show
-	 */
-	abstract protected void showGridTitle(boolean show);
 }

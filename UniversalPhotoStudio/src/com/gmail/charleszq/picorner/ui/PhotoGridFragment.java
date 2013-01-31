@@ -35,6 +35,7 @@ import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
 /**
@@ -97,17 +98,13 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		// remove command done from the main menu UI, so later when load more
 		// data, this method will not called again.
 		mNoMoreData = false;
+		if( mPullToRefreshGridView != null ) {
+			mPullToRefreshGridView.setMode(Mode.BOTH);
+		}
 
 		mPhotosProvider.loadData(photos, mCommandComparator == null ? command
 				: mCommandComparator);
 		mAdapter.notifyDataSetChanged();
-		if (mGridView != null) {
-			mScrollListener = new GridOnScrollListener(this);
-			mGridView.setOnScrollListener(mScrollListener);
-		}
-		if (mLoadingMessageText != null) {
-			mLoadingMessageText.setVisibility(View.GONE);
-		}
 
 		// add listener for load more, so after done, we can hide the message.
 		mCurrentCommand.setCommndDoneListener(mCommandDoneListener);
@@ -186,6 +183,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
 	@Override
 	protected void loadFirstPage() {
+		super.loadFirstPage();
 		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
 		if (act != null && mCurrentCommand == null) {
 			act.loadDefaultPhotoList();
@@ -204,9 +202,5 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
 	@Override
 	protected void bindData() {
-		if (mLoadingMessageText != null) {
-			mLoadingMessageText.setText(mLoadingMessage);
-			mLoadingMessageText.setVisibility(View.GONE);
-		}
 	}
 }

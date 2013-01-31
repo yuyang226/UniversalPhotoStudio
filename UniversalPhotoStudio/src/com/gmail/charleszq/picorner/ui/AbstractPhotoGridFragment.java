@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.TextView;
 
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
@@ -32,7 +32,10 @@ import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.helper.OneTimeScrollListener;
 import com.gmail.charleszq.picorner.ui.helper.PhotoGridAdapter;
-import com.gmail.charleszq.picorner.utils.IConstants;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.handmark.pulltorefresh.library.PullToRefreshGridView;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -46,8 +49,8 @@ public abstract class AbstractPhotoGridFragment extends
 	/**
 	 * UI controls
 	 */
+	protected PullToRefreshGridView mPullToRefreshGridView;
 	protected GridView mGridView;
-	protected TextView mLoadingMessageText;
 
 	/**
 	 * Photo grid size information.
@@ -72,31 +75,26 @@ public abstract class AbstractPhotoGridFragment extends
 	protected PhotoListCommand mCurrentCommand;
 
 	/**
-	 * m1: 'Photo of user' m2: 'Loading photos of user..."
-	 */
-	protected String mLoadingMessage;
-
-	/**
 	 * The marker to say no more data, then we don't do loading more.
 	 */
 	protected boolean mNoMoreData = false;
-
-	protected OneTimeScrollListener mScrollListener = null;
 
 	ICommandDoneListener<MediaObjectCollection> mCommandDoneListener = new ICommandDoneListener<MediaObjectCollection>() {
 		@Override
 		public void onCommandDone(ICommand<MediaObjectCollection> command,
 				MediaObjectCollection t) {
+			if (mPullToRefreshGridView != null)
+				mPullToRefreshGridView.onRefreshComplete();
 			if (t == null || t.getPhotos().isEmpty()) {
 				mNoMoreData = true;
+				if (mPullToRefreshGridView != null) {
+					mPullToRefreshGridView.setMode(Mode.PULL_FROM_START);
+				}
 			} else {
 				Object comparator = command.getAdapter(Comparator.class);
 				mPhotosProvider.loadData(t, comparator == null ? command
 						: comparator);
 				mAdapter.notifyDataSetChanged();
-			}
-			if (mLoadingMessageText != null) {
-				mLoadingMessageText.setVisibility(View.GONE);
 			}
 		}
 	};
@@ -140,6 +138,27 @@ public abstract class AbstractPhotoGridFragment extends
 		}
 	};
 
+	private OnRefreshListener2<GridView> mOnPullToRefreshListener = new OnRefreshListener2<GridView>() {
+
+		@Override
+		public void onPullDownToRefresh(PullToRefreshBase<GridView> refreshView) {
+			mPullToRefreshGridView.onRefreshComplete(); // TODO
+		}
+
+		@Override
+		public void onPullUpToRefresh(PullToRefreshBase<GridView> refreshView) {
+			loadMoreData();
+		}
+	};
+
+	private OneTimeScrollListener mScrollListener = new OneTimeScrollListener() {
+		@Override
+		protected void loadMoreData() {
+			mPullToRefreshGridView.setShowViewWhileRefreshing(true);
+			loadMoreData();
+		}
+	};
+
 	/**
 	 * 
 	 */
@@ -151,8 +170,6 @@ public abstract class AbstractPhotoGridFragment extends
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		initialIntentData(getActivity().getIntent());
-
-		mLoadingMessage = getLoadingMessage();
 
 		if (mGridView != null) {
 			mGridView.setOnScrollListener(null);
@@ -168,8 +185,12 @@ public abstract class AbstractPhotoGridFragment extends
 			Bundle savedInstanceState) {
 		View v = inflater.inflate(R.layout.user_photo_list_fragment, null);
 		// layout ui controls
-		mGridView = (GridView) v.findViewById(R.id.grid_user_photos);
-		mLoadingMessageText = (TextView) v.findViewById(R.id.txt_user_info);
+		mPullToRefreshGridView = (PullToRefreshGridView) v
+				.findViewById(R.id.grid_user_photos);
+		mPullToRefreshGridView.setOnRefreshListener(mOnPullToRefreshListener);
+
+		mGridView = mPullToRefreshGridView.getRefreshableView();
+		mGridView.setOnScrollListener(mScrollListener);
 
 		mImageThumbSize = getResources().getDimensionPixelSize(
 				R.dimen.image_thumbnail_size);
@@ -182,8 +203,6 @@ public abstract class AbstractPhotoGridFragment extends
 		}
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnItemClickListener(this);
-		mScrollListener = new GridOnScrollListener(this);
-		mGridView.setOnScrollListener(mScrollListener);
 
 		// This listener is used to get the final width of the GridView and then
 		// calculate the
@@ -215,6 +234,9 @@ public abstract class AbstractPhotoGridFragment extends
 	@Override
 	public void onResume() {
 		super.onResume();
+		if (mPullToRefreshGridView != null) {
+			mPullToRefreshGridView.onRefreshComplete();
+		}
 		if (mCurrentCommand == null) {
 			loadFirstPage();
 		}
@@ -242,33 +264,35 @@ public abstract class AbstractPhotoGridFragment extends
 				"When loading more, there are %s photos currently", //$NON-NLS-1$
 				currentPhotoSize));
 		boolean noMoreData = mNoMoreData;
-		noMoreData = noMoreData
-				| currentPhotoSize > getMaxPhotoSize();
-		if (currentPhotoSize > 0) {
-			noMoreData = noMoreData
-					| currentPhotoSize < IConstants.DEF_MIN_PAGE_SIZE;
-		}
+		noMoreData = noMoreData | currentPhotoSize > getMaxPhotoSize();
 		if (noMoreData) {
-			Log.d(TAG, "There is no more data."); //$NON-NLS-1$
-			mLoadingMessageText.setVisibility(View.GONE);
+			mPullToRefreshGridView.setMode(Mode.PULL_FROM_START);
+			mPullToRefreshGridView.onRefreshComplete();
 			return;
 		}
 
-		Log.d(TAG, "Loading more..."); //$NON-NLS-1$
-		mLoadingMessageText.setVisibility(View.VISIBLE);
+		if (BuildConfig.DEBUG)
+			Log.d(TAG, "Loading more..."); //$NON-NLS-1$
 		if (mCurrentCommand != null)
 			mCurrentCommand.loadNextPage();
 	}
-	
+
 	private int getMaxPhotoSize() {
-		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
 		return app.getMaxPhotoSize();
 	}
 
 	/**
 	 * Loads the first page
 	 */
-	abstract protected void loadFirstPage();
+	protected void loadFirstPage() {
+		if (mPullToRefreshGridView != null) {
+			mPullToRefreshGridView.setRefreshing(false);
+			mPullToRefreshGridView.onRefreshComplete();
+			mPullToRefreshGridView.setMode(Mode.BOTH);
+		}
+	}
 
 	/**
 	 * Initializes the intent data
@@ -288,22 +312,4 @@ public abstract class AbstractPhotoGridFragment extends
 	 * Bind data to UI, the data usually comes from the intent
 	 */
 	abstract protected void bindData();
-
-	protected static class GridOnScrollListener extends OneTimeScrollListener {
-
-		private AbstractPhotoGridFragment mFragment;
-
-		protected GridOnScrollListener(AbstractPhotoGridFragment fragment) {
-			this.mFragment = fragment;
-		}
-
-		@Override
-		protected void loadMoreData() {
-			mFragment.loadMoreData();
-		}
-
-		@Override
-		protected void showGridTitle(boolean show) {
-		}
-	}
 }
