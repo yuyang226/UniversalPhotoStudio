@@ -80,7 +80,13 @@ public class FlickrPhotoSetOfflineProcessor implements
 			return;
 		}
 
+		if (BuildConfig.DEBUG)
+			Log.d(TAG, "Begin to download photos."); //$NON-NLS-1$
 		for (MediaObject photo : photos) {
+			if (BuildConfig.DEBUG)
+				Log.d(TAG,
+						String.format(
+								"processing url '%s'.", photo.getLargeUrl())); //$NON-NLS-1$
 			String photoFileName = OfflineControlFileUtil
 					.getOfflinePhotoFileName(photo);
 			if (OfflineControlFileUtil.isFileExist(ctx, photoFileName)) {
