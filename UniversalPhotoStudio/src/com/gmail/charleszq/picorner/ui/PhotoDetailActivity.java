@@ -104,7 +104,6 @@ public class PhotoDetailActivity extends FragmentActivity {
 		}
 		loader.displayImage(url, mImageView,
 				mImageDisplayOption);
-
 	}
 
 	/**

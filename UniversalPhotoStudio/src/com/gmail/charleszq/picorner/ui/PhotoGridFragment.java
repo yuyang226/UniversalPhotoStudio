@@ -75,7 +75,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 			Log.w(TAG, "activity is null!"); //$NON-NLS-1$
 			return;
 		}
-
+		
 		if (command == mCurrentCommand) {
 
 			Object newComparator = command.getAdapter(Comparator.class);

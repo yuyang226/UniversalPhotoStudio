@@ -18,4 +18,12 @@
         ptr:ptrDrawable="@drawable/ic_action_refresh_holo_light"
         ptr:ptrMode="both" />
 
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible" />
+
 </FrameLayout>

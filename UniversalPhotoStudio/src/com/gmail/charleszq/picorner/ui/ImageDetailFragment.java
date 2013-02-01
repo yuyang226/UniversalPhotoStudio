@@ -487,7 +487,6 @@ public class ImageDetailFragment extends Fragment implements
 		switch (mPhoto.getMediaSource()) {
 		case INSTAGRAM:
 		case PX500:
-			Log.d(TAG, "Do I like this photo? " + mPhoto.isUserLiked()); //$NON-NLS-1$
 			mUserLikeThePhoto = mPhoto.isUserLiked();
 			getActivity().invalidateOptionsMenu();
 			break;
@@ -505,7 +504,6 @@ public class ImageDetailFragment extends Fragment implements
 					@Override
 					public void onTaskDone(Boolean result) {
 						mPhoto.setUserLiked(result);
-						Log.d(TAG, "Do I like this photo? " + result.toString()); //$NON-NLS-1$
 						mUserLikeThePhoto = mPhoto.isUserLiked();
 						Activity act = ImageDetailFragment.this.getActivity();
 						if (act != null) {
