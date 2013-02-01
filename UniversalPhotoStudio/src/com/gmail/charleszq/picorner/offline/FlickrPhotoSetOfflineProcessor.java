@@ -96,7 +96,6 @@ public class FlickrPhotoSetOfflineProcessor implements
 						Context.MODE_PRIVATE);
 				boolean ret = ImageUtils.downloadUrlToStream(url, fos);
 				if (ret) {
-//					ImageUtils.saveImageToFile(ctx, photoFileName, bmp);
 					if (BuildConfig.DEBUG)
 						Log.d(TAG, String.format(
 								"photo %s saved for offline view later.", url)); //$NON-NLS-1$
