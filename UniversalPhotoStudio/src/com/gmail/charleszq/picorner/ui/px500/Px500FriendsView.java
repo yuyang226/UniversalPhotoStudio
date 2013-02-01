@@ -15,16 +15,22 @@ import com.gmail.charleszq.picorner.ui.helper.AbstractContactsView;
 
 /**
  * @author charles(charleszq@gmail.com)
- *
+ * 
  */
 public class Px500FriendsView extends AbstractContactsView {
 
-	/* (non-Javadoc)
-	 * @see com.gmail.charleszq.picorner.ui.AbstractContactsView#getContactList(android.content.Context)
+	private Px500FetchFriendsTask task;
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.gmail.charleszq.picorner.ui.AbstractContactsView#getContactList(android
+	 * .content.Context)
 	 */
 	@Override
 	protected void getContactList(Context ctx) {
-		Px500FetchFriendsTask task = new Px500FetchFriendsTask(ctx);
+		task = new Px500FetchFriendsTask(ctx);
 		task.addTaskDoneListener(new IGeneralTaskDoneListener<List<Author>>() {
 
 			@Override
@@ -36,6 +42,12 @@ public class Px500FriendsView extends AbstractContactsView {
 			}
 		});
 		task.execute();
+	}
+
+	@Override
+	protected void onCancel() {
+		if (task != null)
+			task.cancel(true);
 	}
 
 }

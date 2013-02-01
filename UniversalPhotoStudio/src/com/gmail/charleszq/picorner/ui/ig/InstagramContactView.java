@@ -18,6 +18,8 @@ import com.gmail.charleszq.picorner.ui.helper.AbstractContactsView;
  * 
  */
 public class InstagramContactView extends AbstractContactsView {
+	
+	private InstagramGetFollowingListTask task;
 
 	/*
 	 * (non-Javadoc)
@@ -27,7 +29,7 @@ public class InstagramContactView extends AbstractContactsView {
 	 */
 	@Override
 	protected void getContactList(Context ctx) {
-		InstagramGetFollowingListTask task = new InstagramGetFollowingListTask(
+		 task = new InstagramGetFollowingListTask(
 				ctx);
 		task.addTaskDoneListener(new IGeneralTaskDoneListener<List<Author>>() {
 
@@ -40,5 +42,11 @@ public class InstagramContactView extends AbstractContactsView {
 			}
 		});
 		task.execute();
+	}
+
+	@Override
+	protected void onCancel() {
+		if( task != null ) 
+			task.cancel(true);
 	}
 }

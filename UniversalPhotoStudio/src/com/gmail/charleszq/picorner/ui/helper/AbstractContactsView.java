@@ -86,6 +86,7 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 		mCancelButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				onCancel();
 				onAction(ACTION_CANCEL);
 			}
 		});
@@ -118,4 +119,5 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 	}
 
 	protected abstract void getContactList(Context ctx);
+	protected abstract void onCancel();
 }

@@ -18,10 +18,12 @@ import com.gmail.charleszq.picorner.ui.helper.AbstractContactsView;
  * 
  */
 public class FlickrContactsView extends AbstractContactsView {
+	
+	private FlickrFriendsTask task;
 
 	@Override
 	protected void getContactList(Context ctx) {
-		FlickrFriendsTask task = new FlickrFriendsTask(ctx);
+		task = new FlickrFriendsTask(ctx);
 		task.addTaskDoneListener(new IGeneralTaskDoneListener<List<Author>>() {
 
 			@Override
@@ -33,6 +35,12 @@ public class FlickrContactsView extends AbstractContactsView {
 			}
 		});
 		task.execute();
+	}
+
+	@Override
+	protected void onCancel() {
+		if( task != null )
+			task.cancel(true);
 	}
 
 }
