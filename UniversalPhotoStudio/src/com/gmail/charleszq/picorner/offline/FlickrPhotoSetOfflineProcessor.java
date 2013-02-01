@@ -3,6 +3,8 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -34,14 +36,14 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
 public class FlickrPhotoSetOfflineProcessor implements
 		IOfflinePhotoCollectionProcessor {
 
-	private static final String	TAG			= FlickrPhotoSetOfflineProcessor.class
-													.getSimpleName();
-	private static final int	PAGE_SIZE	= 100;
+	private static final String TAG = FlickrPhotoSetOfflineProcessor.class
+			.getSimpleName();
+	private static final int PAGE_SIZE = 100;
 
 	/**
 	 * The extras.
 	 */
-	private Set<String>			mExtras		= null;
+	private Set<String> mExtras = null;
 
 	/*
 	 * (non-Javadoc)
@@ -89,14 +91,21 @@ public class FlickrPhotoSetOfflineProcessor implements
 			}
 
 			String url = photo.getLargeUrl();
-			if( ImageUtils.saveImageToFile(ctx, photoFileName, url)) {
-				if( BuildConfig.DEBUG ) {
-					Log.d(TAG, "image download " + photoFileName); //$NON-NLS-1$
+			try {
+				FileOutputStream fos = ctx.openFileOutput(photoFileName,
+						Context.MODE_PRIVATE);
+				boolean ret = ImageUtils.downloadUrlToStream(url, fos);
+				if (ret) {
+//					ImageUtils.saveImageToFile(ctx, photoFileName, bmp);
+					if (BuildConfig.DEBUG)
+						Log.d(TAG, String.format(
+								"photo %s saved for offline view later.", url)); //$NON-NLS-1$
+				} else {
+					ctx.deleteFile(photoFileName);
+					if (BuildConfig.DEBUG)
+						Log.w(TAG, "unable to download the image: " + url); //$NON-NLS-1$
 				}
-			} else {
-				if( BuildConfig.DEBUG ) {
-					Log.w(TAG, "fail to download the photo " + photoFileName); //$NON-NLS-1$
-				}
+			} catch (FileNotFoundException e) {
 			}
 		}
 	}
@@ -125,7 +134,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 		int lastPage = getLastPage(serverPhotoCount, delta);
 		boolean duplicateFound = false;
 		int newPhotoAdded = 0;
-		while (lastPage > 0 && newPhotoAdded < delta ) {
+		while (lastPage > 0 && newPhotoAdded < delta) {
 			MediaObjectCollection col = getPhotoForPage(ctx, param, lastPage,
 					delta);
 			if (col != null) {
@@ -134,7 +143,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 						continue;
 					} else {
 						photos.add(0, p);
-						newPhotoAdded ++;
+						newPhotoAdded++;
 					}
 				}
 			}

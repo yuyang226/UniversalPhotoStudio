@@ -81,14 +81,6 @@ public class OfflineHandleService extends IntentService {
 		if (param == null) {
 			downlaodPhotos(param, false);
 		} else {
-			// if (actionType != REFRESH_OFFLINE_PARAM)
-			// manageRepository(param, actionType == ADD_OFFLINE_PARAM ? true
-			// : false);
-			// else {
-			// if (BuildConfig.DEBUG)
-			//					Log.d(TAG, "Refresh the given offline parameter."); //$NON-NLS-1$
-			// downlaodPhotos(param);
-			// }
 			switch (actionType) {
 			case ADD_OFFLINE_PARAM:
 				manageRepository(param, true);

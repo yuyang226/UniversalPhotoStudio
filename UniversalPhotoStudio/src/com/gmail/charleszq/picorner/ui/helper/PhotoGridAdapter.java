@@ -31,15 +31,17 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
  */
 public class PhotoGridAdapter extends BaseAdapter {
 
-	private Context									mContext;
-	private IPhotosProvider							mPhotos;
-	private ImageLoader								mImageFetcher;
+	private static final String TAG = PhotoGridAdapter.class.getSimpleName();
 
-	private int										mNumColumns	= 0;
-	private int										mItemHeight;
-	private android.widget.AbsListView.LayoutParams	mImageViewLayoutParams;
+	private Context mContext;
+	private IPhotosProvider mPhotos;
+	private ImageLoader mImageFetcher;
 
-	private DisplayImageOptions						mImageDisplayOptions;
+	private int mNumColumns = 0;
+	private int mItemHeight;
+	private android.widget.AbsListView.LayoutParams mImageViewLayoutParams;
+
+	private DisplayImageOptions mImageDisplayOptions;
 
 	/**
 	 * 
@@ -124,8 +126,7 @@ public class PhotoGridAdapter extends BaseAdapter {
 				mImageFetcher.displayImage(uri.toString(), imageView,
 						mImageDisplayOptions);
 				if (BuildConfig.DEBUG)
-					Log.d(PhotoGridAdapter.class.getSimpleName(),
-							"Load thumb image from offline cache."); //$NON-NLS-1$
+					Log.d(TAG, "Load thumb image from offline cache."); //$NON-NLS-1$
 			} else {
 				mImageFetcher.displayImage(photo.getThumbUrl(), imageView,
 						mImageDisplayOptions);
