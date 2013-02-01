@@ -3,7 +3,6 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -110,7 +109,11 @@ public class FlickrPhotoSetOfflineProcessor implements
 					if (BuildConfig.DEBUG)
 						Log.w(TAG, "unable to download the image: " + url); //$NON-NLS-1$
 				}
-			} catch (FileNotFoundException e) {
+			} catch (Exception e) {
+				ctx.deleteFile(photoFileName);
+				if (BuildConfig.DEBUG)
+					Log.e(TAG,
+							"error to download and save photo: " + e.getMessage()); //$NON-NLS-1$
 			}
 		}
 	}
