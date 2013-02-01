@@ -1,4 +1,4 @@
-What's new (version 1.2.1)
+What's new (version 2.0)
 1, instagram following list;
 2, 500px friend list;
 3, my flickr tag search;
@@ -6,6 +6,8 @@ What's new (version 1.2.1)
 5, slideshow directly from the offline photo set menu item;
 6, slideshow interval preference setting added;
 7, daydream and daydream settings
+8, change secondary menu item back view animation;
+9, bug fixs
 
 What's new (version 1.2.0)
 1, bug fix: geo location information missed for some photos;
