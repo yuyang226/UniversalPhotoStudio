@@ -14,6 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Space;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.Author;
@@ -26,20 +27,18 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
 public abstract class AbstractContactsView extends AbstractHiddenView implements
 		OnItemClickListener {
 
-	protected ListView			mListView;
-	protected Button			mCancelButton;
-	protected FriendListAdapter	mAdapter;
-	protected View				mView;
-	protected SearchView		mSearchView;
-	
-	private SearchView.OnQueryTextListener	mQueryTextListener	= new SearchView.OnQueryTextListener() {
+	protected ListView mListView;
+	protected Button mCancelButton;
+	protected FriendListAdapter mAdapter;
+	protected View mView;
+	protected SearchView mSearchView;
+	protected Space mSpace;
+
+	private SearchView.OnQueryTextListener mQueryTextListener = new SearchView.OnQueryTextListener() {
 
 		@Override
-		public boolean onQueryTextSubmit(
-				String query) {
-			if (query == null
-					|| query.trim()
-							.length() == 0)
+		public boolean onQueryTextSubmit(String query) {
+			if (query == null || query.trim().length() == 0)
 				return false;
 			FriendListFilter filter = new FriendListFilter(mAdapter);
 			filter.filter(query);
@@ -47,12 +46,8 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 		}
 
 		@Override
-		public boolean onQueryTextChange(
-				String newText) {
-			if (newText == null
-					|| newText
-							.trim()
-							.length() == 0) {
+		public boolean onQueryTextChange(String newText) {
+			if (newText == null || newText.trim().length() == 0) {
 				mAdapter.mFilteredOutFriends.clear();
 				mAdapter.mFilteredOutFriends.addAll(mAdapter.mFriends);
 				mAdapter.notifyDataSetChanged();
@@ -77,6 +72,9 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 		Context ctx = (Context) command.getAdapter(Context.class);
 		mView = getView(ctx);
 		View emptyView = mView.findViewById(R.id.empty_friend_view);
+		
+		mSpace = (Space) mView.findViewById(R.id.contact_list_space);
+		mSpace.setVisibility(View.VISIBLE);
 
 		mListView = (ListView) mView.findViewById(R.id.list_f_friends);
 		mAdapter = new FriendListAdapter(ctx, command);
@@ -89,7 +87,6 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 			@Override
 			public void onClick(View v) {
 				onAction(ACTION_CANCEL);
-				mCancelButton.setVisibility(View.INVISIBLE);
 			}
 		});
 

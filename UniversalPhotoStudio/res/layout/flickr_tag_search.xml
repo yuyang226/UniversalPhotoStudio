@@ -3,7 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@color/search_panel_bg"
     android:orientation="vertical"
     android:padding="10dp" >
 
@@ -26,6 +25,7 @@
         android:id="@+id/txt_flickr_tag_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/search_panel_bg"
         android:ems="10"
         android:hint="@string/msg_flickr_tag_search_hint"
         android:imeOptions="actionSearch"

@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     android:orientation="vertical" >
 
     <SearchView
         android:id="@+id/contact_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:queryHint="@string/msg_contact_filter"
-        android:iconifiedByDefault="false" />
-    
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/msg_contact_filter" />
+
     <ListView
         android:id="@+id/list_f_friends"
         android:layout_width="match_parent"
@@ -21,9 +22,9 @@
     <LinearLayout
         android:id="@+id/empty_friend_view"
         android:layout_width="match_parent"
-        android:padding="10dp"
         android:layout_height="?android:attr/listPreferredItemHeight"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:padding="10dp" >
 
         <ProgressBar
             android:id="@+id/progressBar1"
@@ -33,10 +34,16 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingLeft="5dp"
             android:gravity="left|center"
+            android:paddingLeft="5dp"
             android:text="@string/msg_loading_my_friends" />
     </LinearLayout>
+
+    <Space
+        android:id="@+id/contact_list_space"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3" />
 
     <Button
         android:id="@+id/btn_cancel_friends"
@@ -45,7 +52,6 @@
         android:layout_height="wrap_content"
         android:drawableLeft="@drawable/ic_action_back"
         android:gravity="center"
-        android:text="@string/menu_item_back"
-        android:visibility="invisible" />
+        android:text="@string/menu_item_back" />
 
 </LinearLayout>

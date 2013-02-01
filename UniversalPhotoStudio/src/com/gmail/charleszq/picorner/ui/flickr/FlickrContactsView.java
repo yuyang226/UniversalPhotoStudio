@@ -28,7 +28,7 @@ public class FlickrContactsView extends AbstractContactsView {
 			public void onTaskDone(List<Author> result) {
 				if (result != null) {
 					mAdapter.populateFriends(result);
-					mCancelButton.setVisibility(View.VISIBLE);
+					mSpace.setVisibility(View.GONE);
 				}
 			}
 		});

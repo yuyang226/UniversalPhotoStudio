@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="5dp"
     android:orientation="vertical" >
 
     <SearchView
         android:id="@+id/tag_filter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:queryHint="@string/msg_tag_filter"
-        android:iconifiedByDefault="false" />
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/msg_tag_filter" />
 
     <ListView
         android:id="@+id/list_f_tags"
@@ -37,6 +38,12 @@
             android:paddingLeft="5dp"
             android:text="@string/msg_loading_my_tags" />
     </LinearLayout>
+
+    <Space
+        android:id="@+id/my_tags_space"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3" />
 
     <LinearLayout
         android:id="@+id/btn_container"

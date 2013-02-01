@@ -27,6 +27,7 @@ import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Space;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
@@ -45,58 +46,46 @@ import com.googlecode.flickrjandroid.tags.Tag;
 public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 		OnItemClickListener {
 
-	private ListView						mListView;
-	private Button							mCancelButton, mSearchButton;
-	private View							mButtonContainer;
-	private TagListAdapter					mAdapter;
-	private Set<String>						mSelectedTags		= new HashSet<String>();
-	private SearchView						mTagFilter;
+	private ListView mListView;
+	private Button mCancelButton, mSearchButton;
+	private TagListAdapter mAdapter;
+	private Set<String> mSelectedTags = new HashSet<String>();
+	private SearchView mTagFilter;
+	private Space mSpace;
 
-	private OnClickListener					mOnClickListener	= new OnClickListener() {
+	private OnClickListener mOnClickListener = new OnClickListener() {
 
-																	@Override
-																	public void onClick(
-																			View v) {
-																		if (v == mCancelButton) {
-																			onAction(ACTION_CANCEL);
-																		} else if (v == mSearchButton) {
-																			doSearch(v
-																					.getContext());
-																		}
-																	}
-																};
-	private SearchView.OnQueryTextListener	mQueryTextListener	= new SearchView.OnQueryTextListener() {
+		@Override
+		public void onClick(View v) {
+			if (v == mCancelButton) {
+				onAction(ACTION_CANCEL);
+			} else if (v == mSearchButton) {
+				doSearch(v.getContext());
+			}
+		}
+	};
+	private SearchView.OnQueryTextListener mQueryTextListener = new SearchView.OnQueryTextListener() {
 
-																	@Override
-																	public boolean onQueryTextSubmit(
-																			String query) {
-																		if (query == null
-																				|| query.trim()
-																						.length() == 0)
-																			return false;
-																		TagFilter filter = new TagFilter(
-																				mAdapter);
-																		filter.filter(query);
-																		return true;
-																	}
+		@Override
+		public boolean onQueryTextSubmit(String query) {
+			if (query == null || query.trim().length() == 0)
+				return false;
+			TagFilter filter = new TagFilter(mAdapter);
+			filter.filter(query);
+			return true;
+		}
 
-																	@Override
-																	public boolean onQueryTextChange(
-																			String newText) {
-																		if (newText == null
-																				|| newText
-																						.trim()
-																						.length() == 0) {
-																			mAdapter.mFilteredTags
-																					.clear();
-																			mAdapter.mFilteredTags
-																					.addAll(mAdapter.mTags);
-																			mAdapter.notifyDataSetChanged();
-																			return true;
-																		} else
-																			return false;
-																	}
-																};
+		@Override
+		public boolean onQueryTextChange(String newText) {
+			if (newText == null || newText.trim().length() == 0) {
+				mAdapter.mFilteredTags.clear();
+				mAdapter.mFilteredTags.addAll(mAdapter.mTags);
+				mAdapter.notifyDataSetChanged();
+				return true;
+			} else
+				return false;
+		}
+	};
 
 	/*
 	 * (non-Javadoc)
@@ -137,6 +126,10 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 		super.init(command, listener);
 		Context ctx = (Context) command.getAdapter(Context.class);
 		mView = getView(ctx);
+		
+		//space
+		mSpace = (Space) mView.findViewById(R.id.my_tags_space);
+		mSpace.setVisibility(View.VISIBLE);
 
 		// list view.
 		mListView = (ListView) mView.findViewById(R.id.list_f_tags);
@@ -147,8 +140,6 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 		mListView.setOnItemClickListener(this);
 
 		// buttons
-		mButtonContainer = mView.findViewById(R.id.btn_container);
-		mButtonContainer.setVisibility(View.INVISIBLE);
 		mCancelButton = (Button) mView.findViewById(R.id.btn_cancel_search);
 		mSearchButton = (Button) mView.findViewById(R.id.btn_search);
 		mCancelButton.setOnClickListener(mOnClickListener);
@@ -179,7 +170,7 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 					return;
 				}
 				mAdapter.populateTags(result);
-				mButtonContainer.setVisibility(View.VISIBLE);
+				mSpace.setVisibility(View.GONE);
 			}
 		});
 		task.execute();
@@ -187,10 +178,10 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 
 	private static class TagListAdapter extends BaseAdapter {
 
-		List<Tag>			mTags			= new ArrayList<Tag>();
-		List<Tag>			mFilteredTags	= new ArrayList<Tag>();
-		private Context		mContext;
-		private Set<String>	mSelectedTags;
+		List<Tag> mTags = new ArrayList<Tag>();
+		List<Tag> mFilteredTags = new ArrayList<Tag>();
+		private Context mContext;
+		private Set<String> mSelectedTags;
 
 		TagListAdapter(Context context, Set<String> tags) {
 			this.mContext = context;
@@ -251,7 +242,7 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 
 	private static class TagFilter extends Filter {
 
-		private TagListAdapter	mAdapter;
+		private TagListAdapter mAdapter;
 
 		TagFilter(TagListAdapter adapter) {
 			this.mAdapter = adapter;
