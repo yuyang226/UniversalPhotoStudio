@@ -13,7 +13,6 @@ import java.util.Set;
 
 import android.app.Service;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
@@ -90,16 +89,14 @@ public class FlickrPhotoSetOfflineProcessor implements
 			}
 
 			String url = photo.getLargeUrl();
-			Bitmap bmp = ImageUtils.downloadImage(url);
-			if (bmp != null) {
-				ImageUtils.saveImageToFile(ctx, photoFileName, bmp);
-				if (BuildConfig.DEBUG)
-					Log.d(TAG,
-							String.format(
-									"photo %s saved for offline view later.", url)); //$NON-NLS-1$
+			if( ImageUtils.saveImageToFile(ctx, photoFileName, url)) {
+				if( BuildConfig.DEBUG ) {
+					Log.d(TAG, "image download " + photoFileName); //$NON-NLS-1$
+				}
 			} else {
-				if (BuildConfig.DEBUG)
-					Log.w(TAG, "unable to download the image: " + url); //$NON-NLS-1$
+				if( BuildConfig.DEBUG ) {
+					Log.w(TAG, "fail to download the photo " + photoFileName); //$NON-NLS-1$
+				}
 			}
 		}
 	}

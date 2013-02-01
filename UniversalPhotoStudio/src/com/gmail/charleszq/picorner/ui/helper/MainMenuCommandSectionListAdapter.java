@@ -158,7 +158,7 @@ public class MainMenuCommandSectionListAdapter extends
 					if (!isOfflineEnabled) {
 						Toast.makeText(
 								mContext,
-								mContext.getString(R.string.msg_pls_enable_offline_first),
+								mContext.getString(R.string.msg_pls_enable_offline_for_ps),
 								Toast.LENGTH_SHORT).show();
 						break;
 					}
@@ -181,7 +181,7 @@ public class MainMenuCommandSectionListAdapter extends
 					if (!isOfflineEnabled) {
 						Toast.makeText(
 								mContext,
-								mContext.getString(R.string.msg_pls_enable_offline_first),
+								mContext.getString(R.string.msg_pls_enable_offline_for_ps),
 								Toast.LENGTH_SHORT).show();
 						break;
 					}
