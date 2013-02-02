@@ -11,13 +11,29 @@
         android:orientation="horizontal"
         tools:ignore="UselessParent" >
 
-        <ImageView
-            android:id="@+id/nav_item_image"
+        <RelativeLayout
             android:layout_width="64dp"
             android:layout_height="64dp"
-            android:contentDescription="@string/app_name"
-            android:paddingLeft="5dp"
-            android:scaleType="fitCenter" />
+            android:paddingLeft="5dp" >
+
+            <ImageView
+                android:id="@+id/nav_item_image"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:contentDescription="@string/app_name"
+                android:scaleType="fitCenter" />
+
+            <ImageView
+                android:id="@+id/offline_overlay"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_margin="1dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/ic_action_offline"
+                android:visibility="invisible" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/nav_item_title"
