@@ -83,9 +83,16 @@ public class MainMenuCommandSectionListAdapter extends
 			// get the front view
 			final View frontView = view
 					.findViewById(R.id.main_menu_item_front_view);
+			
+			final View offlineOverlayView = view
+					.findViewById(R.id.offline_overlay);
+			if (offlineOverlayView != null) {
+				boolean isOfflineEnabled = OfflineControlFileUtil.isOfflineViewEnabled(mContext, offline);
+				offlineOverlayView.setVisibility(isOfflineEnabled ? View.VISIBLE : View.INVISIBLE);
+			}
 
 			// hook up action item with click listener.
-			prepareOfflineActionItem(backView, frontView, command, offline);
+			prepareOfflineActionItem(backView, frontView, offlineOverlayView, command, offline);
 
 			// hook the action on the setting icon
 			ImageView settingButton = (ImageView) view
@@ -139,7 +146,7 @@ public class MainMenuCommandSectionListAdapter extends
 	}
 
 	private void prepareOfflineActionItem(final View backView,
-			final View frontView, ICommand<?> command,
+			final View frontView, final View offlineOverlayView, ICommand<?> command,
 			final IOfflineViewParameter offline) {
 		OnClickListener listener = new OnClickListener() {
 
@@ -153,6 +160,9 @@ public class MainMenuCommandSectionListAdapter extends
 					frontView.setVisibility(View.VISIBLE);
 					ObjectAnimator.ofFloat(frontView, "alpha", 0f, 1f) //$NON-NLS-1$
 							.setDuration(1000).start();
+					if (offlineOverlayView != null) {
+						offlineOverlayView.setVisibility(isOfflineEnabled ? View.VISIBLE : View.INVISIBLE);
+					}
 					break;
 				case R.id.btn_offline_refresh:
 					if (!isOfflineEnabled) {

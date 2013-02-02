@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
+import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
@@ -197,6 +199,17 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 			} else {
 			}
 		}
+		
+		View offlineOverlay = view.findViewById(R.id.offline_overlay);
+		if (offlineOverlay != null) {
+			IOfflineViewParameter offlineParam = (IOfflineViewParameter) command
+					.getAdapter(IOfflineViewParameter.class);
+			boolean offlineEnabled = OfflineControlFileUtil.isOfflineViewEnabled(
+					mContext, offlineParam);
+			offlineOverlay.setVisibility(offlineEnabled ? View.VISIBLE : View.INVISIBLE);
+		}
+		
+		
 		return view;
 	}
 
