@@ -35,7 +35,7 @@ public class RateCommand extends AbstractCommand<Void> {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_menu_star;
+		return R.drawable.ic_action_vote;
 	}
 
 	@Override

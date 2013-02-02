@@ -90,6 +90,11 @@ public class MainMenuCommandSectionListAdapter extends
 			// hook the action on the setting icon
 			ImageView settingButton = (ImageView) view
 					.findViewById(R.id.btn_offline_settings);
+			boolean isOfflineEnabledOnThis = OfflineControlFileUtil
+					.isOfflineViewEnabled(mContext, offline);
+			settingButton
+					.setImageResource(isOfflineEnabledOnThis ? R.drawable.ic_action_settings_holo_light
+							: R.drawable.ic_action_settings);
 			settingButton.setVisibility(View.VISIBLE);
 			settingButton.setOnClickListener(new OnClickListener() {
 				@Override
@@ -151,6 +156,11 @@ public class MainMenuCommandSectionListAdapter extends
 				case R.id.btn_offline_back:
 					backView.setVisibility(View.INVISIBLE);
 					frontView.setVisibility(View.VISIBLE);
+					ImageView settingButtonImage = (ImageView) frontView
+							.findViewById(R.id.btn_offline_settings);
+					settingButtonImage
+							.setImageResource(isOfflineEnabled ? R.drawable.ic_action_settings_holo_light
+									: R.drawable.ic_action_settings);
 					ObjectAnimator.ofFloat(frontView, "alpha", 0f, 1f) //$NON-NLS-1$
 							.setDuration(1000).start();
 					break;
