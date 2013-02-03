@@ -133,16 +133,9 @@ public class ImageDetailFragment extends Fragment implements
 		public void onLoadingComplete(Bitmap loadedImage) {
 			mLoadedBitmap = loadedImage;
 			if (mIsOfflineEnabled) {
-				if (BuildConfig.DEBUG) {
-					Log.d(TAG, "offline enabled, saving photo..."); //$NON-NLS-1$
-				}
 				OfflineViewSavePhotoTask task = new OfflineViewSavePhotoTask(
 						getActivity(), loadedImage, mPhoto);
 				task.execute();
-			} else {
-				if (BuildConfig.DEBUG) {
-					Log.d(TAG, "This command is not offline enabled."); //$NON-NLS-1$
-				}
 			}
 		}
 
@@ -169,6 +162,11 @@ public class ImageDetailFragment extends Fragment implements
 		@Override
 		protected Void doInBackground(Void... params) {
 			if (mContext != null) {
+				String filename = OfflineControlFileUtil
+						.getOfflinePhotoFileName(mPhoto);
+				File file = mContext.getFileStreamPath(filename);
+				if (file.exists())
+					return null;
 				OfflineControlFileUtil.saveBitmapForOfflineView(mContext,
 						mBitmap, mPhoto);
 				if (BuildConfig.DEBUG) {
@@ -428,7 +426,7 @@ public class ImageDetailFragment extends Fragment implements
 			File f = getActivity().getFileStreamPath(filename);
 			Uri uri = Uri.fromFile(f);
 			mImageFetcher.displayImage(uri.toString(), mImageView,
-					mImageDisplayOptions);
+					mImageDisplayOptions, mImageLoaderListener);
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Load thumb image from offline cache."); //$NON-NLS-1$
 		} else {
@@ -612,9 +610,9 @@ public class ImageDetailFragment extends Fragment implements
 			return ready;
 		case R.id.menu_item_set_wallpaper:
 			ready = waitForImageLoaded();
-			if( !ready )
+			if (!ready)
 				return false;
-			
+
 			WallpaperManager wm = WallpaperManager.getInstance(getActivity());
 			FileInputStream fis = null;
 			try {
