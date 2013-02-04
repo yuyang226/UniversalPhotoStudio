@@ -33,6 +33,7 @@ import com.gmail.charleszq.picorner.task.ig.InstagramLoadLikesTask;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
  * Represents the fragment to show the users who like a photo.
@@ -189,6 +190,7 @@ public class PhotoDetailLikesFragment extends AbstractFragmentWithImageFetcher
 				String buddyIcon = user.getBuddyIconUrl();
 				DisplayImageOptions imageDisplayOptions = new DisplayImageOptions.Builder()
 						.showStubImage(R.drawable.empty_photo).cacheInMemory()
+						.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
 						.bitmapConfig(Bitmap.Config.RGB_565).build();
 				mFetcher.displayImage(buddyIcon, image, imageDisplayOptions);
 				break;

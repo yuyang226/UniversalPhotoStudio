@@ -22,10 +22,4 @@ public abstract class AbstractFragmentWithImageFetcher extends Fragment {
 		super.onCreate(savedInstanceState);
 		mImageFetcher = ImageLoader.getInstance();
 	}
-
-	@Override
-	public void onDestroy() {
-		mImageFetcher.stop();
-		super.onDestroy();
-	}
 }

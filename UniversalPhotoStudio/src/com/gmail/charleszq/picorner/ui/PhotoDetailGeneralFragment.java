@@ -23,6 +23,7 @@ import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
  * Represents the fragment to show the detail information of photo
@@ -105,6 +106,7 @@ public class PhotoDetailGeneralFragment extends
 						|| mCurrentPhoto.getMediaSource() == MediaSourceType.PX500) {
 					DisplayImageOptions imageDisplayOptions = new DisplayImageOptions.Builder()
 							.showStubImage(R.drawable.empty_photo)
+							.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
 							.bitmapConfig(Bitmap.Config.RGB_565).build();
 					mImageFetcher.displayImage(mCurrentPhoto.getAuthor()
 							.getBuddyIconUrl(), image, imageDisplayOptions);

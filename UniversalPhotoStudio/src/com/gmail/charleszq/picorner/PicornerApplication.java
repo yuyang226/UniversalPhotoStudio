@@ -37,11 +37,10 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
  */
 public class PicornerApplication extends Application {
 
-	private static final String	TAG					= PicornerApplication.class
-															.getSimpleName();
-	private static final String	FIRST_TIME_KEY		= "first.time";				//$NON-NLS-1$
-	private static final String	IS_LICENSED			= "isLicensed";				//$NON-NLS-1$
-	private static final String	OFFLINE_SCHEDULED	= "offline.download.scheduled"; //$NON-NLS-1$
+	private static final String TAG = PicornerApplication.class.getSimpleName();
+	private static final String FIRST_TIME_KEY = "first.time"; //$NON-NLS-1$
+	private static final String IS_LICENSED = "isLicensed"; //$NON-NLS-1$
+	private static final String OFFLINE_SCHEDULED = "offline.download.scheduled"; //$NON-NLS-1$
 
 	@Override
 	public void onCreate() {
@@ -102,11 +101,11 @@ public class PicornerApplication extends Application {
 		am.setRepeating(AlarmManager.RTC_WAKEUP,
 				System.currentTimeMillis() + 5 * 60 * 1000L,
 				Integer.valueOf(span) * 60 * 60 * 1000L, pendingIntent);
-		//save the marker
+		// save the marker
 		Editor editor = sp.edit();
 		editor.putBoolean(OFFLINE_SCHEDULED, true);
 		editor.commit();
-		
+
 		if (BuildConfig.DEBUG)
 			Log.d(TAG, String.format(
 					"offline download scheduled, once every %s hours.", span)); //$NON-NLS-1$
@@ -166,7 +165,7 @@ public class PicornerApplication extends Application {
 		editor.putString(IConstants.FLICKR_USER_ID, userId);
 		editor.putString(IConstants.FLICKR_USER_NAME, userName);
 		editor.commit();
-		
+
 		// delete the cached flickr pool information, user might login with
 		// anthor account.
 		File bsRoot = new File(Environment.getExternalStorageDirectory(),
@@ -387,5 +386,11 @@ public class PicornerApplication extends Application {
 		String size = sp.getString(IConstants.PREF_OFFLINE_MAX_PHOTO_GRID_SIZE,
 				Integer.toString(IConstants.DEF_MAX_TOTAL_PHOTOS));
 		return Integer.parseInt(size);
+	}
+	
+	@Override
+	public void onTerminate() {
+		ImageLoader.getInstance().stop();
+		super.onTerminate();
 	}
 }

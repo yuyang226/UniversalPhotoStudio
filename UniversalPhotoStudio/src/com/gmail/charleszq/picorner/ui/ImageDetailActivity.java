@@ -190,12 +190,6 @@ public class ImageDetailActivity extends FragmentActivity implements
 			Log.d(TAG, "slide show starts..."); //$NON-NLS-1$
 	}
 
-	@Override
-	protected void onDestroy() {
-		mImageFetcher.stop();
-		super.onDestroy();
-	}
-
 	/**
 	 * Called by the ViewPager child fragments to load images via the one
 	 * ImageFetcher

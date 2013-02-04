@@ -318,7 +318,7 @@ public class PhotoDetailCommentsFragment extends
 					.showStubImage(R.drawable.empty_photo)
 					.showImageForEmptyUri(R.drawable.empty_photo)
 					.cacheInMemory().cacheOnDisc()
-					.imageScaleType(ImageScaleType.EXACTLY)
+					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
 					.bitmapConfig(Bitmap.Config.RGB_565).build();
 		}
 

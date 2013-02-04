@@ -52,7 +52,7 @@ public abstract class AbstractFetchIconUrlTask extends
 			DisplayImageOptions options = new DisplayImageOptions.Builder()
 					.showStubImage(R.drawable.empty_photo).cacheInMemory()
 					.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
-					.imageScaleType(ImageScaleType.EXACTLY).build();
+					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).build();
 			if (mImageView != null) {
 				ImageLoader imageLoader = ImageLoader.getInstance();
 				if (ImageView.class.isInstance(mImageView)) {
