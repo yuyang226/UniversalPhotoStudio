@@ -112,4 +112,6 @@ public interface IConstants {
 	 */
 	static final String PREF_DAY_DREAM_MAIN_SRC = "pref.key.daydream.photo.src.main"; //$NON-NLS-1$
 	static final String PREF_DAY_DREAM_SECONDARY_SRC = "pref.key.daydream.photo.src.secondary"; //$NON-NLS-1$
+
+	static final int MAX_PHOTO_TITLE_LEN = 100;
 }

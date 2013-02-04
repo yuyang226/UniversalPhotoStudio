@@ -291,7 +291,15 @@ public class ImageDetailFragment extends Fragment implements
 		mUserInfoContainer.setVisibility(bar.isShowing() ? View.VISIBLE
 				: View.INVISIBLE);
 		mPhotoTitle = (TextView) v.findViewById(R.id.photo_detail_photo_title);
-		mPhotoTitle.setText(mPhoto.getTitle() == null ? "" : mPhoto.getTitle()); //$NON-NLS-1$
+		String photoTitle = mPhoto.getTitle();
+		if( photoTitle == null ) {
+			photoTitle = ""; //$NON-NLS-1$
+		} else {
+			if( photoTitle.length() > IConstants.MAX_PHOTO_TITLE_LEN ) {
+				photoTitle = photoTitle.substring(0,IConstants.MAX_PHOTO_TITLE_LEN) + "..."; //$NON-NLS-1$
+			}
+		}
+		mPhotoTitle.setText(photoTitle);
 		mUserName = (TextView) v.findViewById(R.id.photo_detail_author_name);
 		StringBuilder sb = new StringBuilder();
 		sb.append(getString(R.string.msg_by_author_name));
