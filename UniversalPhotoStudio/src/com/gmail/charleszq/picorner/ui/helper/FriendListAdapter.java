@@ -27,14 +27,14 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
  */
 public class FriendListAdapter extends BaseAdapter {
 
-	List<Author>		mFriends			= new ArrayList<Author>();
-	List<Author>		mFilteredOutFriends	= new ArrayList<Author>();
-	private Context		mContext;
+	List<Author> mFriends = new ArrayList<Author>();
+	List<Author> mFilteredOutFriends = new ArrayList<Author>();
+	private Context mContext;
 
 	/**
 	 * From it, we can know how to get the avator of this friend.
 	 */
-	private ICommand<?>	mCommand;
+	private ICommand<?> mCommand;
 
 	public FriendListAdapter(Context ctx, ICommand<?> command) {
 		this.mContext = ctx;
@@ -58,11 +58,25 @@ public class FriendListAdapter extends BaseAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = LayoutInflater.from(mContext).inflate(
-				R.layout.friend_list_item, null);
-
-		ImageView avatar = (ImageView) v.findViewById(R.id.img_friend_avatar);
-		TextView text = (TextView) v.findViewById(R.id.txt_friend_name);
+		View v = convertView;
+		if (v == null) {
+			v = LayoutInflater.from(mContext).inflate(
+					R.layout.friend_list_item, null);
+		}
+		ViewHolder holder = (ViewHolder) v.getTag();
+		ImageView avatar;
+		TextView text;
+		if (holder != null) {
+			text = holder.text;
+			avatar = holder.image;
+		} else {
+			avatar = (ImageView) v.findViewById(R.id.img_friend_avatar);
+			text = (TextView) v.findViewById(R.id.txt_friend_name);
+			holder = new ViewHolder();
+			holder.image = avatar;
+			holder.text = text;
+			v.setTag(holder);
+		}
 		Author a = (Author) getItem(position);
 		text.setText(a.getUserName());
 		AbstractFetchIconUrlTask task = (AbstractFetchIconUrlTask) mCommand
@@ -86,5 +100,10 @@ public class FriendListAdapter extends BaseAdapter {
 		mFilteredOutFriends.clear();
 		mFilteredOutFriends.addAll(filtered);
 		notifyDataSetChanged();
+	}
+
+	private class ViewHolder {
+		TextView text;
+		ImageView image;
 	}
 }

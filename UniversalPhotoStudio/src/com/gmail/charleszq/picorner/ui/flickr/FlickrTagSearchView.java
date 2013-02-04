@@ -34,59 +34,46 @@ import com.gmail.charleszq.picorner.ui.helper.AbstractHiddenView;
  */
 public class FlickrTagSearchView extends AbstractHiddenView {
 
-	private Button						mCancelButton;
-	private Button						mSearchButton;
-	private EditText					mTagText;
-	private RadioButton					mRadioAnd, mRadioOr;
-	private CheckBox					mCheckInCommon, mCheckHasGeo;
+	private Button mCancelButton;
+	private Button mSearchButton;
+	private EditText mTagText;
+	private RadioButton mRadioAnd, mRadioOr;
+	private CheckBox mCheckInCommon, mCheckHasGeo;
 
-	private FlickrTagSearchParameter	mSearchParameter;
+	private FlickrTagSearchParameter mSearchParameter;
 
-	private OnClickListener				mOnClickListener			= new OnClickListener() {
+	private OnClickListener mOnClickListener = new OnClickListener() {
 
-																		@Override
-																		public void onClick(
-																				View v) {
-																			// hide
-																			// the
-																			// soft
-																			// keyboard
-																			InputMethodManager imm = (InputMethodManager)v.getContext()
-																					.getSystemService(
-																							Service.INPUT_METHOD_SERVICE);
-																			imm.hideSoftInputFromWindow(
-																					mTagText.getWindowToken(),
-																					0);
-																			if (v == mCancelButton) {
-																				onAction(ACTION_CANCEL);
-																			} else if (v == mSearchButton) {
-																				doSearch(v.getContext());
-																			} else if (v == mRadioAnd) {
-																				mSearchParameter
-																						.setSearchMode(FlickrTagSearchMode.ALL);
-																			} else if (v == mRadioOr) {
-																				mSearchParameter
-																						.setSearchMode(FlickrTagSearchMode.ANY);
-																			}
-																		}
-																	};
+		@Override
+		public void onClick(View v) {
+			InputMethodManager imm = (InputMethodManager) v.getContext()
+					.getSystemService(Service.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(mTagText.getWindowToken(), 0);
+			if (v == mCancelButton) {
+				onAction(ACTION_CANCEL);
+			} else if (v == mSearchButton) {
+				doSearch(v.getContext());
+			} else if (v == mRadioAnd) {
+				mSearchParameter.setSearchMode(FlickrTagSearchMode.ALL);
+			} else if (v == mRadioOr) {
+				mSearchParameter.setSearchMode(FlickrTagSearchMode.ANY);
+			}
+		}
+	};
 
-	private OnCheckedChangeListener		mOnCheckedChangeListener	= new OnCheckedChangeListener() {
+	private OnCheckedChangeListener mOnCheckedChangeListener = new OnCheckedChangeListener() {
 
-																		@Override
-																		public void onCheckedChanged(
-																				CompoundButton buttonView,
-																				boolean isChecked) {
-																			if (buttonView == mCheckInCommon) {
-																				mSearchParameter
-																						.setSearchInCommon(isChecked);
-																			} else if (buttonView == mCheckHasGeo) {
-																				mSearchParameter
-																						.setHasGeoInformation(isChecked);
-																			}
-																		}
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView,
+				boolean isChecked) {
+			if (buttonView == mCheckInCommon) {
+				mSearchParameter.setSearchInCommon(isChecked);
+			} else if (buttonView == mCheckHasGeo) {
+				mSearchParameter.setHasGeoInformation(isChecked);
+			}
+		}
 
-																	};
+	};
 
 	@Override
 	public void init(ICommand<?> command, IHiddenViewActionListener listener) {

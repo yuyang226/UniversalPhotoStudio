@@ -3,11 +3,8 @@
  */
 package com.gmail.charleszq.picorner.ui;
 
-import java.io.File;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -25,7 +22,6 @@ import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.msg.Message;
 import com.gmail.charleszq.picorner.msg.MessageBus;
-import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchGeoLocationTask;
 import com.gmail.charleszq.picorner.ui.helper.PhotoDetailViewPagerAdapter;
@@ -94,16 +90,11 @@ public class PhotoDetailActivity extends FragmentActivity {
 			mImageDisplayOption = new DisplayImageOptions.Builder()
 					.cacheInMemory().cacheOnDisc()
 					.bitmapConfig(Bitmap.Config.RGB_565)
-					.imageScaleType(ImageScaleType.EXACTLY).build();
-		
-		String filename = OfflineControlFileUtil.getOfflinePhotoFileName(mCurrentPhoto);
-		File offlineFile = this.getFileStreamPath(filename);
+					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2)
+					.build();
+
 		String url = mCurrentPhoto.getLargeUrl();
-		if( offlineFile.exists() ) {
-			url = Uri.fromFile(offlineFile).toString();
-		}
-		loader.displayImage(url, mImageView,
-				mImageDisplayOption);
+		loader.displayImage(url, mImageView, mImageDisplayOption);
 
 	}
 

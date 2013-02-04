@@ -3,6 +3,8 @@
  */
 package com.gmail.charleszq.picorner.task;
 
+import java.lang.ref.WeakReference;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -40,7 +42,9 @@ public abstract class AbstractFetchIconUrlTask extends
 	/**
 	 * Either an ImageView or a TextView.
 	 */
-	protected View		mImageView;
+	protected WeakReference<View> mIconViewRef;
+	
+	
 
 	public AbstractFetchIconUrlTask(Context ctx) {
 		this.mContext = ctx;
@@ -53,13 +57,17 @@ public abstract class AbstractFetchIconUrlTask extends
 					.showStubImage(R.drawable.empty_photo).cacheInMemory()
 					.cacheOnDisc().bitmapConfig(Bitmap.Config.RGB_565)
 					.imageScaleType(ImageScaleType.IN_SAMPLE_POWER_OF_2).build();
-			if (mImageView != null) {
+			if (mIconViewRef != null) {
+				View iconView = mIconViewRef.get();
+				if( iconView == null ) {
+					return;
+				}
 				ImageLoader imageLoader = ImageLoader.getInstance();
-				if (ImageView.class.isInstance(mImageView)) {
-					imageLoader.displayImage(result, (ImageView) mImageView,
+				if (ImageView.class.isInstance(iconView)) {
+					imageLoader.displayImage(result, (ImageView) iconView,
 							options);
 				} else {
-					final TextView text = (TextView) mImageView;
+					final TextView text = (TextView) iconView;
 					imageLoader.loadImage(mContext, result,
 							new SimpleImageLoadingListener() {
 
@@ -78,7 +86,7 @@ public abstract class AbstractFetchIconUrlTask extends
 	}
 
 	protected void beforeExecute(Object... params) {
-		mImageView = (View) params[0];
+		mIconViewRef = new WeakReference<View>((View) params[0]);
 	}
 
 }

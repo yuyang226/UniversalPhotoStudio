@@ -54,12 +54,6 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 	public AbstractCommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
 		mContext = ctx;
 		mImageFetcher = fetcher;
-		// ImageLoaderConfiguration config = new
-		// ImageLoaderConfiguration.Builder(
-		// mContext.getApplicationContext())
-		// .discCacheSize(IConstants.IMAGE_CACHE_SIZE).threadPoolSize(5)
-		// .memoryCache(new WeakMemoryCache()).build();
-		// mImageFetcher.init(config);
 		mCommands = new ArrayList<ICommand<?>>();
 		mAllCommands = new ArrayList<ICommand<?>>();
 	}
@@ -161,8 +155,9 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 		View view = convertView;
 		ICommand<?> command = (ICommand<?>) getItem(position);
 		if (getItemViewType(position) == ITEM_HEADER) {
-			view = LayoutInflater.from(mContext).inflate(
-					R.layout.section_header, null);
+			if (view == null)
+				view = LayoutInflater.from(mContext).inflate(
+						R.layout.section_header, null);
 			((TextView) view).setText(command.getLabel());
 			MenuSectionHeaderCommand hc = (MenuSectionHeaderCommand) command;
 			if (mShowHeaderIndicator) {
@@ -178,12 +173,32 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 		}
 
 		// command items
-		view = LayoutInflater.from(mContext).inflate(R.layout.main_menu_item,
-				null);
+		if (view == null)
+			view = LayoutInflater.from(mContext).inflate(
+					R.layout.main_menu_item, null);
 
-		TextView text = (TextView) view.findViewById(R.id.nav_item_title);
-		ImageView image = (ImageView) view.findViewById(R.id.nav_item_image);
+		ViewHolder holder = (ViewHolder) view.getTag();
+		TextView text = null;
+		ImageView image = null;
+		ImageView settingButton = null;
+		if (holder != null) {
+			text = holder.text;
+			image = holder.imageView;
+			settingButton = holder.settingButton;
+		} else {
+			text = (TextView) view.findViewById(R.id.nav_item_title);
+			image = (ImageView) view.findViewById(R.id.nav_item_image);
+			settingButton = (ImageView) view
+					.findViewById(R.id.btn_offline_settings);
+			holder = new ViewHolder();
+			holder.text = text;
+			holder.imageView = image;
+			holder.settingButton = settingButton;
+			view.setTag(holder);
+		}
+
 		text.setText(command.getLabel());
+		settingButton.setVisibility(View.INVISIBLE);
 		int iconId = command.getIconResourceId();
 		if (iconId != -1) {
 			image.setImageDrawable(mContext.getResources().getDrawable(iconId));
@@ -210,6 +225,12 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 			List<ICommand<?>> commands) {
 		mCommands = commands;
 		notifyDataSetChanged();
+	}
+
+	class ViewHolder {
+		TextView text;
+		ImageView imageView;
+		ImageView settingButton;
 	}
 
 }

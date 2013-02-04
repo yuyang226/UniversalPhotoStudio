@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.ui.command.flickr;
 
+import java.lang.ref.WeakReference;
 import java.util.Comparator;
 
 import android.app.Activity;
@@ -79,7 +80,7 @@ public class FlickrFriendPhotosCommand extends PhotoListCommand {
 				@Override
 				protected String doInBackground(Object... params) {
 					Author a = (Author) params[0];
-					mImageView = (View) params[1];
+					mIconViewRef = new WeakReference<View>((View) params[1]);
 					return a.getBuddyIconUrl();
 				}
 				

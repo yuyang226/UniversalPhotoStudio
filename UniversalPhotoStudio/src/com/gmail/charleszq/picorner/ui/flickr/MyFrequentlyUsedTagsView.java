@@ -126,8 +126,8 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 		super.init(command, listener);
 		Context ctx = (Context) command.getAdapter(Context.class);
 		mView = getView(ctx);
-		
-		//space
+
+		// space
 		mSpace = (Space) mView.findViewById(R.id.my_tags_space);
 		mSpace.setVisibility(View.VISIBLE);
 
@@ -205,8 +205,10 @@ public class MyFrequentlyUsedTagsView extends AbstractHiddenView implements
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View v = LayoutInflater.from(mContext).inflate(
-					R.layout.org_my_flickr_photo_list_item, null);
+			View v = convertView;
+			if (v == null)
+				v = LayoutInflater.from(mContext).inflate(
+						R.layout.org_my_flickr_photo_list_item, null);
 			ImageView image = (ImageView) v.findViewById(R.id.photo_pool_icon);
 			image.setImageResource(R.drawable.ic_action_tags);
 			CheckedTextView check = (CheckedTextView) v
