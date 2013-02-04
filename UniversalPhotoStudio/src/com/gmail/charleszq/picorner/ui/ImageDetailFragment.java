@@ -72,6 +72,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
  * This fragment will populate the children of the ViewPager from
@@ -245,6 +246,7 @@ public class ImageDetailFragment extends Fragment implements
 
 		mImageDisplayOptions = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.empty_photo).cacheOnDisc()
+				.imageScaleType(ImageScaleType.EXACTLY)
 				.bitmapConfig(Bitmap.Config.RGB_565).build();
 
 		mIsOfflineEnabled = getArguments() != null ? (getArguments()
