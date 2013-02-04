@@ -135,7 +135,8 @@ public abstract class AbstractPhotoGridFragment extends
 				}
 				return true;
 			case Message.CANCEL_COMMAND:
-				if (mCurrentCommand != null) {
+				if (mCurrentCommand != null
+						&& mCurrentCommand != msg.getCoreData()) {
 					mCurrentCommand.cancel();
 				}
 				return true;

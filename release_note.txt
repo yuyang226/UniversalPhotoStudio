@@ -1,5 +1,6 @@
 What's new (version 2.0.1)
 1, performance tuning;
+2, add preference option to set default photo list.
 
 What's new (version 2.0)
 1, instagram following list;

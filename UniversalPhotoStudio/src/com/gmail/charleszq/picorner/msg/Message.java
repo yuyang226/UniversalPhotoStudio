@@ -28,8 +28,6 @@ public final class Message {
 
 	public static final Message PUBLIC_USER_LOGIN_MSG = new Message(
 			USER_LOGIN_IN);
-	public static final Message CANCEL_CURRENT_COMMAND_MSG = new Message(
-			CANCEL_COMMAND);
 
 	/**
 	 * 
