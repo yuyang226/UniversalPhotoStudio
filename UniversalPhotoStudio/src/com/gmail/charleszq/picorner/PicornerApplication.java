@@ -70,7 +70,8 @@ public class PicornerApplication extends Application {
 		// initializes the image loader
 		ImageLoader imageLoader = ImageLoader.getInstance();
 		ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(
-				this).threadPoolSize(5).memoryCache(new WeakMemoryCache())
+				this).threadPoolSize(9).memoryCache(new WeakMemoryCache())
+				.threadPriority(Thread.NORM_PRIORITY + 1)
 				.discCacheSize(Integer.parseInt(cacheSize)).build();
 		imageLoader.init(config);
 		if (BuildConfig.DEBUG)
@@ -387,7 +388,7 @@ public class PicornerApplication extends Application {
 				Integer.toString(IConstants.DEF_MAX_TOTAL_PHOTOS));
 		return Integer.parseInt(size);
 	}
-	
+
 	@Override
 	public void onTerminate() {
 		ImageLoader.getInstance().stop();
