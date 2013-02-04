@@ -22,7 +22,6 @@ import java.io.IOException;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.app.WallpaperManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -374,18 +373,9 @@ public class ImageDetailFragment extends Fragment implements
 			return false; // image not loaded yet.
 		}
 
-		final ProgressDialog dialog2 = ProgressDialog.show(getActivity(), "", //$NON-NLS-1$
-				getString(R.string.msg_working));
-		dialog2.setCanceledOnTouchOutside(true);
 		IGeneralTaskDoneListener<Boolean> lis = new IGeneralTaskDoneListener<Boolean>() {
 			@Override
 			public void onTaskDone(Boolean result) {
-				if (dialog2 != null && dialog2.isShowing()) {
-					try {
-						dialog2.cancel();
-					} catch (Exception e) {
-					}
-				}
 				if (result) {
 					mUserLikeThePhoto = !mUserLikeThePhoto;
 					mPhoto.setUserLiked(mUserLikeThePhoto);
