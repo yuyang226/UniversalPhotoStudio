@@ -5,8 +5,10 @@ package com.gmail.charleszq.picorner.ui;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings.Secure;
@@ -27,7 +29,14 @@ import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.ui.command.CommandType;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
+import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.FlickrIntestringCommand;
+import com.gmail.charleszq.picorner.ui.command.ig.InstagramPopularsCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.PxEditorsPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.PxFreshTodayPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxPopularPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.PxUpcomingPhotosCommand;
+import com.gmail.charleszq.picorner.utils.IConstants;
 import com.slidingmenu.lib.SlidingMenu;
 import com.slidingmenu.lib.app.SlidingFragmentActivity;
 
@@ -37,7 +46,8 @@ import com.slidingmenu.lib.app.SlidingFragmentActivity;
  */
 public class MainSlideMenuActivity extends SlidingFragmentActivity {
 
-	private static final String TAG = MainSlideMenuActivity.class.getSimpleName();
+	private static final String TAG = MainSlideMenuActivity.class
+			.getSimpleName();
 	private Fragment mContent;
 	private ICommand<MediaObjectCollection> mCommand;
 
@@ -93,7 +103,7 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 	 */
 	void loadDefaultPhotoList() {
 		MessageBus.reset();
-		mCommand = new PxPopularPhotosCommand(this);
+		mCommand = getDefaultCommand();
 		final ProgressDialog dialog = ProgressDialog.show(this,
 				"", getString(R.string.loading_photos)); //$NON-NLS-1$
 		dialog.setCancelable(true);
@@ -113,6 +123,27 @@ public class MainSlideMenuActivity extends SlidingFragmentActivity {
 			}
 		});
 		mCommand.execute();
+	}
+
+	private PhotoListCommand getDefaultCommand() {
+		SharedPreferences sp = this.getSharedPreferences(
+				IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
+		String defaultCommandString = sp.getString(
+				IConstants.PREF_DEFAULT_PHOTO_LIST, "1"); //$NON-NLS-1$
+		switch (Integer.parseInt(defaultCommandString)) {
+		case 1:
+			return new PxPopularPhotosCommand(this);
+		case 2:
+			return new PxEditorsPhotosCommand(this);
+		case 3:
+			return new PxUpcomingPhotosCommand(this);
+		case 4:
+			return new PxFreshTodayPhotosCommand(this);
+		case 5:
+			return new FlickrIntestringCommand(this);
+		default:
+			return new InstagramPopularsCommand(this);
+		}
 	}
 
 	@Override

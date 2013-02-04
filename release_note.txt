@@ -1,3 +1,6 @@
+What's new (version 2.0.1)
+1, performance tuning;
+
 What's new (version 2.0)
 1, instagram following list;
 2, 500px friend list;

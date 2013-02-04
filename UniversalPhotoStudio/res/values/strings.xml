@@ -223,5 +223,6 @@
     <string name="pref_daydream_secondary_src_dlg_title">Primary Photo Source</string>
     <string name="pref_daydream_secondary_src">Secondary Photo Source</string>
     <string name="summary_pref_daydream_secondary_src">Secondary photo source will be used if you set offline photos as the main source, but there are no offline photos downloaded yet.</string>
-
+	<string name="pref_default_photo_list">Default photo list</string>
+	<string name="summary_pref_default_photo_list">When app starts, which photo list to load by default.</string>
 </resources>
