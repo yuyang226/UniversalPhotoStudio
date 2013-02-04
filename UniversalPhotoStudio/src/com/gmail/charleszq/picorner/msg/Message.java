@@ -11,21 +11,25 @@ import com.gmail.charleszq.picorner.model.MediaSourceType;
  */
 public final class Message {
 
-	public static final int	LIKE_PHOTO			= 100;
-	public static final int	VOTE_PHOTO			= 101;
-	public static final int	GEO_INFO_FETCHED	= 102;
+	public static final int LIKE_PHOTO = 100;
+	public static final int VOTE_PHOTO = 101;
+	public static final int GEO_INFO_FETCHED = 102;
+	public static final int CANCEL_COMMAND = 104;
 
 	/**
 	 * The message says one of user's photo account has been authed.
 	 */
-	public static final int	USER_LOGIN_IN		= 103;
+	public static final int USER_LOGIN_IN = 103;
 
-	private int				mMessageType;
-	private MediaSourceType	mPhotoType;
-	private String			mPhotoId;
-	private Object			mCoreData;
-	
-	public static final Message PUBLIC_USER_LOGIN_MSG = new Message(USER_LOGIN_IN);
+	private int mMessageType;
+	private MediaSourceType mPhotoType;
+	private String mPhotoId;
+	private Object mCoreData;
+
+	public static final Message PUBLIC_USER_LOGIN_MSG = new Message(
+			USER_LOGIN_IN);
+	public static final Message CANCEL_CURRENT_COMMAND_MSG = new Message(
+			CANCEL_COMMAND);
 
 	/**
 	 * 

@@ -134,6 +134,11 @@ public abstract class AbstractPhotoGridFragment extends
 					}
 				}
 				return true;
+			case Message.CANCEL_COMMAND:
+				if (mCurrentCommand != null) {
+					mCurrentCommand.cancel();
+				}
+				return true;
 			default:
 				return false;
 			}
@@ -242,8 +247,7 @@ public abstract class AbstractPhotoGridFragment extends
 				"When loading more, there are %s photos currently", //$NON-NLS-1$
 				currentPhotoSize));
 		boolean noMoreData = mNoMoreData;
-		noMoreData = noMoreData
-				| currentPhotoSize > getMaxPhotoSize();
+		noMoreData = noMoreData | currentPhotoSize > getMaxPhotoSize();
 		if (currentPhotoSize > 0) {
 			noMoreData = noMoreData
 					| currentPhotoSize < IConstants.DEF_MIN_PAGE_SIZE;
@@ -259,9 +263,10 @@ public abstract class AbstractPhotoGridFragment extends
 		if (mCurrentCommand != null)
 			mCurrentCommand.loadNextPage();
 	}
-	
+
 	private int getMaxPhotoSize() {
-		PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+		PicornerApplication app = (PicornerApplication) getActivity()
+				.getApplication();
 		return app.getMaxPhotoSize();
 	}
 

@@ -35,9 +35,9 @@ public abstract class PhotoListCommand extends
 		if (mTask != null) {
 			mTask.cancel(true);
 		}
-		
-		//must set this to null to clear the cache data executed before if user
-		//hit the menu item from the main menu.
+
+		// must set this to null to clear the cache data executed before if user
+		// hit the menu item from the main menu.
 		mCurrentPhotoService = null;
 		mCurrentPageNo = 0;
 		mTask = new LoadPhotosTask(this, this.mTaskDoneListner);
@@ -51,7 +51,8 @@ public abstract class PhotoListCommand extends
 
 	@Override
 	public void cancel() {
-		mTask.cancel(true);
+		if (mTask != null)
+			mTask.cancel(true);
 	}
 
 	@Override
@@ -64,13 +65,14 @@ public abstract class PhotoListCommand extends
 
 	/**
 	 * Loads next page of photos.
+	 * 
 	 * @return
 	 */
 	public boolean loadNextPage() {
-		if( mTask != null ) {
+		if (mTask != null) {
 			mTask.cancel(true);
 		}
-		mCurrentPageNo ++;
+		mCurrentPageNo++;
 		mTask = new LoadPhotosTask(this, this.mTaskDoneListner);
 		mTask.execute(mCurrentPageNo);
 		return true;

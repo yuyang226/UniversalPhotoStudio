@@ -244,6 +244,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 					command.execute();
 				}
 				if (PhotoListCommand.class.isInstance(command)) {
+					MessageBus
+							.broadcastMessage(Message.CANCEL_CURRENT_COMMAND_MSG);
 					mProgressDialog = ProgressDialog.show(
 							parent.getContext(),
 							"", //$NON-NLS-1$
@@ -269,8 +271,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				.getApplication();
 		if (!app.isOfflineEnabled()) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			builder.setTitle(android.R.string.dialog_alert_title)
-					.setMessage(R.string.msg_pls_enable_offline_first);
+			builder.setTitle(android.R.string.dialog_alert_title).setMessage(
+					R.string.msg_pls_enable_offline_first);
 			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
 				@Override
@@ -454,7 +456,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 				@Override
 				public Object getAdapter(Class<?> adapterClass) {
-					if( adapterClass == ActionBar.class ) {
+					if (adapterClass == ActionBar.class) {
 						return Boolean.FALSE.toString();
 					}
 					return super.getAdapter(adapterClass);

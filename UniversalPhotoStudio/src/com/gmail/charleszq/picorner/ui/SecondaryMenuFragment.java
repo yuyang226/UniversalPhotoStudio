@@ -251,6 +251,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 	private void doCommand(ICommand<Object> command, Object... params) {
 		if (PhotoListCommand.class.isInstance(command)) {
+			MessageBus.broadcastMessage(Message.CANCEL_CURRENT_COMMAND_MSG);
 			mProgressDialog = ProgressDialog.show(getActivity(),
 					"", getActivity() //$NON-NLS-1$
 							.getString(R.string.loading_photos));
