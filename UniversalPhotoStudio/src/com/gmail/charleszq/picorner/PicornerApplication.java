@@ -358,16 +358,6 @@ public class PicornerApplication extends Application {
 		editor.commit();
 	}
 
-	/**
-	 * Is offline enabled?
-	 * 
-	 * @return
-	 */
-	public boolean isOfflineEnabled() {
-		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
-				Context.MODE_APPEND);
-		return sp.getBoolean(IConstants.PREF_ENABLE_OFFLINE, false);
-	}
 
 	public boolean isDownloadingWhenChargingEnabled() {
 		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,

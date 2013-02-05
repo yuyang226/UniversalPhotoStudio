@@ -70,10 +70,9 @@ import com.gmail.charleszq.picorner.ui.command.px500.PxMyFlowCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxPopularPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxSignInCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxUpcomingPhotosCommand;
-import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
-import com.gmail.charleszq.picorner.ui.helper.MainMenuCommandSectionListAdapter;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.Flickr;
@@ -90,7 +89,7 @@ import com.googlecode.flickrjandroid.people.User;
 @SuppressLint("DefaultLocale")
 public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
-	private AbstractCommandSectionListAdapter mSectionAdapter;
+	private CommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
 	private FrameLayout mBackViewContainer;
 	private ListView mListView;
@@ -141,16 +140,16 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				hideHiddenView(view.getView(ctx));
 				break;
 			case IHiddenView.ACTION_DO:
-				 doCommand((ICommand<Object>) command, data);
-				 hideHiddenView(view.getView(ctx));
+				doCommand((ICommand<Object>) command, data);
+				hideHiddenView(view.getView(ctx));
 				break;
 			case IHiddenView.ACTION_JUST_CMD:
-				 doCommand((ICommand<Object>) command, data);
+				doCommand((ICommand<Object>) command, data);
 				break;
 			}
 		}
 	};
-	
+
 	private void doCommand(ICommand<Object> command, Object... params) {
 		if (PhotoListCommand.class.isInstance(command)) {
 			Message msg = new Message(Message.CANCEL_COMMAND, null, null,
@@ -179,7 +178,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		// menu list
 		mListView = (ListView) v.findViewById(R.id.listView1);
-		mSectionAdapter = new MainMenuCommandSectionListAdapter(getActivity());
+		mSectionAdapter = new CommandSectionListAdapter(getActivity());
 		prepareSections();
 
 		mListView.setAdapter(mSectionAdapter);
@@ -236,6 +235,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private void hideHiddenView(final View view) {
+		mListView.setVisibility(View.VISIBLE);
 		ObjectAnimator a1 = ObjectAnimator
 				.ofFloat(mListView, "alpha", 0f, 1f).setDuration(1000); //$NON-NLS-1$
 		ObjectAnimator a2 = ObjectAnimator
@@ -266,6 +266,14 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				.ofFloat(mListView, "alpha", 1f, 0f).setDuration(1000); //$NON-NLS-1$
 		AnimatorSet set = new AnimatorSet();
 		set.playTogether(a2, a1);
+		set.addListener(new AnimatorListenerAdapter() {
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				mListView.setVisibility(View.INVISIBLE);
+			}
+			
+		});
 		set.start();
 	}
 
@@ -422,10 +430,10 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 			command = new MyPhotosetsCommand(ctx);
 			commands.add(command);
-			
+
 			command = new MyGroupsCommand(ctx);
 			commands.add(command);
-			
+
 			command = new MyGalleriesCommand(ctx);
 			commands.add(command);
 		}

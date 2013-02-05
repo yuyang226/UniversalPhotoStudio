@@ -39,7 +39,7 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserGroupCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserPhotoSetCommand;
-import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.galleries.Gallery;
 import com.googlecode.flickrjandroid.groups.Group;
@@ -258,7 +258,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 		}
 	}
 
-	private static class OrganizeAdapter extends AbstractCommandSectionListAdapter {
+	private static class OrganizeAdapter extends CommandSectionListAdapter {
 
 		private Set<String> mCurrentPhotoContext;
 

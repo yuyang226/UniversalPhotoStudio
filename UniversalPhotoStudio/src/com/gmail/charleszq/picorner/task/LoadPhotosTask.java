@@ -5,12 +5,11 @@ package com.gmail.charleszq.picorner.task;
 
 import java.util.List;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
-import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.SharedPreferenceUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
@@ -52,9 +51,8 @@ public class LoadPhotosTask extends
 		IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCommand
 				.getAdapter(IOfflineViewParameter.class);
 		Context ctx = (Context) mCommand.getAdapter(Context.class);
-		PicornerApplication app = (PicornerApplication) ((Activity) ctx)
-				.getApplication();
-		if (app.isOfflineEnabled()) {
+		boolean overallOfflineEnabled = SharedPreferenceUtil.isOfflineEnabled(ctx);
+		if (overallOfflineEnabled) {
 			if (offlineParam != null
 					&& OfflineControlFileUtil.isOfflineViewEnabled(ctx,
 							offlineParam)

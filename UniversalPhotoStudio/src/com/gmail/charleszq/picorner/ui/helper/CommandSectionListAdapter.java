@@ -24,7 +24,7 @@ import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
  * @author Charles(charleszq@gmail.com)
  * 
  */
-public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
+public class CommandSectionListAdapter extends BaseAdapter {
 
 	public static final int ITEM_HEADER = 0;
 	public static final int ITEM_COMMAND = 1;
@@ -44,7 +44,7 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 	/**
 	 * Constructor.
 	 */
-	public AbstractCommandSectionListAdapter(Context ctx) {
+	public CommandSectionListAdapter(Context ctx) {
 		mContext = ctx;
 		mCommands = new ArrayList<ICommand<?>>();
 		mAllCommands = new ArrayList<ICommand<?>>();
@@ -121,7 +121,7 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 
 	@Override
 	public boolean isEnabled(int position) {
-		return getItemViewType(position) == AbstractCommandSectionListAdapter.ITEM_COMMAND;
+		return getItemViewType(position) == CommandSectionListAdapter.ITEM_COMMAND;
 	}
 
 	public void clearSections() {

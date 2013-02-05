@@ -29,7 +29,7 @@ public abstract class FilterAdapter extends BaseAdapter {
 
 	List<Object> mData = new ArrayList<Object>();
 	List<Object> mFilteredData = new ArrayList<Object>();
-	private Context mContext;
+	protected Context mContext;
 
 	protected ICommand<?> mCommand;
 

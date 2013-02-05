@@ -13,7 +13,7 @@ import com.gmail.charleszq.picorner.task.flickr.FetchPhotoSetsTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractHiddenListView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
-import com.gmail.charleszq.picorner.ui.helper.PhotoCollectionItemAdapter;
+import com.gmail.charleszq.picorner.ui.helper.PhotoSetItemAdapter;
 import com.googlecode.flickrjandroid.photosets.Photosets;
 
 /**
@@ -54,7 +54,7 @@ public class MyPhotoSetsHiddenView extends AbstractHiddenListView {
 
 	@Override
 	protected void initializeListViewAdapter(Context ctx, ICommand<?> command) {
-		mAdapter = new PhotoCollectionItemAdapter(ctx, command);
+		mAdapter = new PhotoSetItemAdapter(ctx, command);
 		mLoadingMessage = ctx.getString(R.string.msg_loading_photo_sets);
 	}
 

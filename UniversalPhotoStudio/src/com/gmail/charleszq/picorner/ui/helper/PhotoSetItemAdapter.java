@@ -5,8 +5,10 @@ package com.gmail.charleszq.picorner.ui.helper;
 
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -23,93 +25,111 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SharedPreferenceUtil;
 import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
+import com.gmail.charleszq.picorner.offline.FlickrOfflineParameter;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.offline.OfflineHandleService;
+import com.gmail.charleszq.picorner.offline.OfflinePhotoCollectionType;
+import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
+import com.googlecode.flickrjandroid.photosets.Photoset;
 
 /**
+ * Represents the list adapter for my photo sets, each view will have a back
+ * view.
+ * 
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class MainMenuCommandSectionListAdapter extends
-		AbstractCommandSectionListAdapter {
+public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 
-	public MainMenuCommandSectionListAdapter(Context ctx) {
-		super(ctx);
+	/**
+	 * @param ctx
+	 * @param command
+	 */
+	public PhotoSetItemAdapter(Context ctx, ICommand<?> command) {
+		super(ctx, command);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see android.widget.Adapter#getView(int, android.view.View,
-	 * android.view.ViewGroup)
-	 */
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View view = super.getView(position, convertView, parent);
-		ICommand<?> command = (ICommand<?>) getItem(position);
-		prepareBackView(view, command);
-		return view;
-	}
-
-	private void prepareBackView(final View view, final ICommand<?> command) {
-		final IOfflineViewParameter offline = (IOfflineViewParameter) command
-				.getAdapter(IOfflineViewParameter.class);
-		if (offline != null) {
-			// prepare the back view
-			View bv = view.findViewById(R.id.menu_item_back_view);
-			if (bv == null) {
-				bv = LayoutInflater.from(mContext).inflate(
-						R.layout.main_menu_item_backview, null);
-				((ViewGroup) view).addView(bv);
-			}
-			final View backView = bv;
-			backView.setVisibility(View.INVISIBLE);
-
-			// get the front view
-			final View frontView = view
-					.findViewById(R.id.main_menu_item_front_view);
-
-			// hook up action item with click listener.
-			prepareOfflineActionItem(backView, frontView, command, offline);
-
-			// hook the action on the setting icon
-			ImageView settingButton = (ImageView) view
-					.findViewById(R.id.btn_offline_settings);
-			boolean isOfflineEnabledOnThis = OfflineControlFileUtil
-					.isOfflineViewEnabled(mContext, offline);
-			settingButton
-					.setImageResource(isOfflineEnabledOnThis ? R.drawable.ic_action_settings_holo_light
-							: R.drawable.ic_action_settings);
-			settingButton.setVisibility(View.VISIBLE);
-			settingButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					showBackView(backView, frontView);
-				}
-			});
+		View v = convertView;
+		if (v == null) {
+			v = LayoutInflater.from(mContext).inflate(R.layout.main_menu_item,
+					null);
 		}
+		ViewHolder holder = (ViewHolder) v.getTag();
+		ViewGroup menuFrontView;
+		ImageView avatar;
+		TextView text;
+		ImageView settingButton;
+		if (holder != null) {
+			text = holder.text;
+			avatar = holder.image;
+			settingButton = holder.settingButton;
+			menuFrontView = holder.menuFrontView;
+		} else {
+			avatar = (ImageView) v.findViewById(R.id.nav_item_image);
+			text = (TextView) v.findViewById(R.id.nav_item_title);
+			settingButton = (ImageView) v
+					.findViewById(R.id.btn_offline_settings);
+			menuFrontView = (ViewGroup) v
+					.findViewById(R.id.main_menu_item_front_view);
+			holder = new ViewHolder();
+			holder.image = avatar;
+			holder.text = text;
+			holder.settingButton = settingButton;
+			holder.menuFrontView = menuFrontView;
+			v.setTag(holder);
+		}
+
+		// bind data
+		Object data = getItem(position);
+		text.setText(getTitle(data));
+
+		final View frontView = menuFrontView;
+		final ViewGroup container = (ViewGroup) v;
+		final Photoset ps = (Photoset) getItem(position);
+		final IOfflineViewParameter param = new FlickrOfflineParameter(
+				OfflinePhotoCollectionType.PHOTO_SET, ps.getId());
+		settingButton.setVisibility(View.VISIBLE);
+		boolean enabled = OfflineControlFileUtil.isOfflineViewEnabled(mContext,
+				param);
+		settingButton
+				.setImageResource(enabled ? R.drawable.ic_action_settings_holo_light
+						: R.drawable.ic_action_settings);
+		settingButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showBackView(container, frontView, param);
+			}
+		});
+		AbstractFetchIconUrlTask task = (AbstractFetchIconUrlTask) mCommand
+				.getAdapter(AbstractFetchIconUrlTask.class);
+		if (task != null)
+			// this task is special
+			task.execute(data, avatar);
+		return v;
 	}
 
 	/**
-	 * Shows the back view, but first we need to check if user enables the
-	 * offline feature or not.
+	 * Shows the back view
 	 * 
-	 * @param backView
+	 * @param container
 	 * @param frontView
 	 */
-	private void showBackView(View backView, View frontView) {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		if (!app.isOfflineEnabled()) {
+	private void showBackView(ViewGroup container, final View frontView,
+			IOfflineViewParameter param) {
+		boolean offlineEnabled = SharedPreferenceUtil
+				.isOfflineEnabled(mContext);
+		if (!offlineEnabled) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 			builder.setTitle(android.R.string.dialog_alert_title).setMessage(
 					R.string.msg_pls_enable_offline_first);
@@ -129,17 +149,39 @@ public class MainMenuCommandSectionListAdapter extends
 			builder.setNegativeButton(android.R.string.cancel, listener);
 			AlertDialog dialog = builder.create();
 			dialog.show();
-		} else {
-			frontView.setVisibility(View.INVISIBLE);
-			backView.setVisibility(View.VISIBLE);
-			ObjectAnimator.ofFloat(backView, "alpha", 0f, 1f) //$NON-NLS-1$
-					.setDuration(1000).start();
+			return;
 		}
+
+		View backView = container.findViewById(R.id.menu_item_back_view);
+		if (backView == null) {
+			backView = LayoutInflater.from(mContext).inflate(
+					R.layout.main_menu_item_backview, null);
+			container.addView(backView);
+			// hook up listeners for the buttons in the back view.
+			prepareOfflineActionItem(backView, frontView, param);
+		}
+		backView.setAlpha(0f); // hide it first
+		backView.setVisibility(View.VISIBLE);
+
+		// animation to show the back view.
+		ObjectAnimator a1 = ObjectAnimator
+				.ofFloat(frontView, "alpha", 1f, 0f).setDuration(1000); //$NON-NLS-1$
+		ObjectAnimator a2 = ObjectAnimator
+				.ofFloat(backView, "alpha", 0f, 1f).setDuration(1000); //$NON-NLS-1$
+		AnimatorSet set = new AnimatorSet();
+		set.playTogether(a1, a2);
+		set.addListener(new AnimatorListenerAdapter() {
+
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				frontView.setVisibility(View.INVISIBLE);
+			}
+		});
+		set.start();
 	}
 
 	private void prepareOfflineActionItem(final View backView,
-			final View frontView, ICommand<?> command,
-			final IOfflineViewParameter offline) {
+			final View frontView, final IOfflineViewParameter offline) {
 		OnClickListener listener = new OnClickListener() {
 
 			@Override
@@ -155,8 +197,23 @@ public class MainMenuCommandSectionListAdapter extends
 					settingButtonImage
 							.setImageResource(isOfflineEnabled ? R.drawable.ic_action_settings_holo_light
 									: R.drawable.ic_action_settings);
-					ObjectAnimator.ofFloat(frontView, "alpha", 0f, 1f) //$NON-NLS-1$
-							.setDuration(1000).start();
+					frontView.setVisibility(View.VISIBLE);
+					ObjectAnimator a1 = ObjectAnimator.ofFloat(frontView,
+							"alpha", 0f, 1f) //$NON-NLS-1$
+							.setDuration(1000);
+					ObjectAnimator a2 = ObjectAnimator.ofFloat(backView,
+							"alpha", 1f, 0f).setDuration(1000); //$NON-NLS-1$
+					AnimatorSet set = new AnimatorSet();
+					set.playTogether(a1, a2);
+					set.addListener(new AnimatorListenerAdapter() {
+
+						@Override
+						public void onAnimationEnd(Animator animation) {
+							backView.setVisibility(View.INVISIBLE);
+							frontView.setVisibility(View.VISIBLE);
+						}
+					});
+					set.start();
 					break;
 				case R.id.btn_offline_refresh:
 					if (!isOfflineEnabled) {
@@ -178,8 +235,7 @@ public class MainMenuCommandSectionListAdapter extends
 					mContext.startService(serviceIntent);
 					break;
 				case R.id.btn_offline_slide_show:
-					final Context ctx = backView.getContext();
-					startSlideshow(ctx, offline);
+					startSlideshow(mContext, offline);
 					break;
 				case R.id.btn_offline_download:
 					if (!isOfflineEnabled) {
@@ -282,12 +338,6 @@ public class MainMenuCommandSectionListAdapter extends
 		btnDeletePhoto.setOnClickListener(listener);
 	}
 
-	/**
-	 * Starts the slideshow.
-	 * 
-	 * @param ctx
-	 * @param offline
-	 */
 	private void startSlideshow(final Context ctx,
 			final IOfflineViewParameter offline) {
 		final boolean isOfflineViewEnabled = OfflineControlFileUtil
@@ -316,4 +366,12 @@ public class MainMenuCommandSectionListAdapter extends
 			}
 		});
 	}
+
+	private static class ViewHolder {
+		ViewGroup menuFrontView;
+		ImageView image;
+		TextView text;
+		ImageView settingButton;
+	}
+
 }

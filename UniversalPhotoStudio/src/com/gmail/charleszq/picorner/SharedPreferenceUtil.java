@@ -34,4 +34,9 @@ public final class SharedPreferenceUtil {
 		return getSharedPreferences(ctx).getString(IConstants.FLICKR_USER_ID,
 				null);
 	}
+
+	public static boolean isOfflineEnabled(Context ctx) {
+		return getSharedPreferences(ctx).getBoolean(
+				IConstants.PREF_ENABLE_OFFLINE, false);
+	}
 }

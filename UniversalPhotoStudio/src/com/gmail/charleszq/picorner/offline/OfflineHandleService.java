@@ -18,6 +18,7 @@ import android.util.Log;
 import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SharedPreferenceUtil;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -56,9 +57,9 @@ public class OfflineHandleService extends IntentService {
 	protected void onHandleIntent(Intent intent) {
 		// check if offline is enabled or not
 		PicornerApplication app = (PicornerApplication) this.getApplication();
-		if (!app.isOfflineEnabled()) {
+		boolean offlineEnabled = SharedPreferenceUtil.isOfflineEnabled(this);
+		if( !offlineEnabled )
 			return;
-		}
 
 		// get the caller information to see if the call comes from battery
 		// charging

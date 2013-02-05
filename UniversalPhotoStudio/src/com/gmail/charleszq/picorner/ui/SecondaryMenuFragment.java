@@ -42,10 +42,9 @@ import com.gmail.charleszq.picorner.ui.command.flickr.MyFrequentlyUsedTagsComman
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramFollowingPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.Px500FriendPhotosCommand;
-import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
-import com.gmail.charleszq.picorner.ui.helper.MainMenuCommandSectionListAdapter;
 
 /**
  * Represents the fragment to show the secondary menus.
@@ -58,7 +57,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 	private ListView mListView;
 	private FrameLayout mBackViewContainer;
-	private AbstractCommandSectionListAdapter mSectionAdapter;
+	private CommandSectionListAdapter mSectionAdapter;
 
 	private ProgressDialog mProgressDialog;
 
@@ -126,7 +125,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		mBackViewContainer = (FrameLayout) v
 				.findViewById(R.id.back_view_container);
 
-		mSectionAdapter = new MainMenuCommandSectionListAdapter(getActivity());
+		mSectionAdapter = new CommandSectionListAdapter(getActivity());
 		mListView.setAdapter(mSectionAdapter);
 		mListView.setOnItemClickListener(this);
 		return v;
