@@ -3,11 +3,9 @@
  */
 package com.gmail.charleszq.picorner.task.flickr;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.Flickr;
@@ -27,10 +25,7 @@ public class FetchPhotoPermissionTask extends
 	@Override
 	protected Permissions doInBackground(String... params) {
 		String photoId = params[0];
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-				app.getFlickrToken(), app.getFlickrTokenSecret());
+		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mContext);
 		try {
 			return f.getPhotosInterface().getPerms(photoId);
 		} catch (Exception e) {

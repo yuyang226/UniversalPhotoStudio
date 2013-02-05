@@ -5,12 +5,11 @@ package com.gmail.charleszq.picorner.task.flickr;
 
 import java.lang.ref.WeakReference;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.Flickr;
@@ -47,16 +46,13 @@ public class FetchFlickrGalleryIconUrlTask extends AbstractFetchIconUrlTask {
 	protected String doInBackground(Object... params) {
 		this.beforeExecute(params);
 		String primaryPhotoId = mGallery.getPrimaryPhotoId();
-		PicornerApplication app = (PicornerApplication) ((Activity) this.mContext)
-				.getApplication();
 
 		String result = null;
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-				app.getFlickrToken(), app.getFlickrTokenSecret());
+		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mContext);
 		PhotosInterface psi = f.getPhotosInterface();
 		try {
 			Photo photo = psi.getInfo(primaryPhotoId,
-					app.getFlickrTokenSecret());
+					SPUtil.getFlickrAuthTokenSecret(mContext));
 			result = photo.getSmallSquareUrl();
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());

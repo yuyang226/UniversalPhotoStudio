@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.github.yuyang226.j500px.J500px;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.msg.Message;
@@ -285,12 +286,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		mSectionAdapter.notifyDataSetChanged();
 	}
 
-	private boolean isUserAuthedFlickr() {
-		PicornerApplication app = (PicornerApplication) this.getActivity()
-				.getApplication();
-		return app.getFlickrUserId() != null;
-	}
-
 	private boolean isUserAuthedPx500() {
 		PicornerApplication app = (PicornerApplication) this.getActivity()
 				.getApplication();
@@ -412,7 +407,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		commands.add(command);
 
-		if (!isUserAuthedFlickr()) {
+		if (!SPUtil.isFlickrAuthed(ctx)) {
 			command = new FlickrLoginCommand(ctx);
 			commands.add(command);
 		} else {
@@ -451,7 +446,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		if (IConstants.ID_SCHEME.equals(schema)) {
 
 			// if flickr already authed.
-			if (isUserAuthedFlickr()) {
+			if (SPUtil.isFlickrAuthed(getActivity())) {
 				return;
 			}
 
@@ -593,7 +588,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				.getApplication();
 		switch (type) {
 		case FLICKR:
-			return app.getFlickrTokenSecret();
+			return SPUtil.getFlickrAuthTokenSecret(getActivity());
 		case PX500:
 			return app.getPx500TokenSecret();
 		default:
@@ -610,7 +605,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			case FLICKR:
 				msg = String
 						.format(msg, getString(R.string.menu_header_flickr));
-				signedin = isUserAuthedFlickr();
+				signedin = SPUtil.isFlickrAuthed(getActivity());
 				break;
 			case PX500:
 				msg = String.format(msg, getString(R.string.menu_header_px500));

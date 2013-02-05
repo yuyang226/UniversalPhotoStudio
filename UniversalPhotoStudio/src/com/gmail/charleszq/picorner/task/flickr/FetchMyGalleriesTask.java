@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.galleries.GalleriesInterface;
@@ -26,9 +26,9 @@ public class FetchMyGalleriesTask extends
 
 	@Override
 	protected Collection<Gallery> doInBackground(Void... params) {
-		String token = SharedPreferenceUtil.getFlickrAuthToken(mContext);
-		String secret = SharedPreferenceUtil.getFlickrAuthTokenSecret(mContext);
-		String userId = SharedPreferenceUtil.getFlickrUserId(mContext);
+		String token = SPUtil.getFlickrAuthToken(mContext);
+		String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
+		String userId = SPUtil.getFlickrUserId(mContext);
 		GalleriesInterface gi = FlickrHelper.getInstance()
 				.getFlickrAuthed(token, secret).getGalleriesInterface();
 		try {

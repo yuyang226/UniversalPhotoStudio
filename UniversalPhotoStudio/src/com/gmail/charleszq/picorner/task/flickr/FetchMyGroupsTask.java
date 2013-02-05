@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.groups.Group;
@@ -26,8 +26,8 @@ public class FetchMyGroupsTask extends
 
 	@Override
 	protected Collection<Group> doInBackground(Void... params) {
-		String token = SharedPreferenceUtil.getFlickrAuthToken(mContext);
-		String secret = SharedPreferenceUtil.getFlickrAuthTokenSecret(mContext);
+		String token = SPUtil.getFlickrAuthToken(mContext);
+		String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
 		PoolsInterface psi = FlickrHelper.getInstance()
 				.getFlickrAuthed(token, secret).getPoolsInterface();
 		try {

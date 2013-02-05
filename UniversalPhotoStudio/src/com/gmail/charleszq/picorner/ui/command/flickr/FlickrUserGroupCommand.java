@@ -3,11 +3,10 @@
  */
 package com.gmail.charleszq.picorner.ui.command.flickr;
 
-import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoGroupPhotosService;
@@ -50,20 +49,20 @@ public class FlickrUserGroupCommand extends PhotoListCommand {
 		}
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
-				Activity act = (Activity) mContext;
-				PicornerApplication app = (PicornerApplication) act.getApplication();
+				String userId = SPUtil.getFlickrUserId(mContext);
+				String token = SPUtil.getFlickrAuthToken(mContext);
+				String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
 				mCurrentPhotoService = new FlickrPhotoGroupPhotosService(
-						app.getFlickrUserId(), app.getFlickrToken(),
-						app.getFlickrTokenSecret(), mGroup.getId());
+						userId, token, secret, mGroup.getId());
 			}
 			return mCurrentPhotoService;
 		}
-		if( adapterClass == FlickrUserPhotoPool.class ) {
+		if (adapterClass == FlickrUserPhotoPool.class) {
 			return PhotoPlace.POOL + mGroup.getId();
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
+
 	@Override
 	public String getDescription() {
 		String s = mContext.getString(R.string.cd_flickr_group_photos);

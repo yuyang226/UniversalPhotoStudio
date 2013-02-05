@@ -5,7 +5,7 @@ package com.gmail.charleszq.picorner.task.flickr;
 
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.photosets.Photosets;
@@ -25,9 +25,9 @@ public class FetchPhotoSetsTask extends
 
 	@Override
 	protected Photosets doInBackground(Void... params) {
-		String token = SharedPreferenceUtil.getFlickrAuthToken(mContext);
-		String secret = SharedPreferenceUtil.getFlickrAuthTokenSecret(mContext);
-		String userId = SharedPreferenceUtil.getFlickrUserId(mContext);
+		String token = SPUtil.getFlickrAuthToken(mContext);
+		String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
+		String userId = SPUtil.getFlickrUserId(mContext);
 		PhotosetsInterface psi = FlickrHelper.getInstance()
 				.getFlickrAuthed(token, secret).getPhotosetsInterface();
 		try {

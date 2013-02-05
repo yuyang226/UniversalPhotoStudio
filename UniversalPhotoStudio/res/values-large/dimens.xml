@@ -10,6 +10,7 @@
     <dimen name="image_detail_pager_margin">80dp</dimen>
     
     <dimen name="cmd_icon_size">64dp</dimen>
+    <dimen name="offline_icon_size">48dp</dimen>
     
     <dimen name="slidingmenu_offset">300dp</dimen>
     <dimen name="list_padding">10dp</dimen>

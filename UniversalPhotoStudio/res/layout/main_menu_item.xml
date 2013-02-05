@@ -13,8 +13,8 @@
 
         <ImageView
             android:id="@+id/nav_item_image"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="@dimen/cmd_icon_size"
+            android:layout_height="@dimen/cmd_icon_size"
             android:contentDescription="@string/app_name"
             android:paddingLeft="5dp"
             android:scaleType="fitCenter" />
@@ -30,8 +30,8 @@
 
         <ImageView
             android:id="@+id/btn_offline_settings"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/offline_icon_size"
+            android:layout_height="@dimen/offline_icon_size"
             android:layout_gravity="center"
             android:layout_marginRight="5dp"
             android:contentDescription="@string/app_name"

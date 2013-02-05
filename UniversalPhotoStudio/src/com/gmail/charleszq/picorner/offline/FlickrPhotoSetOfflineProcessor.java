@@ -12,13 +12,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import android.app.Service;
 import android.content.Context;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
-import com.gmail.charleszq.picorner.PicornerApplication;
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
@@ -166,7 +164,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 					"after,  there are %d photos.", photos.size())); //$NON-NLS-1$
 
 		// if exceeded the limit, remove some old photos.
-		int maxSize = SharedPreferenceUtil.getMaxPhotoSize(ctx);
+		int maxSize = SPUtil.getMaxPhotoSize(ctx);
 		if (photos.size() > maxSize) {
 			photos = photos.subList(0, maxSize);
 		}
@@ -189,7 +187,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 
 		int lastPageNo = getLastPage(serverPhotoCount, PAGE_SIZE);
 		List<MediaObject> photos = new ArrayList<MediaObject>();
-		int maxSize = SharedPreferenceUtil.getMaxPhotoSize(ctx);
+		int maxSize = SPUtil.getMaxPhotoSize(ctx);
 
 		int pageIndex = 0;
 		while (lastPageNo > 0) {
@@ -218,10 +216,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 
 	private MediaObjectCollection getPhotoForPage(Context ctx,
 			IOfflineViewParameter param, int pageNo, int pageSize) {
-		PicornerApplication app = (PicornerApplication) ((Service) ctx)
-				.getApplication();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-				app.getFlickrToken(), app.getFlickrTokenSecret());
+		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(ctx);
 		if (mExtras == null) {
 			prepareExtras();
 		}
@@ -255,10 +250,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 
 	private int getCurrentCollectionPhotoCount(Context ctx,
 			IOfflineViewParameter param) {
-		PicornerApplication app = (PicornerApplication) ((Service) ctx)
-				.getApplication();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-				app.getFlickrToken(), app.getFlickrTokenSecret());
+		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(ctx);
 		try {
 			Photoset ps = f.getPhotosetsInterface().getInfo(
 					param.getPhotoCollectionId());

@@ -8,11 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.model.ExifData;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
@@ -40,10 +38,7 @@ public class FetchFlickrPhotoExifTask extends
 			photoSecret = params[1];
 		}
 
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-				app.getFlickrToken(), app.getFlickrTokenSecret());
+		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mContext);
 		PhotosInterface pi = f.getPhotosInterface();
 		try {
 			Collection<Exif> exifs = pi.getExif(photoId, photoSecret);

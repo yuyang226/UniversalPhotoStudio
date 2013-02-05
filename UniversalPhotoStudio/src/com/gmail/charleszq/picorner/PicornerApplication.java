@@ -122,16 +122,11 @@ public class PicornerApplication extends Application {
 		}
 	}
 
-	public String getFlickrToken() {
-		String token = getSharedPreferenceValue(IConstants.FLICKR_TOKEN, null);
-		return token;
-	}
-
 	public OAuth loadSavedOAuth() {
-		String userId = getFlickrUserId();
-		String userName = getFlickrUserName();
-		String token = getFlickrToken();
-		String tokenSecret = getFlickrTokenSecret();
+		String userId = SPUtil.getFlickrUserId(getApplicationContext());
+		String userName = SPUtil.getFlickrUserName(getApplicationContext());
+		String token = SPUtil.getFlickrAuthToken(getApplicationContext());
+		String tokenSecret = SPUtil.getFlickrAuthTokenSecret(getApplicationContext());
 		if (userId == null || token == null || tokenSecret == null) {
 			return null;
 		}
@@ -186,20 +181,8 @@ public class PicornerApplication extends Application {
 		editor.commit();
 	}
 
-	public String getFlickrTokenSecret() {
-		return getSharedPreferenceValue(IConstants.FLICKR_TOKEN_SECRENT, null);
-	}
-
 	public String getPx500TokenSecret() {
 		return getSharedPreferenceValue(IConstants.PX500_TOKEN_SECRET_KEY, null);
-	}
-
-	public String getFlickrUserName() {
-		return getSharedPreferenceValue(IConstants.FLICKR_USER_NAME, null);
-	}
-
-	public String getFlickrUserId() {
-		return getSharedPreferenceValue(IConstants.FLICKR_USER_ID, null);
 	}
 
 	/**
@@ -296,7 +279,7 @@ public class PicornerApplication extends Application {
 		if (a != null) {
 			switch (photo.getMediaSource()) {
 			case FLICKR:
-				result = a.getUserId().equals(getFlickrUserId());
+				result = a.getUserId().equals(SPUtil.getFlickrUserId(getApplicationContext()));
 				break;
 			case INSTAGRAM:
 				result = a.getUserId().equals(getInstagramUserId());

@@ -26,7 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
@@ -135,7 +135,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 	 */
 	private void showBackView(ViewGroup container, final View frontView,
 			IOfflineViewParameter param) {
-		boolean offlineEnabled = SharedPreferenceUtil
+		boolean offlineEnabled = SPUtil
 				.isOfflineEnabled(mContext);
 		if (!offlineEnabled) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);

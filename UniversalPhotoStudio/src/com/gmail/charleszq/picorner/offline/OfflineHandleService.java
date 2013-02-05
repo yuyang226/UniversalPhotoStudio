@@ -17,7 +17,7 @@ import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -55,8 +55,8 @@ public class OfflineHandleService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// check if offline is enabled or not
-		boolean offlineEnabled = SharedPreferenceUtil.isOfflineEnabled(this);
-		boolean isDownloadWhenCharging = SharedPreferenceUtil
+		boolean offlineEnabled = SPUtil.isOfflineEnabled(this);
+		boolean isDownloadWhenCharging = SPUtil
 				.isDownloadingWhenChargingEnabled(this);
 		if (!offlineEnabled)
 			return;
@@ -142,7 +142,7 @@ public class OfflineHandleService extends IntentService {
 			}
 			return;
 		}
-		boolean isWifiOnly = SharedPreferenceUtil.isOfflineWifiOnly(this);
+		boolean isWifiOnly = SPUtil.isOfflineWifiOnly(this);
 		boolean isConnected = activeNetwork.isConnectedOrConnecting();
 		boolean isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
 		if (!isConnected) {

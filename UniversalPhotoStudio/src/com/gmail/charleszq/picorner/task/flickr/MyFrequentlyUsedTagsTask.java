@@ -5,12 +5,10 @@ package com.gmail.charleszq.picorner.task.flickr;
 
 import java.util.Collection;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.Flickr;
@@ -29,10 +27,7 @@ public class MyFrequentlyUsedTagsTask extends
 
 	@Override
 	protected Collection<Tag> doInBackground(Void... params) {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-				app.getFlickrToken(), app.getFlickrTokenSecret());
+		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mContext);
 
 		try {
 			return f.getTagsInterface().getMostFrequentlyUsed();

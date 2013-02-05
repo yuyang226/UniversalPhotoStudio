@@ -18,7 +18,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
 import com.gmail.charleszq.picorner.model.GeoLocation;
@@ -250,7 +250,7 @@ public abstract class AbstractPhotoGridFragment extends
 				"When loading more, there are %s photos currently", //$NON-NLS-1$
 				currentPhotoSize));
 		boolean noMoreData = mNoMoreData;
-		int maxSize = SharedPreferenceUtil.getMaxPhotoSize(getActivity());
+		int maxSize = SPUtil.getMaxPhotoSize(getActivity());
 		noMoreData = noMoreData | currentPhotoSize > maxSize;
 		if (currentPhotoSize > 0) {
 			noMoreData = noMoreData

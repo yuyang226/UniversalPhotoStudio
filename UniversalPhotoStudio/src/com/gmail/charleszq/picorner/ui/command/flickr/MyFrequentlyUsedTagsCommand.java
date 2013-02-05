@@ -5,11 +5,10 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 
 import java.util.Comparator;
 
-import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.FlickrTagSearchParameter;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrTagSearchService;
@@ -56,9 +55,7 @@ public class MyFrequentlyUsedTagsCommand extends PhotoListCommand {
 	@Override
 	public boolean execute(Object... params) {
 		mSearchParameter = (FlickrTagSearchParameter) params[0];
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		mSearchParameter.setUserId(app.getFlickrUserId());
+		mSearchParameter.setUserId(SPUtil.getFlickrUserId(mContext));
 		return super.execute();
 	}
 
@@ -72,10 +69,10 @@ public class MyFrequentlyUsedTagsCommand extends PhotoListCommand {
 		}
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
-				PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-						.getApplication();
+				String token = SPUtil.getFlickrAuthToken(mContext);
+				String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
 				mCurrentPhotoService = new FlickrTagSearchService(
-						app.getFlickrToken(), app.getFlickrTokenSecret());
+						token, secret);
 			}
 			((FlickrTagSearchService) mCurrentPhotoService)
 					.setSearchParameter(mSearchParameter);

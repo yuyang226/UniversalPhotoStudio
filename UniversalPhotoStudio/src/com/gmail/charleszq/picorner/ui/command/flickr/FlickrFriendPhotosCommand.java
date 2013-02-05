@@ -6,12 +6,11 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 import java.lang.ref.WeakReference;
 import java.util.Comparator;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrUserPhotoStreamService;
@@ -65,17 +64,17 @@ public class FlickrFriendPhotosCommand extends PhotoListCommand {
 			return mHiddenView;
 		}
 		if (adapterClass == IPhotoService.class) {
-			Activity act = (Activity) mContext;
-			PicornerApplication app = (PicornerApplication) act
-					.getApplication();
+			String token = SPUtil.getFlickrAuthToken(mContext);
+			String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
 			mCurrentPhotoService = new FlickrUserPhotoStreamService(
-					mFriend.getUserId(), app.getFlickrToken(),
-					app.getFlickrTokenSecret());
+					mFriend.getUserId(), token, secret);
 			return mCurrentPhotoService;
 		}
-		if( adapterClass == AbstractFetchIconUrlTask.class) {
-			//this task is a little special, since we don't know the friend at this time
-			AbstractFetchIconUrlTask task = new AbstractFetchIconUrlTask(mContext) {
+		if (adapterClass == AbstractFetchIconUrlTask.class) {
+			// this task is a little special, since we don't know the friend at
+			// this time
+			AbstractFetchIconUrlTask task = new AbstractFetchIconUrlTask(
+					mContext) {
 
 				@Override
 				protected String doInBackground(Object... params) {
@@ -83,7 +82,7 @@ public class FlickrFriendPhotosCommand extends PhotoListCommand {
 					mIconViewRef = new WeakReference<View>((View) params[1]);
 					return a.getBuddyIconUrl();
 				}
-				
+
 			};
 			return task;
 		}
@@ -92,12 +91,14 @@ public class FlickrFriendPhotosCommand extends PhotoListCommand {
 		}
 		return super.getAdapter(adapterClass);
 	}
-	
+
 	@Override
 	public String getDescription() {
 		String s = mContext.getString(R.string.cd_flickr_user_photos);
-		return String.format(s, mFriend.getUserName() == null ? mFriend.getUserId()
-				: mFriend.getUserName());
+		return String.format(
+				s,
+				mFriend.getUserName() == null ? mFriend.getUserId() : mFriend
+						.getUserName());
 	}
 
 }

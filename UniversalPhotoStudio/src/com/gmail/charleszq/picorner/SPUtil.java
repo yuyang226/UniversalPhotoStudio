@@ -12,7 +12,7 @@ import android.content.SharedPreferences;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public final class SharedPreferenceUtil {
+public final class SPUtil {
 
 	private static final SharedPreferences getSharedPreferences(Context ctx) {
 		SharedPreferences sp = ctx.getSharedPreferences(
@@ -33,6 +33,15 @@ public final class SharedPreferenceUtil {
 	public static String getFlickrUserId(Context ctx) {
 		return getSharedPreferences(ctx).getString(IConstants.FLICKR_USER_ID,
 				null);
+	}
+	
+	public static String getFlickrUserName(Context ctx) {
+		return getSharedPreferences(ctx).getString(IConstants.FLICKR_USER_NAME, null);
+	}
+	
+	public static boolean isFlickrAuthed(Context ctx) {
+		String userId = getFlickrUserId(ctx);
+		return userId != null;
 	}
 
 	public static boolean isOfflineEnabled(Context ctx) {

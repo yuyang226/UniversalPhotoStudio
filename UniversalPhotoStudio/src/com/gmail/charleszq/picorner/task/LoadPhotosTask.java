@@ -9,7 +9,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
@@ -50,7 +50,7 @@ public class LoadPhotosTask extends
 		IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCommand
 				.getAdapter(IOfflineViewParameter.class);
 		Context ctx = (Context) mCommand.getAdapter(Context.class);
-		boolean overallOfflineEnabled = SharedPreferenceUtil
+		boolean overallOfflineEnabled = SPUtil
 				.isOfflineEnabled(ctx);
 		// It's the command's responsibility to return correct offline
 		// parameter;

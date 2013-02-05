@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.GeoLocation;
@@ -154,12 +155,13 @@ public class PhotoDetailActivity extends FragmentActivity {
 			}
 			break;
 		case FLICKR:
-			if (app.getFlickrUserId() == null) {
+			if (!SPUtil.isFlickrAuthed(this)) {
 				Toast.makeText(this, getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();
 				result = false;
 			} else {
-				if (app.getFlickrUserId().equals(author.getUserId())) {
+				if (SPUtil.getFlickrUserId(this).equals(
+						author.getUserId())) {
 					Toast.makeText(this,
 							getString(R.string.msg_your_own_photo),
 							Toast.LENGTH_SHORT).show();

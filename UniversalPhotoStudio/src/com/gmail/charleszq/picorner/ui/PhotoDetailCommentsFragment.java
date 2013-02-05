@@ -31,6 +31,7 @@ import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectComment;
@@ -151,8 +152,8 @@ public class PhotoDetailCommentsFragment extends
 
 		switch (mCurrentPhoto.getMediaSource()) {
 		case FLICKR:
-			a.setUserId(app.getFlickrUserId());
-			a.setUserName(app.getFlickrUserName());
+			a.setUserId(SPUtil.getFlickrUserId(getActivity()));
+			a.setUserName(SPUtil.getFlickrUserName(getActivity()));
 			break;
 		case INSTAGRAM:
 			a.setUserId(String.valueOf(app.getInstagramUserId()));
@@ -233,7 +234,7 @@ public class PhotoDetailCommentsFragment extends
 				.getApplication();
 		switch (mCurrentPhoto.getMediaSource()) {
 		case FLICKR:
-			result = app.getFlickrUserId() != null;
+			result = SPUtil.isFlickrAuthed(getActivity());
 			break;
 		case INSTAGRAM:
 			result = app.getInstagramUserId() != null;

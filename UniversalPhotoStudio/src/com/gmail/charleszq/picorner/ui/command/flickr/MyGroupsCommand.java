@@ -8,7 +8,7 @@ import java.util.Comparator;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoGroupPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -79,9 +79,9 @@ public class MyGroupsCommand extends PhotoListCommand {
 		}
 		if (adapterClass == IPhotoService.class) {
 			mCurrentPhotoService = new FlickrPhotoGroupPhotosService(
-					SharedPreferenceUtil.getFlickrUserId(mContext),
-					SharedPreferenceUtil.getFlickrAuthToken(mContext),
-					SharedPreferenceUtil.getFlickrAuthTokenSecret(mContext),
+					SPUtil.getFlickrUserId(mContext),
+					SPUtil.getFlickrAuthToken(mContext),
+					SPUtil.getFlickrAuthTokenSecret(mContext),
 					mGroup.getId());
 			return mCurrentPhotoService;
 		}

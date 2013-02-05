@@ -5,19 +5,21 @@ package com.gmail.charleszq.picorner.utils;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import android.content.Context;
+
+import com.gmail.charleszq.picorner.SPUtil;
 import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.REST;
 import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 
-
 /**
  * @author charleszq
- *
+ * 
  */
 public final class FlickrHelper {
-	
+
 	private static FlickrHelper instance = null;
 	private static final String API_KEY = "56893c4690000edac61e265c4d1bbf0f"; //$NON-NLS-1$
 	public static final String API_SEC = "30156baf9e81fcdc"; //$NON-NLS-1$
@@ -50,5 +52,11 @@ public final class FlickrHelper {
 		auth.setToken(new OAuthToken(token, secret));
 		requestContext.setOAuth(auth);
 		return f;
+	}
+
+	public Flickr getFlickrAuthed(Context context) {
+		String token = SPUtil.getFlickrAuthToken(context);
+		String secret = SPUtil.getFlickrAuthTokenSecret(context);
+		return getFlickrAuthed(token, secret);
 	}
 }

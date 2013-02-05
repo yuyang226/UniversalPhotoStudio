@@ -13,7 +13,7 @@ import android.app.Activity;
 import android.os.Environment;
 import android.util.Log;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.task.AbstractGeneralTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
@@ -40,15 +40,11 @@ public class FetchFlickrUserPhotoCollectionTask extends
 	 * The activity
 	 */
 	private Activity mActivity;
-	private String mUserId, mToken, mSecret;
+	private String mUserId;
 
 	public FetchFlickrUserPhotoCollectionTask(Activity act) {
 		this.mActivity = act;
-		PicornerApplication app = (PicornerApplication) mActivity
-				.getApplication();
-		mToken = app.getFlickrToken();
-		mSecret = app.getFlickrTokenSecret();
-		mUserId = app.getFlickrUserId();
+		mUserId = SPUtil.getFlickrUserId(act);
 	}
 
 	@Override
@@ -56,7 +52,7 @@ public class FetchFlickrUserPhotoCollectionTask extends
 		List<Object> photosets = new ArrayList<Object>();
 
 		PhotosetsInterface psi = FlickrHelper.getInstance()
-				.getFlickrAuthed(mToken, mSecret).getPhotosetsInterface();
+				.getFlickrAuthed(mActivity).getPhotosetsInterface();
 		try {
 			Photosets ps = psi.getList(mUserId);
 			photosets.addAll(ps.getPhotosets());
@@ -66,7 +62,7 @@ public class FetchFlickrUserPhotoCollectionTask extends
 		}
 
 		PoolsInterface poolInterface = FlickrHelper.getInstance()
-				.getFlickrAuthed(mToken, mSecret).getPoolsInterface();
+				.getFlickrAuthed(mActivity).getPoolsInterface();
 		try {
 			Collection<Group> groups = poolInterface.getGroups();
 			photosets.addAll(groups);
@@ -74,7 +70,7 @@ public class FetchFlickrUserPhotoCollectionTask extends
 		}
 
 		GalleriesInterface gi = FlickrHelper.getInstance()
-				.getFlickrAuthed(mToken, mSecret).getGalleriesInterface();
+				.getFlickrAuthed(mActivity).getGalleriesInterface();
 		try {
 			Collection<Gallery> galleries = gi.getList(mUserId, -1, -1);
 			photosets.addAll(galleries);

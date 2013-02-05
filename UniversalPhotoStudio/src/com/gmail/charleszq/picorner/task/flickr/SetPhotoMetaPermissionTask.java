@@ -3,11 +3,9 @@
  */
 package com.gmail.charleszq.picorner.task.flickr;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.Flickr;
@@ -30,10 +28,7 @@ public class SetPhotoMetaPermissionTask extends
 		String title = params[1];
 		String desc = params[2];
 
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-				app.getFlickrToken(), app.getFlickrTokenSecret());
+		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mContext);
 
 		boolean success = true;
 		// set photo meta
@@ -49,8 +44,7 @@ public class SetPhotoMetaPermissionTask extends
 			boolean isFriend = Boolean.parseBoolean(params[3]);
 			boolean isFamily = Boolean.parseBoolean(params[4]);
 			boolean isPublic = Boolean.parseBoolean(params[5]);
-			f = FlickrHelper.getInstance().getFlickrAuthed(
-					app.getFlickrToken(), app.getFlickrTokenSecret());
+			f = FlickrHelper.getInstance().getFlickrAuthed(mContext);
 			Permissions permissions = new Permissions();
 			permissions.setFamilyFlag(isFamily);
 			permissions.setPublicFlag(isPublic);

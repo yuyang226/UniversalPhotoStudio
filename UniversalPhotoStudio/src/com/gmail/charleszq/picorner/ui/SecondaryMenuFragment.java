@@ -25,6 +25,7 @@ import android.widget.ListView;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.msg.IMessageConsumer;
 import com.gmail.charleszq.picorner.msg.Message;
 import com.gmail.charleszq.picorner.msg.MessageBus;
@@ -170,7 +171,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		command = new FlickrTagSearchCommand(getActivity());
 		commands.add(command);
 
-		if (app.getFlickrToken() != null) {
+		if (SPUtil.isFlickrAuthed(getActivity())) {
 			command = new MyFrequentlyUsedTagsCommand(getActivity());
 			commands.add(command);
 		}
@@ -183,7 +184,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 			accountReady = true;
 		}
 
-		if (app.getFlickrToken() != null) {
+		if (SPUtil.isFlickrAuthed(getActivity())) {
 			// friends
 			command = new FlickrFriendPhotosCommand(getActivity());
 			commands.add(command);

@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/img_friend_avatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
+        android:layout_width="@dimen/cmd_icon_size"
+        android:layout_height="@dimen/cmd_icon_size"
         android:src="@drawable/empty_photo"
         android:contentDescription="@string/app_name"
         android:paddingLeft="5dp"

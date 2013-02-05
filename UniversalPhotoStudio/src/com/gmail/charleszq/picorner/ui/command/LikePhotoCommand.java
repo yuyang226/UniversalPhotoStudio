@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramLikePhotoTask;
@@ -31,11 +32,12 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 			return false;
 		}
 		MediaObject photo = (MediaObject) params[0];
-		
-		PicornerApplication app = (PicornerApplication) ((Activity)mContext).getApplication();
+
+		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
+				.getApplication();
 		switch (photo.getMediaSource()) {
 		case FLICKR:
-			if( app.getFlickrUserId() == null ) {
+			if (!SPUtil.isFlickrAuthed(mContext)) {
 				return false;
 			}
 			FlickrLikeTask task = new FlickrLikeTask(mContext,
@@ -43,7 +45,7 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 			task.execute(photo.getId());
 			break;
 		case INSTAGRAM:
-			if( app.getInstagramUserId() == null ) {
+			if (app.getInstagramUserId() == null) {
 				return false;
 			}
 			InstagramLikePhotoTask igLikeTask = new InstagramLikePhotoTask(
@@ -51,7 +53,7 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 			igLikeTask.execute(photo.getId());
 			break;
 		case PX500:
-			if( app.getPx500OauthToken() == null ) {
+			if (app.getPx500OauthToken() == null) {
 				return false;
 			}
 			break;

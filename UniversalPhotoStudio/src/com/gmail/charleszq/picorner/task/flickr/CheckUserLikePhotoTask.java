@@ -3,11 +3,9 @@
  */
 package com.gmail.charleszq.picorner.task.flickr;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.googlecode.flickrjandroid.Flickr;
@@ -34,10 +32,7 @@ public class CheckUserLikePhotoTask extends
 		String photoId = params[0];
 		String photoSecret = params[1];
 
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(
-				app.getFlickrToken(), app.getFlickrTokenSecret());
+		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mContext);
 		PhotosInterface pi = f.getPhotosInterface();
 		try {
 			Photo p = pi.getInfo(photoId, photoSecret);

@@ -30,7 +30,7 @@ import android.widget.FrameLayout.LayoutParams;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
@@ -158,7 +158,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		i.putExtra(ImageDetailActivity.DP_KEY, mPhotosProvider);
 		i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, (int) id);
 		if (mCurrentCommand != null) {
-			boolean overallOfflineEnabled = SharedPreferenceUtil.isOfflineEnabled(getActivity());
+			boolean overallOfflineEnabled = SPUtil.isOfflineEnabled(getActivity());
 			if (overallOfflineEnabled) {
 				IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCurrentCommand
 						.getAdapter(IOfflineViewParameter.class);

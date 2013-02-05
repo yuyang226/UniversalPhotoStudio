@@ -51,6 +51,7 @@ import android.widget.Toast;
 import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
@@ -352,7 +353,7 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			break;
 		case FLICKR:
-			if (app.getFlickrUserId() == null) {
+			if (SPUtil.isFlickrAuthed(getActivity())) {
 				Toast.makeText(getActivity(),
 						getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();

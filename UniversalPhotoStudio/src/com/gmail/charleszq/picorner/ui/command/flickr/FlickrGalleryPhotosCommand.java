@@ -3,11 +3,10 @@
  */
 package com.gmail.charleszq.picorner.ui.command.flickr;
 
-import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrGalleryPhotosService;
@@ -52,12 +51,12 @@ public class FlickrGalleryPhotosCommand extends PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
-				Activity act = (Activity) mContext;
-				PicornerApplication app = (PicornerApplication) act
-						.getApplication();
+				String token = SPUtil.getFlickrAuthToken(mContext);
+				String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
+				String userId = SPUtil.getFlickrUserId(mContext);
 				mCurrentPhotoService = new FlickrGalleryPhotosService(
-						app.getFlickrUserId(), app.getFlickrToken(),
-						app.getFlickrTokenSecret(), mGallery.getGalleryId());
+						userId, token,
+						secret, mGallery.getGalleryId());
 			}
 			return mCurrentPhotoService;
 		}

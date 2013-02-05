@@ -8,7 +8,7 @@ import java.util.Comparator;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.offline.FlickrOfflineParameter;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
@@ -77,9 +77,9 @@ public class MyPhotosetsCommand extends PhotoListCommand {
 		}
 		if (adapterClass == IPhotoService.class) {
 			mCurrentPhotoService = new FlickrPhotoSetPhotosService(
-					SharedPreferenceUtil.getFlickrUserId(mContext),
-					SharedPreferenceUtil.getFlickrAuthToken(mContext),
-					SharedPreferenceUtil.getFlickrAuthTokenSecret(mContext),
+					SPUtil.getFlickrUserId(mContext),
+					SPUtil.getFlickrAuthToken(mContext),
+					SPUtil.getFlickrAuthTokenSecret(mContext),
 					mPhotoSet);
 			return mCurrentPhotoService;
 		}

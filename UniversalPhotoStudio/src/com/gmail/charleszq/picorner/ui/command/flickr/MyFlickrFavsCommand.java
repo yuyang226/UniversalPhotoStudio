@@ -3,11 +3,10 @@
  */
 package com.gmail.charleszq.picorner.ui.command.flickr;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrMyFavoritesService;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
@@ -39,11 +38,10 @@ public class MyFlickrFavsCommand extends PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
-				Activity act = (Activity) mContext;
-				PicornerApplication app = (PicornerApplication) act.getApplication();
-				mCurrentPhotoService = new FlickrMyFavoritesService(
-						app.getFlickrUserId(), app.getFlickrToken(),
-						app.getFlickrTokenSecret());
+				String userId = SPUtil.getFlickrUserId(mContext);
+				String token = SPUtil.getFlickrAuthToken(mContext);
+				String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
+				mCurrentPhotoService = new FlickrMyFavoritesService(userId,token,secret);
 			}
 			return mCurrentPhotoService;
 		}
