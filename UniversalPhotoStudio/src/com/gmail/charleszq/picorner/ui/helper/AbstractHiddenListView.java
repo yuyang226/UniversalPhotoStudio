@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -88,6 +89,8 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 		mListView.setEmptyView(emptyView);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
+		PauseOnScrollListener pauseListener = new PauseOnScrollListener(false,true);
+		mListView.setOnScrollListener(pauseListener);
 
 		mCancelButton = (Button) mView.findViewById(R.id.btn_cancel_friends);
 		mCancelButton.setOnClickListener(new OnClickListener() {

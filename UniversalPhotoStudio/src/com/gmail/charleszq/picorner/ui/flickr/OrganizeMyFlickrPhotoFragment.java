@@ -45,6 +45,7 @@ import com.googlecode.flickrjandroid.galleries.Gallery;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.photos.PhotoPlace;
 import com.googlecode.flickrjandroid.photosets.Photoset;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -87,7 +88,9 @@ public class OrganizeMyFlickrPhotoFragment extends
 		mAdapter = new OrganizeAdapter(getActivity());
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
-
+		PauseOnScrollListener pauseListener = new PauseOnScrollListener(false,true);
+		mListView.setOnScrollListener(pauseListener);
+		
 		// the progress bar
 		mProgressBar = (ProgressBar) v.findViewById(R.id.pb_org_flickr_photo);
 		return v;
