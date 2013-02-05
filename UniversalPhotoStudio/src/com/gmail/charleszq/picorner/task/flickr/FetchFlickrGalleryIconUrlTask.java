@@ -3,9 +3,12 @@
  */
 package com.gmail.charleszq.picorner.task.flickr;
 
+import java.lang.ref.WeakReference;
+
 import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -22,6 +25,10 @@ import com.googlecode.flickrjandroid.photos.PhotosInterface;
 public class FetchFlickrGalleryIconUrlTask extends AbstractFetchIconUrlTask {
 
 	private Gallery mGallery;
+
+	public FetchFlickrGalleryIconUrlTask(Context ctx) {
+		super(ctx);
+	}
 
 	/**
 	 * @param ctx
@@ -48,12 +55,23 @@ public class FetchFlickrGalleryIconUrlTask extends AbstractFetchIconUrlTask {
 				app.getFlickrToken(), app.getFlickrTokenSecret());
 		PhotosInterface psi = f.getPhotosInterface();
 		try {
-			Photo photo = psi.getInfo(primaryPhotoId, app.getFlickrTokenSecret());
+			Photo photo = psi.getInfo(primaryPhotoId,
+					app.getFlickrTokenSecret());
 			result = photo.getSmallSquareUrl();
 		} catch (Exception e) {
 			Log.w(TAG, e.getMessage());
 		}
 		return result;
+	}
+
+	@Override
+	protected void beforeExecute(Object... params) {
+		if (params.length == 1)
+			super.beforeExecute(params);
+		else {
+			mGallery = (Gallery) params[0];
+			mIconViewRef = new WeakReference<View>((View) params[1]);
+		}
 	}
 
 }

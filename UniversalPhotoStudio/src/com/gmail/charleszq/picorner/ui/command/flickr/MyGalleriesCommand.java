@@ -10,30 +10,27 @@ import android.content.Context;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SharedPreferenceUtil;
 import com.gmail.charleszq.picorner.service.IPhotoService;
-import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoGroupPhotosService;
+import com.gmail.charleszq.picorner.service.flickr.FlickrGalleryPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
-import com.gmail.charleszq.picorner.task.flickr.FetchFlickrGroupIconUrlTask;
+import com.gmail.charleszq.picorner.task.flickr.FetchFlickrGalleryIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
-import com.gmail.charleszq.picorner.ui.flickr.MyPhotoGroupsHiddenView;
+import com.gmail.charleszq.picorner.ui.flickr.MyPhotoGalleriesHiddenView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
-import com.googlecode.flickrjandroid.groups.Group;
+import com.googlecode.flickrjandroid.galleries.Gallery;
 
 /**
- * Represents the command get all my groups in the main menu back view.
- * 
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class MyGroupsCommand extends PhotoListCommand {
+public class MyGalleriesCommand extends PhotoListCommand {
 
-	private Group mGroup;
+	private Gallery mGallery;
 	private IHiddenView mHiddenView;
 
 	/**
-	 * 
 	 * @param context
 	 */
-	public MyGroupsCommand(Context context) {
+	public MyGalleriesCommand(Context context) {
 		super(context);
 	}
 
@@ -55,12 +52,12 @@ public class MyGroupsCommand extends PhotoListCommand {
 	 */
 	@Override
 	public String getLabel() {
-		return mContext.getString(R.string.f_my_groups);
+		return mContext.getString(R.string.f_my_galleries);
 	}
-
+	
 	@Override
 	public boolean execute(Object... params) {
-		mGroup = (Group) params[0];
+		mGallery = (Gallery) params[0];
 		return super.execute();
 	}
 
@@ -68,33 +65,34 @@ public class MyGroupsCommand extends PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IHiddenView.class) {
 			if (mHiddenView == null) {
-				mHiddenView = new MyPhotoGroupsHiddenView();
+				mHiddenView = new MyPhotoGalleriesHiddenView();
 			}
 			return mHiddenView;
 		}
 		if (adapterClass == AbstractFetchIconUrlTask.class) {
-			FetchFlickrGroupIconUrlTask task = new FetchFlickrGroupIconUrlTask(
+			FetchFlickrGalleryIconUrlTask task = new FetchFlickrGalleryIconUrlTask(
 					mContext);
 			return task;
 		}
 		if (adapterClass == IPhotoService.class) {
-			mCurrentPhotoService = new FlickrPhotoGroupPhotosService(
+			mCurrentPhotoService = new FlickrGalleryPhotosService(
 					SharedPreferenceUtil.getFlickrUserId(mContext),
 					SharedPreferenceUtil.getFlickrAuthToken(mContext),
 					SharedPreferenceUtil.getFlickrAuthTokenSecret(mContext),
-					mGroup.getId());
+					mGallery.getGalleryId());
 			return mCurrentPhotoService;
 		}
 		if (adapterClass == Comparator.class) {
-			return mGroup;
+			return mGallery;
 		}
 		return super.getAdapter(adapterClass);
 	}
 
 	@Override
 	public String getDescription() {
-		String msg = mContext.getString(R.string.cd_flickr_group_photos);
-		return String.format(msg, mGroup != null ? mGroup.getName() : ""); //$NON-NLS-1$
+		String msg = mContext.getString(R.string.cd_flickr_gallery_photos);
+		return String.format(msg, mGallery != null ? mGallery.getTitle() : ""); //$NON-NLS-1$
 	}
+
 
 }

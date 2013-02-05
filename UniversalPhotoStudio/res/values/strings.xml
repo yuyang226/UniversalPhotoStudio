@@ -118,10 +118,14 @@
     <string name="msg_loading_my_friends" tools:ignore="TypographyEllipsis">Loading friends...</string>
     <string name="msg_loading_my_tags" tools:ignore="TypographyEllipsis">Loading my tags...</string>
     <string name="msg_tag_filter">Tag filter</string>
-    <string name="msg_contact_filter">Friend filter</string>
+    <string name="msg_contact_filter">Filter</string>
     <string name="msg_thanks_rating">Thank you for rating.</string>
-    <string name="msg_loading_photo_sets" tools:ignore="TypographyEllipsis">Loading photo sets...</string>
-    <string name="msg_loading_my_groups" tools:ignore="TypographyEllipsis">Loading photo groups...</string>
+    <string name="msg_loading_photo_sets" tools:ignore="TypographyEllipsis">Loading my photo sets...</string>
+    <string name="msg_loading_my_groups" tools:ignore="TypographyEllipsis">Loading my photo groups...</string>
+    <string name="msg_loading_my_galleries" tools:ignore="TypographyEllipsis">Loading my galleries...</string>
+    <string name="msg_no_photo_sets">You have no photo sets.</string>
+    <string name="msg_no_photo_groups">You have no photo groups.</string>
+    <string name="msg_no_photo_galleries">You have no photo galleries.</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
