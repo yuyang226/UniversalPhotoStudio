@@ -45,6 +45,7 @@ import com.gmail.charleszq.picorner.ui.command.px500.Px500FriendPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
+import com.gmail.charleszq.picorner.ui.helper.MainMenuCommandSectionListAdapter;
 
 /**
  * Represents the fragment to show the secondary menus.
@@ -125,14 +126,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		mBackViewContainer = (FrameLayout) v
 				.findViewById(R.id.back_view_container);
 
-		mSectionAdapter = new AbstractCommandSectionListAdapter(getActivity(),
-				mImageFetcher, false) {
-
-			@Override
-			public boolean isEnabled(int position) {
-				return getItemViewType(position) == AbstractCommandSectionListAdapter.ITEM_COMMAND;
-			}
-		};
+		mSectionAdapter = new MainMenuCommandSectionListAdapter(getActivity());
 		mListView.setAdapter(mSectionAdapter);
 		mListView.setOnItemClickListener(this);
 		return v;

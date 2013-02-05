@@ -45,7 +45,6 @@ import com.googlecode.flickrjandroid.galleries.Gallery;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.photos.PhotoPlace;
 import com.googlecode.flickrjandroid.photosets.Photoset;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -85,7 +84,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 
 		// the list view.
 		mListView = (ListView) v.findViewById(R.id.list_org_flickr_photo);
-		mAdapter = new OrganizeAdapter(getActivity(), mImageFetcher);
+		mAdapter = new OrganizeAdapter(getActivity());
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
 
@@ -263,8 +262,8 @@ public class OrganizeMyFlickrPhotoFragment extends
 
 		private Set<String> mCurrentPhotoContext;
 
-		public OrganizeAdapter(Context ctx, ImageLoader fetcher) {
-			super(ctx, fetcher);
+		public OrganizeAdapter(Context ctx) {
+			super(ctx);
 		}
 
 		void setCurrentPhotoContext(Set<String> set) {

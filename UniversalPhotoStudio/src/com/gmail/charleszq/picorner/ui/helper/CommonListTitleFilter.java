@@ -8,17 +8,15 @@ import java.util.List;
 
 import android.widget.Filter;
 
-import com.gmail.charleszq.picorner.model.Author;
-
 /**
  * @author charles(charleszq@gmail.com)
  *
  */
-public class FriendListFilter extends Filter {
+public class CommonListTitleFilter extends Filter {
 	
-	private FriendListAdapter	mAdapter;
+	private FilterAdapter	mAdapter;
 
-	public FriendListFilter(FriendListAdapter adapter) {
+	public CommonListTitleFilter(FilterAdapter adapter) {
 		this.mAdapter = adapter;
 	}
 
@@ -28,10 +26,10 @@ public class FriendListFilter extends Filter {
 	@Override
 	protected FilterResults performFiltering(CharSequence constraint) {
 		String query = constraint.toString().toLowerCase();
-		List<Author> filteredIn = new ArrayList<Author>();
-		List<Author> all = mAdapter.mFriends;
-		for( Author a : all ) {
-			if( a.getUserName().toLowerCase().contains(query)) {
+		List<Object> filteredIn = new ArrayList<Object>();
+		List<?> all = mAdapter.mData;
+		for( Object a : all ) {
+			if( mAdapter.getTitle(a).toLowerCase().contains(query)) {
 				filteredIn.add(a);
 			}
 		}

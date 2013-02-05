@@ -15,24 +15,27 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Space;
+import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
-import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public abstract class AbstractContactsView extends AbstractHiddenView implements
-		OnItemClickListener {
+public abstract class AbstractHiddenListView extends AbstractHiddenView
+		implements OnItemClickListener {
 
 	protected ListView mListView;
 	protected Button mCancelButton;
-	protected FriendListAdapter mAdapter;
+	protected FilterAdapter mAdapter;
 	protected View mView;
 	protected SearchView mSearchView;
 	protected Space mSpace;
+	protected TextView mLoadingText;
+
+	protected String mLoadingMessage;
 
 	private SearchView.OnQueryTextListener mQueryTextListener = new SearchView.OnQueryTextListener() {
 
@@ -40,7 +43,7 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 		public boolean onQueryTextSubmit(String query) {
 			if (query == null || query.trim().length() == 0)
 				return false;
-			FriendListFilter filter = new FriendListFilter(mAdapter);
+			CommonListTitleFilter filter = new CommonListTitleFilter(mAdapter);
 			filter.filter(query);
 			return true;
 		}
@@ -48,8 +51,8 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 		@Override
 		public boolean onQueryTextChange(String newText) {
 			if (newText == null || newText.trim().length() == 0) {
-				mAdapter.mFilteredOutFriends.clear();
-				mAdapter.mFilteredOutFriends.addAll(mAdapter.mFriends);
+				mAdapter.mFilteredData.clear();
+				mAdapter.mFilteredData.addAll(mAdapter.mData);
 				mAdapter.notifyDataSetChanged();
 				return true;
 			} else
@@ -70,14 +73,18 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 	public void init(ICommand<?> command, IHiddenViewActionListener listener) {
 		super.init(command, listener);
 		Context ctx = (Context) command.getAdapter(Context.class);
+		initializeListViewAdapter(ctx, command);
+
 		mView = getView(ctx);
 		View emptyView = mView.findViewById(R.id.empty_friend_view);
-		
+		mLoadingText = (TextView) emptyView.findViewById(R.id.txt_loading_msg);
+		if (mLoadingMessage != null)
+			mLoadingText.setText(mLoadingMessage);
+
 		mSpace = (Space) mView.findViewById(R.id.contact_list_space);
 		mSpace.setVisibility(View.VISIBLE);
 
 		mListView = (ListView) mView.findViewById(R.id.list_f_friends);
-		mAdapter = new FriendListAdapter(ctx, command);
 		mListView.setEmptyView(emptyView);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
@@ -99,13 +106,23 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 				.getSystemService(Service.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
-		getContactList(ctx);
+		getData(ctx);
+	}
+
+	/**
+	 * Sets the adapter for this list view.
+	 * 
+	 * @param ctx
+	 * @param command
+	 */
+	protected void initializeListViewAdapter(Context ctx, ICommand<?> command) {
+		mAdapter = new FriendListAdapter(ctx, command);
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parentView, View view, int position,
 			long id) {
-		Author friend = (Author) mAdapter.getItem(position);
+		Object friend = mAdapter.getItem(position);
 		onAction(ACTION_JUST_CMD, friend);
 	}
 
@@ -118,6 +135,12 @@ public abstract class AbstractContactsView extends AbstractHiddenView implements
 		return mView;
 	}
 
-	protected abstract void getContactList(Context ctx);
+	/**
+	 * Gets the data from server side, then populate them into the list.
+	 * 
+	 * @param ctx
+	 */
+	protected abstract void getData(Context ctx);
+
 	protected abstract void onCancel();
 }

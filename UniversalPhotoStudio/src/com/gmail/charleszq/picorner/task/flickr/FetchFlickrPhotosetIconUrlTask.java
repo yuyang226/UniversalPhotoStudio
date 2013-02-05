@@ -3,8 +3,11 @@
  */
 package com.gmail.charleszq.picorner.task.flickr;
 
+import java.lang.ref.WeakReference;
+
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
@@ -20,12 +23,26 @@ public class FetchFlickrPhotosetIconUrlTask extends AbstractFetchIconUrlTask {
 
 	private Photoset mPhotoset;
 
+	public FetchFlickrPhotosetIconUrlTask(Context ctx) {
+		super(ctx);
+	}
+
 	/**
 	 * @param ctx
 	 */
 	public FetchFlickrPhotosetIconUrlTask(Context ctx, Photoset ps) {
 		super(ctx);
 		this.mPhotoset = ps;
+	}
+
+	@Override
+	protected void beforeExecute(Object... params) {
+		if (params.length == 1)
+			super.beforeExecute(params);
+		else {
+			mPhotoset = (Photoset) params[0];
+			mIconViewRef = new WeakReference<View>((View) params[1]);
+		}
 	}
 
 	/*
@@ -35,10 +52,10 @@ public class FetchFlickrPhotosetIconUrlTask extends AbstractFetchIconUrlTask {
 	 */
 	@Override
 	protected String doInBackground(Object... params) {
-		
+
 		String result = null;
 		beforeExecute(params);
-		
+
 		if (mPhotoset.getPrimaryPhoto() != null) {
 			result = mPhotoset.getPrimaryPhoto().getSmallSquareUrl();
 		}
@@ -54,7 +71,7 @@ public class FetchFlickrPhotosetIconUrlTask extends AbstractFetchIconUrlTask {
 			mPhotoset.setPrimaryPhoto(ps.getPrimaryPhoto());
 			result = mPhotoset.getPrimaryPhoto().getSmallSquareUrl();
 		} catch (Exception e) {
-			Log.w(TAG,e.getMessage());
+			Log.w(TAG, e.getMessage());
 		}
 
 		return result;

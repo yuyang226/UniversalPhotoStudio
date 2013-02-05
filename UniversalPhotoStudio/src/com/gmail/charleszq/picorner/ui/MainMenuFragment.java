@@ -8,32 +8,29 @@ import java.util.List;
 
 import org.jinstagram.auth.model.Token;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.Service;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.AbsListView;
-import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.FrameLayout;
+import android.widget.FrameLayout.LayoutParams;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.github.yuyang226.j500px.J500px;
@@ -44,8 +41,6 @@ import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.msg.Message;
 import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
-import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionFromCacheTask;
-import com.gmail.charleszq.picorner.task.flickr.FetchFlickrUserPhotoCollectionTask;
 import com.gmail.charleszq.picorner.task.ig.InstagramOAuthTask;
 import com.gmail.charleszq.picorner.task.px500.PxFetchUserProfileTask;
 import com.gmail.charleszq.picorner.ui.command.CommandType;
@@ -53,16 +48,13 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.ICommandDoneListener;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
-import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
-import com.gmail.charleszq.picorner.ui.command.flickr.FlickrGalleryPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrIntestringCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrLoginCommand;
-import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserGroupCommand;
-import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserPhotoSetCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyFlickrContactPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyFlickrFavsCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyFlickrPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyFlickrPopularPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.MyPhotosetsCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramLikesCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramLoginCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramMyFeedsCommand;
@@ -77,18 +69,16 @@ import com.gmail.charleszq.picorner.ui.command.px500.PxPopularPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxSignInCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.PxUpcomingPhotosCommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractCommandSectionListAdapter;
+import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
+import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
 import com.gmail.charleszq.picorner.ui.helper.MainMenuCommandSectionListAdapter;
-import com.gmail.charleszq.picorner.ui.helper.MainMenuTextFilter;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.Flickr;
-import com.googlecode.flickrjandroid.galleries.Gallery;
-import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.oauth.OAuth;
 import com.googlecode.flickrjandroid.oauth.OAuthInterface;
 import com.googlecode.flickrjandroid.oauth.OAuthToken;
 import com.googlecode.flickrjandroid.people.User;
-import com.googlecode.flickrjandroid.photosets.Photoset;
 
 /**
  * 
@@ -100,53 +90,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 	private AbstractCommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
-	private SearchView mSearchView;
-	private MainMenuTextFilter mTextMenuFilter;
-
-	/**
-	 * The listener to handle the menu filter.
-	 */
-	private SearchView.OnQueryTextListener mQueryTextListener = new SearchView.OnQueryTextListener() {
-
-		@Override
-		public boolean onQueryTextSubmit(String query) {
-			if (query == null || query.trim().length() == 0) {
-				return false;
-			}
-
-			if (mTextMenuFilter == null) {
-				mTextMenuFilter = new MainMenuTextFilter(mSectionAdapter);
-			}
-			mTextMenuFilter.filter(query);
-
-			// hide the soft keyboard
-			InputMethodManager imm = (InputMethodManager) getActivity()
-					.getSystemService(Service.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
-			return true;
-		}
-
-		@Override
-		public boolean onQueryTextChange(String newText) {
-			if (newText == null || newText.trim().length() == 0) {
-				prepareSections();
-				return true;
-			} else
-				return false;
-		}
-	};
-
-	/**
-	 * The listener to handle user's flickr photo set /group/gallery menu items.
-	 */
-	private IGeneralTaskDoneListener<List<Object>> mPhotoSetsListener = new IGeneralTaskDoneListener<List<Object>>() {
-
-		@Override
-		public void onTaskDone(List<Object> result) {
-			populatePhotoSetMenuItems(result);
-
-		}
-	};
+	private FrameLayout mBackViewContainer;
+	private ListView mListView;
 
 	/**
 	 * The command done listener
@@ -179,56 +124,64 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 	};
 
+	/**
+	 * The hidden view listener.
+	 */
+	private IHiddenViewActionListener mHideViewCancelListener = new IHiddenViewActionListener() {
+
+		@SuppressWarnings("unchecked")
+		@Override
+		public void onAction(int action, ICommand<?> command, IHiddenView view,
+				Object... data) {
+			Context ctx = (Context) command.getAdapter(Context.class);
+			switch (action) {
+			case IHiddenView.ACTION_CANCEL:
+				hideHiddenView(view.getView(ctx));
+				break;
+			case IHiddenView.ACTION_DO:
+				 doCommand((ICommand<Object>) command, data);
+				 hideHiddenView(view.getView(ctx));
+				break;
+			case IHiddenView.ACTION_JUST_CMD:
+				 doCommand((ICommand<Object>) command, data);
+				break;
+			}
+		}
+	};
+	
+	private void doCommand(ICommand<Object> command, Object... params) {
+		if (PhotoListCommand.class.isInstance(command)) {
+			Message msg = new Message(Message.CANCEL_COMMAND, null, null,
+					command);
+			MessageBus.broadcastMessage(msg);
+			mProgressDialog = ProgressDialog.show(getActivity(),
+					"", getActivity() //$NON-NLS-1$
+							.getString(R.string.loading_photos));
+			mProgressDialog.setCanceledOnTouchOutside(true);
+		}
+		command.setCommndDoneListener(mCommandDoneListener);
+		command.execute(params);
+		// close the menu.
+		MainSlideMenuActivity act = (MainSlideMenuActivity) getActivity();
+		act.closeMenu();
+	}
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		this.setRetainInstance(true);
 
 		View v = inflater.inflate(R.layout.main_menu, null);
-		// filter view
-		mSearchView = (SearchView) v.findViewById(R.id.main_menu_search_view);
-		mSearchView.setOnQueryTextListener(mQueryTextListener);
+		mBackViewContainer = (FrameLayout) v
+				.findViewById(R.id.main_menu_container);
 
 		// menu list
-		ListView lv = (ListView) v.findViewById(R.id.listView1);
-		mSectionAdapter = new MainMenuCommandSectionListAdapter(getActivity(),
-				mImageFetcher);
+		mListView = (ListView) v.findViewById(R.id.listView1);
+		mSectionAdapter = new MainMenuCommandSectionListAdapter(getActivity());
 		prepareSections();
 
-		lv.setAdapter(mSectionAdapter);
-		lv.setOnScrollListener(new OnScrollListener() {
-
-			@Override
-			public void onScrollStateChanged(AbsListView view, int scrollState) {
-				if (scrollState == OnScrollListener.SCROLL_STATE_IDLE) {
-					MainMenuFragment.this.mImageFetcher.resume();
-				} else {
-					MainMenuFragment.this.mImageFetcher.pause();
-				}
-			}
-
-			@Override
-			public void onScroll(AbsListView view, int firstVisibleItem,
-					int visibleItemCount, int totalItemCount) {
-
-			}
-		});
-		lv.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				View frontView = view
-						.findViewById(R.id.main_menu_item_front_view);
-				View backView = view.findViewById(R.id.menu_item_back_view);
-				if (backView == null) {
-					return false;
-				}
-				showBackView(backView, frontView);
-				return true;
-			}
-		});
-		lv.setOnItemClickListener(new OnItemClickListener() {
+		mListView.setAdapter(mSectionAdapter);
+		mListView.setOnItemClickListener(new OnItemClickListener() {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int pos,
@@ -237,12 +190,25 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 				@SuppressWarnings("unchecked")
 				ICommand<Object> command = (ICommand<Object>) adapter
 						.getItem(pos);
-				if (command.getCommandType() == CommandType.MENU_HEADER_CMD) {
-					command.execute(adapter);
-				} else {
+				Context ctx = (Context) command.getAdapter(Context.class);
+
+				IHiddenView hiddenView = (IHiddenView) command
+						.getAdapter(IHiddenView.class);
+				if (hiddenView == null) {
 					command.setCommndDoneListener(mCommandDoneListener);
 					command.execute();
+				} else {
+					hiddenView.init(command, mHideViewCancelListener);
+					FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(
+							LayoutParams.MATCH_PARENT,
+							LayoutParams.MATCH_PARENT, Gravity.CENTER_VERTICAL);
+					View hv = hiddenView.getView(ctx);
+					hv.setLayoutParams(param);
+					mBackViewContainer.addView(hv);
+					showHiddenView(hv);
+					return;
 				}
+
 				if (PhotoListCommand.class.isInstance(command)) {
 					Message msg = new Message(Message.CANCEL_COMMAND, null,
 							null, command);
@@ -267,140 +233,45 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		return v;
 	}
 
-	private void showBackView(final View backView, final View frontView) {
-		PicornerApplication app = (PicornerApplication) getActivity()
-				.getApplication();
-		if (!app.isOfflineEnabled()) {
-			AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-			builder.setTitle(android.R.string.dialog_alert_title).setMessage(
-					R.string.msg_pls_enable_offline_first);
-			DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+	private void hideHiddenView(final View view) {
+		ObjectAnimator a1 = ObjectAnimator
+				.ofFloat(mListView, "alpha", 0f, 1f).setDuration(1000); //$NON-NLS-1$
+		ObjectAnimator a2 = ObjectAnimator
+				.ofFloat(view, "alpha", 1f, 0f).setDuration(1000); //$NON-NLS-1$
+		AnimatorSet set = new AnimatorSet();
+		set.playTogether(a1, a2);
+		set.addListener(new AnimatorListenerAdapter() {
 
-				@Override
-				public void onClick(DialogInterface dialog, int which) {
-					if (which == DialogInterface.BUTTON_POSITIVE) {
-						SettingsCommand cmd = new SettingsCommand(getActivity());
-						cmd.execute();
-					} else {
-						dialog.cancel();
-					}
-				}
-			};
-			builder.setPositiveButton(android.R.string.ok, listener);
-			builder.setNegativeButton(android.R.string.cancel, listener);
-			AlertDialog dialog = builder.create();
-			dialog.show();
-		} else {
-			frontView.setVisibility(View.INVISIBLE);
-			backView.setVisibility(View.VISIBLE);
-			ObjectAnimator.ofFloat(backView, "alpha", 0f, 1f) //$NON-NLS-1$
-					.setDuration(1000).start();
-		}
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				mBackViewContainer.removeView(view);
+			}
+
+		});
+		set.start();
+	}
+
+	/**
+	 * Shows the hidden view.
+	 * 
+	 * @param hv
+	 */
+	private void showHiddenView(View hv) {
+		hv.setAlpha(0f); // hide the hidden view first
+		ObjectAnimator a1 = ObjectAnimator
+				.ofFloat(hv, "alpha", 0f, 1f).setDuration(1000); //$NON-NLS-1$
+		ObjectAnimator a2 = ObjectAnimator
+				.ofFloat(mListView, "alpha", 1f, 0f).setDuration(1000); //$NON-NLS-1$
+		AnimatorSet set = new AnimatorSet();
+		set.playTogether(a2, a1);
+		set.start();
 	}
 
 	private void prepareSections() {
-
 		mSectionAdapter.clearSections();
 		mSectionAdapter.addCommands(createPx500MenuItems());
 		mSectionAdapter.addCommands(createInstagramMenuItems());
 		mSectionAdapter.addCommands(createFlickrGeneralMenuItems());
-		mSectionAdapter.notifyDataSetChanged();
-
-		// get photo sets.
-		if (isUserAuthedFlickr()) {
-			// first, try get information from cache.
-			FetchFlickrUserPhotoCollectionFromCacheTask cacheTask = new FetchFlickrUserPhotoCollectionFromCacheTask();
-			cacheTask
-					.addTaskDoneListener(new IGeneralTaskDoneListener<List<Object>>() {
-
-						@Override
-						public void onTaskDone(List<Object> result) {
-
-							if (result != null) {
-								mPhotoSetsListener.onTaskDone(result);
-							}
-
-							Activity act = getActivity();
-							// activity might be null due to the configuration
-							// change.
-							if (act != null) {
-								FetchFlickrUserPhotoCollectionTask task = new FetchFlickrUserPhotoCollectionTask(
-										getActivity());
-								if (result == null) {
-									task.addTaskDoneListener(mPhotoSetsListener);
-								}
-								task.execute();
-							}
-						}
-					});
-			cacheTask.execute();
-		}
-	}
-
-	/**
-	 * After photo sets, groups and gallery information are returned, populate
-	 * the menu items.
-	 * 
-	 * @param list
-	 */
-	private void populatePhotoSetMenuItems(List<Object> list) {
-
-		Activity act = getActivity();
-		if (act == null) {
-			return;
-		}
-
-		final List<ICommand<?>> photosetCommands = new ArrayList<ICommand<?>>();
-		final List<ICommand<?>> groupCommands = new ArrayList<ICommand<?>>();
-		final List<ICommand<?>> galleryCommands = new ArrayList<ICommand<?>>();
-
-		String photoSetHeaderName = act
-				.getString(R.string.menu_header_flickr_sets);
-		String groupHeaderName = act
-				.getString(R.string.menu_header_flickr_groups);
-		String galleryHeaderName = act
-				.getString(R.string.menu_header_flickr_gallery);
-		for (Object obj : list) {
-			if (obj instanceof Photoset) {
-				ICommand<?> cmd = new FlickrUserPhotoSetCommand(act,
-						(Photoset) obj);
-				cmd.setCommandCategory(photoSetHeaderName);
-				photosetCommands.add(cmd);
-			}
-
-			if (obj instanceof Group) {
-				ICommand<?> cmd = new FlickrUserGroupCommand(act, (Group) obj);
-				cmd.setCommandCategory(groupHeaderName);
-				groupCommands.add(cmd);
-			}
-
-			if (obj instanceof Gallery) {
-				ICommand<?> cmd = new FlickrGalleryPhotosCommand(act,
-						(Gallery) obj);
-				cmd.setCommandCategory(galleryHeaderName);
-				galleryCommands.add(cmd);
-			}
-		}
-		if (!photosetCommands.isEmpty()) {
-			ICommand<?> photosetCommand = new MenuSectionHeaderCommand(act,
-					photoSetHeaderName, true);
-			photosetCommands.add(0, photosetCommand);
-			mSectionAdapter.addCommands(photosetCommands);
-		}
-
-		if (!groupCommands.isEmpty()) {
-			ICommand<?> groupCommand = new MenuSectionHeaderCommand(act,
-					groupHeaderName, true);
-			groupCommands.add(0, groupCommand);
-			mSectionAdapter.addCommands(groupCommands);
-		}
-
-		if (!galleryCommands.isEmpty()) {
-			ICommand<?> galleryCommand = new MenuSectionHeaderCommand(act,
-					galleryHeaderName, true);
-			galleryCommands.add(0, galleryCommand);
-			mSectionAdapter.addCommands(galleryCommands);
-		}
 		mSectionAdapter.notifyDataSetChanged();
 	}
 
@@ -431,16 +302,16 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		commands.add(command);
 
 		command = new InstagramPopularsCommand(ctx);
-		command.setCommandCategory(headerName);
+
 		commands.add(command);
 
 		if (isUserAuthedInstagram()) {
 			command = new InstagramMyFeedsCommand(ctx);
-			command.setCommandCategory(headerName);
+
 			commands.add(command);
 
 			command = new InstagramLikesCommand(ctx);
-			command.setCommandCategory(headerName);
+
 			commands.add(command);
 
 			PicornerApplication app = (PicornerApplication) getActivity()
@@ -463,11 +334,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 					return super.getAdapter(adapterClass);
 				}
 			};
-			command.setCommandCategory(headerName);
+
 			commands.add(command);
 		} else {
 			command = new InstagramLoginCommand(ctx);
-			command.setCommandCategory(headerName);
+
 			commands.add(command);
 		}
 		return commands;
@@ -482,36 +353,36 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		commands.add(command);
 
 		command = new PxPopularPhotosCommand(getActivity());
-		command.setCommandCategory(headerName);
+
 		commands.add(command);
 
 		command = new PxEditorsPhotosCommand(getActivity());
-		command.setCommandCategory(headerName);
+
 		commands.add(command);
 
 		command = new PxUpcomingPhotosCommand(getActivity());
-		command.setCommandCategory(headerName);
+
 		commands.add(command);
 
 		command = new PxFreshTodayPhotosCommand(getActivity());
-		command.setCommandCategory(headerName);
+
 		commands.add(command);
 
 		if (isUserAuthedPx500()) {
 			command = new Px500MyPhotosCommand(getActivity());
-			command.setCommandCategory(headerName);
+
 			commands.add(command);
 
 			command = new PxMyFavPhotosCommand(getActivity());
-			command.setCommandCategory(headerName);
+
 			commands.add(command);
 
 			command = new PxMyFlowCommand(getActivity());
-			command.setCommandCategory(headerName);
+
 			commands.add(command);
 		} else {
 			command = new PxSignInCommand(getActivity());
-			command.setCommandCategory(headerName);
+
 			commands.add(command);
 		}
 		return commands;
@@ -528,30 +399,27 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		// real commands
 		command = new FlickrIntestringCommand(this.getActivity());
-		command.setCommandCategory(headerName);
+
 		commands.add(command);
 
 		if (!isUserAuthedFlickr()) {
 			command = new FlickrLoginCommand(ctx);
-			command.setCommandCategory(headerName);
 			commands.add(command);
 		} else {
 			command = new MyFlickrPhotosCommand(ctx);
-			command.setCommandCategory(headerName);
 			commands.add(command);
 
 			command = new MyFlickrFavsCommand(ctx);
-			command.setCommandCategory(headerName);
 			commands.add(command);
 
 			command = new MyFlickrPopularPhotosCommand(ctx);
-			command.setCommandCategory(headerName);
 			commands.add(command);
 
 			command = new MyFlickrContactPhotosCommand(ctx);
-			command.setCommandCategory(headerName);
 			commands.add(command);
 
+			command = new MyPhotosetsCommand(ctx);
+			commands.add(command);
 		}
 
 		return commands;

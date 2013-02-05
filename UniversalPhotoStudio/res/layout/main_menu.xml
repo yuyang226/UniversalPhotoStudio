@@ -1,23 +1,13 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main_menu_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
-
-    <SearchView
-        android:id="@+id/main_menu_search_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/search_view_bg"
-        android:iconifiedByDefault="false"
-        android:queryHint="@string/main_menu_filter_hint" />
 
     <ListView
         android:id="@+id/listView1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         android:choiceMode="singleChoice" >
     </ListView>
 
-</LinearLayout>
+</FrameLayout>

@@ -11,25 +11,25 @@ import android.view.View;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FlickrFriendsTask;
-import com.gmail.charleszq.picorner.ui.helper.AbstractContactsView;
+import com.gmail.charleszq.picorner.ui.helper.AbstractHiddenListView;
 
 /**
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class FlickrContactsView extends AbstractContactsView {
+public class FlickrContactsView extends AbstractHiddenListView {
 	
 	private FlickrFriendsTask task;
 
 	@Override
-	protected void getContactList(Context ctx) {
+	protected void getData(Context ctx) {
 		task = new FlickrFriendsTask(ctx);
 		task.addTaskDoneListener(new IGeneralTaskDoneListener<List<Author>>() {
 
 			@Override
 			public void onTaskDone(List<Author> result) {
 				if (result != null) {
-					mAdapter.populateFriends(result);
+					mAdapter.populateData(result);
 					mSpace.setVisibility(View.GONE);
 				}
 			}

@@ -34,7 +34,6 @@ import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -43,13 +42,8 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 public class MainMenuCommandSectionListAdapter extends
 		AbstractCommandSectionListAdapter {
 
-	public MainMenuCommandSectionListAdapter(Context ctx, ImageLoader fetcher,
-			boolean showHeaderMarker) {
-		super(ctx, fetcher, showHeaderMarker);
-	}
-
-	public MainMenuCommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
-		super(ctx, fetcher);
+	public MainMenuCommandSectionListAdapter(Context ctx) {
+		super(ctx);
 	}
 
 	/*

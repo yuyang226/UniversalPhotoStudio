@@ -19,7 +19,6 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
-import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author Charles(charleszq@gmail.com)
@@ -41,27 +40,14 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 	List<ICommand<?>> mAllCommands;
 
 	protected Context mContext;
-	protected ImageLoader mImageFetcher;
-
-	/**
-	 * the marker to say whether we show the '^'/'v' sign on the header.
-	 */
-	protected boolean mShowHeaderIndicator = true;
 
 	/**
 	 * Constructor.
 	 */
-	public AbstractCommandSectionListAdapter(Context ctx, ImageLoader fetcher) {
+	public AbstractCommandSectionListAdapter(Context ctx) {
 		mContext = ctx;
-		mImageFetcher = fetcher;
 		mCommands = new ArrayList<ICommand<?>>();
 		mAllCommands = new ArrayList<ICommand<?>>();
-	}
-
-	public AbstractCommandSectionListAdapter(Context ctx, ImageLoader fetcher,
-			boolean showHeaderMarker) {
-		this(ctx, fetcher);
-		mShowHeaderIndicator = showHeaderMarker;
 	}
 
 	public void addCommands(Collection<ICommand<?>> commands) {
@@ -135,7 +121,7 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 
 	@Override
 	public boolean isEnabled(int position) {
-		return true;
+		return getItemViewType(position) == AbstractCommandSectionListAdapter.ITEM_COMMAND;
 	}
 
 	public void clearSections() {
@@ -159,16 +145,6 @@ public abstract class AbstractCommandSectionListAdapter extends BaseAdapter {
 				view = LayoutInflater.from(mContext).inflate(
 						R.layout.section_header, null);
 			((TextView) view).setText(command.getLabel());
-			MenuSectionHeaderCommand hc = (MenuSectionHeaderCommand) command;
-			if (mShowHeaderIndicator) {
-				if (hc.isFiltering()) {
-					((TextView) view).setCompoundDrawablesWithIntrinsicBounds(
-							0, 0, R.drawable.ic_find_previous_holo_dark, 0);
-				} else {
-					((TextView) view).setCompoundDrawablesWithIntrinsicBounds(
-							0, 0, R.drawable.ic_find_next_holo_dark, 0);
-				}
-			}
 			return view;
 		}
 
