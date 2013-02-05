@@ -9,6 +9,10 @@ import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SharedPreferenceUtil;
+import com.gmail.charleszq.picorner.offline.FlickrOfflineParameter;
+import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
+import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
+import com.gmail.charleszq.picorner.offline.OfflinePhotoCollectionType;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoSetPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -28,6 +32,7 @@ public class MyPhotosetsCommand extends PhotoListCommand {
 
 	private IHiddenView mHiddenView;
 	private Photoset mPhotoSet;
+	private IOfflineViewParameter mOfflineParameter;
 
 	/**
 	 * @param context
@@ -77,6 +82,17 @@ public class MyPhotosetsCommand extends PhotoListCommand {
 					SharedPreferenceUtil.getFlickrAuthTokenSecret(mContext),
 					mPhotoSet);
 			return mCurrentPhotoService;
+		}
+		if (adapterClass == IOfflineViewParameter.class) {
+			mOfflineParameter = new FlickrOfflineParameter(
+					OfflinePhotoCollectionType.PHOTO_SET, mPhotoSet.getId());
+			if (OfflineControlFileUtil.isOfflineViewEnabled(mContext,
+					mOfflineParameter)
+					&& OfflineControlFileUtil.isOfflineControlFileReady(
+							mContext, mOfflineParameter))
+				return mOfflineParameter;
+			else
+				return null;
 		}
 		if (adapterClass == Comparator.class) {
 			return mPhotoSet;

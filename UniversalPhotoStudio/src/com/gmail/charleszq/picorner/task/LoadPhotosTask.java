@@ -13,7 +13,6 @@ import com.gmail.charleszq.picorner.SharedPreferenceUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
-import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -26,7 +25,7 @@ import com.gmail.charleszq.picorner.utils.IConstants;
 public class LoadPhotosTask extends
 		AbstractGeneralTask<Integer, Integer, MediaObjectCollection> {
 
-	private ICommand<?>	mCommand;
+	private ICommand<?> mCommand;
 
 	/**
 	 * Constructor.
@@ -51,29 +50,30 @@ public class LoadPhotosTask extends
 		IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCommand
 				.getAdapter(IOfflineViewParameter.class);
 		Context ctx = (Context) mCommand.getAdapter(Context.class);
-		boolean overallOfflineEnabled = SharedPreferenceUtil.isOfflineEnabled(ctx);
-		if (overallOfflineEnabled) {
-			if (offlineParam != null
-					&& OfflineControlFileUtil.isOfflineViewEnabled(ctx,
-							offlineParam)
-					&& OfflineControlFileUtil.isOfflineControlFileReady(ctx,
-							offlineParam)) {
-				if (pageNo == 0) {
-					List<MediaObject> photos = offlineParam
-							.getPhotoCollectionProcessor().getCachedPhotos(ctx,
-									offlineParam);
-					if (photos != null) {
-						MediaObjectCollection mc = new MediaObjectCollection();
-						for (MediaObject photo : photos) {
-							mc.addPhoto(photo);
-						}
-						if (BuildConfig.DEBUG)
-							Log.e(TAG, "Returns photos from offline cache."); //$NON-NLS-1$
-						return mc;
+		boolean overallOfflineEnabled = SharedPreferenceUtil
+				.isOfflineEnabled(ctx);
+		// It's the command's responsibility to return correct offline
+		// parameter;
+		// if the photo set is not enabled offline, or the control file is not
+		// ready
+		// the command should just return null when asking him about the offline
+		// parameter.
+		if (overallOfflineEnabled && offlineParam != null) {
+			if (pageNo == 0) {
+				List<MediaObject> photos = offlineParam
+						.getPhotoCollectionProcessor().getCachedPhotos(ctx,
+								offlineParam);
+				if (photos != null) {
+					MediaObjectCollection mc = new MediaObjectCollection();
+					for (MediaObject photo : photos) {
+						mc.addPhoto(photo);
 					}
-				} else {
-					return null;
+					if (BuildConfig.DEBUG)
+						Log.e(TAG, "Returns photos from offline cache."); //$NON-NLS-1$
+					return mc;
 				}
+			} else {
+				return null;
 			}
 		}
 
