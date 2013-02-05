@@ -280,8 +280,8 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	private void prepareSections() {
 		mSectionAdapter.clearSections();
 		mSectionAdapter.addCommands(createPx500MenuItems());
-		mSectionAdapter.addCommands(createInstagramMenuItems());
 		mSectionAdapter.addCommands(createFlickrGeneralMenuItems());
+		mSectionAdapter.addCommands(createInstagramMenuItems());
 		mSectionAdapter.notifyDataSetChanged();
 	}
 

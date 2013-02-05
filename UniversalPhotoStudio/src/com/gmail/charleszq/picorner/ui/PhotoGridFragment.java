@@ -88,10 +88,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 			}
 		}
 
-		if (this.mGridView != null) {
-			mGridView.setOnScrollListener(null);
-			mGridView.smoothScrollToPositionFromTop(0, 0);
-		}
+//		mGridView.setOnScrollListener(null);
 		this.mCurrentCommand = (PhotoListCommand) command;
 		mCommandComparator = mCurrentCommand.getAdapter(Comparator.class);
 

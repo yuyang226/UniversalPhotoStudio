@@ -96,6 +96,15 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 
 		final View frontView = menuFrontView;
 		final ViewGroup container = (ViewGroup) v;
+		// hide the backview if it's there already
+		View backView = container.findViewById(R.id.menu_item_back_view);
+		if( backView != null ) {
+			backView.setVisibility(View.INVISIBLE);
+			frontView.setVisibility(View.VISIBLE);
+			frontView.setAlpha(1f);
+		}
+
+		// setting button preparation
 		final Photoset ps = (Photoset) getItem(position);
 		final IOfflineViewParameter param = new FlickrOfflineParameter(
 				OfflinePhotoCollectionType.PHOTO_SET, ps.getId());
@@ -114,7 +123,6 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 		AbstractFetchIconUrlTask task = (AbstractFetchIconUrlTask) mCommand
 				.getAdapter(AbstractFetchIconUrlTask.class);
 		if (task != null)
-			// this task is special
 			task.execute(data, avatar);
 		return v;
 	}

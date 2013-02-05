@@ -63,7 +63,7 @@
     <string name="menu_item_slide_show">Slideshow</string>
     <string name="menu_item_back">Back</string>
     <string name="menu_item_offline_download">Download</string>
-    <string name="menu_item_offline_delete_photos">Delete Offline Photos</string>
+    <string name="menu_item_offline_delete_photos">Delete</string>
     <string name="menu_item_my_frequently_used_tags">My Flickr Tags</string>
     <string name="menu_item_rate">Rate</string>
 
