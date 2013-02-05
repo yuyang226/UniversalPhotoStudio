@@ -3,12 +3,8 @@
  */
 package com.gmail.charleszq.picorner.ui.helper;
 
-import java.io.File;
-
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -16,11 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObject;
-import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
@@ -30,8 +24,6 @@ import com.nostra13.universalimageloader.core.assist.ImageScaleType;
  * 
  */
 public class PhotoGridAdapter extends BaseAdapter {
-
-	private static final String TAG = PhotoGridAdapter.class.getSimpleName();
 
 	private Context mContext;
 	private IPhotosProvider mPhotos;
@@ -116,21 +108,8 @@ public class PhotoGridAdapter extends BaseAdapter {
 		}
 
 		MediaObject photo = mPhotos.getMediaObject(position);
-		if (photo != null) {
-			String filename = OfflineControlFileUtil
-					.getOfflinePhotoFileName(photo);
-			if (OfflineControlFileUtil.isFileExist(mContext, filename)) {
-				File f = mContext.getFileStreamPath(filename);
-				Uri uri = Uri.fromFile(f);
-				mImageFetcher.displayImage(uri.toString(), imageView,
-						mImageDisplayOptions);
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Load thumb image from offline cache."); //$NON-NLS-1$
-			} else {
-				mImageFetcher.displayImage(photo.getThumbUrl(), imageView,
-						mImageDisplayOptions);
-			}
-		}
+		mImageFetcher.displayImage(photo.getThumbUrl(), imageView,
+				mImageDisplayOptions);
 		return imageView;
 	}
 

@@ -176,5 +176,4 @@ public final class ImageUtils {
 		}
 		return false;
 	}
-
 }

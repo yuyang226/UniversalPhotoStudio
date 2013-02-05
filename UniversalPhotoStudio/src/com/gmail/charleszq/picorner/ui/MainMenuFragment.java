@@ -235,7 +235,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private void hideHiddenView(final View view) {
-		mListView.setVisibility(View.VISIBLE);
 		ObjectAnimator a1 = ObjectAnimator
 				.ofFloat(mListView, "alpha", 0f, 1f).setDuration(1000); //$NON-NLS-1$
 		ObjectAnimator a2 = ObjectAnimator
@@ -247,6 +246,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			@Override
 			public void onAnimationEnd(Animator animation) {
 				mBackViewContainer.removeView(view);
+				mListView.setVisibility(View.VISIBLE);
 			}
 
 		});
