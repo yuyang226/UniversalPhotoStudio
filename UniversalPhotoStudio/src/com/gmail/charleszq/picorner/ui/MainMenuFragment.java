@@ -54,6 +54,7 @@ import com.gmail.charleszq.picorner.ui.command.flickr.MyFlickrContactPhotosComma
 import com.gmail.charleszq.picorner.ui.command.flickr.MyFlickrFavsCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyFlickrPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyFlickrPopularPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.MyGroupsCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyPhotosetsCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramLikesCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramLoginCommand;
@@ -419,6 +420,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			commands.add(command);
 
 			command = new MyPhotosetsCommand(ctx);
+			commands.add(command);
+			
+			command = new MyGroupsCommand(ctx);
 			commands.add(command);
 		}
 

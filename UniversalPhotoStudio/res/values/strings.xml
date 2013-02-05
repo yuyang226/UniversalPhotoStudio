@@ -25,13 +25,14 @@
     <string name="menu_header_flickr">Flickr</string>
     <string name="menu_header_flickr_sets">Photo Sets</string>
     <string name="menu_header_flickr_groups">Photo Groups</string>
-    <string name="menu_header_flickr_gallery">Galleries</string>
     <string name="ig_popular">Popular Photos</string>
     <string name="menu_header_ig">Instagram</string>
     <string name="menu_header_px500">500px</string>
     <string name="menu_header_friends">Friends</string>
     <string name="cmd_name_about">About</string>
     <string name="f_my_photo_sets">My Photo Sets</string>
+    <string name="f_my_groups">My Groups</string>
+    <string name="f_my_galleries">My Galleries</string>
 
     <!-- search menu items -->
     <string name="cmd_name_flickr_tag_search">Flickr: Search</string>
@@ -120,6 +121,7 @@
     <string name="msg_contact_filter">Friend filter</string>
     <string name="msg_thanks_rating">Thank you for rating.</string>
     <string name="msg_loading_photo_sets" tools:ignore="TypographyEllipsis">Loading photo sets...</string>
+    <string name="msg_loading_my_groups" tools:ignore="TypographyEllipsis">Loading photo groups...</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
