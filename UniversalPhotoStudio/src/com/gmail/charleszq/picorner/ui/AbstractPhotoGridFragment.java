@@ -33,6 +33,7 @@ import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.helper.OneTimeScrollListener;
 import com.gmail.charleszq.picorner.ui.helper.PhotoGridAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
+import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -189,7 +190,8 @@ public abstract class AbstractPhotoGridFragment extends
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnItemClickListener(this);
 		mScrollListener = new GridOnScrollListener(this);
-		mGridView.setOnScrollListener(mScrollListener);
+		PauseOnScrollListener pauseListener = new PauseOnScrollListener(false, true, mScrollListener);
+		mGridView.setOnScrollListener(pauseListener);
 
 		// This listener is used to get the final width of the GridView and then
 		// calculate the

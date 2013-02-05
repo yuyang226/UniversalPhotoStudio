@@ -165,9 +165,9 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 
 		// animation to show the back view.
 		ObjectAnimator a1 = ObjectAnimator
-				.ofFloat(frontView, "alpha", 1f, 0f).setDuration(1000); //$NON-NLS-1$
+				.ofFloat(frontView, "alpha", 1f, 0f).setDuration(500); //$NON-NLS-1$
 		ObjectAnimator a2 = ObjectAnimator
-				.ofFloat(backView, "alpha", 0f, 1f).setDuration(1000); //$NON-NLS-1$
+				.ofFloat(backView, "alpha", 0f, 1f).setDuration(500); //$NON-NLS-1$
 		AnimatorSet set = new AnimatorSet();
 		set.playTogether(a1, a2);
 		set.addListener(new AnimatorListenerAdapter() {
@@ -200,9 +200,9 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 					frontView.setVisibility(View.VISIBLE);
 					ObjectAnimator a1 = ObjectAnimator.ofFloat(frontView,
 							"alpha", 0f, 1f) //$NON-NLS-1$
-							.setDuration(1000);
+							.setDuration(500);
 					ObjectAnimator a2 = ObjectAnimator.ofFloat(backView,
-							"alpha", 1f, 0f).setDuration(1000); //$NON-NLS-1$
+							"alpha", 1f, 0f).setDuration(500); //$NON-NLS-1$
 					AnimatorSet set = new AnimatorSet();
 					set.playTogether(a1, a2);
 					set.addListener(new AnimatorListenerAdapter() {
