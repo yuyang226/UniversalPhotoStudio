@@ -39,4 +39,21 @@ public final class SharedPreferenceUtil {
 		return getSharedPreferences(ctx).getBoolean(
 				IConstants.PREF_ENABLE_OFFLINE, false);
 	}
+
+	public static int getMaxPhotoSize(Context ctx) {
+		String size = getSharedPreferences(ctx).getString(
+				IConstants.PREF_OFFLINE_MAX_PHOTO_GRID_SIZE,
+				Integer.toString(IConstants.DEF_MAX_TOTAL_PHOTOS));
+		return Integer.parseInt(size);
+	}
+
+	public static boolean isOfflineWifiOnly(Context ctx) {
+		return getSharedPreferences(ctx).getBoolean(
+				IConstants.PREF_OFFLINE_WIFI_ONLY, true);
+	}
+
+	public static boolean isDownloadingWhenChargingEnabled(Context ctx) {
+		return getSharedPreferences(ctx).getBoolean(
+				IConstants.PREF_DOWNLOAD_WHEN_CHARGING, true);
+	}
 }

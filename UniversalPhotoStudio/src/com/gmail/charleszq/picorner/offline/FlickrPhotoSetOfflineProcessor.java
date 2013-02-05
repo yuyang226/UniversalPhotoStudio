@@ -18,6 +18,7 @@ import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.SharedPreferenceUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
@@ -165,10 +166,9 @@ public class FlickrPhotoSetOfflineProcessor implements
 					"after,  there are %d photos.", photos.size())); //$NON-NLS-1$
 
 		// if exceeded the limit, remove some old photos.
-		PicornerApplication app = (PicornerApplication) ((Service) ctx)
-				.getApplication();
-		if (photos.size() > app.getMaxPhotoSize()) {
-			photos = photos.subList(0, app.getMaxPhotoSize());
+		int maxSize = SharedPreferenceUtil.getMaxPhotoSize(ctx);
+		if (photos.size() > maxSize) {
+			photos = photos.subList(0, maxSize);
 		}
 
 		savePhotoList(ctx, param, photos);
@@ -189,8 +189,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 
 		int lastPageNo = getLastPage(serverPhotoCount, PAGE_SIZE);
 		List<MediaObject> photos = new ArrayList<MediaObject>();
-		PicornerApplication app = (PicornerApplication) ((Service) ctx)
-				.getApplication();
+		int maxSize = SharedPreferenceUtil.getMaxPhotoSize(ctx);
 
 		int pageIndex = 0;
 		while (lastPageNo > 0) {
@@ -200,14 +199,14 @@ public class FlickrPhotoSetOfflineProcessor implements
 			if (col != null) {
 				for (MediaObject p : col.getPhotos()) {
 					photos.add(pageIndex, p);
-					if (photos.size() >= app.getMaxPhotoSize())
+					if (photos.size() >= maxSize)
 						break;
 				}
 			} else {
 				break;
 			}
 			pageIndex = photos.size();
-			if (photos.size() >= app.getMaxPhotoSize())
+			if (photos.size() >= maxSize)
 				break;
 			lastPageNo--;
 		}

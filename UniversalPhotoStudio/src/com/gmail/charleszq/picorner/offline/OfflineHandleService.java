@@ -16,7 +16,6 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SharedPreferenceUtil;
 
@@ -29,17 +28,17 @@ public class OfflineHandleService extends IntentService {
 	/**
 	 * The log tag
 	 */
-	private static final String	TAG								= OfflineHandleService.class
-																		.getSimpleName();
+	private static final String TAG = OfflineHandleService.class
+			.getSimpleName();
 
-	private static final int	DOWNLOAD_NOTIF_ID				= 100001;
-	private static final int	REMOVE_OFFLINE_PHOTOS_MSG_ID	= 100003;
+	private static final int DOWNLOAD_NOTIF_ID = 100001;
+	private static final int REMOVE_OFFLINE_PHOTOS_MSG_ID = 100003;
 
-	public static final int		ADD_OFFLINE_PARAM				= 1;
-	public static final int		REMOVE_OFFLINE_PARAM			= 2;
-	public static final int		REFRESH_OFFLINE_PARAM			= 3;
-	public static final int		DOWNLOAD_OFFLINE_PARAM			= 4;
-	public static final int		DELETE_OFFLINE_PHOTO_PARAM		= 5;
+	public static final int ADD_OFFLINE_PARAM = 1;
+	public static final int REMOVE_OFFLINE_PARAM = 2;
+	public static final int REFRESH_OFFLINE_PARAM = 3;
+	public static final int DOWNLOAD_OFFLINE_PARAM = 4;
+	public static final int DELETE_OFFLINE_PHOTO_PARAM = 5;
 
 	/**
 	 * @param name
@@ -56,9 +55,10 @@ public class OfflineHandleService extends IntentService {
 	@Override
 	protected void onHandleIntent(Intent intent) {
 		// check if offline is enabled or not
-		PicornerApplication app = (PicornerApplication) this.getApplication();
 		boolean offlineEnabled = SharedPreferenceUtil.isOfflineEnabled(this);
-		if( !offlineEnabled )
+		boolean isDownloadWhenCharging = SharedPreferenceUtil
+				.isDownloadingWhenChargingEnabled(this);
+		if (!offlineEnabled)
 			return;
 
 		// get the caller information to see if the call comes from battery
@@ -66,7 +66,7 @@ public class OfflineHandleService extends IntentService {
 		String caller = intent
 				.getStringExtra(IOfflineViewParameter.OFFLINE_INVOKER_INTENT_KEY);
 		if (BatteryStatusReceiver.class.getName().equals(caller)
-				&& !app.isDownloadingWhenChargingEnabled()) {
+				&& !isDownloadWhenCharging) {
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "user disabled the setting: download when charging."); //$NON-NLS-1$
 			return;
@@ -117,7 +117,7 @@ public class OfflineHandleService extends IntentService {
 		} else {
 			String msg = getString(R.string.msg_offline_delete_photos);
 			msg = String.format(msg, count);
-			sendNotification(REMOVE_OFFLINE_PHOTOS_MSG_ID,msg);
+			sendNotification(REMOVE_OFFLINE_PHOTOS_MSG_ID, msg);
 		}
 	}
 
@@ -142,8 +142,7 @@ public class OfflineHandleService extends IntentService {
 			}
 			return;
 		}
-		PicornerApplication app = (PicornerApplication) getApplication();
-		boolean isWifiOnly = app.isOfflineWifiOnly();
+		boolean isWifiOnly = SharedPreferenceUtil.isOfflineWifiOnly(this);
 		boolean isConnected = activeNetwork.isConnectedOrConnecting();
 		boolean isWifi = activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
 		if (!isConnected) {

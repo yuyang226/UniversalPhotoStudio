@@ -358,27 +358,6 @@ public class PicornerApplication extends Application {
 		editor.commit();
 	}
 
-
-	public boolean isDownloadingWhenChargingEnabled() {
-		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
-				Context.MODE_APPEND);
-		return sp.getBoolean(IConstants.PREF_DOWNLOAD_WHEN_CHARGING, true);
-	}
-
-	public boolean isOfflineWifiOnly() {
-		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
-				Context.MODE_APPEND);
-		return sp.getBoolean(IConstants.PREF_OFFLINE_WIFI_ONLY, true);
-	}
-
-	public int getMaxPhotoSize() {
-		SharedPreferences sp = getSharedPreferences(IConstants.DEF_PREF_NAME,
-				Context.MODE_APPEND);
-		String size = sp.getString(IConstants.PREF_OFFLINE_MAX_PHOTO_GRID_SIZE,
-				Integer.toString(IConstants.DEF_MAX_TOTAL_PHOTOS));
-		return Integer.parseInt(size);
-	}
-
 	@Override
 	public void onTerminate() {
 		ImageLoader.getInstance().stop();
