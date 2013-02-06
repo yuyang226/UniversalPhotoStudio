@@ -287,9 +287,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private boolean isUserAuthedPx500() {
-		PicornerApplication app = (PicornerApplication) this.getActivity()
-				.getApplication();
-		return app.getPx500OauthToken() != null;
+		return SPUtil.getPx500OauthToken(getActivity()) != null;
 	}
 
 	private boolean isUserAuthedInstagram() {
@@ -584,13 +582,11 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	}
 
 	private String getTokenSecret(MediaSourceType type) {
-		PicornerApplication app = (PicornerApplication) getActivity()
-				.getApplication();
 		switch (type) {
 		case FLICKR:
 			return SPUtil.getFlickrAuthTokenSecret(getActivity());
 		case PX500:
-			return app.getPx500TokenSecret();
+			return SPUtil.getPx500TokenSecret(getActivity());
 		default:
 			return null; // not support
 		}

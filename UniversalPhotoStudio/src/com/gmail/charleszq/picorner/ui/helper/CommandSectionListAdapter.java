@@ -191,18 +191,6 @@ public class CommandSectionListAdapter extends BaseAdapter {
 		return view;
 	}
 
-	/**
-	 * 
-	 * @param filterString
-	 * @param count
-	 * @param commands
-	 */
-	void publishFilterResult(CharSequence filterString, int count,
-			List<ICommand<?>> commands) {
-		mCommands = commands;
-		notifyDataSetChanged();
-	}
-
 	class ViewHolder {
 		TextView text;
 		ImageView imageView;

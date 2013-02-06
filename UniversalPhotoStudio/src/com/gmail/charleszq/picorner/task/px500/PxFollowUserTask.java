@@ -3,11 +3,9 @@
  */
 package com.gmail.charleszq.picorner.task.px500;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.github.yuyang226.j500px.J500px;
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.J500pxHelper;
 
@@ -30,8 +28,7 @@ public class PxFollowUserTask extends
 			follow = Boolean.parseBoolean(params[1]);
 		}
 		
-		PicornerApplication app = (PicornerApplication) ((Activity)mContext).getApplication();
-		J500px px = J500pxHelper.getJ500pxAuthedInstance(app.getPx500OauthToken(), app.getPx500OauthTokenSecret());
+		J500px px = J500pxHelper.getJ500pxAuthedInstance(mContext);
 		try {
 			px.getUsersInterface().followUser(Integer.parseInt(userId), follow);
 		} catch (Exception e) {

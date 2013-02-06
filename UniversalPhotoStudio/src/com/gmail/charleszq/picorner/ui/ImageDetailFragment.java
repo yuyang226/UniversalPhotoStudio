@@ -345,7 +345,7 @@ public class ImageDetailFragment extends Fragment implements
 				.getApplication();
 		switch (mPhoto.getMediaSource()) {
 		case PX500:
-			if (app.getPx500OauthToken() == null) {
+			if (SPUtil.getPx500OauthTokenSecret(getActivity()) == null) {
 				Toast.makeText(getActivity(),
 						getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();
@@ -550,7 +550,7 @@ public class ImageDetailFragment extends Fragment implements
 		if (mPhoto.getMediaSource() != MediaSourceType.PX500) {
 			voteItem.setVisible(false);
 		} else {
-			voteItem.setVisible(app.getPx500OauthToken() != null
+			voteItem.setVisible(SPUtil.getPx500OauthToken(getActivity()) != null
 					&& !app.isMyOwnPhoto(mPhoto) && !mPhoto.isUserVoted());
 		}
 	}

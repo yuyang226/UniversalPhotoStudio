@@ -22,10 +22,7 @@ import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.offline.OfflineHandleService;
 import com.gmail.charleszq.picorner.utils.IConstants;
-import com.googlecode.flickrjandroid.RequestContext;
 import com.googlecode.flickrjandroid.oauth.OAuth;
-import com.googlecode.flickrjandroid.oauth.OAuthToken;
-import com.googlecode.flickrjandroid.people.User;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
@@ -122,24 +119,6 @@ public class PicornerApplication extends Application {
 		}
 	}
 
-	public OAuth loadSavedOAuth() {
-		String userId = SPUtil.getFlickrUserId(getApplicationContext());
-		String userName = SPUtil.getFlickrUserName(getApplicationContext());
-		String token = SPUtil.getFlickrAuthToken(getApplicationContext());
-		String tokenSecret = SPUtil.getFlickrAuthTokenSecret(getApplicationContext());
-		if (userId == null || token == null || tokenSecret == null) {
-			return null;
-		}
-		OAuth oauth = new com.googlecode.flickrjandroid.oauth.OAuth();
-		oauth.setToken(new OAuthToken(token, tokenSecret));
-		User user = new User();
-		user.setId(userId);
-		user.setRealName(userName);
-		oauth.setUser(user);
-		RequestContext.getRequestContext().setOAuth(oauth);
-		return oauth;
-	}
-
 	public void saveFlickrAuthToken(OAuth oauth) {
 
 		// save the token information.
@@ -179,24 +158,6 @@ public class PicornerApplication extends Application {
 		Editor editor = sp.edit();
 		editor.putString(IConstants.FLICKR_TOKEN_SECRENT, tokenSecrent);
 		editor.commit();
-	}
-
-	public String getPx500TokenSecret() {
-		return getSharedPreferenceValue(IConstants.PX500_TOKEN_SECRET_KEY, null);
-	}
-
-	/**
-	 * Used to check if user log into px500 or not, currently.
-	 * 
-	 * @return
-	 */
-	public String getPx500OauthToken() {
-		return getSharedPreferenceValue(IConstants.PX500_OAUTH_TOKEN_KEY, null);
-	}
-
-	public String getPx500OauthTokenSecret() {
-		return getSharedPreferenceValue(
-				IConstants.PX500_OAUTH_TOKEN_SECRET_KEY, null);
 	}
 
 	/**

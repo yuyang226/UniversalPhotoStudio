@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.github.yuyang226.j500px.users.User;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
@@ -231,7 +232,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 				task.execute(mCurrentUser.getUserId());
 			}
 		} else if (mMediaSourceType == MediaSourceType.PX500.ordinal()) {
-			if (app.getPx500OauthToken() == null) {
+			if (SPUtil.getPx500OauthToken(getActivity()) == null) {
 				mShowFollowMenuItem = false;
 				getActivity().invalidateOptionsMenu();
 			} else {

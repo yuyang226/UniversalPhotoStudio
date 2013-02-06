@@ -37,8 +37,7 @@ public class Px500FetchFriendsTask extends
 		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 				.getApplication();
 		Author me = app.getPxUserProfile();
-		J500px px = J500pxHelper.getJ500pxAuthedInstance(
-				app.getPx500OauthToken(), app.getPx500OauthTokenSecret());
+		J500px px = J500pxHelper.getJ500pxAuthedInstance(mContext);
 		UsersInterface ui = px.getUsersInterface();
 		List<Author> friends = new ArrayList<Author>();
 		int page = 1;

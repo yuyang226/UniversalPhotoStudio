@@ -3,12 +3,10 @@
  */
 package com.gmail.charleszq.picorner.task.px500;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
 import com.github.yuyang226.j500px.J500px;
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.J500pxHelper;
 
@@ -32,10 +30,7 @@ public class PxLikePhotoTask extends
 		}
 		Log.d(TAG, like ? "fav a photo" : "unfav a photo");  //$NON-NLS-1$//$NON-NLS-2$
 
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		J500px px = J500pxHelper.getJ500pxAuthedInstance(
-				app.getPx500OauthToken(), app.getPx500OauthTokenSecret());
+		J500px px = J500pxHelper.getJ500pxAuthedInstance(mContext);
 		try {
 			px.getPhotosInterface().likePhoto(Integer.parseInt(photoId), like);
 		} catch (Exception e) {

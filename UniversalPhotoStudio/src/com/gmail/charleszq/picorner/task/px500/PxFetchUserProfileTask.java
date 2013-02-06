@@ -33,11 +33,7 @@ public class PxFetchUserProfileTask extends
 	 */
 	@Override
 	protected User doInBackground(String... params) {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		String token = app.getPx500OauthToken();
-		String secret = app.getPx500OauthTokenSecret();
-		J500px px = J500pxHelper.getJ500pxAuthedInstance(token, secret);
+		J500px px = J500pxHelper.getJ500pxAuthedInstance(mContext);
 		try {
 			if (params.length > 0) {
 				mIsMyProfile = false;

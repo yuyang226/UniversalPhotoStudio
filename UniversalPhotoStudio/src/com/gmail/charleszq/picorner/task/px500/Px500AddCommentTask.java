@@ -3,11 +3,9 @@
  */
 package com.gmail.charleszq.picorner.task.px500;
 
-import android.app.Activity;
 import android.content.Context;
 
 import com.github.yuyang226.j500px.J500px;
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.J500pxHelper;
 
@@ -27,10 +25,7 @@ public class Px500AddCommentTask extends
 		String photoId = params[0];
 		String comment = params[1];
 
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		J500px px = J500pxHelper.getJ500pxAuthedInstance(
-				app.getPx500OauthToken(), app.getPx500OauthTokenSecret());
+		J500px px = J500pxHelper.getJ500pxAuthedInstance(mContext);
 		try {
 			px.getPhotosInterface().commentPhoto(Integer.parseInt(photoId),
 					comment);

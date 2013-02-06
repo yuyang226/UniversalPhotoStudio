@@ -6,12 +6,11 @@ package com.gmail.charleszq.picorner.ui.command.px500;
 import java.lang.ref.WeakReference;
 import java.util.Comparator;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.View;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.px500.PxUserPhotosService;
@@ -80,11 +79,8 @@ public class Px500FriendPhotosCommand extends PhotoListCommand {
 			return mHiddenView;
 		}
 		if (adapterClass == IPhotoService.class) {
-			Activity act = (Activity) mContext;
-			PicornerApplication app = (PicornerApplication) act
-					.getApplication();
 			mCurrentPhotoService = new PxUserPhotosService(
-					app.getPx500OauthToken(), app.getPx500OauthTokenSecret(),
+					SPUtil.getPx500OauthToken(mContext), SPUtil.getPx500OauthTokenSecret(mContext),
 					mFriend.getUserId());
 			return mCurrentPhotoService;
 		}

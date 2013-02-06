@@ -240,7 +240,7 @@ public class PhotoDetailCommentsFragment extends
 			result = app.getInstagramUserId() != null;
 			break;
 		case PX500:
-			result = app.getPx500OauthToken() != null;
+			result = SPUtil.getPx500OauthToken(getActivity()) != null;
 			break;
 		}
 		return result;

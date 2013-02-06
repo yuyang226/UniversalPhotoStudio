@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.github.yuyang226.j500px.users.User;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.px500.PxFetchUserProfileTask;
@@ -38,15 +39,11 @@ public abstract class AbstractPx500PhotoListCommand extends PhotoListCommand {
 	}
 
 	protected String getAuthToken() {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		return app.getPx500OauthToken();
+		return SPUtil.getPx500OauthToken(mContext);
 	}
 
 	protected String getAuthTokenSecret() {
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
-		return app.getPx500OauthTokenSecret();
+		return SPUtil.getPx500OauthTokenSecret(mContext);
 	}
 
 	protected String getUserId() {
