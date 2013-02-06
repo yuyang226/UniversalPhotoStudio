@@ -107,7 +107,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 		// setting button preparation
 		final Photoset ps = (Photoset) getItem(position);
 		final IOfflineViewParameter param = new FlickrOfflineParameter(
-				OfflinePhotoCollectionType.PHOTO_SET, ps.getId());
+				OfflinePhotoCollectionType.PHOTO_SET, ps.getId(), ps.getTitle());
 		settingButton.setVisibility(View.VISIBLE);
 		boolean enabled = OfflineControlFileUtil.isOfflineViewEnabled(mContext,
 				param);

@@ -18,6 +18,11 @@ public interface IConstants {
 	static final int DEF_SERVICE_PAGE_SIZE = 30;
 	static final int DEF_500PX_PAGE_SIZE = 20;
 	static final int DEF_IG_PAGE_SIZE = 30;
+	
+	/**
+	 * The page size for my photo set
+	 */
+	static final int DEF_PHOTO_SET_GROUP_PAGE_SIZE = 50;
 
 	/**
 	 * The image cache size.

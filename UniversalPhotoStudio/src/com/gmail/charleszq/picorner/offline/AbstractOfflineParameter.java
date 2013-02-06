@@ -21,29 +21,16 @@ public abstract class AbstractOfflineParameter implements IOfflineViewParameter 
 	protected long mLastUpdateTime;
 	protected String mPhotoCollectionId;
 	protected String mControlFileName;
+	protected String mPhotoCollectionTitle;
 
 	public AbstractOfflineParameter(MediaSourceType photoSourceType,
-			OfflinePhotoCollectionType collectionType, String collectionId) {
+			OfflinePhotoCollectionType collectionType, String collectionId, String title) {
 		this.mPhotoSourceType = photoSourceType;
 		this.mPhotoCollectionId = collectionId;
 		this.mPhotoCollectionType = collectionType;
+		this.mPhotoCollectionTitle = title;
 	}
 
-	public AbstractOfflineParameter(int sourceType, int collectionType,
-			String collectionId) {
-		this.mPhotoCollectionId = collectionId;
-		if (collectionType == OfflinePhotoCollectionType.PHOTO_SET.ordinal()) {
-			this.mPhotoCollectionType = OfflinePhotoCollectionType.PHOTO_SET;
-		}
-		// TODO other collection types
-		if (sourceType == MediaSourceType.FLICKR.ordinal()) {
-			this.mPhotoSourceType = MediaSourceType.FLICKR;
-		} else if (sourceType == MediaSourceType.INSTAGRAM.ordinal()) {
-			this.mPhotoSourceType = MediaSourceType.INSTAGRAM;
-		} else {
-			this.mPhotoSourceType = MediaSourceType.PX500;
-		}
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -82,6 +69,11 @@ public abstract class AbstractOfflineParameter implements IOfflineViewParameter 
 	@Override
 	public String getPhotoCollectionId() {
 		return mPhotoCollectionId;
+	}
+
+	@Override
+	public String getTitle() {
+		return mPhotoCollectionTitle;
 	}
 
 	/*

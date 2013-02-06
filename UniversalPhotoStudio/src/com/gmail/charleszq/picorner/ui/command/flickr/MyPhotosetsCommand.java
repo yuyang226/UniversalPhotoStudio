@@ -85,7 +85,7 @@ public class MyPhotosetsCommand extends PhotoListCommand {
 		}
 		if (adapterClass == IOfflineViewParameter.class) {
 			mOfflineParameter = new FlickrOfflineParameter(
-					OfflinePhotoCollectionType.PHOTO_SET, mPhotoSet.getId());
+					OfflinePhotoCollectionType.PHOTO_SET, mPhotoSet.getId(), mPhotoSet.getTitle());
 			if (OfflineControlFileUtil.isOfflineViewEnabled(mContext,
 					mOfflineParameter)
 					&& OfflineControlFileUtil.isOfflineControlFileReady(

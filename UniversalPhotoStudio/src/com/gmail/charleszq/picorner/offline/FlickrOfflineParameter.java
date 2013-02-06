@@ -22,12 +22,8 @@ public class FlickrOfflineParameter extends AbstractOfflineParameter {
 	 * @param collectionId
 	 */
 	public FlickrOfflineParameter(OfflinePhotoCollectionType collectionType,
-			String collectionId) {
-		super(MediaSourceType.FLICKR, collectionType, collectionId);
-	}
-
-	public FlickrOfflineParameter(int collectionType, String collectionId) {
-		super(MediaSourceType.FLICKR.ordinal(), collectionType, collectionId);
+			String collectionId, String title) {
+		super(MediaSourceType.FLICKR, collectionType, collectionId, title);
 	}
 
 	@Override

@@ -246,7 +246,7 @@ public class ImageDetailFragment extends Fragment implements
 
 		mImageDisplayOptions = new DisplayImageOptions.Builder()
 				.showStubImage(R.drawable.empty_photo).cacheOnDisc()
-				.imageScaleType(ImageScaleType.EXACTLY)
+				.imageScaleType(ImageScaleType.IN_SAMPLE_INT)
 				.bitmapConfig(Bitmap.Config.RGB_565).build();
 
 		mIsOfflineEnabled = getArguments() != null ? (getArguments()
@@ -449,6 +449,7 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public void onDestroy() {
 		if (mImageView != null) {
+			mImageFetcher.cancelDisplayTask(mImageView);
 			mImageView.setImageDrawable(null);
 		}
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();

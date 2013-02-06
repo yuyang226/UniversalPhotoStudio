@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:padding="5dp" >
 
     <SearchView
         android:id="@+id/contact_filter"
@@ -12,12 +12,15 @@
         android:iconifiedByDefault="false"
         android:queryHint="@string/msg_contact_filter" />
 
-    <ListView
+    <com.handmark.pulltorefresh.library.PullToRefreshListView
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/list_f_friends"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
-    </ListView>
+        android:layout_weight="1"
+        ptr:ptrHeaderTextColor="@color/pull_to_refresh_text_color"
+        ptr:ptrDrawable="@drawable/ic_action_refresh"
+        ptr:ptrMode="both" />
 
     <LinearLayout
         android:id="@+id/empty_friend_view"

@@ -49,4 +49,7 @@
 	
 	<!-- search view bg -->
 	<color name="search_view_bg">#C8C8C8</color>
+	
+	<!-- pull to refresh text color -->
+	<color name="pull_to_refresh_text_color">#FFFFFF</color>
 </resources>

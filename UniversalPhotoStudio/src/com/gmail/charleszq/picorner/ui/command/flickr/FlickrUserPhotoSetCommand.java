@@ -9,9 +9,6 @@ import android.content.Context;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
-import com.gmail.charleszq.picorner.offline.FlickrOfflineParameter;
-import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
-import com.gmail.charleszq.picorner.offline.OfflinePhotoCollectionType;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.flickr.FlickrPhotoSetPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
@@ -30,7 +27,6 @@ import com.googlecode.flickrjandroid.photosets.Photoset;
 public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 
 	private Photoset mPhotoSet;
-	private IOfflineViewParameter mOfflineParameter;
 
 	/**
 	 * @param context
@@ -38,8 +34,6 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 	public FlickrUserPhotoSetCommand(Context context, Photoset ps) {
 		super(context);
 		mPhotoSet = ps;
-		mOfflineParameter = new FlickrOfflineParameter(
-				OfflinePhotoCollectionType.PHOTO_SET, ps.getId());
 	}
 
 	@Override
@@ -68,9 +62,6 @@ public class FlickrUserPhotoSetCommand extends PhotoListCommand {
 		}
 		if (adapterClass == FlickrUserPhotoPool.class) {
 			return PhotoPlace.SET + mPhotoSet.getId();
-		}
-		if (adapterClass == IOfflineViewParameter.class) {
-			return mOfflineParameter;
 		}
 		if( adapterClass == ActionBar.class ) {
 			return Boolean.FALSE.toString();

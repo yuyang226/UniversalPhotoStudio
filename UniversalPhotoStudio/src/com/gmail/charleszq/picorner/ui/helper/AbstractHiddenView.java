@@ -11,11 +11,11 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public abstract class AbstractHiddenView
-		implements IHiddenView {
+public abstract class AbstractHiddenView implements IHiddenView {
+	protected String TAG = getClass().getSimpleName();
 
-	protected ICommand<?>				mCommand;
-	protected IHiddenViewActionListener	mHideViewCancelListener;
+	protected ICommand<?> mCommand;
+	protected IHiddenViewActionListener mHideViewCancelListener;
 	protected View mView;
 
 	/*

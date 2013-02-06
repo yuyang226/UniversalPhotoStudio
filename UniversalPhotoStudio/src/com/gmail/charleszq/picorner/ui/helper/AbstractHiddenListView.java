@@ -19,6 +19,8 @@ import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
@@ -29,6 +31,7 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 		implements OnItemClickListener {
 
 	protected ListView mListView;
+	protected PullToRefreshListView mPullToRefreshListView;
 	protected Button mCancelButton;
 	protected FilterAdapter mAdapter;
 	protected View mView;
@@ -74,7 +77,6 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 	public void init(ICommand<?> command, IHiddenViewActionListener listener) {
 		super.init(command, listener);
 		Context ctx = (Context) command.getAdapter(Context.class);
-		initializeListViewAdapter(ctx, command);
 
 		mView = getView(ctx);
 		View emptyView = mView.findViewById(R.id.empty_friend_view);
@@ -85,11 +87,17 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 		mSpace = (Space) mView.findViewById(R.id.contact_list_space);
 		mSpace.setVisibility(View.VISIBLE);
 
-		mListView = (ListView) mView.findViewById(R.id.list_f_friends);
+		mPullToRefreshListView = (PullToRefreshListView) mView
+				.findViewById(R.id.list_f_friends);
+		mPullToRefreshListView.setMode(Mode.DISABLED);
+		mListView = mPullToRefreshListView.getRefreshableView();
+		initializeListViewAdapter(ctx, command);
+		
 		mListView.setEmptyView(emptyView);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(this);
-		PauseOnScrollListener pauseListener = new PauseOnScrollListener(false,true);
+		PauseOnScrollListener pauseListener = new PauseOnScrollListener(false,
+				true);
 		mListView.setOnScrollListener(pauseListener);
 
 		mCancelButton = (Button) mView.findViewById(R.id.btn_cancel_friends);
@@ -125,8 +133,8 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 	@Override
 	public void onItemClick(AdapterView<?> parentView, View view, int position,
 			long id) {
-		Object friend = mAdapter.getItem(position);
-		onAction(ACTION_JUST_CMD, friend);
+		Object item = mAdapter.getItem((int)id);
+		onAction(ACTION_JUST_CMD, item);
 	}
 
 	@Override

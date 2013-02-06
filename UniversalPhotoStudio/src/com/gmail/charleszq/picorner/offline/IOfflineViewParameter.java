@@ -78,6 +78,12 @@ public interface IOfflineViewParameter extends Serializable {
 	 * @return
 	 */
 	String getPhotoCollectionId();
+	
+	/**
+	 * Returns the photo collection title
+	 * @return
+	 */
+	String getTitle();
 
 	/**
 	 * Photo set for now only.
