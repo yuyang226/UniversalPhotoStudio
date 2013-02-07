@@ -42,7 +42,7 @@ public class Px500FriendPhotosCommand extends PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_friends;
+		return R.drawable.ic_action_contacts;
 	}
 
 	/*

@@ -43,7 +43,7 @@ public class InstagramFollowingPhotosCommand extends PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_friends;
+		return R.drawable.ic_action_contacts;
 	}
 
 	@Override
