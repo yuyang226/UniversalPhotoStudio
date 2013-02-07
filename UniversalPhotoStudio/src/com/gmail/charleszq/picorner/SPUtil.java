@@ -20,7 +20,7 @@ public final class SPUtil {
 
 	private static final SharedPreferences getSharedPreferences(Context ctx) {
 		SharedPreferences sp = ctx.getSharedPreferences(
-				IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
+				IConstants.DEF_PREF_NAME, Context.MODE_PRIVATE);
 		return sp;
 	}
 

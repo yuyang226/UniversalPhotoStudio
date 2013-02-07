@@ -353,7 +353,7 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			break;
 		case FLICKR:
-			if (SPUtil.isFlickrAuthed(getActivity())) {
+			if (!SPUtil.isFlickrAuthed(getActivity())) {
 				Toast.makeText(getActivity(),
 						getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();

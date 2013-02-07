@@ -31,7 +31,7 @@ public class FlickrUserPhotosCommand extends MyFlickrPhotosCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			if (mCurrentPhotoService == null) {
-				String userId = SPUtil.getFlickrUserId(mContext);
+				String userId = mUser.getUserId();
 				String token = SPUtil.getFlickrAuthToken(mContext);
 				String secret = SPUtil.getFlickrAuthTokenSecret(mContext);
 				mCurrentPhotoService = new FlickrUserPhotoStreamService(userId,token,secret);

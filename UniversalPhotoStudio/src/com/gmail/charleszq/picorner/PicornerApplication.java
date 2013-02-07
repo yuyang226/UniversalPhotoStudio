@@ -248,7 +248,7 @@ public class PicornerApplication extends Application {
 			case PX500:
 				Author me = getPxUserProfile();
 				if (me == null) {
-					result = true; // not login
+					result = false; // not login
 				} else {
 					result = a.getUserId().equals(me.getUserId());
 				}
