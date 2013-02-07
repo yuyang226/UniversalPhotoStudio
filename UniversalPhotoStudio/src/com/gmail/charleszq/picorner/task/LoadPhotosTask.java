@@ -68,8 +68,6 @@ public class LoadPhotosTask extends
 					for (MediaObject photo : photos) {
 						mc.addPhoto(photo);
 					}
-					if (BuildConfig.DEBUG)
-						Log.e(TAG, "Returns photos from offline cache."); //$NON-NLS-1$
 					return mc;
 				}
 			} else {

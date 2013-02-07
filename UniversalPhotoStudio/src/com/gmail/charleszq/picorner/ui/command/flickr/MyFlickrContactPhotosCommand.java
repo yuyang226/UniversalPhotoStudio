@@ -26,7 +26,7 @@ public class MyFlickrContactPhotosCommand extends PhotoListCommand {
 
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_flickr_my_contacts;
+		return R.drawable.ic_action_friends;
 	}
 
 	@Override

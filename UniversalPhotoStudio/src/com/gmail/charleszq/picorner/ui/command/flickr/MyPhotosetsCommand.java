@@ -48,8 +48,7 @@ public class MyPhotosetsCommand extends PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		// TODO icon
-		return R.drawable.ic_action_flickr_my_favourites;
+		return R.drawable.ic_action_flickr_ps;
 	}
 
 	/*
