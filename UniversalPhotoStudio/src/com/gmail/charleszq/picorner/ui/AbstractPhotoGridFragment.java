@@ -9,14 +9,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
@@ -24,6 +31,7 @@ import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
 import com.gmail.charleszq.picorner.model.GeoLocation;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
+import com.gmail.charleszq.picorner.model.MediaSourceType;
 import com.gmail.charleszq.picorner.msg.IMessageConsumer;
 import com.gmail.charleszq.picorner.msg.Message;
 import com.gmail.charleszq.picorner.msg.MessageBus;
@@ -147,6 +155,76 @@ public abstract class AbstractPhotoGridFragment extends
 		}
 	};
 
+	private int mCurrentSelectedIndex = -1;
+	private ActionMode mCurrentActionMode;
+	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
+
+		@Override
+		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+			MenuItem mapItem = menu.findItem(R.id.menu_item_view_on_map);
+			MediaObject photo = mPhotosProvider.getMediaObject(mCurrentSelectedIndex);
+			mapItem.setVisible(photo.getLocation()!=null);
+			
+			PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+			boolean isMyPhoto = app.isMyOwnPhoto(photo);
+			if( isMyPhoto && photo.getMediaSource() == MediaSourceType.FLICKR) {
+				menu.setGroupVisible(R.id.group_my_flickr_photo, true);
+			} else {
+				menu.setGroupVisible(R.id.group_my_flickr_photo, false);
+			}
+			return true;
+		}
+
+		@Override
+		public void onDestroyActionMode(ActionMode mode) {
+			mCurrentActionMode = null;
+			mCurrentSelectedIndex = -1;
+		}
+
+		@Override
+		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			MenuInflater mf = mode.getMenuInflater();
+			mf.inflate(R.menu.photo_detail_common, menu);
+			mf.inflate(R.menu.my_flickr_photo_menus, menu);
+			return true;
+		}
+
+		@Override
+		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+			switch(item.getItemId()) {
+			case R.id.menu_item_comment:
+				showPhotoDetailWithPage(PhotoDetailActivity.COMMENT_PAGE);
+				break;
+			case R.id.menu_item_photo_set:
+				showPhotoDetailWithPage(PhotoDetailActivity.MY_F_ORG_PHOTO_SET_PAGE);
+				break;
+			case R.id.menu_item_add_to_group:
+				showPhotoDetailWithPage(PhotoDetailActivity.MY_F_ORG_GROUP_PAGE);
+				break;
+			case R.id.menu_item_view_exif:
+				showPhotoDetailWithPage(PhotoDetailActivity.EXIF_PAGE);
+				break;
+			case R.id.menu_item_view_on_map:
+				showPhotoDetailWithPage(PhotoDetailActivity.MAP_PAGE);
+				break;
+			}
+			mode.finish();
+			return true;
+		}
+		
+		private void showPhotoDetailWithPage(String pageIndex) {
+			Intent detailIntent = new Intent(getActivity(),
+					PhotoDetailActivity.class);
+			detailIntent.putExtra(ImageDetailActivity.DP_KEY, mPhotosProvider);
+			detailIntent.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION,
+					mCurrentSelectedIndex);
+			if (pageIndex != null)
+				detailIntent.putExtra(PhotoDetailActivity.DETAIL_PAGE_KEY,
+						pageIndex);
+			startActivity(detailIntent);
+		}
+	};
+
 	/**
 	 * 
 	 */
@@ -190,16 +268,29 @@ public abstract class AbstractPhotoGridFragment extends
 		mGridView.setAdapter(mAdapter);
 		mGridView.setOnItemClickListener(this);
 		mScrollListener = new GridOnScrollListener(this);
-		PauseOnScrollListener pauseListener = new PauseOnScrollListener(false, true, mScrollListener);
+		PauseOnScrollListener pauseListener = new PauseOnScrollListener(false,
+				true, mScrollListener);
 		mGridView.setOnScrollListener(pauseListener);
 
-		// This listener is used to get the final width of the GridView and then
-		// calculate the
-		// number of columns and the width of each column. The width of each
-		// column is variable
-		// as the GridView has stretchMode=columnWidth. The column width is used
-		// to set the height
-		// of each view so we get nice square thumbnails.
+		mGridView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view,
+					int position, long id) {
+				if( mCurrentActionMode != null)
+					return false;
+				
+				MediaObject photo = mPhotosProvider.getMediaObject((int)id);
+				if( photo.getMediaSource() == MediaSourceType.INSTAGRAM)
+					return false;
+				
+				mCurrentSelectedIndex = (int)id;
+				mCurrentActionMode = getActivity().startActionMode(mActionModeCallback);
+				view.setSelected(true);
+				return true;
+			}
+		});
+
 		mGridView.getViewTreeObserver().addOnGlobalLayoutListener(
 				new ViewTreeObserver.OnGlobalLayoutListener() {
 					@Override

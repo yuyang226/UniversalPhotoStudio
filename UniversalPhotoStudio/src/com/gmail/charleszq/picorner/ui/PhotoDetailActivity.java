@@ -85,7 +85,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 		String pagekey = getIntent().getStringExtra(DETAIL_PAGE_KEY);
 		if( pagekey != null ) {
 			int pageIndex = mAdapter.getPageIndex(pagekey);
-			if( pageIndex != -1 && pageIndex < mViewPager.getChildCount())
+			if( pageIndex != -1 )
 				mViewPager.setCurrentItem(pageIndex, true);
 		}
 
