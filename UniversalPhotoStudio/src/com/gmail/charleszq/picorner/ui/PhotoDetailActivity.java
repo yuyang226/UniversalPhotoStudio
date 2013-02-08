@@ -40,6 +40,16 @@ import com.viewpagerindicator.TitlePageIndicator;
 public class PhotoDetailActivity extends FragmentActivity {
 
 	private static final String TAG = PhotoDetailActivity.class.getSimpleName();
+	
+	/**
+	 * 
+	 */
+	public static final String DETAIL_PAGE_KEY = "detail.page.key"; //$NON-NLS-1$
+	public static final String  MY_F_ORG_PHOTO_SET_PAGE = "m.f.ps.page"; //$NON-NLS-1$
+	public static final String MY_F_ORG_GROUP_PAGE     = "m.f.group.page"; //$NON-NLS-1$
+	public static final String COMMENT_PAGE = "comment.page"; //$NON-NLS-1$
+	public static final String EXIF_PAGE = "exif.page"; //$NON-NLS-1$
+	public static final String MAP_PAGE = "map.page"; //$NON-NLS-1$
 
 	private ViewPager mViewPager;
 	private TitlePageIndicator mIndicator;
@@ -62,6 +72,7 @@ public class PhotoDetailActivity extends FragmentActivity {
 		IPhotosProvider dp = (IPhotosProvider) getIntent()
 				.getSerializableExtra(ImageDetailActivity.DP_KEY);
 		mCurrentPhoto = dp.getMediaObject(mCurrentPos);
+		
 
 		mImageView = (ImageView) findViewById(R.id.imageThumb);
 		mViewPager = (ViewPager) findViewById(R.id.pager_photo_detail);
@@ -70,6 +81,13 @@ public class PhotoDetailActivity extends FragmentActivity {
 		mViewPager.setAdapter(mAdapter);
 		mIndicator = (TitlePageIndicator) findViewById(R.id.indicator_photo_detail);
 		mIndicator.setViewPager(mViewPager);
+		
+		String pagekey = getIntent().getStringExtra(DETAIL_PAGE_KEY);
+		if( pagekey != null ) {
+			int pageIndex = mAdapter.getPageIndex(pagekey);
+			if( pageIndex != -1 && pageIndex < mViewPager.getChildCount())
+				mViewPager.setCurrentItem(pageIndex, true);
+		}
 
 		loadImage();
 		getActionBar().setDisplayHomeAsUpEnabled(true);

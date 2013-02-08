@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <group android:id="@+id/group_my_flickr_photo" >
+        <item
+            android:id="@+id/menu_item_photo_set"
+            android:title="@string/menu_item_org_photo_set">
+        </item>
+        <item
+            android:id="@+id/menu_item_add_to_group"
+            android:title="@string/menu_item_add_to_group">
+        </item>
+    </group>
+
+</menu>

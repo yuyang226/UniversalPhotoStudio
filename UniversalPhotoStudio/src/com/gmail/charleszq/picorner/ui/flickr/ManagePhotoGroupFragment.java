@@ -20,34 +20,35 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrPhotoContextTask;
-import com.gmail.charleszq.picorner.task.flickr.FetchPhotoSetsTask;
+import com.gmail.charleszq.picorner.task.flickr.FetchMyGroupsTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrOrganizePhotoTask;
 import com.gmail.charleszq.picorner.ui.AbstractFragmentWithImageFetcher;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.MenuSectionHeaderCommand;
-import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserPhotoSetCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.FlickrUserGroupCommand;
 import com.gmail.charleszq.picorner.ui.helper.FlickrOrganizeAdapter;
 import com.gmail.charleszq.picorner.utils.IConstants;
+import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.photos.PhotoPlace;
-import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.nostra13.universalimageloader.core.assist.PauseOnScrollListener;
 
 /**
- * Represents the fragment to organize my photos in differenct photo sets.
+ * Represents the fragment to manage photo groups of one of my photos.
  * 
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class OrganizeMyFlickrPhotoFragment extends
+public class ManagePhotoGroupFragment extends
 		AbstractFragmentWithImageFetcher implements OnItemClickListener {
 
 	private ListView mListView;
@@ -61,7 +62,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 	private Collection<ICommand<?>> mCommands;
 	private int mCurrentPhotoSetPageNo = 1;
 	private int mExecutionPageNo = 1;
-	private FetchPhotoSetsTask mFetchMyPhotoSetsTask;
+	private FetchMyGroupsTask mFetchMyPhotoSetsTask;
 
 	private OnRefreshListener2<ListView> mOnRefreshListener = new OnRefreshListener2<ListView>() {
 
@@ -69,7 +70,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 		public void onPullDownToRefresh(PullToRefreshBase<ListView> refreshView) {
 			if (mCurrentPhotoSetPageNo > 1) {
 				mExecutionPageNo = mCurrentPhotoSetPageNo - 1;
-				fetchMyPhotoSets(mExecutionPageNo);
+				fetchMyPhotoGroups(mExecutionPageNo);
 			} else {
 				mPullToRefreshListView.onRefreshComplete();
 			}
@@ -78,18 +79,18 @@ public class OrganizeMyFlickrPhotoFragment extends
 		@Override
 		public void onPullUpToRefresh(PullToRefreshBase<ListView> refreshView) {
 			mExecutionPageNo = mCurrentPhotoSetPageNo + 1;
-			fetchMyPhotoSets(mExecutionPageNo);
+			fetchMyPhotoGroups(mExecutionPageNo);
 		}
 	};
 
 	/**
 	 * default constructor.
 	 */
-	public OrganizeMyFlickrPhotoFragment() {
+	public ManagePhotoGroupFragment() {
 	}
 
-	public static OrganizeMyFlickrPhotoFragment newInstance(MediaObject photo) {
-		OrganizeMyFlickrPhotoFragment f = new OrganizeMyFlickrPhotoFragment();
+	public static ManagePhotoGroupFragment newInstance(MediaObject photo) {
+		ManagePhotoGroupFragment f = new ManagePhotoGroupFragment();
 		final Bundle bundle = new Bundle();
 		bundle.putSerializable(IConstants.DETAIL_PAGE_PHOTO_ARG_KEY, photo);
 		f.setArguments(bundle);
@@ -108,6 +109,8 @@ public class OrganizeMyFlickrPhotoFragment extends
 		mPullToRefreshListView.setOnRefreshListener(mOnRefreshListener);
 		mListView = mPullToRefreshListView.getRefreshableView();
 		mEmptyView = v.findViewById(R.id.empty_photo_set_view);
+		TextView loadingMessageView = (TextView) v.findViewById(R.id.txt_loading_msg);
+		loadingMessageView.setText(R.string.msg_loading_my_groups);
 		mListView.setEmptyView(mEmptyView);
 
 		mAdapter = new FlickrOrganizeAdapter(getActivity());
@@ -156,20 +159,15 @@ public class OrganizeMyFlickrPhotoFragment extends
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_save, menu);
-//		inflater.inflate(R.menu.crt_photo_set, menu);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.menu_item_save:
+		if (item.getItemId() == R.id.menu_item_save) {
 			performOk();
 			return true;
-		case R.id.menu_item_crt_photo_set:
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
 		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	private void performOk() {
@@ -207,31 +205,30 @@ public class OrganizeMyFlickrPhotoFragment extends
 		mAdapter.notifyDataSetChanged();
 
 		// fetch my photo sets.
-		fetchMyPhotoSets(mCurrentPhotoSetPageNo);
+		fetchMyPhotoGroups(mCurrentPhotoSetPageNo);
 	}
 
-	private void fetchMyPhotoSets(int page) {
+	private void fetchMyPhotoGroups(int page) {
 		// start another task to fetch all my photo sets and groups
-		mFetchMyPhotoSetsTask = new FetchPhotoSetsTask(getActivity());
+		mFetchMyPhotoSetsTask = new FetchMyGroupsTask(getActivity());
 		mFetchMyPhotoSetsTask
-				.addTaskDoneListener(new IGeneralTaskDoneListener<List<Photoset>>() {
+				.addTaskDoneListener(new IGeneralTaskDoneListener<Collection<Group>>() {
 
 					@Override
-					public void onTaskDone(List<Photoset> result) {
+					public void onTaskDone(Collection<Group> result) {
 						onPoolsFetched(result);
 					}
 				});
 		mFetchMyPhotoSetsTask.execute(page);
 	}
 
-	private void onPoolsFetched(List<Photoset> result) {
+	private void onPoolsFetched(Collection<Group> result) {
 
 		mPullToRefreshListView.onRefreshComplete();
 		if (getActivity() == null) {
 			return;
 		}
-		
-		if( result.isEmpty() && mCurrentPhotoSetPageNo > 1 ) 
+		if( result.isEmpty() && mCurrentPhotoSetPageNo > 1) 
 			return;
 
 		ICommand<?> cmd = null;
@@ -240,12 +237,12 @@ public class OrganizeMyFlickrPhotoFragment extends
 		mCommands.clear();
 		if (result.isEmpty()) {
 			cmd = new MenuSectionHeaderCommand(getActivity(),
-					getString(R.string.msg_no_photo_sets));
+					getString(R.string.msg_no_photo_groups));
 			mCommands.add(cmd);
 		} else {
 			mCurrentPhotoSetPageNo = mExecutionPageNo;
-			for (Photoset obj : result) {
-				cmd = new FlickrUserPhotoSetCommand(getActivity(), obj);
+			for (Group obj : result) {
+				cmd = new FlickrUserGroupCommand(getActivity(), obj);
 				mCommands.add(cmd);
 			}
 		}

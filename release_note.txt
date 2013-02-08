@@ -2,6 +2,8 @@ What's new (version 2.0.1)
 1, performance tuning;
 2, add preference option to set default photo list;
 3, main menu UI change;
+4, separate photo set and group management;
+5, add more menu items at image detail page;
 
 What's new (version 2.0)
 1, instagram following list;

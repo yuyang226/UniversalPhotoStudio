@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/menu_item_comment" android:title="@string/menu_item_comment"></item><item android:id="@+id/menu_item_view_exif" android:title="@string/menu_item_view_exif"></item>
+    <item android:id="@+id/menu_item_view_on_map" android:title="@string/menu_item_view_on_map"></item>
+    
+    
+
+</menu>

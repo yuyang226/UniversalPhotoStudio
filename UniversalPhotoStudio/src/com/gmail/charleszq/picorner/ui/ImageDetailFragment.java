@@ -292,11 +292,12 @@ public class ImageDetailFragment extends Fragment implements
 				: View.INVISIBLE);
 		mPhotoTitle = (TextView) v.findViewById(R.id.photo_detail_photo_title);
 		String photoTitle = mPhoto.getTitle();
-		if( photoTitle == null ) {
+		if (photoTitle == null) {
 			photoTitle = ""; //$NON-NLS-1$
 		} else {
-			if( photoTitle.length() > IConstants.MAX_PHOTO_TITLE_LEN ) {
-				photoTitle = photoTitle.substring(0,IConstants.MAX_PHOTO_TITLE_LEN) + "..."; //$NON-NLS-1$
+			if (photoTitle.length() > IConstants.MAX_PHOTO_TITLE_LEN) {
+				photoTitle = photoTitle.substring(0,
+						IConstants.MAX_PHOTO_TITLE_LEN) + "..."; //$NON-NLS-1$
 			}
 		}
 		mPhotoTitle.setText(photoTitle);
@@ -469,17 +470,8 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_photo_detail, menu);
-
-		// MenuItem actionItem = menu
-		// .findItem(R.id.menu_item_share_action_provider_action_bar);
-		// ShareActionProvider actionProvider = (ShareActionProvider) actionItem
-		// .getActionProvider();
-		// actionProvider
-		// .setShareHistoryFileName(ShareActionProvider.DEFAULT_SHARE_HISTORY_FILE_NAME);
-		// // Note that you can set/change the intent any time,
-		// // say when the user has selected an image.
-		// actionProvider.setShareIntent(createShareIntent());
-		// actionProvider.setOnShareTargetSelectedListener(this);
+		inflater.inflate(R.menu.my_flickr_photo_menus, menu);
+		inflater.inflate(R.menu.photo_detail_common, menu);
 	}
 
 	private void checkUserLikeOrNot() {
@@ -522,27 +514,39 @@ public class ImageDetailFragment extends Fragment implements
 	@Override
 	public void onPrepareOptionsMenu(Menu menu) {
 		MenuItem likeItem = menu.findItem(R.id.menu_item_like);
+		MenuItem ownerPhotoItem = menu
+				.findItem(R.id.menu_item_see_owner_photos);
+		MenuItem commentItem = menu.findItem(R.id.menu_item_comment);
+		MenuItem mapItem = menu.findItem(R.id.menu_item_view_on_map);
+		MenuItem exifItem = menu.findItem(R.id.menu_item_view_exif);
+
 		PicornerApplication app = (PicornerApplication) getActivity()
 				.getApplication();
 
-		// for flickr and 500px, hide 'like' on my own photos.
-		if ((mPhoto.getMediaSource() == MediaSourceType.FLICKR || mPhoto
-				.getMediaSource() == MediaSourceType.PX500)
-				&& app.isMyOwnPhoto(mPhoto)) {
-			likeItem.setVisible(false);
+		boolean ismyphoto = app.isMyOwnPhoto(mPhoto);
+		ownerPhotoItem.setVisible(!ismyphoto);
+		switch (mPhoto.getMediaSource()) {
+		case FLICKR:
+			menu.setGroupVisible(R.id.group_my_flickr_photo, ismyphoto);
+			likeItem.setVisible(!ismyphoto);
+			break;
+		case PX500:
+			menu.setGroupVisible(R.id.group_my_flickr_photo, false);
+			likeItem.setVisible(!ismyphoto);
+			break;
+		case INSTAGRAM:
+			commentItem.setVisible(false);
+			exifItem.setVisible(false);
+			menu.setGroupVisible(R.id.group_my_flickr_photo, false);
+			break;
 		}
+
+		mapItem.setVisible(mPhoto.getLocation() != null);
 
 		if (mUserLikeThePhoto) {
 			likeItem.setIcon(R.drawable.star_big_on);
 		} else {
 			likeItem.setIcon(R.drawable.ic_menu_star);
-		}
-
-		// hide 'owner photos' menu item for my own photos
-		MenuItem ownerPhotoItem = menu
-				.findItem(R.id.menu_item_see_owner_photos);
-		if (app.isMyOwnPhoto(mPhoto)) {
-			ownerPhotoItem.setVisible(false);
 		}
 
 		// 500px menu group
@@ -636,16 +640,38 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			return true;
 		case R.id.menu_item_detail:
-			Intent detailIntent = new Intent(getActivity(),
-					PhotoDetailActivity.class);
-			IPhotosProvider dp = ((ImageDetailActivity) getActivity()).mPhotosProvider;
-			detailIntent.putExtra(ImageDetailActivity.DP_KEY, dp);
-			detailIntent.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION,
-					mCurrentPos);
-			startActivity(detailIntent);
+			showPhotoDetailWithPage(null);
+			return true;
+		case R.id.menu_item_comment:
+			showPhotoDetailWithPage(PhotoDetailActivity.COMMENT_PAGE);
+			return true;
+		case R.id.menu_item_photo_set:
+			showPhotoDetailWithPage(PhotoDetailActivity.MY_F_ORG_PHOTO_SET_PAGE);
+			return true;
+		case R.id.menu_item_add_to_group:
+			showPhotoDetailWithPage(PhotoDetailActivity.MY_F_ORG_GROUP_PAGE);
+			return true;
+		case R.id.menu_item_view_exif:
+			showPhotoDetailWithPage(PhotoDetailActivity.EXIF_PAGE);
+			return true;
+		case R.id.menu_item_view_on_map:
+			showPhotoDetailWithPage(PhotoDetailActivity.MAP_PAGE);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	private void showPhotoDetailWithPage(String pageIndex) {
+		Intent detailIntent = new Intent(getActivity(),
+				PhotoDetailActivity.class);
+		IPhotosProvider dp = ((ImageDetailActivity) getActivity()).mPhotosProvider;
+		detailIntent.putExtra(ImageDetailActivity.DP_KEY, dp);
+		detailIntent.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION,
+				mCurrentPos);
+		if (pageIndex != null)
+			detailIntent.putExtra(PhotoDetailActivity.DETAIL_PAGE_KEY,
+					pageIndex);
+		startActivity(detailIntent);
 	}
 
 	/**

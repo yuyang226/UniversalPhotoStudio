@@ -46,7 +46,7 @@
     <string name="auth_gen_req_token">Generating the authorization request.</string>
 
     <!-- option menu items -->
-    <string name="menu_item_save">Save</string>
+    <string name="menu_item_save">Save to Device</string>
     <string name="menu_item_share">Share</string>
     <string name="menu_item_like_photo">Like</string>
     <string name="menu_item_set_wallpaper">Set as Wallpaper</string>
@@ -54,7 +54,8 @@
     <string name="menu_item_ig_follow_user">Follow</string>
     <string name="menu_item_ig_unfollow_user">Unfollow</string>
     <string name="menu_item_owner_photos">Owner Photos</string>
-    <string name="menu_item_org_my_flickr_photo">Organize</string>
+    <string name="menu_item_org_my_flickr_photo">Sets</string>
+    <string name="menu_item_mng_my_flickr_group">Groups</string>
     <string name="menu_item_f_user_web_site">Owner\'s Website</string>
     <string name="menu_item_vote">Vote</string>
     <string name="main_menu_filter_hint">menu filter</string>
@@ -66,6 +67,13 @@
     <string name="menu_item_offline_delete_photos">Delete</string>
     <string name="menu_item_my_frequently_used_tags">My Flickr Tags</string>
     <string name="menu_item_rate">Rate</string>
+    <string name="menu_item_crt_ps">New Photo Set</string>
+    
+    <string name="menu_item_org_photo_set">Organize in Photo Sets</string>
+    <string name="menu_item_add_to_group">Add to Groups</string>
+    <string name="menu_item_view_exif">View EXIF</string>
+    <string name="menu_item_view_on_map">View on Map</string>
+    <string name="menu_item_comment">Comment</string>
 
     <!-- messages -->
     <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Loading, please wait...</string>
@@ -123,9 +131,10 @@
     <string name="msg_loading_photo_sets" tools:ignore="TypographyEllipsis">Loading my photo sets...</string>
     <string name="msg_loading_my_groups" tools:ignore="TypographyEllipsis">Loading my photo groups...</string>
     <string name="msg_loading_my_galleries" tools:ignore="TypographyEllipsis">Loading my galleries...</string>
-    <string name="msg_no_photo_sets">You have no photo sets.</string>
-    <string name="msg_no_photo_groups">You have no photo groups.</string>
-    <string name="msg_no_photo_galleries">You have no photo galleries.</string>
+    <string name="msg_no_photo_sets">No photo sets yet.</string>
+    <string name="msg_no_photo_groups">No photo groups yet.</string>
+    <string name="msg_no_photo_galleries">No galleries yet.</string>
+    <string name="msg_crt_ps_hint">title</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
