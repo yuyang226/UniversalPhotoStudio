@@ -46,7 +46,7 @@
     <string name="auth_gen_req_token">Generating the authorization request.</string>
 
     <!-- option menu items -->
-    <string name="menu_item_save">Save to Device</string>
+    <string name="menu_item_save">Save</string>
     <string name="menu_item_share">Share</string>
     <string name="menu_item_like_photo">Like</string>
     <string name="menu_item_set_wallpaper">Set as Wallpaper</string>
