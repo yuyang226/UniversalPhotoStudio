@@ -231,7 +231,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 			return;
 		}
 		
-		if( result.isEmpty() && mCurrentPhotoSetPageNo > 1 ) 
+		if( result.isEmpty() && mExecutionPageNo > 1 ) 
 			return;
 
 		ICommand<?> cmd = null;
