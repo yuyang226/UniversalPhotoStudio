@@ -225,17 +225,17 @@ public class ManagePhotoGroupFragment extends
 	private void onPoolsFetched(Collection<Group> result) {
 
 		mPullToRefreshListView.onRefreshComplete();
-		if (getActivity() == null) {
+		if (getActivity() == null  ) {
 			return;
 		}
-		if( result.isEmpty() && mExecutionPageNo > 1) 
+		if( (result == null || result.isEmpty()) && mExecutionPageNo > 1) 
 			return;
 
 		ICommand<?> cmd = null;
 		if (mCommands == null)
 			mCommands = new ArrayList<ICommand<?>>();
 		mCommands.clear();
-		if (result.isEmpty()) {
+		if ( result == null || result.isEmpty() ) {
 			cmd = new MenuSectionHeaderCommand(getActivity(),
 					getString(R.string.msg_no_photo_groups));
 			mCommands.add(cmd);

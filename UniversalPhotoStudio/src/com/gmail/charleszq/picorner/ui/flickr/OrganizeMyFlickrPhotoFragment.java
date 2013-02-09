@@ -156,7 +156,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_save, menu);
-//		inflater.inflate(R.menu.crt_photo_set, menu);
+		// inflater.inflate(R.menu.crt_photo_set, menu);
 	}
 
 	@Override
@@ -230,8 +230,8 @@ public class OrganizeMyFlickrPhotoFragment extends
 		if (getActivity() == null) {
 			return;
 		}
-		
-		if( result.isEmpty() && mExecutionPageNo > 1 ) 
+
+		if (result.isEmpty() && mExecutionPageNo > 1)
 			return;
 
 		ICommand<?> cmd = null;
