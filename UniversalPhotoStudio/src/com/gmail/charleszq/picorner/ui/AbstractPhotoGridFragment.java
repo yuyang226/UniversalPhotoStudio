@@ -157,6 +157,7 @@ public abstract class AbstractPhotoGridFragment extends
 
 	private int mCurrentSelectedIndex = -1;
 	private ActionMode mCurrentActionMode;
+	private View mCurrentSelectedView = null;
 	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
 		@Override
@@ -165,9 +166,8 @@ public abstract class AbstractPhotoGridFragment extends
 			MediaObject photo = mPhotosProvider
 					.getMediaObject(mCurrentSelectedIndex);
 			mapItem.setVisible(photo.getLocation() != null);
-			
-			if( photo.getMediaSource().equals(MediaSourceType.INSTAGRAM))
-			{
+
+			if (photo.getMediaSource().equals(MediaSourceType.INSTAGRAM)) {
 				MenuItem exifItem = menu.findItem(R.id.menu_item_view_exif);
 				exifItem.setVisible(false);
 			}
@@ -186,6 +186,10 @@ public abstract class AbstractPhotoGridFragment extends
 		public void onDestroyActionMode(ActionMode mode) {
 			mCurrentActionMode = null;
 			mCurrentSelectedIndex = -1;
+			if (mCurrentSelectedView != null) {
+				mCurrentSelectedView.setAlpha(1f);
+				mCurrentSelectedView = null;
+			}
 		}
 
 		@Override
@@ -215,6 +219,10 @@ public abstract class AbstractPhotoGridFragment extends
 				showPhotoDetailWithPage(PhotoDetailActivity.MAP_PAGE);
 				break;
 			}
+			if (mCurrentSelectedView != null) {
+				mCurrentSelectedView.setAlpha(1f);
+				mCurrentSelectedView = null;
+			}
 			mode.finish();
 			return true;
 		}
@@ -237,6 +245,12 @@ public abstract class AbstractPhotoGridFragment extends
 	 */
 	public AbstractPhotoGridFragment() {
 
+	}
+	
+	void exitActionMode() {
+		if( mCurrentActionMode != null ) {
+			mCurrentActionMode.finish();
+		}
 	}
 
 	@Override
@@ -290,7 +304,8 @@ public abstract class AbstractPhotoGridFragment extends
 				mCurrentSelectedIndex = (int) id;
 				mCurrentActionMode = getActivity().startActionMode(
 						mActionModeCallback);
-				view.setSelected(true);
+				mCurrentSelectedView = view;
+				mCurrentSelectedView.setAlpha(0.5f);
 				return true;
 			}
 		});
@@ -402,6 +417,7 @@ public abstract class AbstractPhotoGridFragment extends
 
 		@Override
 		protected void showGridTitle(boolean show) {
+			mFragment.exitActionMode();
 		}
 	}
 }
