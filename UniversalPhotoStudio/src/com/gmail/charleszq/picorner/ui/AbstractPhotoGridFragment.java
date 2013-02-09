@@ -162,12 +162,19 @@ public abstract class AbstractPhotoGridFragment extends
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
 			MenuItem mapItem = menu.findItem(R.id.menu_item_view_on_map);
-			MediaObject photo = mPhotosProvider.getMediaObject(mCurrentSelectedIndex);
-			mapItem.setVisible(photo.getLocation()!=null);
+			MediaObject photo = mPhotosProvider
+					.getMediaObject(mCurrentSelectedIndex);
+			mapItem.setVisible(photo.getLocation() != null);
 			
-			PicornerApplication app = (PicornerApplication) getActivity().getApplication();
+			if( photo.getMediaSource().equals(MediaSourceType.INSTAGRAM))
+			{
+				MenuItem exifItem = menu.findItem(R.id.menu_item_view_exif);
+				exifItem.setVisible(false);
+			}
+			PicornerApplication app = (PicornerApplication) getActivity()
+					.getApplication();
 			boolean isMyPhoto = app.isMyOwnPhoto(photo);
-			if( isMyPhoto && photo.getMediaSource() == MediaSourceType.FLICKR) {
+			if (isMyPhoto && photo.getMediaSource() == MediaSourceType.FLICKR) {
 				menu.setGroupVisible(R.id.group_my_flickr_photo, true);
 			} else {
 				menu.setGroupVisible(R.id.group_my_flickr_photo, false);
@@ -191,7 +198,7 @@ public abstract class AbstractPhotoGridFragment extends
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			switch(item.getItemId()) {
+			switch (item.getItemId()) {
 			case R.id.menu_item_comment:
 				showPhotoDetailWithPage(PhotoDetailActivity.COMMENT_PAGE);
 				break;
@@ -211,7 +218,7 @@ public abstract class AbstractPhotoGridFragment extends
 			mode.finish();
 			return true;
 		}
-		
+
 		private void showPhotoDetailWithPage(String pageIndex) {
 			Intent detailIntent = new Intent(getActivity(),
 					PhotoDetailActivity.class);
@@ -277,15 +284,17 @@ public abstract class AbstractPhotoGridFragment extends
 			@Override
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				if( mCurrentActionMode != null)
+				if (mCurrentActionMode != null)
 					return false;
-				
-				MediaObject photo = mPhotosProvider.getMediaObject((int)id);
-				if( photo.getMediaSource() == MediaSourceType.INSTAGRAM)
+
+				MediaObject photo = mPhotosProvider.getMediaObject((int) id);
+				if (photo.getMediaSource() == MediaSourceType.INSTAGRAM
+						&& photo.getLocation() == null)
 					return false;
-				
-				mCurrentSelectedIndex = (int)id;
-				mCurrentActionMode = getActivity().startActionMode(mActionModeCallback);
+
+				mCurrentSelectedIndex = (int) id;
+				mCurrentActionMode = getActivity().startActionMode(
+						mActionModeCallback);
 				view.setSelected(true);
 				return true;
 			}
