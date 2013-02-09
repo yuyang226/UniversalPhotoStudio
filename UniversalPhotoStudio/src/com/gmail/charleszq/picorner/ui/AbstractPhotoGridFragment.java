@@ -287,11 +287,6 @@ public abstract class AbstractPhotoGridFragment extends
 				if (mCurrentActionMode != null)
 					return false;
 
-				MediaObject photo = mPhotosProvider.getMediaObject((int) id);
-				if (photo.getMediaSource() == MediaSourceType.INSTAGRAM
-						&& photo.getLocation() == null)
-					return false;
-
 				mCurrentSelectedIndex = (int) id;
 				mCurrentActionMode = getActivity().startActionMode(
 						mActionModeCallback);
