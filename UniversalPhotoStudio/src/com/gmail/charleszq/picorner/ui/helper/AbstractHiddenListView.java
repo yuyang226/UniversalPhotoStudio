@@ -81,8 +81,6 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 		mView = getView(ctx);
 		View emptyView = mView.findViewById(R.id.empty_friend_view);
 		mLoadingText = (TextView) emptyView.findViewById(R.id.txt_loading_msg);
-		if (mLoadingMessage != null)
-			mLoadingText.setText(mLoadingMessage);
 
 		mSpace = (Space) mView.findViewById(R.id.contact_list_space);
 		mSpace.setVisibility(View.VISIBLE);
@@ -92,6 +90,8 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 		mPullToRefreshListView.setMode(Mode.DISABLED);
 		mListView = mPullToRefreshListView.getRefreshableView();
 		initializeListViewAdapter(ctx, command);
+		if (mLoadingMessage != null)
+			mLoadingText.setText(mLoadingMessage);
 		
 		mListView.setEmptyView(emptyView);
 		mListView.setAdapter(mAdapter);
