@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -62,7 +61,7 @@ public class ManagePhotoGroupFragment extends
 	private Collection<ICommand<?>> mCommands;
 	private int mCurrentPhotoSetPageNo = 1;
 	private int mExecutionPageNo = 1;
-	private FetchMyGroupsTask mFetchMyPhotoSetsTask;
+	private FetchMyGroupsTask mFetchMyGroupsTask;
 
 	private OnRefreshListener2<ListView> mOnRefreshListener = new OnRefreshListener2<ListView>() {
 
@@ -144,7 +143,6 @@ public class ManagePhotoGroupFragment extends
 				@Override
 				public void onTaskDone(List<PhotoPlace> result) {
 					onPhotoContextFetched(result);
-
 				}
 			});
 			t.execute(mCurrentPhoto.getId());
@@ -191,9 +189,6 @@ public class ManagePhotoGroupFragment extends
 	}
 
 	protected void onPhotoContextFetched(List<PhotoPlace> result) {
-		Log.d(TAG,
-				"photo context fetched, size: " + (result == null ? 0 : result.size())); //$NON-NLS-1$
-
 		mCurrentPhotoContext = new HashSet<String>();
 		mUpdatePhotoContext = new HashSet<String>();
 		if (result != null)
@@ -210,8 +205,8 @@ public class ManagePhotoGroupFragment extends
 
 	private void fetchMyPhotoGroups(int page) {
 		// start another task to fetch all my photo sets and groups
-		mFetchMyPhotoSetsTask = new FetchMyGroupsTask(getActivity());
-		mFetchMyPhotoSetsTask
+		mFetchMyGroupsTask = new FetchMyGroupsTask(getActivity());
+		mFetchMyGroupsTask
 				.addTaskDoneListener(new IGeneralTaskDoneListener<Collection<Group>>() {
 
 					@Override
@@ -219,7 +214,7 @@ public class ManagePhotoGroupFragment extends
 						onPoolsFetched(result);
 					}
 				});
-		mFetchMyPhotoSetsTask.execute(page);
+		mFetchMyGroupsTask.execute(page);
 	}
 
 	private void onPoolsFetched(Collection<Group> result) {

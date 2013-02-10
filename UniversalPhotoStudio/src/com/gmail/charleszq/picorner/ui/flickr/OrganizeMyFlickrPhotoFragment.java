@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Set;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -141,7 +140,6 @@ public class OrganizeMyFlickrPhotoFragment extends
 				@Override
 				public void onTaskDone(List<PhotoPlace> result) {
 					onPhotoContextFetched(result);
-
 				}
 			});
 			t.execute(mCurrentPhoto.getId());
@@ -193,9 +191,6 @@ public class OrganizeMyFlickrPhotoFragment extends
 	}
 
 	protected void onPhotoContextFetched(List<PhotoPlace> result) {
-		Log.d(TAG,
-				"photo context fetched, size: " + (result == null ? 0 : result.size())); //$NON-NLS-1$
-
 		mCurrentPhotoContext = new HashSet<String>();
 		mUpdatePhotoContext = new HashSet<String>();
 		if (result != null)
