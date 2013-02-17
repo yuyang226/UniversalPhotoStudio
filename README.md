@@ -27,6 +27,8 @@ Please also download the following projects and import into your Eclipse workspa
 
 Exeucte the command setup_deps.sh for downloading the 3rd party submodules.
 
+The android-support-v4.jar from SlidingMenu and Android-ViewPagerIndicator will cause mismatch issue. Please use the same jar in both projects for resolving this issue.
+
 # Developers
 * Charles Zhang: <charleszq@gmail.com>
 * Toby Yu: <yuyang226@gmail.com>
