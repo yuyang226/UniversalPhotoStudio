@@ -66,8 +66,15 @@ public final class ModelUtils {
 		uPhoto.setDescription(photo.getDescription());
 		uPhoto.setTitle(photo.getTitle());
 		uPhoto.setId(photo.getId());
-		uPhoto.setThumbUrl(photo.getSmallUrl());
-		uPhoto.setLargeUrl(photo.getLargeUrl());
+		uPhoto.setThumbUrl(photo.getLargeSquareUrl());
+		String largeUrl = photo.getLargeUrl();
+		if( largeUrl == null ) {
+			largeUrl = photo.getMediumUrl();
+			if( largeUrl == null ) {
+				largeUrl = photo.getLargeSquareUrl();
+			}
+		}
+		uPhoto.setLargeUrl(largeUrl);
 		uPhoto.setViews(photo.getViews());
 		uPhoto.setComments(photo.getComments());
 		uPhoto.setFavorites(photo.getFavorites());

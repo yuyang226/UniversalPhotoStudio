@@ -261,6 +261,8 @@ public class ImageDetailFragment extends Fragment implements
 		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		mPhoto = dp.getMediaObject(pos);
+		if( BuildConfig.DEBUG)
+			Log.d(TAG, "large url: " + mPhoto.getLargeUrl()); //$NON-NLS-1$
 
 		setHasOptionsMenu(true);
 		act.addActionBarListener(mActionBarListener);

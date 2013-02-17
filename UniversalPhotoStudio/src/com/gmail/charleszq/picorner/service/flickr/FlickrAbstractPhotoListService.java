@@ -21,7 +21,8 @@ public abstract class FlickrAbstractPhotoListService implements IPhotoService {
 	
 	public FlickrAbstractPhotoListService() {
 		mExtras = new HashSet<String>();
-		mExtras.add(Extras.URL_S);
+		mExtras.add(Extras.URL_Q);
+		mExtras.add(Extras.URL_M);
 		mExtras.add(Extras.URL_L);
 		mExtras.add(Extras.OWNER_NAME);
 		mExtras.add(Extras.GEO);
