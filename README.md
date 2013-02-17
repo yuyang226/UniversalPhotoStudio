@@ -19,10 +19,13 @@ Please also download the following projects and import into your Eclipse workspa
 * [Android-ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 * [Universal Image Loader](https://github.com/nostra13/Android-Universal-Image-Loader)
 * [Google play service](http://developer.android.com/google/play-services/setup.html)
+* [Android-PullToRefresh](https://github.com/chrisbanes/Android-PullToRefresh)
 
 ### Development Environment
 * JDK 1.6+
 * ADT
+
+Exeucte the command setup_deps.sh for downloading the 3rd party submodules.
 
 # Developers
 * Charles Zhang: <charleszq@gmail.com>
