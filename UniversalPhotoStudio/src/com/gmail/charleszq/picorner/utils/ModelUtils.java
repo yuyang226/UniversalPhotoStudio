@@ -27,9 +27,11 @@ import android.text.util.Linkify.MatchFilter;
 import android.text.util.Linkify.TransformFilter;
 import android.util.JsonReader;
 import android.util.JsonWriter;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.github.yuyang226.j500px.photos.PhotoExif;
+import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.ExifData;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
@@ -57,6 +59,8 @@ import com.googlecode.flickrjandroid.tags.Tag;
  * 
  */
 public final class ModelUtils {
+	
+	private static final String TAG = ModelUtils.class.getSimpleName();
 
 	private static MediaObject convertFlickrPhoto(Photo p) {
 		return convertFlickrPhoto(p, null);
@@ -67,9 +71,13 @@ public final class ModelUtils {
 		if (size == null) {
 			size = photo.getMediumSize();
 			if (size != null) {
+				if( BuildConfig.DEBUG)
+					Log.d(TAG, "Use medium url: " + photo.getMediumUrl()); //$NON-NLS-1$
 				return photo.getMediumUrl();
 			}
 		} else {
+			if( BuildConfig.DEBUG)
+				Log.d(TAG, "Use large url: " + photo.getLargeUrl()); //$NON-NLS-1$
 			return photo.getLargeUrl();
 		}
 

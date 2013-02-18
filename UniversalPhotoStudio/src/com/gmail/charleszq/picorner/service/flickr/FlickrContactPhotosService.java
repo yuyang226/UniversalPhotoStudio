@@ -40,7 +40,7 @@ public class FlickrContactPhotosService extends FlickrAuthPhotoService {
 		Flickr f = FlickrHelper.getInstance().getFlickrAuthed(mAuthToken,
 				mTokenSecret);
 		PhotosInterface pi = f.getPhotosInterface();
-		PhotoList list = pi.getContactsPhotos(50, false, false, false);
+		PhotoList list = pi.getContactsPhotos(50, mExtras, false, false, false, 0, 0);
 		MediaObjectCollection pc = ModelUtils.convertFlickrPhotoList(list);
 		return pc;
 	}
