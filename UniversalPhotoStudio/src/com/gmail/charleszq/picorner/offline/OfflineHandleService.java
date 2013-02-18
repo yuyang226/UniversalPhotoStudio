@@ -195,6 +195,7 @@ public class OfflineHandleService extends IntentService {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private void sendNotification(int id, String msg) {
 		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
 				this).setSmallIcon(R.drawable.ic_launcher)

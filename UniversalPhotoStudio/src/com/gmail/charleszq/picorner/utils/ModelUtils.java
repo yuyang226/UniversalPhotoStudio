@@ -47,6 +47,7 @@ import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.GeoData;
 import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
+import com.googlecode.flickrjandroid.photos.Size;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.tags.Tag;
@@ -61,18 +62,29 @@ public final class ModelUtils {
 		return convertFlickrPhoto(p, null);
 	}
 
+	private static String getFlickrPhotoLargeUrl(Photo photo) {
+		Size size = photo.getLargeSize();
+		if (size == null) {
+			size = photo.getMediumSize();
+			if (size != null) {
+				return photo.getMediumUrl();
+			}
+		} else {
+			return photo.getLargeUrl();
+		}
+
+		return null;
+	}
+
 	public static MediaObject convertFlickrPhoto(Photo photo, User flickrOwner) {
 		MediaObject uPhoto = new MediaObject();
 		uPhoto.setDescription(photo.getDescription());
 		uPhoto.setTitle(photo.getTitle());
 		uPhoto.setId(photo.getId());
 		uPhoto.setThumbUrl(photo.getLargeSquareUrl());
-		String largeUrl = photo.getLargeUrl();
-		if( largeUrl == null ) {
-			largeUrl = photo.getMediumUrl();
-			if( largeUrl == null ) {
-				largeUrl = photo.getLargeSquareUrl();
-			}
+		String largeUrl = getFlickrPhotoLargeUrl(photo);
+		if (largeUrl == null) {
+			largeUrl = photo.getLargeSquareUrl();
 		}
 		uPhoto.setLargeUrl(largeUrl);
 		uPhoto.setViews(photo.getViews());
@@ -350,7 +362,7 @@ public final class ModelUtils {
 		photo.setFavorites(p.getFavouritesCount());
 		photo.setComments(p.getCommentsCount());
 		photo.setViews(p.getViewsCount());
-		
+
 		photo.setUserLiked(p.isFavorited());
 		photo.setUserVoted(p.isVoted());
 
@@ -413,8 +425,8 @@ public final class ModelUtils {
 		MediaObjectComment comment = new MediaObjectComment();
 		comment.setId(String.valueOf(pxComment.getId()));
 		comment.setText(pxComment.getComment());
-		comment.setCreateTimeString(pxComment.getCreatedAt() != null 
-				? pxComment.getCreatedAt().toString() : ""); //$NON-NLS-1$
+		comment.setCreateTimeString(pxComment.getCreatedAt() != null ? pxComment
+				.getCreatedAt().toString() : ""); //$NON-NLS-1$
 
 		Author u = new Author();
 		u.setUserId(String.valueOf(pxComment.getUserId()));

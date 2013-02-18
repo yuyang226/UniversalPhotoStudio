@@ -1,4 +1,9 @@
-What's new (version 2.0.1)
+What's new (version 2.1.1)
+1, Fix the problem that for flickr photos without large url, a 'not available image' shows up;
+2, hide action bar for my own photo set photos;
+3, performance tunning for flickr photo grid;
+
+What's new (version 2.1.0)
 1, performance tuning;
 2, add preference option to set default photo list;
 3, main menu UI change;

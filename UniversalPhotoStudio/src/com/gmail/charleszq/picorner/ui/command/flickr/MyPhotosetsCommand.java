@@ -5,6 +5,7 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 
 import java.util.Comparator;
 
+import android.app.ActionBar;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
@@ -95,6 +96,9 @@ public class MyPhotosetsCommand extends PhotoListCommand {
 		}
 		if (adapterClass == Comparator.class) {
 			return mPhotoSet;
+		}
+		if( adapterClass == ActionBar.class ) {
+			return Boolean.FALSE.toString();
 		}
 		return super.getAdapter(adapterClass);
 	}
