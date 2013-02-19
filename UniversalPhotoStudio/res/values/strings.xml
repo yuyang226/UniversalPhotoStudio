@@ -68,6 +68,7 @@
     <string name="menu_item_my_frequently_used_tags">My Flickr Tags</string>
     <string name="menu_item_rate">Rate</string>
     <string name="menu_item_crt_ps">New Photo Set</string>
+    <string name="menu_item_flickr_group_search">Search Flickr Groups</string>
     
     <string name="menu_item_org_photo_set">Organize in Photo Sets</string>
     <string name="menu_item_add_to_group">Add to Groups</string>
@@ -105,7 +106,6 @@
     <string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
     <string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
     <string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
-    <string name="msg_not_support_yet">Not supported yet.</string>
     <string name="msg_by_author_name">by</string>
     <string name="msg_your_own_photo">This is you.</string>
     <string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
@@ -135,6 +135,7 @@
     <string name="msg_no_photo_groups">No photo groups yet.</string>
     <string name="msg_no_photo_galleries">No galleries yet.</string>
     <string name="msg_crt_ps_hint">title</string>
+    <string name="msg_searching_flickr_group" tools:ignore="TypographyEllipsis">Searching groups...</string>
 
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>

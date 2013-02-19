@@ -109,6 +109,15 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 			}
 		});
 
+		initSearchView(ctx);
+		getData(ctx);
+	}
+	
+	/**
+	 * Initializes the search view.
+	 * @param ctx
+	 */
+	protected void initSearchView(Context ctx) {
 		// filter
 		mSearchView = (SearchView) mView.findViewById(R.id.contact_filter);
 		mSearchView.setOnQueryTextListener(mQueryTextListener);
@@ -116,8 +125,6 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 		InputMethodManager imm = (InputMethodManager) ctx
 				.getSystemService(Service.INPUT_METHOD_SERVICE);
 		imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
-
-		getData(ctx);
 	}
 
 	/**
@@ -153,5 +160,8 @@ public abstract class AbstractHiddenListView extends AbstractHiddenView
 	 */
 	protected abstract void getData(Context ctx);
 
+	/**
+	 * cancels this hidden view.
+	 */
 	protected abstract void onCancel();
 }

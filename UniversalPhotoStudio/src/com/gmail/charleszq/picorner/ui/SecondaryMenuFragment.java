@@ -39,6 +39,7 @@ import com.gmail.charleszq.picorner.ui.command.RateCommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrFriendPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.FlickrTagSearchCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.GroupSearchPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyFrequentlyUsedTagsCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramFollowingPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
@@ -169,6 +170,8 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		command = new InstagramSearchNearPhotosCommand(getActivity());
 		commands.add(command);
 		command = new FlickrTagSearchCommand(getActivity());
+		commands.add(command);
+		command = new GroupSearchPhotosCommand(getActivity());
 		commands.add(command);
 
 		if (SPUtil.isFlickrAuthed(getActivity())) {
