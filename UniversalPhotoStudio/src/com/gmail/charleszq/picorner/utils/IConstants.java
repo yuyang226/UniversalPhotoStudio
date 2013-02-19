@@ -45,6 +45,12 @@ public interface IConstants {
 	 */
 	static final String ID_SCHEME = "ups-flickr-oauth"; //$NON-NLS-1$
 	static final String DEF_PREF_NAME = "picorner"; //$NON-NLS-1$
+	static final String HTTP_SCHME = "http"; //$NON-NLS-1$
+	static final String HOST_500PX = "500px.com"; //$NON-NLS-1$
+	static final String HOST_FLICKR = "www.flickr.com"; //$NON-NLS-1$
+	static final String HOST_FLICKR_MOBILE = "m.flickr.com"; //$NON-NLS-1$
+	static final String SEGMENT_PHOTO = "photo"; //$NON-NLS-1$
+	static final String SEGMENT_PHOTOS = "photos"; //$NON-NLS-1$
 
 	/**
 	 * Instagram oauth scheme, these constants cannot be modified, they are

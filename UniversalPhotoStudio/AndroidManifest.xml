@@ -75,6 +75,19 @@
         </activity>
         <activity android:name=".ui.PhotoDetailActivity" >
         </activity>
+        <activity android:name=".ui.RedirectActivity" 
+            android:theme="@style/AppTheme.Black">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="http"
+                    android:host="500px.com" android:pathPrefix="/photo" />
+                <data android:scheme="http"
+                    android:host="www.flickr.com" android:pathPrefix="/photos"/>
+                <data android:scheme="http" android:host="m.flickr.com"/>
+            </intent-filter>
+        </activity>
 
         <!-- Google Maps API Key -->
         <meta-data
