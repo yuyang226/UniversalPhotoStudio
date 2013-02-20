@@ -35,7 +35,7 @@
     <string name="f_my_galleries">My Galleries</string>
 
     <!-- search menu items -->
-    <string name="cmd_name_flickr_tag_search">Flickr: Search</string>
+    <string name="cmd_name_flickr_tag_search">Flickr Tag Search</string>
     <string name="cmd_name_ig_loc_search">Instagram: Nearby Photos</string>
     <string name="ig_following">Following</string>
     <string name="ig_follow">Follow</string>
@@ -68,7 +68,7 @@
     <string name="menu_item_my_frequently_used_tags">My Flickr Tags</string>
     <string name="menu_item_rate">Rate</string>
     <string name="menu_item_crt_ps">New Photo Set</string>
-    <string name="menu_item_flickr_group_search">Search Flickr Groups</string>
+    <string name="menu_item_flickr_group_search">Flickr Group Search</string>
     
     <string name="menu_item_org_photo_set">Organize in Photo Sets</string>
     <string name="menu_item_add_to_group">Add to Groups</string>
@@ -136,7 +136,8 @@
     <string name="msg_no_photo_galleries">No galleries yet.</string>
     <string name="msg_crt_ps_hint">title</string>
     <string name="msg_searching_flickr_group" tools:ignore="TypographyEllipsis">Searching groups...</string>
-
+	<string name="msg_no_groups_found">No group(s) found.</string>
+    
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>
     <string name="msg_flickr_tag_search_tags">Tags:</string>

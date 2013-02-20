@@ -9,13 +9,18 @@ import android.content.Context;
 import android.view.View;
 
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
+import com.gmail.charleszq.picorner.utils.FlickrHelper;
+import com.googlecode.flickrjandroid.Flickr;
 import com.googlecode.flickrjandroid.groups.Group;
+import com.googlecode.flickrjandroid.groups.GroupsInterface;
 
 /**
  * @author Charles(charleszq@gmail.com)
  * 
  */
 public class FetchFlickrGroupIconUrlTask extends AbstractFetchIconUrlTask {
+
+	private static final String DEF_BUDDY_ICON_URL = "http://www.flickr.com/images/buddyicon.jpg"; //$NON-NLS-1$
 
 	private Group mPhotoGroup;
 
@@ -39,7 +44,17 @@ public class FetchFlickrGroupIconUrlTask extends AbstractFetchIconUrlTask {
 	@Override
 	protected String doInBackground(Object... params) {
 		beforeExecute(params);
-		return mPhotoGroup.getBuddyIconUrl();
+		String buddyIconUrl = mPhotoGroup.getBuddyIconUrl();
+		if (DEF_BUDDY_ICON_URL.equals(buddyIconUrl)) {
+			Flickr f = FlickrHelper.getInstance().getFlickr();
+			GroupsInterface gi = f.getGroupsInterface();
+			try {
+				Group g = gi.getInfo(mPhotoGroup.getId());
+				buddyIconUrl = g.getBuddyIconUrl();
+			} catch (Exception e) {
+			}
+		}
+		return buddyIconUrl;
 	}
 
 	@Override

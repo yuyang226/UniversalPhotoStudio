@@ -6,6 +6,8 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
+import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
+import com.gmail.charleszq.picorner.task.flickr.FetchFlickrGroupIconUrlTask;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.flickr.GroupSearchHiddenListView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
@@ -34,7 +36,7 @@ public class GroupSearchPhotosCommand extends PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_friends; // TODO replace the icon
+		return android.R.drawable.ic_menu_search;
 	}
 
 	/*
@@ -55,9 +57,16 @@ public class GroupSearchPhotosCommand extends PhotoListCommand {
 			}
 			return mHiddenView;
 		}
+		if( adapterClass == AbstractFetchIconUrlTask.class) {
+			return new FetchFlickrGroupIconUrlTask(mContext, mFlickrGroup);
+		}
 		return super.getAdapter(adapterClass);
 	}
-	
-	
+
+	@Override
+	public boolean execute(Object... params) {
+		this.mFlickrGroup = (Group) params[0];
+		return super.execute();
+	}
 
 }
