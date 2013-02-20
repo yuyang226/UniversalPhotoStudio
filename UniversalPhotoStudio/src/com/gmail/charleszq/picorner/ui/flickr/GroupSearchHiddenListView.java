@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.Toast;
@@ -20,6 +21,9 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractHiddenListView;
 import com.gmail.charleszq.picorner.ui.helper.PhotoCollectionItemAdapter;
 import com.googlecode.flickrjandroid.groups.Group;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
+import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -31,6 +35,12 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 	 * The search task.
 	 */
 	private SearchGroupTask mSearchTask;
+	
+	/**
+	 * The current query string to search groups.
+	 */
+	private String mQueryString;
+	
 	private int mCurrentPage = 1;
 	private int mActivePage = 1;
 
@@ -38,6 +48,7 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 
 		@Override
 		public void onTaskDone(Collection<Group> result) {
+			mPullToRefreshListView.onRefreshComplete();
 			if (result == null || result.isEmpty()) {
 				if (mCurrentPage == 1) {
 					mPullToRefreshListView.setVisibility(View.INVISIBLE);
@@ -48,6 +59,7 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 					return;
 				}
 			}
+			mCurrentPage = mActivePage;
 			mAdapter.populateData(result);
 			mSpace.setVisibility(View.GONE);
 		}
@@ -102,6 +114,9 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 	}
 
 	private void doSearch(Context ctx, String query) {
+		
+		mQueryString = query;
+		
 		// hide the soft keyboard
 		InputMethodManager imm = (InputMethodManager) ctx
 				.getSystemService(Service.INPUT_METHOD_SERVICE);
@@ -114,9 +129,40 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 	}
 
 	@Override
-	protected void initializeListViewAdapter(Context ctx, ICommand<?> command) {
+	protected void initializeListViewAdapter(final Context ctx, ICommand<?> command) {
 		this.mAdapter = new PhotoCollectionItemAdapter(ctx, command);
 		mLoadingMessage = ctx.getString(R.string.msg_searching_flickr_group);
+		
+		mActivePage = 1;
+		mCurrentPage = 1;
+		
+		mPullToRefreshListView.setMode(Mode.BOTH);
+		mPullToRefreshListView
+				.setOnRefreshListener(new OnRefreshListener2<ListView>() {
+
+					@Override
+					public void onPullDownToRefresh(
+							PullToRefreshBase<ListView> refreshView) {
+						if (mCurrentPage > 1) {
+							mActivePage = mCurrentPage - 1;
+							runTask(ctx, mActivePage);
+						} else
+							mPullToRefreshListView.onRefreshComplete();
+					}
+
+					@Override
+					public void onPullUpToRefresh(
+							PullToRefreshBase<ListView> refreshView) {
+						mActivePage = mCurrentPage + 1;
+						runTask(ctx, mActivePage);
+					}
+				});
+	}
+
+	private void runTask(Context ctx, int page) {
+		mSearchTask = new SearchGroupTask(mQueryString);
+		mSearchTask.addTaskDoneListener(mSearchTaskDoneListener);
+		mSearchTask.execute(page);
 	}
 
 }

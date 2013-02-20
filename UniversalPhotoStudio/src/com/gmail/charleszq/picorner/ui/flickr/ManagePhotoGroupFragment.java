@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -204,8 +205,11 @@ public class ManagePhotoGroupFragment extends
 	}
 
 	private void fetchMyPhotoGroups(int page) {
+		Context ctx = getActivity();
+		if( ctx == null )
+			return;
 		// start another task to fetch all my photo sets and groups
-		mFetchMyGroupsTask = new FetchMyGroupsTask(getActivity());
+		mFetchMyGroupsTask = new FetchMyGroupsTask(ctx);
 		mFetchMyGroupsTask
 				.addTaskDoneListener(new IGeneralTaskDoneListener<Collection<Group>>() {
 

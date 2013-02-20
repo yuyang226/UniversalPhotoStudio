@@ -3,10 +3,6 @@
  */
 package com.gmail.charleszq.picorner.utils;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -25,8 +21,6 @@ import android.text.Html;
 import android.text.util.Linkify;
 import android.text.util.Linkify.MatchFilter;
 import android.text.util.Linkify.TransformFilter;
-import android.util.JsonReader;
-import android.util.JsonWriter;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -34,16 +28,12 @@ import com.github.yuyang226.j500px.photos.PhotoExif;
 import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.ExifData;
-import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.model.GeoLocation;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.model.MediaObjectComment;
 import com.gmail.charleszq.picorner.model.MediaObjectType;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
-import com.google.gson.JsonObject;
-import com.googlecode.flickrjandroid.galleries.Gallery;
-import com.googlecode.flickrjandroid.groups.Group;
 import com.googlecode.flickrjandroid.people.User;
 import com.googlecode.flickrjandroid.photos.Exif;
 import com.googlecode.flickrjandroid.photos.GeoData;
@@ -51,7 +41,6 @@ import com.googlecode.flickrjandroid.photos.Photo;
 import com.googlecode.flickrjandroid.photos.PhotoList;
 import com.googlecode.flickrjandroid.photos.Size;
 import com.googlecode.flickrjandroid.photos.comments.Comment;
-import com.googlecode.flickrjandroid.photosets.Photoset;
 import com.googlecode.flickrjandroid.tags.Tag;
 
 /**
@@ -442,115 +431,5 @@ public final class ModelUtils {
 		u.setBuddyIconUrl(pxComment.getAuthor().getUserPicUrl());
 		comment.setAuthor(u);
 		return comment;
-	}
-
-	public static JsonObject createFlickrUserPhotoPoolJsonObject(
-			FlickrUserPhotoPool pool) {
-		JsonObject obj = new JsonObject();
-		obj.addProperty(FlickrUserPhotoPool.ID, pool.getId());
-		obj.addProperty(FlickrUserPhotoPool.ICON_URL, pool.getIconUrl());
-		obj.addProperty(FlickrUserPhotoPool.COUNT, pool.getPhotoCount());
-		obj.addProperty(FlickrUserPhotoPool.TITLE, pool.getTitle());
-		obj.addProperty(FlickrUserPhotoPool.TYPE, pool.getType());
-		return obj;
-	}
-
-	public static FlickrUserPhotoPool createFlickrUserPhotoPoolFromJsonObject(
-			JsonObject json) {
-		FlickrUserPhotoPool pool = new FlickrUserPhotoPool();
-		pool.setId(json.getAsJsonPrimitive(FlickrUserPhotoPool.ID)
-				.getAsString());
-		pool.setTitle(json.getAsJsonPrimitive(FlickrUserPhotoPool.TITLE)
-				.getAsString());
-		pool.setType(json.getAsJsonPrimitive(FlickrUserPhotoPool.TYPE)
-				.getAsInt());
-		pool.setPhotoCount(json.getAsJsonPrimitive(FlickrUserPhotoPool.COUNT)
-				.getAsInt());
-		pool.setIconUrl(json.getAsJsonPrimitive(FlickrUserPhotoPool.ICON_URL)
-				.getAsString());
-		return pool;
-	}
-
-	public static void writeFlickrUserPhotoPools(
-			List<FlickrUserPhotoPool> pools, File file) throws IOException {
-		JsonWriter writer = new JsonWriter(new FileWriter(file));
-		writer.beginArray();
-		for (FlickrUserPhotoPool pool : pools) {
-			writer.beginObject();
-			writer.name(FlickrUserPhotoPool.ID).value(pool.getId());
-			writer.name(FlickrUserPhotoPool.TITLE).value(pool.getTitle());
-			writer.name(FlickrUserPhotoPool.ICON_URL).value(pool.getIconUrl());
-			writer.name(FlickrUserPhotoPool.COUNT).value(pool.getPhotoCount());
-			writer.name(FlickrUserPhotoPool.TYPE).value(pool.getType());
-			writer.endObject();
-		}
-		writer.endArray();
-		writer.flush();
-		writer.close();
-	}
-
-	@SuppressWarnings("deprecation")
-	public static List<Object> readFlickrUserPhotoPools(File file)
-			throws IOException {
-		JsonReader reader = new JsonReader(new FileReader(file));
-		List<Object> pools = new ArrayList<Object>();
-		reader.beginArray();
-		while (reader.hasNext()) {
-			reader.beginObject();
-			final FlickrUserPhotoPool pool = new FlickrUserPhotoPool();
-			while (reader.hasNext()) {
-				String name = reader.nextName();
-				if (FlickrUserPhotoPool.ID.equals(name)) {
-					pool.setId(reader.nextString());
-				} else if (FlickrUserPhotoPool.COUNT.equals(name)) {
-					pool.setPhotoCount(reader.nextInt());
-				} else if (FlickrUserPhotoPool.ICON_URL.equals(name)) {
-					pool.setIconUrl(reader.nextString());
-				} else if (FlickrUserPhotoPool.TITLE.equals(name)) {
-					pool.setTitle(reader.nextString());
-				} else if (FlickrUserPhotoPool.TYPE.equals(name)) {
-					pool.setType(reader.nextInt());
-				}
-			}
-			reader.endObject();
-			switch (pool.getType()) {
-			case FlickrUserPhotoPool.TYPE_PHOTO_SET:
-				Photoset ps = new Photoset();
-				ps.setId(pool.getId());
-				ps.setPhotoCount(pool.getPhotoCount());
-				ps.setTitle(pool.getTitle());
-				pools.add(ps);
-				break;
-			case FlickrUserPhotoPool.TYPE_GROUP:
-				Group g = new Group() {
-					/**
-					 * sid
-					 */
-					private static final long serialVersionUID = -247173679567276483L;
-
-					@Override
-					public String getBuddyIconUrl() {
-						return pool.getIconUrl();
-					}
-
-				};
-				g.setId(pool.getId());
-				g.setName(pool.getTitle());
-				g.setPhotoCount(pool.getPhotoCount());
-				pools.add(g);
-				break;
-			case FlickrUserPhotoPool.TYPE_GALLERY:
-				Gallery gallery = new Gallery();
-				gallery.setGalleryId(pool.getId());
-				gallery.setPhotoCount(pool.getPhotoCount());
-				gallery.setTitle(pool.getTitle());
-				gallery.setPrimaryPhotoId(pool.getIconUrl());
-				pools.add(gallery);
-				break;
-			}
-		}
-		reader.endArray();
-		reader.close();
-		return pools;
 	}
 }
