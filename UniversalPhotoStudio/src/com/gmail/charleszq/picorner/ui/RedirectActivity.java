@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 
+import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.dp.SinglePagePhotosProvider;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
@@ -35,6 +36,7 @@ public class RedirectActivity extends FragmentActivity {
 	@Override
 	protected void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
+		setContentView(R.layout.redirect_act);
 		Intent intent = getIntent();
 		if (IConstants.HTTP_SCHME.equals(intent.getScheme())) {
 			String host = intent.getData().getHost();
@@ -86,6 +88,7 @@ public class RedirectActivity extends FragmentActivity {
 		i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		i.putExtra(ImageDetailActivity.DP_KEY, mPhotosProvider);
 		startActivity(i);
+		finish();
 	}
 
 	
