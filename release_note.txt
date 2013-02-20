@@ -3,6 +3,7 @@ What's new (version 2.1.1)
 2, hide action bar for my own photo set photos;
 3, performance tunning for flickr photo grid;
 4, use large flickr friend photo in image detail;
+5, flickr group search;
 
 What's new (version 2.1.0)
 1, performance tuning;
