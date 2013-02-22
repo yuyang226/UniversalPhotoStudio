@@ -67,7 +67,7 @@
             android:textColor="@color/comment_bg_color" />
         
         <TextView
-            android:visibility="invisible"
+            android:visibility="gone"
             android:id="@+id/btn_offline_export_photos"
             android:layout_width="0dp"
             android:layout_height="match_parent"
