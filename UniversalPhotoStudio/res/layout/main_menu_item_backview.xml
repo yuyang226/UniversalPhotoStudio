@@ -65,6 +65,19 @@
             android:padding="5dp"
             android:text="@string/menu_item_offline_download"
             android:textColor="@color/comment_bg_color" />
+        
+        <TextView
+            android:visibility="invisible"
+            android:id="@+id/btn_offline_export_photos"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/offline_action_button_bg"
+            android:drawableLeft="@drawable/ic_action_export"
+            android:gravity="left|center"
+            android:padding="5dp"
+            android:text="@string/menu_item_offline_export_photos"
+            android:textColor="@color/comment_bg_color" />
 
         <TextView
             android:id="@+id/btn_offline_delete_photos"

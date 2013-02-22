@@ -293,6 +293,8 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 					builder.setNegativeButton(android.R.string.cancel, listener);
 					builder.create().show();
 					break;
+				case R.id.btn_offline_export_photos:
+					break;
 				}
 			}
 		};
@@ -340,6 +342,9 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 		TextView btnDownload = (TextView) backView
 				.findViewById(R.id.btn_offline_download);
 		btnDownload.setOnClickListener(listener);
+		
+		TextView btnExportPhoto = (TextView) backView.findViewById(R.id.btn_offline_export_photos);
+		btnExportPhoto.setOnClickListener(listener);
 
 		TextView btnDeletePhoto = (TextView) backView
 				.findViewById(R.id.btn_offline_delete_photos);
