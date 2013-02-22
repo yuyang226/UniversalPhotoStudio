@@ -39,7 +39,7 @@
         android:id="@+id/menu_item_save"
         android:icon="@android:drawable/ic_menu_save"
         android:showAsAction="ifRoom"
-        android:title="@string/menu_item_save">
+        android:title="@string/menu_item_save_local">
     </item>
     <item
         android:id="@+id/menu_item_set_wallpaper"

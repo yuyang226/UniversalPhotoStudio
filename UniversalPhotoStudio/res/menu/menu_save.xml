@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/menu_item_save" android:title="@string/menu_item_save" android:showAsAction="always|withText" android:icon="@android:drawable/ic_menu_save"></item>
-    
+
+    <item
+        android:id="@+id/menu_item_save"
+        android:icon="@android:drawable/ic_menu_save"
+        android:showAsAction="always|withText"
+        android:title="@string/menu_item_save">
+    </item>
 
 </menu>

@@ -47,6 +47,7 @@
 
     <!-- option menu items -->
     <string name="menu_item_save">Save</string>
+    <string name="menu_item_save_local">Save to Device</string>
     <string name="menu_item_share">Share</string>
     <string name="menu_item_like_photo">Like</string>
     <string name="menu_item_set_wallpaper">Set as Wallpaper</string>
