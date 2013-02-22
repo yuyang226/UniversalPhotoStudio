@@ -123,7 +123,9 @@ public class OfflineHandleService extends IntentService {
 	private void exportPhotos(IOfflineViewParameter param, String foldername) {
 		IOfflinePhotoCollectionProcessor p = param
 				.getPhotoCollectionProcessor();
-		String msg = getString(R.string.msg_offline_export_photos_error);
+		String msg = getString(R.string.msg_offline_exporting);
+		sendNotification(EXPORT_OFFLINE_PHOTOS_MSG_ID, msg);
+		msg = getString(R.string.msg_offline_export_photos_error);
 		try {
 			int count = p.exportCachedPhotos(this, param, foldername);
 			msg = getString(R.string.msg_offline_export_photos);
@@ -132,7 +134,7 @@ public class OfflineHandleService extends IntentService {
 		} catch (IOException e) {
 
 		}
-		sendNotification(EXPORT_OFFLINE_PHOTOS_MSG_ID,msg);
+		sendNotification(EXPORT_OFFLINE_PHOTOS_MSG_ID, msg);
 	}
 
 	/**
