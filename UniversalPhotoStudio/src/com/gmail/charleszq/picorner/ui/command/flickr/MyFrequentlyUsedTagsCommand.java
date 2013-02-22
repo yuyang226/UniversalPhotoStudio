@@ -5,6 +5,7 @@ package com.gmail.charleszq.picorner.ui.command.flickr;
 
 import java.util.Comparator;
 
+import android.app.ActionBar;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.R;
@@ -80,6 +81,10 @@ public class MyFrequentlyUsedTagsCommand extends PhotoListCommand {
 		}
 		if (adapterClass == Comparator.class) {
 			return this.mSearchParameter;
+		}
+		if( adapterClass == ActionBar.class )
+		{
+			return Boolean.FALSE.toString();
 		}
 		return super.getAdapter(adapterClass);
 	}

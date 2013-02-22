@@ -294,6 +294,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 					builder.create().show();
 					break;
 				case R.id.btn_offline_export_photos:
+					//TODO 
 					break;
 				}
 			}
@@ -305,8 +306,9 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 
 		CheckBox btnOffline = (CheckBox) backView
 				.findViewById(R.id.btn_enable_offline);
-		btnOffline.setChecked(OfflineControlFileUtil.isOfflineViewEnabled(
-				mContext, offline));
+		boolean isOfflineEnabled = OfflineControlFileUtil.isOfflineViewEnabled(
+				mContext, offline);
+		btnOffline.setChecked(isOfflineEnabled);
 		btnOffline.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 			@Override
@@ -345,6 +347,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 		
 		TextView btnExportPhoto = (TextView) backView.findViewById(R.id.btn_offline_export_photos);
 		btnExportPhoto.setOnClickListener(listener);
+//		btnExportPhoto.setVisibility(isOfflineEnabled ? View.VISIBLE : View.GONE);
 
 		TextView btnDeletePhoto = (TextView) backView
 				.findViewById(R.id.btn_offline_delete_photos);
