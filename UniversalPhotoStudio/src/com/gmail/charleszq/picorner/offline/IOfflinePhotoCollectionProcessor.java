@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
+import java.io.IOException;
 import java.util.List;
 
 import android.content.Context;
@@ -50,5 +51,15 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * @return
 	 */
 	int removeCachedPhotos(Context ctx, IOfflineViewParameter param);
+
+	/**
+	 * Exports the cached photos to a folder.
+	 * @param ctx
+	 * @param param
+	 * @param foldername
+	 * @return the number of how many photos exported.
+	 */
+	int exportCachedPhotos(Context ctx, IOfflineViewParameter param,
+			String foldername) throws IOException;
 
 }

@@ -3,16 +3,21 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
@@ -20,6 +25,7 @@ import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
+import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ImageUtils;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
 import com.googlecode.flickrjandroid.Flickr;
@@ -345,5 +351,51 @@ public class FlickrPhotoSetOfflineProcessor implements
 			}
 		}
 		return count;
+	}
+
+	@Override
+	public int exportCachedPhotos(Context ctx, IOfflineViewParameter param,
+			String foldername) throws IOException {
+		List<MediaObject> photos = readPhotos(ctx, param);
+		int count = 0;
+		if (photos != null) {
+			// create the target folder
+			File root = new File(Environment.getExternalStorageDirectory(),
+					IConstants.SD_CARD_FOLDER_NAME);
+			if (!root.exists())
+				root.mkdir();
+			File targetFolder = new File(root, foldername);
+			if (!targetFolder.exists())
+				if( !targetFolder.mkdir() ) {
+					throw new IOException("unable to create the folder."); //$NON-NLS-1$
+				}
+
+			for (MediaObject photo : photos) {
+				String filename = OfflineControlFileUtil
+						.getOfflinePhotoFileName(photo);
+				File sourceFile = ctx.getFileStreamPath(filename);
+				File targetFile = new File(targetFolder, filename);
+				try {
+					copyFile(sourceFile,targetFile);
+					count ++;
+				} catch (IOException e) {
+				}
+			}
+		}
+		return count;
+	}
+
+	private void copyFile(File src, File dst) throws IOException {
+		InputStream in = new FileInputStream(src);
+	    OutputStream out = new FileOutputStream(dst);
+
+	    // Transfer bytes from in to out
+	    byte[] buf = new byte[1024];
+	    int len;
+	    while ((len = in.read(buf)) > 0) {
+	        out.write(buf, 0, len);
+	    }
+	    in.close();
+	    out.close();
 	}
 }

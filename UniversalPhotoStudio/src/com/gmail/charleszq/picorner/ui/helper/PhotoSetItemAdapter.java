@@ -12,15 +12,18 @@ import android.animation.ObjectAnimator;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +42,7 @@ import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
 import com.gmail.charleszq.picorner.ui.ImageDetailActivity;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.SettingsCommand;
+import com.gmail.charleszq.picorner.utils.IConstants;
 import com.googlecode.flickrjandroid.photosets.Photoset;
 
 /**
@@ -98,7 +102,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 		final ViewGroup container = (ViewGroup) v;
 		// hide the backview if it's there already
 		View backView = container.findViewById(R.id.menu_item_back_view);
-		if( backView != null ) {
+		if (backView != null) {
 			backView.setVisibility(View.INVISIBLE);
 			frontView.setVisibility(View.VISIBLE);
 			frontView.setAlpha(1f);
@@ -135,8 +139,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 	 */
 	private void showBackView(ViewGroup container, final View frontView,
 			IOfflineViewParameter param) {
-		boolean offlineEnabled = SPUtil
-				.isOfflineEnabled(mContext);
+		boolean offlineEnabled = SPUtil.isOfflineEnabled(mContext);
 		if (!offlineEnabled) {
 			AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 			builder.setTitle(android.R.string.dialog_alert_title).setMessage(
@@ -294,7 +297,70 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 					builder.create().show();
 					break;
 				case R.id.btn_offline_export_photos:
-					//TODO 
+					LayoutInflater factory = LayoutInflater.from(mContext);
+					final View textEntryView = factory.inflate(
+							R.layout.alert_dialog_text_entry, null);
+					final TextView labelPath = (TextView) textEntryView
+							.findViewById(R.id.txt_alert_dlg);
+					String label = mContext
+							.getString(R.string.msg_offline_export_path_label);
+					label = String
+							.format(label, IConstants.SD_CARD_FOLDER_NAME);
+					labelPath.setText(label);
+					final EditText editPath = (EditText) textEntryView
+							.findViewById(R.id.edit_alert_dlg);
+					editPath.setText(offline.getTitle());
+					final AlertDialog dlg = new AlertDialog.Builder(mContext)
+							.setTitle(
+									R.string.msg_offline_export_path_dlg_title)
+							.setView(textEntryView)
+							.setPositiveButton(android.R.string.ok,
+									new DialogInterface.OnClickListener() {
+										public void onClick(
+												DialogInterface dialog,
+												int whichButton) {
+										}
+									})
+							.setNegativeButton(android.R.string.cancel, null)
+							.create();
+					dlg.setOnShowListener(new OnShowListener() {
+						@Override
+						public void onShow(DialogInterface dialog) {
+							Button btn = dlg
+									.getButton(DialogInterface.BUTTON_POSITIVE);
+							btn.setOnClickListener(new OnClickListener() {
+
+								@Override
+								public void onClick(View v) {
+									String foldername = editPath.getText()
+											.toString();
+									if (foldername == null
+											|| foldername.trim().length() == 0) {
+										Toast.makeText(
+												mContext,
+												mContext.getString(R.string.msg_offline_export_empty_path),
+												Toast.LENGTH_SHORT).show();
+										return;
+									}
+									//notify the service to export photos
+									Intent exportPhotos = new Intent(mContext,
+											OfflineHandleService.class);
+									exportPhotos
+											.putExtra(
+													IOfflineViewParameter.OFFLINE_PARAM_INTENT_KEY,
+													offline);
+									exportPhotos
+											.putExtra(
+													IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
+													OfflineHandleService.EXPORT_OFFLINE_PHOTO_PARAM);
+									exportPhotos.putExtra(IOfflineViewParameter.OFFLINE_EXPORT_FOLDER_NAME_KEY, foldername);
+									mContext.startService(exportPhotos);
+									dlg.dismiss();
+								}
+							});
+						}
+					});
+					dlg.show();
 					break;
 				}
 			}
@@ -344,10 +410,13 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 		TextView btnDownload = (TextView) backView
 				.findViewById(R.id.btn_offline_download);
 		btnDownload.setOnClickListener(listener);
-		
-		TextView btnExportPhoto = (TextView) backView.findViewById(R.id.btn_offline_export_photos);
+
+		TextView btnExportPhoto = (TextView) backView
+				.findViewById(R.id.btn_offline_export_photos);
 		btnExportPhoto.setOnClickListener(listener);
-//		btnExportPhoto.setVisibility(isOfflineEnabled ? View.VISIBLE : View.GONE);
+//		btnExportPhoto.setVisibility(isOfflineEnabled ? View.VISIBLE
+//				: View.GONE);
+		btnExportPhoto.setVisibility(View.GONE);
 
 		TextView btnDeletePhoto = (TextView) backView
 				.findViewById(R.id.btn_offline_delete_photos);

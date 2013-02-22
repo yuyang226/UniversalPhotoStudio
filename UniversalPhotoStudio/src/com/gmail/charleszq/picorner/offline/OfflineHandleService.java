@@ -3,6 +3,7 @@
  */
 package com.gmail.charleszq.picorner.offline;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,12 +34,14 @@ public class OfflineHandleService extends IntentService {
 
 	private static final int DOWNLOAD_NOTIF_ID = 100001;
 	private static final int REMOVE_OFFLINE_PHOTOS_MSG_ID = 100003;
+	private static final int EXPORT_OFFLINE_PHOTOS_MSG_ID = 100004;
 
 	public static final int ADD_OFFLINE_PARAM = 1;
 	public static final int REMOVE_OFFLINE_PARAM = 2;
 	public static final int REFRESH_OFFLINE_PARAM = 3;
 	public static final int DOWNLOAD_OFFLINE_PARAM = 4;
 	public static final int DELETE_OFFLINE_PHOTO_PARAM = 5;
+	public static final int EXPORT_OFFLINE_PHOTO_PARAM = 6;
 
 	/**
 	 * @param name
@@ -98,8 +101,38 @@ public class OfflineHandleService extends IntentService {
 			case DELETE_OFFLINE_PHOTO_PARAM:
 				removeCachedPhotos(param);
 				break;
+			case EXPORT_OFFLINE_PHOTO_PARAM:
+				String foldername = intent
+						.getStringExtra(IOfflineViewParameter.OFFLINE_EXPORT_FOLDER_NAME_KEY);
+				if (foldername == null) {
+					Log.e(TAG, "missing folder name."); //$NON-NLS-1$
+					foldername = param.getTitle();
+				}
+				exportPhotos(param, foldername);
+				break;
 			}
 		}
+	}
+
+	/**
+	 * Exports the photos to a folder inside 'picorner'
+	 * 
+	 * @param param
+	 * @param foldername
+	 */
+	private void exportPhotos(IOfflineViewParameter param, String foldername) {
+		IOfflinePhotoCollectionProcessor p = param
+				.getPhotoCollectionProcessor();
+		String msg = getString(R.string.msg_offline_export_photos_error);
+		try {
+			int count = p.exportCachedPhotos(this, param, foldername);
+			msg = getString(R.string.msg_offline_export_photos);
+			msg = String.format(msg, foldername);
+			msg = count + " " + msg; //$NON-NLS-1$
+		} catch (IOException e) {
+
+		}
+		sendNotification(EXPORT_OFFLINE_PHOTOS_MSG_ID,msg);
 	}
 
 	/**

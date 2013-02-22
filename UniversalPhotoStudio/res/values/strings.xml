@@ -216,6 +216,12 @@
     <string name="msg_offline_delete_photos">%d cached offline photos deleted.</string>
     <string name="msg_offline_delete_photos_minus_one">No photos downloaded for this photo set before.</string>
     <string name="msg_offline_delete_photo_dialog_msg">Are you sure to delete all downloaded photos for this photo set?</string>
+    <string name="msg_offline_export_path_dlg_title">Export</string>
+    <string name="msg_offline_export_path_hint">Export path</string>
+    <string name="msg_offline_export_path_label">Please specify the folder name, the folder will be created in \'%s\' if not exists.</string>
+    <string name="msg_offline_export_empty_path">Please specify the folder name.</string>
+    <string name="msg_offline_export_photos">photo(s) exported to folder \'%s\'.</string>
+    <string name="msg_offline_export_photos_error">Unable to create the destination folder.</string>
 
     <!-- preference setting related -->
     <string name="cmd_setting_label">Settings</string>
