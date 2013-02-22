@@ -39,13 +39,13 @@
 	
 	<!-- Button colors -->
 	<!-- enable button -->
-	<color name="button_center_color">#FF6418</color>
-	<color name="button_start_color">#FF1111</color>
-	<color name="button_end_color">#FFAAAA</color>
+	<color name="button_center_color">#929292</color>
+	<color name="button_start_color">#747473</color>
+	<color name="button_end_color">#adacab</color>
 	<!-- pressed button -->
-	<color name="pressed_button_center_color">#AACCFF</color>
-	<color name="pressed_button_start_color">#AA00CC</color>
-	<color name="pressed_button_end_color">#AA00CC</color>
+	<color name="pressed_button_center_color">#ff6418</color>
+	<color name="pressed_button_start_color">#ff6418</color>
+	<color name="pressed_button_end_color">#ff6418</color>
 	
 	<!-- search view bg -->
 	<color name="search_view_bg">#C8C8C8</color>

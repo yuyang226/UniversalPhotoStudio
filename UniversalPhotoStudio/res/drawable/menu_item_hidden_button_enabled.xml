@@ -3,9 +3,9 @@
 
     <gradient
         android:angle="90"
-        android:centerColor="@color/pressed_button_center_color"
-        android:endColor="@color/pressed_button_end_color"
-        android:startColor="@color/pressed_button_start_color" />
+        android:centerColor="#ff6418"
+        android:endColor="#ff6418"
+        android:startColor="#ff6418" />
 
     <padding
         android:bottom="7dp"

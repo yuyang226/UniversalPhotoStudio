@@ -185,7 +185,6 @@ public class CommandSectionListAdapter extends BaseAdapter {
 					.getAdapter(AbstractFetchIconUrlTask.class);
 			if (task != null) {
 				task.execute(image);
-			} else {
 			}
 		}
 		return view;
