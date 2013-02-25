@@ -27,7 +27,8 @@ public class PhotoCollectionItemAdapter extends FilterAdapter {
 		if (Photoset.class.isInstance(item)) {
 			return ((Photoset) item).getTitle();
 		} else if (Group.class.isInstance(item)) {
-			return ((Group) item).getName();
+			Group g = (Group) item;
+			return g.getName() + " (" + g.getPhotoCount() + ")";
 		} else if (Gallery.class.isInstance(item)) {
 			return ((Gallery) item).getTitle();
 		}
