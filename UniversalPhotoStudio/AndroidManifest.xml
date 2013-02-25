@@ -131,6 +131,7 @@
 
         <activity android:name=".ui.SettingsActivity" >
         </activity>
+        <activity android:theme="@android:style/Theme.Holo.Light.Dialog" android:name=".ui.flickr.FlickrGroupInfoDialog"></activity>
     </application>
 
 </manifest>

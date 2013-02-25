@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+        
+        <TextView
+            style="@style/PhotoDetailSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:text="@string/detail_gen_title_section" />
+
+        <TextView
+            android:id="@+id/flickr_group_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/photo_no_title" />
+
+        <TextView
+            style="@style/PhotoDetailSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="left|center"
+            android:text="@string/detail_gen_description_section" />
+
+        <TextView
+            android:id="@+id/flickr_group_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/photo_no_desc" />
+
+        <TextView
+            style="@style/PhotoDetailSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="left|center"
+            android:text="@string/detail_flickr_group_rules" />
+
+        <TextView
+            android:id="@+id/flickr_group_rules"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/flickr_group_no_rules" />
+
+        <LinearLayout
+            android:layout_marginTop="5dip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/btn_flickr_group_cancel"
+                style="@style/PicornerButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@android:string/cancel" />
+
+            <Button
+                android:id="@+id/btn_join_flickr_group"
+                style="@style/PicornerButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/button_join_flickr_group" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+    
+
+</ScrollView>

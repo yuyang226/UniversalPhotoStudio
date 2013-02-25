@@ -20,8 +20,12 @@ import java.util.Comparator;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -36,6 +40,10 @@ import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.GroupSearchPhotosCommand;
+import com.gmail.charleszq.picorner.ui.command.flickr.MyGroupsCommand;
+import com.gmail.charleszq.picorner.ui.flickr.FlickrGroupInfoDialog;
+import com.googlecode.flickrjandroid.groups.Group;
 import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
 
 /**
@@ -48,7 +56,7 @@ import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
  */
 public class PhotoGridFragment extends AbstractPhotoGridFragment {
 
-	private static final String	TAG	= PhotoGridFragment.class.getName();
+	private static final String TAG = PhotoGridFragment.class.getName();
 
 	/**
 	 * Empty constructor as per the Fragment documentation
@@ -60,7 +68,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 	 * In some cases, the command instance might be the same, this will provide
 	 * another way to tell whether we should populate a new result.
 	 */
-	private Object	mCommandComparator	= null;
+	private Object mCommandComparator = null;
 
 	/**
 	 * This method will be only be called from the menu fragment, after photos
@@ -88,8 +96,9 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 			}
 		}
 
-//		mGridView.setOnScrollListener(null);
+		// mGridView.setOnScrollListener(null);
 		this.mCurrentCommand = (PhotoListCommand) command;
+		getActivity().invalidateOptionsMenu();
 		mCommandComparator = mCurrentCommand.getAdapter(Comparator.class);
 
 		// remove command done from the main menu UI, so later when load more
@@ -158,7 +167,8 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		i.putExtra(ImageDetailActivity.DP_KEY, mPhotosProvider);
 		i.putExtra(ImageDetailActivity.LARGE_IMAGE_POSITION, (int) id);
 		if (mCurrentCommand != null) {
-			boolean overallOfflineEnabled = SPUtil.isOfflineEnabled(getActivity());
+			boolean overallOfflineEnabled = SPUtil
+					.isOfflineEnabled(getActivity());
 			if (overallOfflineEnabled) {
 				IOfflineViewParameter offlineParam = (IOfflineViewParameter) mCurrentCommand
 						.getAdapter(IOfflineViewParameter.class);
@@ -204,6 +214,49 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		if (mLoadingMessageText != null) {
 			mLoadingMessageText.setText(mLoadingMessage);
 			mLoadingMessageText.setVisibility(View.GONE);
+		}
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		inflater.inflate(R.menu.menu_flickr_group_info, menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (item.getItemId() == R.id.menu_item_flickr_group_info) {
+			Group group = (Group) mCurrentCommand.getAdapter(Comparator.class);
+			if (group == null)
+				return false;
+
+			Intent intent = new Intent(getActivity(),
+					FlickrGroupInfoDialog.class);
+			intent.putExtra(FlickrGroupInfoDialog.F_GROUP_ID_KEY, group.getId());
+			intent.putExtra(FlickrGroupInfoDialog.F_GROUP_TITLE_KEY,
+					group.getName());
+			if( MyGroupsCommand.class.isInstance(mCurrentCommand))
+				intent.putExtra(FlickrGroupInfoDialog.F_GROUP_MY_GROUP_KEY, Boolean.TRUE);
+			getActivity().startActivity(intent);
+			return true;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
+	public void onPrepareOptionsMenu(Menu menu) {
+		MenuItem item = menu.findItem(R.id.menu_item_flickr_group_info);
+		if (this.mCurrentCommand == null)
+			item.setVisible(false);
+		else {
+			item.setVisible(MyGroupsCommand.class.isInstance(mCurrentCommand)
+					|| GroupSearchPhotosCommand.class
+							.isInstance(mCurrentCommand));
 		}
 	}
 }

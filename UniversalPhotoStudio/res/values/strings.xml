@@ -71,6 +71,7 @@
     <string name="menu_item_rate">Rate</string>
     <string name="menu_item_crt_ps">New Photo Set</string>
     <string name="menu_item_flickr_group_search">Flickr Group Search</string>
+    <string name="menu_item_flickr_group_info">Group Detail</string>
     
     <string name="menu_item_org_photo_set">Organize in Photo Sets</string>
     <string name="menu_item_add_to_group">Add to Groups</string>
@@ -92,9 +93,11 @@
     <string name="flickr_detail_map">Map</string>
     <string name="ig_like_users">Like Users</string>
     <string name="detail_gen_title_section">Title</string>
+    <string name="detail_flickr_group_rules">Rules</string>
     <string name="detail_gen_author_section">Author</string>
     <string name="detail_gen_description_section">Description</string>
     <string name="photo_no_title">NO TITLE</string>
+    <string name="flickr_group_no_rules">NO RULES</string>
     <string name="photo_no_desc">NO DESCRIPTION</string>
     <string name="photo_no_comments">No comment now.</string>
     <string name="photo_no_exif">No Exif Information.</string>
@@ -196,6 +199,7 @@
     <string name="unlicensed_dialog_body">This application is NOT licensed. Please purchase it from the Google Play Store.</string>
     <string name="buy_button">Purchase</string>
     <string name="quit_button">Exit</string>
+    <string name="button_join_flickr_group">Join</string>
 
     <!-- change my flickr photo properties -->
     <string name="flickr_photo_perm_private">Only You</string>
