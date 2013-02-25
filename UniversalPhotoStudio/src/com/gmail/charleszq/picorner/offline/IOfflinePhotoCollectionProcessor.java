@@ -57,9 +57,10 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * @param ctx
 	 * @param param
 	 * @param foldername
+	 * @param overwrite
 	 * @return the number of how many photos exported.
 	 */
 	int exportCachedPhotos(Context ctx, IOfflineViewParameter param,
-			String foldername) throws IOException;
+			String foldername, boolean overwrite) throws IOException;
 
 }

@@ -108,7 +108,8 @@ public class OfflineHandleService extends IntentService {
 					Log.e(TAG, "missing folder name."); //$NON-NLS-1$
 					foldername = param.getTitle();
 				}
-				exportPhotos(param, foldername);
+				boolean overwrite = intent.getBooleanExtra(IOfflineViewParameter.OFFLINE_EXPORT_OVERWRITE_KEY, false);
+				exportPhotos(param, foldername, overwrite );
 				break;
 			}
 		}
@@ -120,14 +121,14 @@ public class OfflineHandleService extends IntentService {
 	 * @param param
 	 * @param foldername
 	 */
-	private void exportPhotos(IOfflineViewParameter param, String foldername) {
+	private void exportPhotos(IOfflineViewParameter param, String foldername, boolean overwrite ) {
 		IOfflinePhotoCollectionProcessor p = param
 				.getPhotoCollectionProcessor();
 		String msg = getString(R.string.msg_offline_exporting);
 		sendNotification(EXPORT_OFFLINE_PHOTOS_MSG_ID, msg);
 		msg = getString(R.string.msg_offline_export_photos_error);
 		try {
-			int count = p.exportCachedPhotos(this, param, foldername);
+			int count = p.exportCachedPhotos(this, param, foldername, overwrite );
 			msg = getString(R.string.msg_offline_export_photos);
 			msg = String.format(msg, foldername);
 			msg = count + " " + msg; //$NON-NLS-1$

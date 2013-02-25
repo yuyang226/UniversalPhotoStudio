@@ -20,10 +20,18 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dip"
         android:layout_marginRight="20dip"
-        android:layout_marginBottom="20dip"
+        android:layout_marginBottom="10dip"
         android:gravity="fill_horizontal"
         android:hint="@string/msg_offline_export_path_hint"
         android:inputType="text"
         android:textAppearance="?android:attr/textAppearanceMedium" />
+
+    <CheckBox
+        android:id="@+id/cb_offline_export_overwrite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dip"
+        android:layout_marginBottom="20dip"
+        android:text="@string/msg_offline_export_overwrite" />
 
 </LinearLayout>

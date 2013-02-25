@@ -309,6 +309,8 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 					labelPath.setText(label);
 					final EditText editPath = (EditText) textEntryView
 							.findViewById(R.id.edit_alert_dlg);
+					final CheckBox overwriteCheckBox = (CheckBox) textEntryView
+							.findViewById(R.id.cb_offline_export_overwrite);
 					editPath.setText(offline.getTitle());
 					final AlertDialog dlg = new AlertDialog.Builder(mContext)
 							.setTitle(
@@ -334,6 +336,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 								public void onClick(View v) {
 									String foldername = editPath.getText()
 											.toString();
+									boolean overwrite = overwriteCheckBox.isChecked();
 									if (foldername == null
 											|| foldername.trim().length() == 0) {
 										Toast.makeText(
@@ -354,6 +357,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 													IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
 													OfflineHandleService.EXPORT_OFFLINE_PHOTO_PARAM);
 									exportPhotos.putExtra(IOfflineViewParameter.OFFLINE_EXPORT_FOLDER_NAME_KEY, foldername);
+									exportPhotos.putExtra(IOfflineViewParameter.OFFLINE_EXPORT_OVERWRITE_KEY, overwrite);
 									mContext.startService(exportPhotos);
 									dlg.dismiss();
 								}
@@ -414,9 +418,8 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 		TextView btnExportPhoto = (TextView) backView
 				.findViewById(R.id.btn_offline_export_photos);
 		btnExportPhoto.setOnClickListener(listener);
-//		btnExportPhoto.setVisibility(isOfflineEnabled ? View.VISIBLE
-//				: View.GONE);
-		btnExportPhoto.setVisibility(View.GONE);
+		btnExportPhoto.setVisibility(isOfflineEnabled ? View.VISIBLE
+				: View.GONE);
 
 		TextView btnDeletePhoto = (TextView) backView
 				.findViewById(R.id.btn_offline_delete_photos);

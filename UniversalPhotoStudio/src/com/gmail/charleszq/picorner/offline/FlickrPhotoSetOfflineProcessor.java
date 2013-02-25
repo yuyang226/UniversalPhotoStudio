@@ -355,7 +355,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 
 	@Override
 	public int exportCachedPhotos(Context ctx, IOfflineViewParameter param,
-			String foldername) throws IOException {
+			String foldername, boolean overwrite ) throws IOException {
 		List<MediaObject> photos = readPhotos(ctx, param);
 		int count = 0;
 		if (photos != null) {
@@ -375,6 +375,8 @@ public class FlickrPhotoSetOfflineProcessor implements
 						.getOfflinePhotoFileName(photo);
 				File sourceFile = ctx.getFileStreamPath(filename);
 				File targetFile = new File(targetFolder, filename);
+				if( targetFile.exists() && !overwrite ) 
+					continue;
 				try {
 					copyFile(sourceFile,targetFile);
 					count ++;

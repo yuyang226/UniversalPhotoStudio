@@ -32,6 +32,7 @@ public interface IOfflineViewParameter extends Serializable {
 	static final String OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY = "offline.add.param"; //$NON-NLS-1$
 	static final String OFFLINE_INVOKER_INTENT_KEY = "offline.service.caller"; //$NON-NLS-1$
 	static final String OFFLINE_EXPORT_FOLDER_NAME_KEY = "offline.export.folder.name"; //$NON-NLS-1$
+	static final String OFFLINE_EXPORT_OVERWRITE_KEY = "offline.export.overwrite"; //$NON-NLS-1$
 
 	/**
 	 * The key of photo source type for gson

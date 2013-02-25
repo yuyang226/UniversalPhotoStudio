@@ -224,6 +224,7 @@
     <string name="msg_offline_export_photos">photo(s) exported to folder \'%s\'.</string>
     <string name="msg_offline_export_photos_error">Unable to create the destination folder.</string>
     <string name="msg_offline_exporting" tools:ignore="TypographyEllipsis">Exporting offline photos...</string>
+    <string name="msg_offline_export_overwrite">Overwrite existing photos.</string>
 
     <!-- preference setting related -->
     <string name="cmd_setting_label">Settings</string>
