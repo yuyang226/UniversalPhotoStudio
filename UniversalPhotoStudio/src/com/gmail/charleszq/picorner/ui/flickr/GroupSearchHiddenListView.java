@@ -3,7 +3,9 @@
  */
 package com.gmail.charleszq.picorner.ui.flickr;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import android.app.Service;
 import android.content.Context;
@@ -24,6 +26,7 @@ import com.googlecode.flickrjandroid.groups.Group;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -49,15 +52,16 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 		@Override
 		public void onTaskDone(Collection<Group> result) {
 			mPullToRefreshListView.onRefreshComplete();
+			ImageLoader.getInstance().resume();
 			if (result == null || result.isEmpty()) {
-				if (mCurrentPage == 1) {
+				if (mActivePage == 1) {
 					mPullToRefreshListView.setVisibility(View.INVISIBLE);
 					Context ctx = (Context) mCommand.getAdapter(Context.class);
 					Toast.makeText(ctx,
 							ctx.getString(R.string.msg_no_groups_found),
 							Toast.LENGTH_SHORT).show();
-					return;
 				}
+				return;
 			}
 			mCurrentPage = mActivePage;
 			mAdapter.populateData(result);
@@ -85,6 +89,7 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 	 */
 	@Override
 	protected void onCancel() {
+		ImageLoader.getInstance().resume();
 		if (mSearchTask != null) {
 			mSearchTask.cancel(true);
 		}
@@ -114,8 +119,11 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 	}
 
 	private void doSearch(Context ctx, String query) {
-		
+		mCurrentPage = 1;
+		mActivePage = 1;
 		mQueryString = query;
+		List<Group> groups = new ArrayList<Group>();
+		mAdapter.populateData(groups);
 		
 		// hide the soft keyboard
 		InputMethodManager imm = (InputMethodManager) ctx
@@ -123,9 +131,10 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 		imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
 
 		mPullToRefreshListView.setVisibility(View.VISIBLE);
+		mPullToRefreshListView.setMode(Mode.BOTH);
 		mSearchTask = new SearchGroupTask(query);
 		mSearchTask.addTaskDoneListener(mSearchTaskDoneListener);
-		mSearchTask.execute(1);
+		mSearchTask.execute(mActivePage);
 	}
 
 	@Override
@@ -160,6 +169,7 @@ public class GroupSearchHiddenListView extends AbstractHiddenListView {
 	}
 
 	private void runTask(Context ctx, int page) {
+		ImageLoader.getInstance().pause();
 		mSearchTask = new SearchGroupTask(mQueryString);
 		mSearchTask.addTaskDoneListener(mSearchTaskDoneListener);
 		mSearchTask.execute(page);
