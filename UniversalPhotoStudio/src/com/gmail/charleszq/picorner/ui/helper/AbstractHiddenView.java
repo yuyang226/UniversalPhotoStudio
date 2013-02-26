@@ -6,6 +6,7 @@ package com.gmail.charleszq.picorner.ui.helper;
 import android.view.View;
 
 import com.gmail.charleszq.picorner.ui.command.ICommand;
+import com.nostra13.universalimageloader.core.ImageLoader;
 
 /**
  * @author charles(charleszq@gmail.com)
@@ -41,6 +42,9 @@ public abstract class AbstractHiddenView implements IHiddenView {
 	 */
 	@Override
 	public void onAction(int action, Object... objects) {
+		
+		//in some cases, the image loader mighe be set pause, so resume it.
+		ImageLoader.getInstance().resume();
 		// notify the listener.
 		mHideViewCancelListener.onAction(action, mCommand, this, objects);
 	}
