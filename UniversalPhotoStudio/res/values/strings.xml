@@ -85,6 +85,7 @@
     <string name="loading_photos" tools:ignore="TypographyEllipsis">Loading...</string>
     <string name="msg_wallpaper_changed">Wallpaper changed.</string>
     <string name="like_photo_done">Liked!</string>
+    <string name="msg_pls_input_photo_set_name">Please specify photo set name.</string>
 
     <!-- photo detail pager titles -->
     <string name="flickr_detail_general_title">General</string>
@@ -215,6 +216,7 @@
     <string name="msg_org_my_f_photo_done">Photo organized.</string>
     <string name="msg_org_my_f_photo_fail">Failed to organize photo.</string>
     <string name="msg_org_my_f_photo_partail_success">Photo organized with errors.</string>
+    <string name="msg_f_crt_photo_set_title_hint">Photo set name</string>
 
     <!-- offline notification messages -->
     <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>

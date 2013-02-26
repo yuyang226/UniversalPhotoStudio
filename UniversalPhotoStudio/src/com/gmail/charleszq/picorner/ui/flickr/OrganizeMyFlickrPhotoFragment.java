@@ -9,17 +9,24 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
@@ -155,7 +162,7 @@ public class OrganizeMyFlickrPhotoFragment extends
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_save, menu);
-		// inflater.inflate(R.menu.crt_photo_set, menu);
+		inflater.inflate(R.menu.crt_photo_set, menu);
 	}
 
 	@Override
@@ -165,10 +172,54 @@ public class OrganizeMyFlickrPhotoFragment extends
 			performOk();
 			return true;
 		case R.id.menu_item_crt_photo_set:
+			createPhotoset();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+
+	private void createPhotoset() {
+		final View dialogView = LayoutInflater.from(getActivity()).inflate(
+				R.layout.flickr_crt_photo_set, null);
+		final EditText editName = (EditText) dialogView
+				.findViewById(R.id.edit_photo_set_title);
+		final AlertDialog dlg = new AlertDialog.Builder(getActivity())
+				.setTitle(R.string.menu_item_crt_ps)
+				.setView(dialogView)
+				.setPositiveButton(android.R.string.ok,
+						new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog,
+									int whichButton) {
+							}
+						}).setNegativeButton(android.R.string.cancel, null)
+				.create();
+		dlg.setOnShowListener(new OnShowListener() {
+
+			@Override
+			public void onShow(DialogInterface dialog) {
+				Button ok = dlg.getButton(DialogInterface.BUTTON_POSITIVE);
+				ok.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						String name = editName.getText().toString();
+						if (name == null || name.trim().length() == 0) {
+							Toast.makeText(
+									getActivity(),
+									getActivity()
+											.getString(
+													R.string.msg_pls_input_photo_set_name),
+									Toast.LENGTH_SHORT).show();
+							return;
+						}
+						//TODO create photo set.
+						dlg.dismiss();
+					}
+				});
+			}
+		});
+		dlg.show();
+
 	}
 
 	private void performOk() {
@@ -208,9 +259,9 @@ public class OrganizeMyFlickrPhotoFragment extends
 
 	private void fetchMyPhotoSets(int page) {
 		Context ctx = getActivity();
-		if( ctx ==  null )
+		if (ctx == null)
 			return;
-		
+
 		// start another task to fetch all my photo sets and groups
 		mFetchMyPhotoSetsTask = new FetchPhotoSetsTask(ctx);
 		mFetchMyPhotoSetsTask
