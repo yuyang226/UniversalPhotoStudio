@@ -69,7 +69,7 @@
     <string name="menu_item_offline_delete_photos">Delete</string>
     <string name="menu_item_my_frequently_used_tags">My Flickr Tags</string>
     <string name="menu_item_rate">Rate</string>
-    <string name="menu_item_crt_ps">New Photo Set</string>
+    <string name="menu_item_crt_ps" tools:ignore="TypographyEllipsis">New Photo Set...</string>
     <string name="menu_item_flickr_group_search">Flickr Group Search</string>
     <string name="menu_item_flickr_group_info" tools:ignore="TypographyEllipsis">Group Detail...</string>
     
