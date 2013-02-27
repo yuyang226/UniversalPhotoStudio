@@ -43,6 +43,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.ShareActionProvider;
 import android.widget.ShareActionProvider.OnShareTargetSelectedListener;
 import android.widget.TextView;
@@ -261,7 +262,7 @@ public class ImageDetailFragment extends Fragment implements
 		mCurrentPos = pos;
 		ImageDetailActivity act = (ImageDetailActivity) getActivity();
 		mPhoto = dp.getMediaObject(pos);
-		if( BuildConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "large url: " + mPhoto.getLargeUrl()); //$NON-NLS-1$
 
 		setHasOptionsMenu(true);
@@ -343,7 +344,12 @@ public class ImageDetailFragment extends Fragment implements
 		act.getActionBar().setSubtitle(sb.toString().toLowerCase());
 	}
 
-	private boolean likePhoto() {
+	private boolean likePhoto(final MenuItem item) {
+
+		// prepare the animator
+		ProgressBar pb = new ProgressBar(getActivity());
+		item.setActionView(pb);
+
 		PicornerApplication app = (PicornerApplication) getActivity()
 				.getApplication();
 		switch (mPhoto.getMediaSource()) {
@@ -380,6 +386,7 @@ public class ImageDetailFragment extends Fragment implements
 		IGeneralTaskDoneListener<Boolean> lis = new IGeneralTaskDoneListener<Boolean>() {
 			@Override
 			public void onTaskDone(Boolean result) {
+				item.setActionView(null);
 				if (result) {
 					mUserLikeThePhoto = !mUserLikeThePhoto;
 					mPhoto.setUserLiked(mUserLikeThePhoto);
@@ -604,7 +611,7 @@ public class ImageDetailFragment extends Fragment implements
 		case R.id.menu_item_like:
 			ready = waitForImageLoaded();
 			if (ready)
-				likePhoto();
+				likePhoto(item);
 			return ready;
 		case R.id.menu_item_vote:
 			ready = waitForImageLoaded();
