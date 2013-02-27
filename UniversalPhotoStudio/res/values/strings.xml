@@ -88,6 +88,7 @@
     <string name="msg_pls_input_photo_set_name">Please specify photo set name.</string>
     <string name="msg_creating_photo_set" tools:ignore="TypographyEllipsis">Creating photo set...</string>
     <string name="msg_photo_set_crted">Photo set \'%s\' created.</string>
+    <string name="msg_photo_set_creation_fail">Failed to create photo set \'%s\'.</string>
 
     <!-- photo detail pager titles -->
     <string name="flickr_detail_general_title">General</string>

@@ -35,11 +35,12 @@ public class CreatePhotoSetTask extends
 			} catch (Exception e) {
 			}
 		}
-		if (result != null) {
-			String msg = mContext.getString(R.string.msg_photo_set_crted);
-			msg = String.format(msg, result.getTitle());
-			Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
+		String msg = mContext.getString(R.string.msg_photo_set_crted);
+		if (result == null) {
+			msg = mContext.getString(R.string.msg_photo_set_creation_fail);
 		}
+		msg = String.format(msg, result.getTitle());
+		Toast.makeText(mContext, msg, Toast.LENGTH_SHORT).show();
 		super.onPostExecute(result);
 	}
 
