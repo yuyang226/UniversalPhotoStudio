@@ -86,6 +86,8 @@
     <string name="msg_wallpaper_changed">Wallpaper changed.</string>
     <string name="like_photo_done">Liked!</string>
     <string name="msg_pls_input_photo_set_name">Please specify photo set name.</string>
+    <string name="msg_creating_photo_set" tools:ignore="TypographyEllipsis">Creating photo set...</string>
+    <string name="msg_photo_set_crted">Photo set \'%s\' created.</string>
 
     <!-- photo detail pager titles -->
     <string name="flickr_detail_general_title">General</string>

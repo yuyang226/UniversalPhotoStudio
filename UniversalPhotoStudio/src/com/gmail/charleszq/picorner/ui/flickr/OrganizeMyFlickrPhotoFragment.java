@@ -32,6 +32,7 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.model.FlickrUserPhotoPool;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
+import com.gmail.charleszq.picorner.task.flickr.CreatePhotoSetTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchFlickrPhotoContextTask;
 import com.gmail.charleszq.picorner.task.flickr.FetchPhotoSetsTask;
 import com.gmail.charleszq.picorner.task.flickr.FlickrOrganizePhotoTask;
@@ -212,7 +213,8 @@ public class OrganizeMyFlickrPhotoFragment extends
 									Toast.LENGTH_SHORT).show();
 							return;
 						}
-						//TODO create photo set.
+						CreatePhotoSetTask t = new CreatePhotoSetTask(getActivity());
+						t.execute(name, mCurrentPhoto.getId());
 						dlg.dismiss();
 					}
 				});
