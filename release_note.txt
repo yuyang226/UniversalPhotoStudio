@@ -4,7 +4,8 @@
 3, view flickr group informaiton and join;
 4, create photo set;
 5, show progress when liking a photo in the action bar;
-6, bug fixes
+6, clean 'null' in 500px EXIF information;
+7, bug fixes
 
 What's new (version 2.1.1)
 1, Fix the problem that for flickr photos without large url, a 'not available image' shows up;

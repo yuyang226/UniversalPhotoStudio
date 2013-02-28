@@ -146,6 +146,8 @@
     <string name="msg_crt_ps_hint">title</string>
     <string name="msg_searching_flickr_group" tools:ignore="TypographyEllipsis">Searching groups...</string>
 	<string name="msg_no_groups_found">No group(s) found.</string>
+	<string name="msg_join_group_condition">You need to read the group rule and agree to it before joining. Join the group?</string>
+	<string name="msg_join_group_succeeded">You\'ve joined the group.</string>
     
     <!-- flickr tag search -->
     <string name="msg_flickr_tag_search_label">Flickr tag search</string>

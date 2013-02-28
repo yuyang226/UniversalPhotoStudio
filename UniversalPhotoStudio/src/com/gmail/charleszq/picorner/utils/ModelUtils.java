@@ -375,46 +375,61 @@ public final class ModelUtils {
 			if (pExif.getCamera() != null) {
 				exif = new ExifData(ExifData.LABEL_MODEL);
 				exif.value = pExif.getCamera().getName();
+				exif.value = replaceNullInExif(exif.value);
 				photo.addExifdata(exif);
 			}
 
 			if (pExif.getAperture() != null) {
 				exif = new ExifData(ExifData.LABEL_APERTURE);
 				exif.value = pExif.getAperture();
+				exif.value = replaceNullInExif(exif.value);
 				photo.addExifdata(exif);
 			}
 
 			if (pExif.getTakenAt() != null) {
 				exif = new ExifData(ExifData.LABEL_CRT_TIME);
 				exif.value = pExif.getTakenAt().toString();
+				exif.value = replaceNullInExif(exif.value);
 				photo.addExifdata(exif);
 			}
 
 			if (pExif.getFocalLength() != null) {
 				exif = new ExifData(ExifData.LABEL_FOCAL_LEN);
 				exif.value = pExif.getFocalLength();
+				exif.value = replaceNullInExif(exif.value);
 				photo.addExifdata(exif);
 			}
 
 			if (pExif.getIso() != null) {
 				exif = new ExifData(ExifData.LABEL_ISO);
 				exif.value = pExif.getIso();
+				exif.value = replaceNullInExif(exif.value);
 				photo.addExifdata(exif);
 			}
 
 			if (pExif.getShutterSpeed() != null) {
 				exif = new ExifData(ExifData.LABEL_EXPOSURE);
 				exif.value = pExif.getShutterSpeed();
+				exif.value = replaceNullInExif(exif.value);
 				photo.addExifdata(exif);
 			}
 
 			if (pExif.getLens() != null) {
 				exif = new ExifData(ExifData.LABEL_LEN);
 				exif.value = pExif.getLens().getName();
+				exif.value = replaceNullInExif(exif.value);
 				photo.addExifdata(exif);
 			}
 		}
 		return photo;
+	}
+	
+	private static String replaceNullInExif(String value) {
+		if( "null".equals(value.toLowerCase().trim())) //$NON-NLS-1$
+		{
+			value = ""; //$NON-NLS-1$
+		}
+		return value;
 	}
 
 	public static MediaObjectComment convertPxPhotoComment(

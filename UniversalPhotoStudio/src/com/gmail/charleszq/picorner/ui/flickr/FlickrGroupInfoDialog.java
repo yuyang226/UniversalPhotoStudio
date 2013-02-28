@@ -1,16 +1,20 @@
 package com.gmail.charleszq.picorner.ui.flickr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.flickr.FetchGroupInfoTask;
+import com.gmail.charleszq.picorner.task.flickr.JoinGroupTask;
 import com.gmail.charleszq.picorner.utils.ModelUtils;
 import com.googlecode.flickrjandroid.groups.Group;
 
@@ -33,6 +37,34 @@ public class FlickrGroupInfoDialog extends Activity {
 				finish();
 				break;
 			case R.id.btn_join_flickr_group:
+				DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (which == DialogInterface.BUTTON_NEGATIVE)
+							dialog.cancel();
+						else {
+							finish();
+							JoinGroupTask task = new JoinGroupTask(
+									FlickrGroupInfoDialog.this);
+							task.addTaskDoneListener(new IGeneralTaskDoneListener<String>() {
+								@Override
+								public void onTaskDone(String result) {
+									Toast.makeText(FlickrGroupInfoDialog.this,
+											result, Toast.LENGTH_LONG).show();
+								}
+							});
+							task.execute(mGroupId);
+						}
+					}
+				};
+				AlertDialog dialog = new AlertDialog.Builder(
+						FlickrGroupInfoDialog.this)
+						.setTitle(R.string.button_join_flickr_group)
+						.setMessage(R.string.msg_join_group_condition)
+						.setNegativeButton(android.R.string.no, listener)
+						.setPositiveButton(android.R.string.yes, listener)
+						.create();
+				dialog.show();
 				break;
 			}
 		}
@@ -84,12 +116,12 @@ public class FlickrGroupInfoDialog extends Activity {
 
 	private void onGroupInfoFetch(Group result) {
 		if (result != null) {
-			if (mDescription != null && result.getDescription() != null) {
+			if (mDescription != null && result.getDescription() != null && result.getDescription().trim().length() > 0) {
 				ModelUtils.formatHtmlString(result.getDescription(),
 						mDescription);
 			}
 
-			if (mRules != null && result.getRules() != null) {
+			if (mRules != null && result.getRules() != null && result.getRules().trim().length() > 0 ) {
 				ModelUtils.formatHtmlString(result.getRules(), mRules);
 			}
 		}
