@@ -16,9 +16,13 @@
 
 package com.gmail.charleszq.picorner.ui;
 
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
 import android.app.ActionBar;
+import android.app.ActionBar.OnNavigationListener;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,9 +33,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
+import android.widget.SpinnerAdapter;
 
+import com.github.yuyang226.j500px.photos.PhotoCategory;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SPUtil;
@@ -42,6 +49,7 @@ import com.gmail.charleszq.picorner.ui.command.ICommand;
 import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.GroupSearchPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.flickr.MyGroupsCommand;
+import com.gmail.charleszq.picorner.ui.command.px500.AbstractPx500PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.flickr.FlickrGroupInfoDialog;
 import com.googlecode.flickrjandroid.groups.Group;
 import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
@@ -148,7 +156,32 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 			// set the subtitle of the action bar
 			getActivity().getActionBar().setSubtitle(
 					mCurrentCommand.getDescription());
+			
+			prepareActionBar(act);
 		}
+	}
+
+	private void prepareActionBar(Activity act) {
+//		if (AbstractPx500PhotoListCommand.class.isInstance(mCurrentCommand)) {
+//			List<PhotoCategory> categories = Arrays.asList(PhotoCategory
+//					.values());
+//			SpinnerAdapter adapter = new ArrayAdapter<PhotoCategory>(act,
+//					R.layout.px500_category_item, categories);
+//			act.getActionBar()
+//					.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+//			act.getActionBar().setListNavigationCallbacks(adapter,
+//					new OnNavigationListener() {
+//						@Override
+//						public boolean onNavigationItemSelected(
+//								int itemPosition, long itemId) {
+//							// TODO Auto-generated method stub
+//							return false;
+//						}
+//					});
+//		} else {
+//			act.getActionBar().setNavigationMode(
+//					ActionBar.NAVIGATION_MODE_STANDARD);
+//		}
 	}
 
 	@Override
@@ -158,6 +191,8 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		if (mCurrentCommand != null) {
 			getActivity().getActionBar().setSubtitle(
 					mCurrentCommand.getDescription());
+			
+			prepareActionBar(getActivity());
 		}
 	}
 
@@ -240,8 +275,9 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 			intent.putExtra(FlickrGroupInfoDialog.F_GROUP_ID_KEY, group.getId());
 			intent.putExtra(FlickrGroupInfoDialog.F_GROUP_TITLE_KEY,
 					group.getName());
-			if( MyGroupsCommand.class.isInstance(mCurrentCommand))
-				intent.putExtra(FlickrGroupInfoDialog.F_GROUP_MY_GROUP_KEY, Boolean.TRUE);
+			if (MyGroupsCommand.class.isInstance(mCurrentCommand))
+				intent.putExtra(FlickrGroupInfoDialog.F_GROUP_MY_GROUP_KEY,
+						Boolean.TRUE);
 			getActivity().startActivity(intent);
 			return true;
 		}
