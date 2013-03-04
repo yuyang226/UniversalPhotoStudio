@@ -3,10 +3,13 @@
  */
 package com.gmail.charleszq.picorner.ui.command.px500;
 
+import java.util.Comparator;
+
 import android.app.Activity;
 import android.content.Context;
 import android.widget.Toast;
 
+import com.github.yuyang226.j500px.photos.PhotoCategory;
 import com.github.yuyang226.j500px.users.User;
 import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
@@ -22,6 +25,8 @@ import com.gmail.charleszq.picorner.utils.IConstants;
  * 
  */
 public abstract class AbstractPx500PhotoListCommand extends PhotoListCommand {
+	
+	protected PhotoCategory mPhotoCategory = PhotoCategory.Uncategorized;
 
 	/**
 	 * @param context
@@ -34,6 +39,9 @@ public abstract class AbstractPx500PhotoListCommand extends PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == Integer.class) {
 			return IConstants.DEF_500PX_PAGE_SIZE;
+		}
+		if( adapterClass == Comparator.class ) {
+			return mPhotoCategory.toString();
 		}
 		return super.getAdapter(adapterClass);
 	}
@@ -83,4 +91,11 @@ public abstract class AbstractPx500PhotoListCommand extends PhotoListCommand {
 		task.execute();
 	}
 
+	public PhotoCategory getPhotoCategory() {
+		return mPhotoCategory;
+	}
+
+	public void setPhotoCategory(PhotoCategory mPhotoCategory) {
+		this.mPhotoCategory = mPhotoCategory;
+	}
 }

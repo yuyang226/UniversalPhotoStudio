@@ -35,12 +35,15 @@ public class PxEditorsPhotosCommand extends AbstractPx500PhotoListCommand {
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
+			Px500EditorsPhotosService s = null;
 			if (getAuthToken() != null) {
-				return new Px500EditorsPhotosService(getAuthToken(),
+				s = new Px500EditorsPhotosService(getAuthToken(),
 						getAuthTokenSecret());
 			} else {
-				return new Px500EditorsPhotosService();
+				s = new Px500EditorsPhotosService();
 			}
+			s.setPhotoCategory(mPhotoCategory);
+			return s;
 		}
 		return super.getAdapter(adapterClass);
 	}

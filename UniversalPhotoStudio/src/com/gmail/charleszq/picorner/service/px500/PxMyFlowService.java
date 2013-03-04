@@ -37,7 +37,7 @@ public class PxMyFlowService extends AbstractPxPhotoListService {
 			throws Exception {
 		J500px px = getJ500px();
 		List<Photo> photos = px.getPhotosInterface().getUserPhotos(
-				GlobalFeatures.USER_FRIENDS, mUserId, null, null, null, null,
+				GlobalFeatures.USER_FRIENDS, mUserId, null, null, mPhotoCategory, null,
 				ImageSize.LARGEST, pageNo + 1, pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}

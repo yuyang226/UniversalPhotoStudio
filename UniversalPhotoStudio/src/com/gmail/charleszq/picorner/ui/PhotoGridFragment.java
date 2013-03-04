@@ -43,6 +43,8 @@ import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
+import com.gmail.charleszq.picorner.msg.Message;
+import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.offline.IOfflineViewParameter;
 import com.gmail.charleszq.picorner.offline.OfflineControlFileUtil;
 import com.gmail.charleszq.picorner.ui.command.ICommand;
@@ -62,7 +64,8 @@ import com.slidingmenu.lib.SlidingMenu.OnOpenedListener;
  * configuration changes like orientation change so the images are populated
  * quickly if, for example, the user rotates the device.
  */
-public class PhotoGridFragment extends AbstractPhotoGridFragment {
+public class PhotoGridFragment extends AbstractPhotoGridFragment implements
+		OnNavigationListener {
 
 	private static final String TAG = PhotoGridFragment.class.getName();
 
@@ -113,8 +116,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		// data, this method will not called again.
 		mNoMoreData = false;
 
-		mPhotosProvider.loadData(photos, mCommandComparator == null ? command
-				: mCommandComparator);
+		mPhotosProvider.loadData(photos,command, mCommandComparator);
 		mAdapter.notifyDataSetChanged();
 		if (mGridView != null) {
 			mScrollListener = new GridOnScrollListener(this);
@@ -156,32 +158,29 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 			// set the subtitle of the action bar
 			getActivity().getActionBar().setSubtitle(
 					mCurrentCommand.getDescription());
-			
+
 			prepareActionBar(act);
 		}
 	}
 
 	private void prepareActionBar(Activity act) {
-//		if (AbstractPx500PhotoListCommand.class.isInstance(mCurrentCommand)) {
-//			List<PhotoCategory> categories = Arrays.asList(PhotoCategory
-//					.values());
-//			SpinnerAdapter adapter = new ArrayAdapter<PhotoCategory>(act,
-//					R.layout.px500_category_item, categories);
-//			act.getActionBar()
-//					.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
-//			act.getActionBar().setListNavigationCallbacks(adapter,
-//					new OnNavigationListener() {
-//						@Override
-//						public boolean onNavigationItemSelected(
-//								int itemPosition, long itemId) {
-//							// TODO Auto-generated method stub
-//							return false;
-//						}
-//					});
-//		} else {
-//			act.getActionBar().setNavigationMode(
-//					ActionBar.NAVIGATION_MODE_STANDARD);
-//		}
+		if (AbstractPx500PhotoListCommand.class.isInstance(mCurrentCommand)) {
+			List<PhotoCategory> categories = Arrays.asList(PhotoCategory
+					.values());
+			SpinnerAdapter adapter = new ArrayAdapter<PhotoCategory>(act,
+					R.layout.px500_category_item, categories);
+			act.getActionBar()
+					.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+			act.getActionBar().setListNavigationCallbacks(adapter, this);
+
+			PhotoCategory cat = ((AbstractPx500PhotoListCommand) mCurrentCommand)
+					.getPhotoCategory();
+			int pos = categories.indexOf(cat);
+			act.getActionBar().setSelectedNavigationItem(pos);
+		} else {
+			act.getActionBar().setNavigationMode(
+					ActionBar.NAVIGATION_MODE_STANDARD);
+		}
 	}
 
 	@Override
@@ -191,7 +190,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 		if (mCurrentCommand != null) {
 			getActivity().getActionBar().setSubtitle(
 					mCurrentCommand.getDescription());
-			
+
 			prepareActionBar(getActivity());
 		}
 	}
@@ -294,5 +293,26 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment {
 					|| GroupSearchPhotosCommand.class
 							.isInstance(mCurrentCommand));
 		}
+	}
+
+	@Override
+	public boolean onNavigationItemSelected(int itemPosition, long itemId) {
+		if (AbstractPx500PhotoListCommand.class.isInstance(mCurrentCommand)) {
+			AbstractPx500PhotoListCommand cmd = (AbstractPx500PhotoListCommand) mCurrentCommand;
+			List<PhotoCategory> categories = Arrays.asList(PhotoCategory
+					.values());
+			PhotoCategory cat = categories.get(itemPosition);
+			
+			//ignore the first time naviagtion item change.
+			if (cmd.getPhotoCategory().equals(cat))
+				return false;
+			
+			cmd.setPhotoCategory(cat);
+			Message msg = new Message(Message.PX500_CHG_CAT, null, null,
+					mCurrentCommand);
+			MessageBus.broadcastMessage(msg);
+			return true;
+		} else
+			return false;
 	}
 }

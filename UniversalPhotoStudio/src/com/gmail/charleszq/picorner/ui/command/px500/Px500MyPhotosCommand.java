@@ -74,12 +74,15 @@ public class Px500MyPhotosCommand extends AbstractPx500PhotoListCommand {
 					.getApplication();
 			Author a = app.getPxUserProfile();
 			String token = getAuthToken();
+			PxUserPhotosService s = null;
 			if (token == null) {
-				return new PxUserPhotosService(a.getUserId());
+				s = new PxUserPhotosService(a.getUserId());
 			} else {
-				return new PxUserPhotosService(token, getAuthTokenSecret(),
+				s = new PxUserPhotosService(token, getAuthTokenSecret(),
 						a.getUserId());
 			}
+			s.setPhotoCategory(mPhotoCategory);
+			return s;
 		}
 		if( adapterClass == ActionBar.class ) {
 			return Boolean.FALSE.toString();

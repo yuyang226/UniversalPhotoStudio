@@ -36,9 +36,10 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	 * The current source which populate photos into this, usually, the command.
 	 */
 	transient private Object mCurrentSource = null;
+	transient private Object mComparator = null;
 
 	public SinglePagePhotosProvider(MediaObjectCollection photos) {
-		loadData(photos, null);
+		loadData(photos, null, null );
 	}
 
 	@Override
@@ -52,18 +53,30 @@ public class SinglePagePhotosProvider implements IPhotosProvider {
 	}
 
 	@Override
-	public void loadData(MediaObjectCollection list, Object source) {
+	public void loadData(MediaObjectCollection list, Object source, Object comparator ) {
 		if (list == null) {
 			return;
 		}
 		if (mPhotos == null)
 			mPhotos = new ArrayList<MediaObject>();
+		
+		boolean reload = false;
 		if (source != mCurrentSource) {
+			reload = true;
+		} else {
+			if( mComparator != null )
+				reload = !mComparator.equals(comparator);
+			else if( comparator != null )
+				reload = !comparator.equals(mComparator);
+		}
+		
+		if( reload ) {
 			Log.d(TAG, String.format(
 					"before clear previous photos, there were %s in it", //$NON-NLS-1$
 					mPhotos.size()));
 			mPhotos.clear();
 			mCurrentSource = source;
+			mComparator = comparator;
 		}
 		for( MediaObject p : list.getPhotos() ) {
 			if(mPhotos.contains(p)) {

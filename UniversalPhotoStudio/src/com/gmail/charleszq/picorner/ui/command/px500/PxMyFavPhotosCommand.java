@@ -54,8 +54,10 @@ public class PxMyFavPhotosCommand extends AbstractPx500PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			
-			return new PxMyFavPhotosService(getAuthToken(),
+			PxMyFavPhotosService s = new PxMyFavPhotosService(getAuthToken(),
 					getAuthTokenSecret(), getUserId());
+			s.setPhotoCategory(mPhotoCategory);
+			return s;
 		}
 		return super.getAdapter(adapterClass);
 	}

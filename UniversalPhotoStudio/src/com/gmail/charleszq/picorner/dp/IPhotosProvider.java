@@ -32,6 +32,7 @@ public interface IPhotosProvider extends Serializable {
 	 * When the service/task/command is done, this method can be called to populate the data.
 	 * @param list
 	 * @param source.
+	 * @param comparator
 	 */
-	void loadData(MediaObjectCollection list, Object source);
+	void loadData(MediaObjectCollection list, Object source, Object comparator);
 }

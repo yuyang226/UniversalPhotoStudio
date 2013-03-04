@@ -36,12 +36,15 @@ public class PxPopularPhotosCommand extends AbstractPx500PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			String token = getAuthToken();
+			Px500PopularPhotosService s = null;
 			if (token != null) {
-				return new Px500PopularPhotosService(token,
+				s = new Px500PopularPhotosService(token,
 						getAuthTokenSecret());
 			} else {
-				return new Px500PopularPhotosService();
+				s = new Px500PopularPhotosService();
 			}
+			s.setPhotoCategory(mPhotoCategory);
+			return s;
 		}
 		return super.getAdapter(adapterClass);
 	}

@@ -36,12 +36,15 @@ public class PxUpcomingPhotosCommand extends AbstractPx500PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			String token = getAuthToken();
+			Px500UpcomingPhotosService s = null;
 			if (token == null) {
-				return new Px500UpcomingPhotosService();
+				s = new Px500UpcomingPhotosService();
 			} else {
-				return new Px500UpcomingPhotosService(token,
+				s = new Px500UpcomingPhotosService(token,
 						getAuthTokenSecret());
 			}
+			s.setPhotoCategory(mPhotoCategory);
+			return s;
 		}
 		return super.getAdapter(adapterClass);
 	}

@@ -36,12 +36,15 @@ public class PxFreshTodayPhotosCommand extends AbstractPx500PhotoListCommand {
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
 			String token = getAuthToken();
+			Px500FreshTodayPhotosService s = null;
 			if (token == null) {
-				return new Px500FreshTodayPhotosService();
+				s = new Px500FreshTodayPhotosService();
 			} else {
-				return new Px500FreshTodayPhotosService(token,
+				s = new Px500FreshTodayPhotosService(token,
 						getAuthTokenSecret());
 			}
+			s.setPhotoCategory(mPhotoCategory);
+			return s;
 		}
 		return super.getAdapter(adapterClass);
 	}

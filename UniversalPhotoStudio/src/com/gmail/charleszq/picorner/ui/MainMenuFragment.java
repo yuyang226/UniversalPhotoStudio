@@ -39,6 +39,7 @@ import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.model.MediaSourceType;
+import com.gmail.charleszq.picorner.msg.IMessageConsumer;
 import com.gmail.charleszq.picorner.msg.Message;
 import com.gmail.charleszq.picorner.msg.MessageBus;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
@@ -88,7 +89,7 @@ import com.googlecode.flickrjandroid.people.User;
  * 
  */
 @SuppressLint("DefaultLocale")
-public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
+public class MainMenuFragment extends AbstractFragmentWithImageFetcher implements IMessageConsumer  {
 
 	private CommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
@@ -356,36 +357,28 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 		commands.add(command);
 
 		command = new PxPopularPhotosCommand(getActivity());
-
 		commands.add(command);
 
 		command = new PxEditorsPhotosCommand(getActivity());
-
 		commands.add(command);
 
 		command = new PxUpcomingPhotosCommand(getActivity());
-
 		commands.add(command);
 
 		command = new PxFreshTodayPhotosCommand(getActivity());
-
 		commands.add(command);
 
 		if (isUserAuthedPx500()) {
 			command = new Px500MyPhotosCommand(getActivity());
-
 			commands.add(command);
 
 			command = new PxMyFavPhotosCommand(getActivity());
-
 			commands.add(command);
 
 			command = new PxMyFlowCommand(getActivity());
-
 			commands.add(command);
 		} else {
 			command = new PxSignInCommand(getActivity());
-
 			commands.add(command);
 		}
 		return commands;
@@ -402,7 +395,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 
 		// real commands
 		command = new FlickrIntestringCommand(this.getActivity());
-
 		commands.add(command);
 
 		if (!SPUtil.isFlickrAuthed(ctx)) {
@@ -437,6 +429,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 	@Override
 	public void onResume() {
 		super.onResume();
+		MessageBus.addConsumer(this);
 		this.mProgressDialog = null;
 
 		Intent intent = getActivity().getIntent();
@@ -649,5 +642,25 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher {
 			MessageBus.broadcastMessage(Message.PUBLIC_USER_LOGIN_MSG);
 		}
 	}
+
+	@Override
+	public boolean consumeMessage(Message msg) {
+		if( msg.getMessageType() == Message.PX500_CHG_CAT) {
+			@SuppressWarnings("unchecked")
+			ICommand<Object> cmd = (ICommand<Object>) msg.getCoreData();
+			cmd.setCommndDoneListener(mCommandDoneListener);
+			cmd.execute();
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		MessageBus.removeConsumer(this);
+	}
+	
+	
 
 }

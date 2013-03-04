@@ -100,8 +100,7 @@ public abstract class AbstractPhotoGridFragment extends
 				mNoMoreData = true;
 			} else {
 				Object comparator = command.getAdapter(Comparator.class);
-				mPhotosProvider.loadData(t, comparator == null ? command
-						: comparator);
+				mPhotosProvider.loadData(t, command, comparator);
 				mAdapter.notifyDataSetChanged();
 			}
 			if (mLoadingMessageText != null) {

@@ -15,6 +15,12 @@ public final class Message {
 	public static final int VOTE_PHOTO = 101;
 	public static final int GEO_INFO_FETCHED = 102;
 	public static final int CANCEL_COMMAND = 104;
+	
+	/**
+	 * When photo changes the photo category, notify the main menu fragment,
+	 * execute the command from there.
+	 */
+	public static final int PX500_CHG_CAT = 105;
 
 	/**
 	 * The message says one of user's photo account has been authed.

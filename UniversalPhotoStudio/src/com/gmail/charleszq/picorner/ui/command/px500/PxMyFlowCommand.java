@@ -43,8 +43,10 @@ public class PxMyFlowCommand extends AbstractPx500PhotoListCommand {
 	@Override
 	public Object getAdapter(Class<?> adapterClass) {
 		if (adapterClass == IPhotoService.class) {
-			return new PxMyFlowService(getAuthToken(),
+			PxMyFlowService s = new PxMyFlowService(getAuthToken(),
 					getAuthTokenSecret(), getUserId());
+			s.setPhotoCategory(mPhotoCategory);
+			return s;
 		}
 		return super.getAdapter(adapterClass);
 	}

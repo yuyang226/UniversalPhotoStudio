@@ -31,7 +31,7 @@ public class Px500FreshTodayPhotosService extends AbstractPxPhotoListService {
 			throws Exception {
 		J500px px = getJ500px();
 		List<Photo> photos = px.getPhotosInterface().getPhotos(GlobalFeatures.FRESH_TODAY, 
-				null, null, null, new ImageSize[]{ImageSize.LARGEST}, null, false, false, false, pageNo + 1, pageSize);
+				null, mPhotoCategory, null, new ImageSize[]{ImageSize.LARGEST}, null, false, false, false, pageNo + 1, pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 
