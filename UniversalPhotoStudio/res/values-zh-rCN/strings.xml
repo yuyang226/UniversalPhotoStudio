@@ -8,7 +8,7 @@
     <string name="no_network_connection_toast">没有网络连接</string>
     <string name="secondary_menus_general">通用</string>
     <string name="secondary_menus_search">搜索</string>
-    <string name="f_interesting_photos">精选</string>
+    <string name="f_interesting_photos">精选照片</string>
     <string name="f_login">登录</string>
     <string name="f_my_photos">我的照片</string>
     <string name="f_my_fav">我的最爱</string>
@@ -19,7 +19,7 @@
     <string name="ig_my_photos">我的照片</string>
     <string name="menu_item_text_default">默认</string>
     <string name="menu_item_text_offline">离线</string>
-    <string name="px_editors">编辑选择</string>
+    <string name="px_editors">编辑推荐</string>
     <string name="px_upcoming">上升最快</string>
     <string name="px_fresh_today">今天最新</string>
     <string name="px_my_flow">朋友的照片</string>
@@ -37,17 +37,17 @@
 
     <!-- search menu items -->
     <string name="cmd_name_flickr_tag_search">Flickr标签搜索</string>
-    <string name="cmd_name_ig_loc_search">Instagram: 附近的照片</string>
+    <string name="cmd_name_ig_loc_search">Instagram:附近的照片</string>
     <string name="ig_following">Following</string>
     <string name="ig_follow">Follow</string>
 
     <!-- auth process -->
-    <string name="fail_to_oauth">无法访问你的 %s账户, 请重试</string>
+    <string name="fail_to_oauth">无法访问你的%s账户, 请重试</string>
     <string name="auth_gen_req_token">正在生成认证请求.</string>
 
     <!-- option menu items -->
     <string name="menu_item_save">保存</string>
-    <string name="menu_item_save_local">保存到本机</string>
+    <string name="menu_item_save_local">保存到设备</string>
     <string name="menu_item_share">分享</string>
     <string name="menu_item_like_photo">喜欢</string>
     <string name="menu_item_set_wallpaper">设为壁纸</string>
@@ -73,7 +73,7 @@
     <string name="menu_item_flickr_group_search">搜索Flickr照片组</string>
     <string name="menu_item_flickr_group_info" tools:ignore="TypographyEllipsis">照片组详细信息...</string>
     
-    <string name="menu_item_org_photo_set">在照片集中组织</string>
+    <string name="menu_item_org_photo_set">添加到照片集</string>
     <string name="menu_item_add_to_group">添加到照片组</string>
     <string name="menu_item_view_exif">查看EXIF</string>
     <string name="menu_item_view_on_map">地图上查看</string>
@@ -95,174 +95,174 @@
     <string name="flickr_detail_comments_title">评论</string>
     <string name="flickr_detail_exif_title">Exif</string>
     <string name="flickr_detail_map">地图</string>
-    <string name="ig_like_users">喜欢这张照片的用户</string>
+    <string name="ig_like_users">喜欢这张照片的人</string>
     <string name="detail_gen_title_section">标题</string>
-    <string name="detail_flickr_group_rules">规定</string>
+    <string name="detail_flickr_group_rules">规则</string>
     <string name="detail_gen_author_section">作者</string>
     <string name="detail_gen_description_section">描述</string>
     <string name="photo_no_title">没有标题</string>
-    <string name="flickr_group_no_rules">没有规定</string>
+    <string name="flickr_group_no_rules">没有规则</string>
     <string name="photo_no_desc">没有描述</string>
     <string name="photo_no_comments">暂时还没有评论.</string>
-    <string name="photo_no_exif">没有Exif信息.</string>
-    <string name="photo_no_like_users">暂时没有喜欢的用户.</string>
+    <string name="photo_no_exif">没有EXIF信息.</string>
+    <string name="photo_no_like_users">暂时没有喜欢的人.</string>
     <string name="msg_comment_added">评论成功.</string>
     <string name="hint_add_comment">请在这里输入评论内容.</string>
     <string name="pls_sing_in_first">请先登录.</string>
 
     <!-- general messages -->
-    <string name="msg_pls_turn_on_location">Please turn on your network location setting.</string>
-    <string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
-    <string name="msg_working" tools:ignore="TypographyEllipsis">Working...</string>
-    <string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Loading photos of %s...</string>
-    <string name="msg_by_author_name">by</string>
-    <string name="msg_your_own_photo">This is you.</string>
-    <string name="msg_ig_chg_relationship_failed">Unable to follow/unfollow.</string>
-    <string name="msg_no_photo_returned">Ooops, no photo returned for \'%s\'</string>
-    <string name="msg_photo_saved_locally">Photo saved as \'%s\'</string>
-    <string name="msg_photo_save_exists">Photo already saved.</string>
-    <string name="msg_photo">photo</string>
-    <string name="msg_px500_auth_fail">Failed to sign into 500px.</string>
-    <string name="msg_px_error_fetch_user_profile">Error to get my 500px user profile.</string>
-    <string name="msg_500px_photo_voted">Voted!</string>
-    <string name="msg_500px_photo_vote_failed">You may already voted!</string>
-    <string name="msg_fail_get_f_perm">Failed to get photo visibility information.</string>
-    <string name="msg_pls_input_photo_title">Please input photo title.</string>
-    <string name="msg_photo_meta_save_done">Photo meta information updated!</string>
-    <string name="msg_photo_meta_save_fail">Errors encountered when update photo information.</string>
-    <string name="msg_pls_enable_offline_first">You need to enable the offline view feature first, hit \'OK\' to go the setting page to turn it on.</string>
-    <string name="msg_pls_enable_offline_for_ps">You need to enable offline on this photo set first.</string>
-    <string name="msg_loading_my_friends" tools:ignore="TypographyEllipsis">Loading friends...</string>
-    <string name="msg_loading_my_tags" tools:ignore="TypographyEllipsis">Loading my tags...</string>
-    <string name="msg_tag_filter">Tag filter</string>
-    <string name="msg_contact_filter">Filter</string>
-    <string name="msg_thanks_rating">Thank you for rating.</string>
-    <string name="msg_loading_photo_sets" tools:ignore="TypographyEllipsis">Loading my photo sets...</string>
-    <string name="msg_loading_my_groups" tools:ignore="TypographyEllipsis">Loading my photo groups...</string>
-    <string name="msg_loading_my_galleries" tools:ignore="TypographyEllipsis">Loading my galleries...</string>
-    <string name="msg_no_photo_sets">No photo sets yet.</string>
-    <string name="msg_no_photo_groups">No photo groups yet.</string>
-    <string name="msg_no_photo_galleries">No galleries yet.</string>
-    <string name="msg_crt_ps_hint">title</string>
-    <string name="msg_searching_flickr_group" tools:ignore="TypographyEllipsis">Searching groups...</string>
-	<string name="msg_no_groups_found">No group(s) found.</string>
-	<string name="msg_join_group_condition">You need to read the group rule and agree to it before joining. Join the group?</string>
-	<string name="msg_join_group_succeeded">You\'ve joined the group.</string>
+    <string name="msg_pls_turn_on_location">请打开网络定位选项.</string>
+    <string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">哎呀...</string>
+    <string name="msg_working" tools:ignore="TypographyEllipsis">正在工作...</string>
+    <string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">正在加载%s的照片...</string>
+    <string name="msg_by_author_name">作者:</string>
+    <string name="msg_your_own_photo">这是你.</string>
+    <string name="msg_ig_chg_relationship_failed">关注/取消关注失败.</string>
+    <string name="msg_no_photo_returned">\'%s\'没有照片</string>
+    <string name="msg_photo_saved_locally">照片保存到了\'%s\'</string>
+    <string name="msg_photo_save_exists">照片已经保存过了.</string>
+    <string name="msg_photo">照片</string>
+    <string name="msg_px500_auth_fail">无法登录到500px.</string>
+    <string name="msg_px_error_fetch_user_profile">无法返回我的500px用户信息.</string>
+    <string name="msg_500px_photo_voted">已投票!</string>
+    <string name="msg_500px_photo_vote_failed">你可能已经投过票了!</string>
+    <string name="msg_fail_get_f_perm">无法得到照片的可见范围信息.</string>
+    <string name="msg_pls_input_photo_title">请输入照片的标题.</string>
+    <string name="msg_photo_meta_save_done">照片信息更新成功!</string>
+    <string name="msg_photo_meta_save_fail">更新照片信息时出现错误.</string>
+    <string name="msg_pls_enable_offline_first">你需要先打开离线功能的设置选项.</string>
+    <string name="msg_pls_enable_offline_for_ps">你需要先把这个照片集设置为可以离线浏览.</string>
+    <string name="msg_loading_my_friends" tools:ignore="TypographyEllipsis">正在加载朋友列表...</string>
+    <string name="msg_loading_my_tags" tools:ignore="TypographyEllipsis">正在加载我的标签...</string>
+    <string name="msg_tag_filter">标签过滤</string>
+    <string name="msg_contact_filter">过滤</string>
+    <string name="msg_thanks_rating">谢谢你的评分.</string>
+    <string name="msg_loading_photo_sets" tools:ignore="TypographyEllipsis">正在加载我的照片集...</string>
+    <string name="msg_loading_my_groups" tools:ignore="TypographyEllipsis">正在加载我的照片组...</string>
+    <string name="msg_loading_my_galleries" tools:ignore="TypographyEllipsis">正在加载我的画廊...</string>
+    <string name="msg_no_photo_sets">没有照片集.</string>
+    <string name="msg_no_photo_groups">没有照片组.</string>
+    <string name="msg_no_photo_galleries">没有画廊.</string>
+    <string name="msg_crt_ps_hint">标题</string>
+    <string name="msg_searching_flickr_group" tools:ignore="TypographyEllipsis">正在搜索照片组...</string>
+	<string name="msg_no_groups_found">没有找到照片组.</string>
+	<string name="msg_join_group_condition">你加入照片组之前需要阅读该照片组的规则，加入吗?</string>
+	<string name="msg_join_group_succeeded">加入照片组成功.</string>
     
     <!-- flickr tag search -->
-    <string name="msg_flickr_tag_search_label">Flickr tag search</string>
-    <string name="msg_flickr_tag_search_tags">Tags:</string>
-    <string name="msg_flickr_tag_search_mode">Search mode:</string>
-    <string name="msg_flickr_tag_search_hint">separate by space</string>
-    <string name="msg_flickr_tag_search_empty_tag">Please input tag to search.</string>
-    <string name="msg_flickr_my_tag_search">Please select at least one tag to search.</string>
-    <string name="msg_flickr_tag_search_mode_and">and</string>
-    <string name="msg_flickr_tag_search_mode_or">or</string>
-    <string name="msg_flickr_tag_search_in_common">Search in Commons</string>
-    <string name="msg_flickr_tag_search_has_geo">Has GEO information</string>
+    <string name="msg_flickr_tag_search_label">Flickr标签搜索</string>
+    <string name="msg_flickr_tag_search_tags">标签:</string>
+    <string name="msg_flickr_tag_search_mode">搜索模式:</string>
+    <string name="msg_flickr_tag_search_hint">用空格分割</string>
+    <string name="msg_flickr_tag_search_empty_tag">请输入要搜索的标签.</string>
+    <string name="msg_flickr_my_tag_search">请至少选择一个标签搜索.</string>
+    <string name="msg_flickr_tag_search_mode_and">与</string>
+    <string name="msg_flickr_tag_search_mode_or">或</string>
+    <string name="msg_flickr_tag_search_in_common">搜索flickr commons项目</string>
+    <string name="msg_flickr_tag_search_has_geo">包含地理位置信息</string>
 
     <!-- help -->
-    <string name="try_swipe_left">Try swipe left</string>
-    <string name="try_swipe_right">Try swipe right</string>
-    <string name="cmd_help_label">Help</string>
+    <string name="try_swipe_left">试试向左滑动</string>
+    <string name="try_swipe_right">试试向右滑动</string>
+    <string name="cmd_help_label">帮助</string>
 
     <!-- Command descritions -->
     <!-- flickr -->
-    <string name="cd_flickr_interesting">flickr: explore</string>
-    <string name="cd_flickr_user_photos">flickr: photos of \'%s\'</string>
-    <string name="cd_flickr_my_favs">flickr: my favorites</string>
-    <string name="cd_flickr_my_populars">flickr: my popular photos</string>
-    <string name="cd_flickr_my_contact_photos">flickr: friends\' photos</string>
-    <string name="cd_flickr_photo_set_photos">flickr: photo set \'%s\'</string>
-    <string name="cd_flickr_group_photos">flickr: photo group \'%s\'</string>
-    <string name="cd_flickr_gallery_photos">flickr: photo gallery \'%s\'</string>
-    <string name="cd_flickr_my_photos">flickr: my photo stream</string>
-    <string name="cd_flickr_tag_search">flickr: tag search result \'%s\'</string>
-    <string name="cd_flickr_my_tags">Flickr: my tags \'%s\'</string>
+    <string name="cd_flickr_interesting">flickr:精选照片</string>
+    <string name="cd_flickr_user_photos">flickr:\'%s\'的照片</string>
+    <string name="cd_flickr_my_favs">flickr:我的最爱</string>
+    <string name="cd_flickr_my_populars">flickr:我最受欢迎的照片</string>
+    <string name="cd_flickr_my_contact_photos">flickr:朋友的照片</string>
+    <string name="cd_flickr_photo_set_photos">flickr:照片集\'%s\'</string>
+    <string name="cd_flickr_group_photos">flickr:照片组\'%s\'</string>
+    <string name="cd_flickr_gallery_photos">flickr:画廊\'%s\'</string>
+    <string name="cd_flickr_my_photos">flickr:我的照片</string>
+    <string name="cd_flickr_tag_search">flickr:标签搜索结果\'%s\'</string>
+    <string name="cd_flickr_my_tags">Flickr:我的标签\'%s\'</string>
 
     <!-- 500px -->
-    <string name="cd_500px_popular">500px: popular</string>
-    <string name="cd_500px_editor">500px: editors\' choice</string>
-    <string name="cd_500px_upcoming">500px: upcoming</string>
-    <string name="cd_500px_fresh_today">500px: fresh today</string>
-    <string name="cd_500px_user_photos">500px: photos of \'%s\'</string>
-    <string name="cd_500px_my_photos">500px: my photos</string>
-    <string name="cd_500px_my_favs">500px: my favorites</string>
-    <string name="cd_500px_my_flow">500px: friends\' photos</string>
+    <string name="cd_500px_popular">500px:精选照片</string>
+    <string name="cd_500px_editor">500px:编辑推荐</string>
+    <string name="cd_500px_upcoming">500px:上升最快</string>
+    <string name="cd_500px_fresh_today">500px:今天最新</string>
+    <string name="cd_500px_user_photos">500px:\'%s\'的照片</string>
+    <string name="cd_500px_my_photos">500px:我的照片</string>
+    <string name="cd_500px_my_favs">500px:我的最爱</string>
+    <string name="cd_500px_my_flow">500px:朋友的照片</string>
 
     <!-- Instagram -->
-    <string name="cd_ig_popular">instagram: popular</string>
-    <string name="cd_ig_my_feeds">instagram: my feeds</string>
-    <string name="cd_ig_my_likes">instagram: my likes</string>
-    <string name="cd_ig_my_photos">instagram: my photos</string>
-    <string name="cd_ig_user_photos">instagram: photos of \'%s\'</string>
-    <string name="cd_ig_photos_nearby">instagram: nearby photos</string>
+    <string name="cd_ig_popular">instagram:精选照片</string>
+    <string name="cd_ig_my_feeds">instagram:我的订阅</string>
+    <string name="cd_ig_my_likes">instagram:我的最爱</string>
+    <string name="cd_ig_my_photos">instagram:我的照片</string>
+    <string name="cd_ig_user_photos">instagram:\'%s\'的照片</string>
+    <string name="cd_ig_photos_nearby">instagram:附近的照片</string>
 
     <!-- Licensing Check -->
-    <string name="application_error">Application error: %1$s</string>
+    <string name="application_error">应用错误:%1$s</string>
     <!-- Unlicensed dialog messages -->
-    <string name="unlicensed_dialog_title">Application Not Licensed</string>
-    <string name="unlicensed_dialog_body">This application is NOT licensed. Please purchase it from the Google Play Store.</string>
-    <string name="buy_button">Purchase</string>
-    <string name="quit_button">Exit</string>
-    <string name="button_join_flickr_group">Join</string>
+    <string name="unlicensed_dialog_title">应用没有授权</string>
+    <string name="unlicensed_dialog_body">这个应用没有授权，请从谷歌商店购买.</string>
+    <string name="buy_button">购买</string>
+    <string name="quit_button">退出</string>
+    <string name="button_join_flickr_group">加入</string>
 
     <!-- change my flickr photo properties -->
-    <string name="flickr_photo_perm_private">Only You</string>
-    <string name="flickr_photo_perm_friend">Your friends</string>
-    <string name="flickr_photo_perm_family">Your family</string>
-    <string name="flickr_photo_perm_public">Anyone</string>
-    <string name="flickr_photo_perm_title">Who can see this photo:</string>
-    <string name="msg_flickr_photo_perm_hint">Note: Changing from public to private will remove all favorites.</string>
+    <string name="flickr_photo_perm_private">只有你可见</string>
+    <string name="flickr_photo_perm_friend">你的朋友可见</string>
+    <string name="flickr_photo_perm_family">家庭成员可见</string>
+    <string name="flickr_photo_perm_public">公开</string>
+    <string name="flickr_photo_perm_title">谁可以看到这张照片:</string>
+    <string name="msg_flickr_photo_perm_hint">注意:把一张照片从公开设置为私有会删除所有最爱的记录.</string>
 
     <!-- organize flickr photo -->
-    <string name="msg_org_flickr_photo_title">organize photo</string>
-    <string name="msg_org_my_f_photo_progress" tools:ignore="TypographyEllipsis">Organizing my photo...</string>
-    <string name="msg_org_my_f_photo_done">Photo organized.</string>
-    <string name="msg_org_my_f_photo_fail">Failed to organize photo.</string>
-    <string name="msg_org_my_f_photo_partail_success">Photo organized with errors.</string>
-    <string name="msg_f_crt_photo_set_title_hint">Photo set name</string>
+    <string name="msg_org_flickr_photo_title">组织照片</string>
+    <string name="msg_org_my_f_photo_progress" tools:ignore="TypographyEllipsis">正在组织照片...</string>
+    <string name="msg_org_my_f_photo_done">照片组织完成.</string>
+    <string name="msg_org_my_f_photo_fail">照片组织失败.</string>
+    <string name="msg_org_my_f_photo_partail_success">照片组织完成，但有错误发生.</string>
+    <string name="msg_f_crt_photo_set_title_hint">照片集名称</string>
 
     <!-- offline notification messages -->
-    <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Downloading photos for offline view...</string>
-    <string name="msg_offline_delete_photos">%d cached offline photos deleted.</string>
-    <string name="msg_offline_delete_photos_minus_one">No photos downloaded for this photo set before.</string>
-    <string name="msg_offline_delete_photo_dialog_msg">Are you sure to delete all downloaded photos for this photo set?</string>
-    <string name="msg_offline_export_path_dlg_title">Export</string>
-    <string name="msg_offline_export_path_hint">Export path</string>
-    <string name="msg_offline_export_path_label">Please specify the folder name, the folder will be created in \'%s\' if not exists.</string>
-    <string name="msg_offline_export_empty_path">Please specify the folder name.</string>
-    <string name="msg_offline_export_photos">photo(s) exported to folder \'%s\'.</string>
-    <string name="msg_offline_export_photos_error">Unable to create the destination folder.</string>
-    <string name="msg_offline_exporting" tools:ignore="TypographyEllipsis">Exporting offline photos...</string>
-    <string name="msg_offline_export_overwrite">Overwrite existing photos.</string>
+    <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">正在下载离线照片...</string>
+    <string name="msg_offline_delete_photos">%d 张离线照片被成功删除.</string>
+    <string name="msg_offline_delete_photos_minus_one">这个照片集之前没有照片杯下载过.</string>
+    <string name="msg_offline_delete_photo_dialog_msg">你确定要删除所有这个照片集下载的离线照片吗?</string>
+    <string name="msg_offline_export_path_dlg_title">导出</string>
+    <string name="msg_offline_export_path_hint">导出路径</string>
+    <string name="msg_offline_export_path_label">请输入目录名，这个目录会被创建在\'%s\'里面。</string>
+    <string name="msg_offline_export_empty_path">请输入目录名.</string>
+    <string name="msg_offline_export_photos">照片已经导出到目录\'%s\'中.</string>
+    <string name="msg_offline_export_photos_error">无法创建目录.</string>
+    <string name="msg_offline_exporting" tools:ignore="TypographyEllipsis">正在导出离线照片...</string>
+    <string name="msg_offline_export_overwrite">覆盖已经存在的照片.</string>
 
     <!-- preference setting related -->
-    <string name="cmd_setting_label">Settings</string>
-    <string name="pref_cat_general">General</string>
-    <string name="photo_grid_cache_size">Photo cache size (MB)</string>
+    <string name="cmd_setting_label">设置</string>
+    <string name="pref_cat_general">通用</string>
+    <string name="photo_grid_cache_size">照片缓存大小(MB)</string>
     <string name="summary_photo_grid_cache_size">Photo cache is to improve the proformance when you\'re browsing photos, you can specify how much disck space to be used as photo cache.</string>
-    <string name="pref_cat_offline">Offline</string>
+    <string name="pref_cat_offline">离线</string>
     <string name="pref.enable.offfline">Enable offline view</string>
     <string name="summary_pref.enable.offfline">Download your photo sets for offline view, this feature requires large disk space on your phone.</string>
     <string name="pref_only_user_wifi">WIFI only</string>
     <string name="summary_pref_only_user_wifi">Only use wifi to download photos, Uncheck will download photos when connected to cellular network.</string>
-    <string name="pref_download_when_charging">Download when charging</string>
+    <string name="pref_download_when_charging">充电时下载</string>
     <string name="summary_pref_download_when_charging">Only download photos while your phone is charging.</string>
-    <string name="offline_download_timer">Offline Timer</string>
+    <string name="offline_download_timer">时间间隔</string>
     <string name="summary_offline_download_timer">How often to check photo set updates.</string>
-    <string name="pref_slideshow_interval">Slideshow interval</string>
+    <string name="pref_slideshow_interval">幻灯片播放时间间隔</string>
     <string name="summary_pref_slideshow_interval">Set the time interval of slideshow</string>
-    <string name="photo_grid_max_size">Photo grid size</string>
+    <string name="photo_grid_max_size">照片网格大小</string>
     <string name="photo_grid_max_size">Max photo grid size</string>
     <string name="summary_photo_grid_max_size">The maxinum photos to be shown in the photo grid, large size might impact the performance.</string>
-    <string name="pref_cat_day_dream">Daydream</string>
-    <string name="pref_daydream_main_src_dlg_title">Primary Photo Source</string>
+    <string name="pref_cat_day_dream">白日梦</string>
+    <string name="pref_daydream_main_src_dlg_title">第一照片源</string>
     <string name="pref_daydream_main_src">Main Photo Source</string>
     <string name="summary_pref_daydream_main_src">The main photo source</string>
-    <string name="pref_daydream_secondary_src_dlg_title">Secondary Photo Source</string>
+    <string name="pref_daydream_secondary_src_dlg_title">第二照片源</string>
     <string name="pref_daydream_secondary_src">Secondary Photo Source</string>
     <string name="summary_pref_daydream_secondary_src">Secondary photo source will be used if you set offline photos as the main source, but there are no offline photos downloaded yet.</string>
-	<string name="pref_default_photo_list">Default photo list</string>
+	<string name="pref_default_photo_list">默认照片列表</string>
 	<string name="summary_pref_default_photo_list">When app starts, which photo list to load by default.</string>
 </resources>
