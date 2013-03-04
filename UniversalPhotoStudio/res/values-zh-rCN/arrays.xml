@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="photo_cache_size">
+	    <item>50</item>
+		<item>100</item>
+		<item>200</item>
+		<item>300</item>
+	</string-array>
+	
+	<string-array name="photo_cache_size_values">
+	    <item>50000000</item>
+	    <item>100000000</item>
+	    <item>200000000</item>
+	    <item>300000000</item>
+	</string-array>
+	
+	<string-array name="offline_schedule_label">
+	    <item>每天一次</item>
+	    <item>两天一次</item>
+	    <item>每周一次</item>
+	</string-array>
+	
+	<string-array name="offline_schedule_value">
+	    <item>24</item>
+	    <item>48</item>
+	    <item>168</item>
+	</string-array>
+	
+	<string-array name="photo_grid_max_size">
+	    <item>200</item>
+	    <item>300</item>
+	    <item>400</item>
+	    <item>500</item>
+	</string-array>
+	
+	<string-array name="slideshow_interval_label">
+	    <item>3秒</item>
+	    <item>5秒</item>
+	    <item>8秒</item>
+	    <item>10秒</item>
+	    <item>12秒</item>
+	    <item>15秒</item>
+	    <item>20秒</item>
+	    <item>30秒</item>
+	    <item>1分钟</item>
+	</string-array>
+	
+	<string-array name="slideshow_interval_values">
+	    <item>3000</item>
+	    <item>5000</item>
+	    <item>8000</item>
+	    <item>10000</item>
+	    <item>12000</item>
+	    <item>15000</item>
+	    <item>20000</item>
+	    <item>30000</item>
+	    <item>60000</item>
+	</string-array>
+	
+	<string-array name="daydream_main_photo_source_label">
+	    <item>离线照片</item>
+	    <item>500px 精选</item>
+	    <item>500px 编辑选测</item>
+	    <item>500px 上升最快</item>
+	    <item>500px 今天最新</item>
+	    <item>Flickr 精选</item>
+	    <item>Instagram 精选</item>
+	</string-array>
+	
+	<string-array name="daydream_main_photo_source_values">
+	    <item>0</item>
+	    <item>1</item>
+	    <item>2</item>
+	    <item>3</item>
+	    <item>4</item>
+	    <item>5</item>
+	    <item>6</item>
+	</string-array>
+	
+	<string-array name="daydream_secondary_photo_source_label">
+	    <item>500px 精选</item>
+	    <item>500px 编辑选测</item>
+	    <item>500px 上升最快</item>
+	    <item>500px 今天最新</item>
+	    <item>Flickr 精选</item>
+	    <item>Instagram 精选</item>
+	</string-array>
+	
+	<string-array name="daydream_secondary_photo_source_values">
+	    <item>1</item>
+	    <item>2</item>
+	    <item>3</item>
+	    <item>4</item>
+	    <item>5</item>
+	    <item>6</item>
+	</string-array>
+</resources>
