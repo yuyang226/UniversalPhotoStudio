@@ -147,6 +147,9 @@ public abstract class AbstractPhotoGridFragment extends
 						&& mCurrentCommand != msg.getCoreData()) {
 					mCurrentCommand.cancel();
 				}
+				if( mLoadingMessageText != null ) {
+					mLoadingMessageText.setVisibility(View.GONE);
+				}
 				return true;
 			default:
 				return false;

@@ -23,7 +23,6 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -71,11 +70,6 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 	private static final String TAG = PhotoGridFragment.class.getName();
 
 	/**
-	 * Show this dialog when 500px category changes.
-	 */
-	private ProgressDialog mCategoryDialog = null;
-
-	/**
 	 * Empty constructor as per the Fragment documentation
 	 */
 	public PhotoGridFragment() {
@@ -96,13 +90,6 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 	 * @param command
 	 */
 	void populatePhotoList(MediaObjectCollection photos, ICommand<?> command) {
-
-		if (mCategoryDialog != null) {
-			try {
-				mCategoryDialog.dismiss();
-			} catch (Exception e) {
-			}
-		}
 		if (getActivity() == null) {
 			Log.w(TAG, "activity is null!"); //$NON-NLS-1$
 			return;
@@ -325,9 +312,6 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 			Message msg = new Message(Message.PX500_CHG_CAT, null, null,
 					mCurrentCommand);
 			MessageBus.broadcastMessage(msg);
-
-			mCategoryDialog = ProgressDialog.show(getActivity(), null,
-					getActivity().getString(R.string.loading_photos));
 			return true;
 		} else
 			return false;

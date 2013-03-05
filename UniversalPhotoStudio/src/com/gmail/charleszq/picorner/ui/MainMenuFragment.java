@@ -198,8 +198,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 				IHiddenView hiddenView = (IHiddenView) command
 						.getAdapter(IHiddenView.class);
 				if (hiddenView == null) {
-					command.setCommndDoneListener(mCommandDoneListener);
-					command.execute();
+					doPhotoListCommand(command);
 				} else {
 					hiddenView.init(command, mHideViewCancelListener);
 					FrameLayout.LayoutParams param = new FrameLayout.LayoutParams(
@@ -212,17 +211,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 					return;
 				}
 
-				if (PhotoListCommand.class.isInstance(command)) {
-					Message msg = new Message(Message.CANCEL_COMMAND, null,
-							null, command);
-					MessageBus.broadcastMessage(msg);
-					mProgressDialog = ProgressDialog.show(
-							parent.getContext(),
-							"", //$NON-NLS-1$
-							parent.getContext().getString(
-									R.string.loading_photos));
-					mProgressDialog.setCancelable(true);
-				}
 				if (!(command instanceof FlickrLoginCommand)
 						&& !(command instanceof PxSignInCommand)
 						&& !CommandType.MENU_HEADER_CMD.equals(command
@@ -234,6 +222,22 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 			}
 		});
 		return v;
+	}
+	
+	private void doPhotoListCommand(ICommand<Object> cmd) {
+		cmd.setCommndDoneListener(mCommandDoneListener);
+		cmd.execute();
+		if (PhotoListCommand.class.isInstance(cmd)) {
+			Message msg = new Message(Message.CANCEL_COMMAND, null,
+					null, cmd);
+			MessageBus.broadcastMessage(msg);
+			mProgressDialog = ProgressDialog.show(
+					getActivity(),
+					"", //$NON-NLS-1$
+					getActivity().getString(
+							R.string.loading_photos));
+			mProgressDialog.setCancelable(true);
+		}
 	}
 
 	private void hideHiddenView(final View view) {
@@ -648,8 +652,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 		if( msg.getMessageType() == Message.PX500_CHG_CAT) {
 			@SuppressWarnings("unchecked")
 			ICommand<Object> cmd = (ICommand<Object>) msg.getCoreData();
-			cmd.setCommndDoneListener(mCommandDoneListener);
-			cmd.execute();
+			doPhotoListCommand(cmd);
 			return true;
 		}
 		return false;
