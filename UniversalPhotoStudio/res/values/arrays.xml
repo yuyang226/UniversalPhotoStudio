@@ -94,4 +94,35 @@
 	    <item>5</item>
 	    <item>6</item>
 	</string-array>
+	
+	<string-array name="px500_categories">
+	    <item>All Category</item>
+	    <item>Abstract</item>
+	    <item>Animals</item>
+	    <item>Black and White</item>
+	    <item>Celebrities</item>
+	    <item>City and Architecture</item>
+	    <item>Commercial</item>
+	    <item>Concert</item>
+	    <item>Family</item>
+	    <item>Fashion</item>
+	    <item>Film</item>
+	    <item>Fine Art</item>
+	    <item>Food</item>
+	    <item>Journalism</item>
+	    <item>Landscapes</item>
+	    <item>Macro</item>
+	    <item>Nature</item>
+	    <item>Nude</item>
+	    <item>People</item>
+	    <item>Performing Arts</item>
+	    <item>Sport</item>
+	    <item>Still Life</item>
+	    <item>Street</item>
+	    <item>Transporation</item>
+	    <item>Travel</item>
+	    <item>Underwater</item>
+	    <item>Urban Exploration</item>
+	    <item>Wedding</item>
+	</string-array>
 </resources>

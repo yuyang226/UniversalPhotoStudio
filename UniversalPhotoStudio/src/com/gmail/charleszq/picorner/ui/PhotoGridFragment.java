@@ -167,8 +167,8 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 		if (AbstractPx500PhotoListCommand.class.isInstance(mCurrentCommand)) {
 			List<PhotoCategory> categories = Arrays.asList(PhotoCategory
 					.values());
-			SpinnerAdapter adapter = new ArrayAdapter<PhotoCategory>(act,
-					R.layout.px500_category_item, categories);
+			SpinnerAdapter adapter = new ArrayAdapter<String>(act,
+					R.layout.px500_category_item, act.getResources().getStringArray(R.array.px500_categories));
 			act.getActionBar()
 					.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 			act.getActionBar().setListNavigationCallbacks(adapter, this);

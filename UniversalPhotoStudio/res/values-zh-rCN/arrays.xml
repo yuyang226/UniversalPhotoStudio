@@ -94,4 +94,35 @@
 	    <item>5</item>
 	    <item>6</item>
 	</string-array>
+	
+	<string-array name="px500_categories">
+	    <item>所有类别</item>
+	    <item>抽象</item>
+	    <item>动物</item>
+	    <item>黑白</item>
+	    <item>庆祝</item>
+	    <item>城市和建筑</item>
+	    <item>商业</item>
+	    <item>音乐会</item>
+	    <item>家庭</item>
+	    <item>时尚</item>
+	    <item>影片</item>
+	    <item>美术</item>
+	    <item>食物</item>
+	    <item>纪实</item>
+	    <item>风景</item>
+	    <item>微距</item>
+	    <item>自然</item>
+	    <item>人体</item>
+	    <item>人物</item>
+	    <item>演艺</item>
+	    <item>体育</item>
+	    <item>静物</item>
+	    <item>扫街</item>
+	    <item>交通</item>
+	    <item>旅行</item>
+	    <item>水下</item>
+	    <item>城市探索</item>
+	    <item>婚礼</item>
+	</string-array>
 </resources>
