@@ -164,7 +164,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 	}
 
 	private void prepareActionBar(Activity act) {
-		if (AbstractPx500PhotoListCommand.class.isInstance(mCurrentCommand)) {
+		if (mCurrentCommand.getAdapter(PhotoCategory.class) != null ) {
 			List<PhotoCategory> categories = Arrays.asList(PhotoCategory
 					.values());
 			SpinnerAdapter adapter = new ArrayAdapter<String>(act,
@@ -174,8 +174,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 					.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 			act.getActionBar().setListNavigationCallbacks(adapter, this);
 
-			PhotoCategory cat = ((AbstractPx500PhotoListCommand) mCurrentCommand)
-					.getPhotoCategory();
+			PhotoCategory cat =  (PhotoCategory) mCurrentCommand.getAdapter(PhotoCategory.class);
 			int pos = categories.indexOf(cat);
 			act.getActionBar().setSelectedNavigationItem(pos);
 		} else {

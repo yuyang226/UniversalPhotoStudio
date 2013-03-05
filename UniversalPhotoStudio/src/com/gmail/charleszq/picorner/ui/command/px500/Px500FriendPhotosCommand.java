@@ -15,7 +15,6 @@ import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.service.IPhotoService;
 import com.gmail.charleszq.picorner.service.px500.PxUserPhotosService;
 import com.gmail.charleszq.picorner.task.AbstractFetchIconUrlTask;
-import com.gmail.charleszq.picorner.ui.command.PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 import com.gmail.charleszq.picorner.ui.px500.Px500FriendsView;
 
@@ -23,10 +22,10 @@ import com.gmail.charleszq.picorner.ui.px500.Px500FriendsView;
  * @author charles(charleszq@gmail.com)
  * 
  */
-public class Px500FriendPhotosCommand extends PhotoListCommand {
+public class Px500FriendPhotosCommand extends AbstractPx500PhotoListCommand {
 
-	private Author		mFriend;
-	private IHiddenView	mHiddenView;
+	private Author mFriend;
+	private IHiddenView mHiddenView;
 
 	/**
 	 * @param context
@@ -57,7 +56,9 @@ public class Px500FriendPhotosCommand extends PhotoListCommand {
 
 	@Override
 	public boolean execute(Object... params) {
-		mFriend = (Author) params[0];
+		//when category changes, there is no params passed in
+		if (params.length > 0)
+			mFriend = (Author) params[0];
 		return super.execute();
 	}
 
@@ -80,8 +81,11 @@ public class Px500FriendPhotosCommand extends PhotoListCommand {
 		}
 		if (adapterClass == IPhotoService.class) {
 			mCurrentPhotoService = new PxUserPhotosService(
-					SPUtil.getPx500OauthToken(mContext), SPUtil.getPx500OauthTokenSecret(mContext),
+					SPUtil.getPx500OauthToken(mContext),
+					SPUtil.getPx500OauthTokenSecret(mContext),
 					mFriend.getUserId());
+			((PxUserPhotosService) mCurrentPhotoService)
+					.setPhotoCategory(mPhotoCategory);
 			return mCurrentPhotoService;
 		}
 		if (adapterClass == AbstractFetchIconUrlTask.class) {
@@ -101,7 +105,7 @@ public class Px500FriendPhotosCommand extends PhotoListCommand {
 			return task;
 		}
 		if (adapterClass == Comparator.class) {
-			return this.mFriend;
+			return this.mFriend.getUserId() + mPhotoCategory.toString();
 		}
 		return super.getAdapter(adapterClass);
 	}
