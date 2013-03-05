@@ -20,7 +20,7 @@
     <string name="menu_item_text_default">默认</string>
     <string name="menu_item_text_offline">离线</string>
     <string name="px_editors">编辑推荐</string>
-    <string name="px_upcoming">上升最快</string>
+    <string name="px_upcoming">优秀照片</string>
     <string name="px_fresh_today">今天最新</string>
     <string name="px_my_flow">朋友的照片</string>
     <string name="menu_header_flickr">Flickr</string>
@@ -183,7 +183,7 @@
     <!-- 500px -->
     <string name="cd_500px_popular">500px:精选照片</string>
     <string name="cd_500px_editor">500px:编辑推荐</string>
-    <string name="cd_500px_upcoming">500px:上升最快</string>
+    <string name="cd_500px_upcoming">500px:优秀照片</string>
     <string name="cd_500px_fresh_today">500px:今天最新</string>
     <string name="cd_500px_user_photos">500px:\'%s\'的照片</string>
     <string name="cd_500px_my_photos">500px:我的照片</string>
@@ -201,8 +201,8 @@
     <!-- Licensing Check -->
     <string name="application_error">应用错误:%1$s</string>
     <!-- Unlicensed dialog messages -->
-    <string name="unlicensed_dialog_title">应用没有授权</string>
-    <string name="unlicensed_dialog_body">这个应用没有授权，请从谷歌商店购买.</string>
+    <string name="unlicensed_dialog_title">应用没有认证</string>
+    <string name="unlicensed_dialog_body">这个应用没有认证，请从谷歌商店购买.</string>
     <string name="buy_button">购买</string>
     <string name="quit_button">退出</string>
     <string name="button_join_flickr_group">加入</string>
@@ -225,7 +225,7 @@
 
     <!-- offline notification messages -->
     <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">正在下载离线照片...</string>
-    <string name="msg_offline_delete_photos">%d 张离线照片被成功删除.</string>
+    <string name="msg_offline_delete_photos">%d张离线照片被成功删除.</string>
     <string name="msg_offline_delete_photos_minus_one">这个照片集之前没有照片杯下载过.</string>
     <string name="msg_offline_delete_photo_dialog_msg">你确定要删除所有这个照片集下载的离线照片吗?</string>
     <string name="msg_offline_export_path_dlg_title">导出</string>
