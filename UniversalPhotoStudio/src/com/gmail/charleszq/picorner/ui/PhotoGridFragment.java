@@ -23,6 +23,7 @@ import java.util.List;
 import android.app.ActionBar;
 import android.app.ActionBar.OnNavigationListener;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -70,6 +71,11 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 	private static final String TAG = PhotoGridFragment.class.getName();
 
 	/**
+	 * Show this dialog when 500px category changes.
+	 */
+	private ProgressDialog mCategoryDialog = null;
+
+	/**
 	 * Empty constructor as per the Fragment documentation
 	 */
 	public PhotoGridFragment() {
@@ -90,6 +96,13 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 	 * @param command
 	 */
 	void populatePhotoList(MediaObjectCollection photos, ICommand<?> command) {
+
+		if (mCategoryDialog != null) {
+			try {
+				mCategoryDialog.dismiss();
+			} catch (Exception e) {
+			}
+		}
 		if (getActivity() == null) {
 			Log.w(TAG, "activity is null!"); //$NON-NLS-1$
 			return;
@@ -116,7 +129,7 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 		// data, this method will not called again.
 		mNoMoreData = false;
 
-		mPhotosProvider.loadData(photos,command, mCommandComparator);
+		mPhotosProvider.loadData(photos, command, mCommandComparator);
 		mAdapter.notifyDataSetChanged();
 		if (mGridView != null) {
 			mScrollListener = new GridOnScrollListener(this);
@@ -168,7 +181,8 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 			List<PhotoCategory> categories = Arrays.asList(PhotoCategory
 					.values());
 			SpinnerAdapter adapter = new ArrayAdapter<String>(act,
-					R.layout.px500_category_item, act.getResources().getStringArray(R.array.px500_categories));
+					R.layout.px500_category_item, act.getResources()
+							.getStringArray(R.array.px500_categories));
 			act.getActionBar()
 					.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 			act.getActionBar().setListNavigationCallbacks(adapter, this);
@@ -302,15 +316,18 @@ public class PhotoGridFragment extends AbstractPhotoGridFragment implements
 			List<PhotoCategory> categories = Arrays.asList(PhotoCategory
 					.values());
 			PhotoCategory cat = categories.get(itemPosition);
-			
-			//ignore the first time naviagtion item change.
+
+			// ignore the first time naviagtion item change.
 			if (cmd.getPhotoCategory().equals(cat))
 				return false;
-			
+
 			cmd.setPhotoCategory(cat);
 			Message msg = new Message(Message.PX500_CHG_CAT, null, null,
 					mCurrentCommand);
 			MessageBus.broadcastMessage(msg);
+
+			mCategoryDialog = ProgressDialog.show(getActivity(), null,
+					getActivity().getString(R.string.loading_photos));
 			return true;
 		} else
 			return false;

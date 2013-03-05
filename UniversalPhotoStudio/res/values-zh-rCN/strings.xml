@@ -93,7 +93,7 @@
     <!-- photo detail pager titles -->
     <string name="flickr_detail_general_title">通用</string>
     <string name="flickr_detail_comments_title">评论</string>
-    <string name="flickr_detail_exif_title">Exif</string>
+    <string name="flickr_detail_exif_title">EXIF</string>
     <string name="flickr_detail_map">地图</string>
     <string name="ig_like_users">喜欢这张照片的人</string>
     <string name="detail_gen_title_section">标题</string>

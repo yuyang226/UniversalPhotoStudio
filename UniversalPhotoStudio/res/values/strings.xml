@@ -93,7 +93,7 @@
     <!-- photo detail pager titles -->
     <string name="flickr_detail_general_title">General</string>
     <string name="flickr_detail_comments_title">Comments</string>
-    <string name="flickr_detail_exif_title">Exif</string>
+    <string name="flickr_detail_exif_title">EXIF</string>
     <string name="flickr_detail_map">Map</string>
     <string name="ig_like_users">Like Users</string>
     <string name="detail_gen_title_section">Title</string>
@@ -104,7 +104,7 @@
     <string name="flickr_group_no_rules">NO RULES</string>
     <string name="photo_no_desc">NO DESCRIPTION</string>
     <string name="photo_no_comments">No comment now.</string>
-    <string name="photo_no_exif">No Exif Information.</string>
+    <string name="photo_no_exif">No EXIF Information.</string>
     <string name="photo_no_like_users">No likes now.</string>
     <string name="msg_comment_added">Comment added.</string>
     <string name="hint_add_comment">comment here.</string>
