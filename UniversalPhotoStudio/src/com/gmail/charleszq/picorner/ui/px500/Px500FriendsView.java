@@ -7,10 +7,13 @@ import java.util.List;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.AdapterView;
 
+import com.github.yuyang226.j500px.photos.PhotoCategory;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.task.IGeneralTaskDoneListener;
 import com.gmail.charleszq.picorner.task.px500.Px500FetchFriendsTask;
+import com.gmail.charleszq.picorner.ui.command.px500.AbstractPx500PhotoListCommand;
 import com.gmail.charleszq.picorner.ui.helper.AbstractHiddenListView;
 
 /**
@@ -49,5 +52,17 @@ public class Px500FriendsView extends AbstractHiddenListView {
 		if (task != null)
 			task.cancel(true);
 	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parentView, View view, int position,
+			long id) {
+		if( AbstractPx500PhotoListCommand.class.isInstance(mCommand)) {
+			((AbstractPx500PhotoListCommand) mCommand)
+					.setPhotoCategory(PhotoCategory.Uncategorized);
+		}
+		super.onItemClick(parentView, view, position, id);
+	}
+	
+	
 
 }
