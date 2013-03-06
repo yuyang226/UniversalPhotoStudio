@@ -3,6 +3,8 @@
  */
 package com.gmail.charleszq.picorner.ui.command.px500;
 
+import java.util.Comparator;
+
 import android.content.Context;
 
 import com.github.yuyang226.j500px.photos.PhotoCategory;
@@ -75,6 +77,16 @@ public class TermTagSearchCommand extends AbstractPx500PhotoListCommand {
 			mCurrentPhotoService = new Px500SearchService();
 			((Px500SearchService)mCurrentPhotoService).setSearchCondition(mTerm, mTag);
 			return mCurrentPhotoService;
+		}
+		if( adapterClass == Comparator.class ) {
+			StringBuilder sb = new StringBuilder();
+			sb.append("term"); //$NON-NLS-1$
+			if( mTerm != null )
+				sb.append(mTerm);
+			sb.append("tag"); //$NON-NLS-1$
+			if( mTag != null ) 
+				sb.append(mTag);
+			return sb.toString();
 		}
 		return super.getAdapter(adapterClass);
 	}
