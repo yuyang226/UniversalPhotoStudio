@@ -166,6 +166,7 @@
     <string name="msg_500px_teram">Term:</string>
     <string name="msg_500px_tag">Tags:</string>
     <string name="msg_pls_input_term_and_tag">Please input either term or tag.</string>
+    <string name="cd_500px_search_cmd">500px search: %s</string>
     
     <!-- help -->
     <string name="try_swipe_left">Try swipe left</string>

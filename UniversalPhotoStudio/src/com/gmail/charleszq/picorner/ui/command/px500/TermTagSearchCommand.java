@@ -87,4 +87,19 @@ public class TermTagSearchCommand extends AbstractPx500PhotoListCommand {
 		}
 		return super.execute();
 	}
+
+	@Override
+	public String getDescription() {
+		StringBuilder sb = new StringBuilder();
+		if( mTerm != null )
+			sb.append(mTerm).append( " "); //$NON-NLS-1$
+		if( mTag != null )
+			sb.append(mTag);
+		
+		String msg = mContext.getString(R.string.cd_500px_search_cmd);
+		msg = String.format(msg, sb.toString().trim());
+		return msg;
+	}
+	
+	
 }
