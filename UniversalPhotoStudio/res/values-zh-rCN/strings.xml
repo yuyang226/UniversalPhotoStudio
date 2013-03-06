@@ -38,8 +38,7 @@
     <!-- search menu items -->
     <string name="cmd_name_flickr_tag_search">Flickr标签搜索</string>
     <string name="cmd_name_ig_loc_search">Instagram:附近的照片</string>
-    <string name="ig_following">Following</string>
-    <string name="ig_follow">Follow</string>
+    <string name="cmd_name_500px_search">500px搜索</string>
 
     <!-- auth process -->
     <string name="fail_to_oauth">无法访问你的%s账户, 请重试</string>
@@ -160,6 +159,13 @@
     <string name="msg_flickr_tag_search_mode_or">或</string>
     <string name="msg_flickr_tag_search_in_common">搜索flickr commons项目</string>
     <string name="msg_flickr_tag_search_has_geo">包含地理位置信息</string>
+    
+    <!-- 500px search -->
+    <string name="msg_500px_search_title">500px搜索</string>
+    <string name="msg_500px_teram">关键词:</string>
+    <string name="msg_500px_tag">标签:</string>
+    <string name="msg_pls_input_term_and_tag">请输入关键词或标签进行搜索.</string>
+    
 
     <!-- help -->
     <string name="try_swipe_left">试试向左滑动</string>

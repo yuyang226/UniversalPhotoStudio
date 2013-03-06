@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="about_file_name">about.html</string>
@@ -37,8 +38,7 @@
     <!-- search menu items -->
     <string name="cmd_name_flickr_tag_search">Flickr Tag Search</string>
     <string name="cmd_name_ig_loc_search">Instagram: Nearby Photos</string>
-    <string name="ig_following">Following</string>
-    <string name="ig_follow">Follow</string>
+    <string name="cmd_name_500px_search">500px Search</string>
 
     <!-- auth process -->
     <string name="fail_to_oauth">Failed to access your %s account, please try
@@ -160,7 +160,13 @@
     <string name="msg_flickr_tag_search_mode_or">or</string>
     <string name="msg_flickr_tag_search_in_common">Search in Commons</string>
     <string name="msg_flickr_tag_search_has_geo">Has GEO information</string>
-
+    
+    <!-- 500px search -->
+    <string name="msg_500px_search_title">500px Search</string>
+    <string name="msg_500px_teram">Term:</string>
+    <string name="msg_500px_tag">Tags:</string>
+    <string name="msg_pls_input_term_and_tag">Please input either term or tag.</string>
+    
     <!-- help -->
     <string name="try_swipe_left">Try swipe left</string>
     <string name="try_swipe_right">Try swipe right</string>

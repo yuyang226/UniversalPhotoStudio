@@ -45,6 +45,7 @@ public abstract class AbstractPx500PhotoListCommand extends PhotoListCommand {
 		}
 		if( adapterClass == PhotoCategory.class ) {
 			return mPhotoCategory;
+			//if a sub-class does not want to show the photo category, just return null
 		}
 		return super.getAdapter(adapterClass);
 	}

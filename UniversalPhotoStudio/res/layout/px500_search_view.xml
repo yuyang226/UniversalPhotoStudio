@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    android:padding="10dp" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="left|center_vertical"
+        android:background="@color/photo_detail_vp_indicator_bg"
+        android:gravity="center"
+        android:text="@string/msg_500px_search_title"
+        android:textColor="@color/search_panel_bg" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/msg_500px_teram" />
+
+    <EditText
+        android:id="@+id/txt_500px_term"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/search_panel_bg"
+        android:ems="10"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:selectAllOnFocus="true" >
+
+        <requestFocus />
+    </EditText>
+
+     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/msg_500px_tag" />
+     
+     <EditText
+        android:id="@+id/txt_500px_tag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/search_panel_bg"
+        android:ems="10"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:selectAllOnFocus="true" >
+    </EditText>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_cancel_search"
+            style="@style/PicornerButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+            android:text="@android:string/cancel" />
+
+        <Button
+            android:id="@+id/btn_search"
+            style="@style/PicornerButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_search"
+            android:text="@android:string/search_go" />
+    </LinearLayout>
+
+</LinearLayout>
