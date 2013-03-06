@@ -1,7 +1,7 @@
 2.1.3
-1, 500px category support;
+1, 500px photo category support;
 2, i18n for Simplified Chinese;
-3, sort 500px my favorites according to favorite time;
+3, sort 500px my favorites according to the time you marked it as favorite;
 4, 500px term and tag search
 
 2.1.2
