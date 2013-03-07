@@ -163,14 +163,6 @@ public class PicornerApplication extends Application {
 		return value;
 	}
 
-	public String getInstagramUserId() {
-		return getSharedPreferenceValue(IConstants.IG_USER_ID, null);
-	}
-
-	public String getInstagramUserBuddyIconUrl() {
-		return getSharedPreferenceValue(IConstants.IG_USER_BUDDY_ICON_URL, null);
-	}
-
 	public Token getInstagramAuthToken() {
 		String token = getSharedPreferenceValue(IConstants.IG_AUTH_TOKEN, null);
 		if (token == null) {
@@ -232,7 +224,7 @@ public class PicornerApplication extends Application {
 				result = a.getUserId().equals(SPUtil.getFlickrUserId(getApplicationContext()));
 				break;
 			case INSTAGRAM:
-				result = a.getUserId().equals(getInstagramUserId());
+				result = a.getUserId().equals(SPUtil.getInstagramUserId(getApplicationContext()));
 				break;
 			case PX500:
 				Author me = getPxUserProfile();

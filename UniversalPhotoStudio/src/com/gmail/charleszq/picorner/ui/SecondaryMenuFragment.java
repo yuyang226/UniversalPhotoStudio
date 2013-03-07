@@ -197,7 +197,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 			accountReady = true;
 		}
 
-		if (app.getInstagramUserId() != null) {
+		if (SPUtil.getInstagramUserId(getActivity()) != null) {
 			command = new InstagramFollowingPhotosCommand(getActivity());
 			commands.add(command);
 			accountReady = true;

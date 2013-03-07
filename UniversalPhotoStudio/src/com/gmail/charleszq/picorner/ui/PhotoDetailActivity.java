@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.dp.IPhotosProvider;
@@ -156,15 +155,15 @@ public class PhotoDetailActivity extends FragmentActivity {
 	private boolean canClickUserAvator(Author author) {
 		boolean result = true;
 
-		PicornerApplication app = (PicornerApplication) getApplication();
 		switch (mCurrentPhoto.getMediaSource()) {
 		case INSTAGRAM:
-			if (app.getInstagramUserId() == null) {
+			String instagramUserId = SPUtil.getInstagramUserId(this);
+			if (instagramUserId == null) {
 				Toast.makeText(this, getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();
 				result = false;
 			} else {
-				if (app.getInstagramUserId().equals(author.getUserId())) {
+				if (instagramUserId.equals(author.getUserId())) {
 					Toast.makeText(this,
 							getString(R.string.msg_your_own_photo),
 							Toast.LENGTH_SHORT).show();

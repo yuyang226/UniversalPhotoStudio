@@ -17,6 +17,7 @@ import android.util.Log;
 
 import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.PicornerApplication;
+import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
 import com.gmail.charleszq.picorner.task.AbstractContextAwareTask;
 import com.gmail.charleszq.picorner.utils.IConstants;
@@ -37,7 +38,7 @@ public class InstagramGetFollowingListTask extends
 	protected List<Author> doInBackground(Void... params) {
 		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
 				.getApplication();
-		String igUserId = app.getInstagramUserId();
+		String igUserId = SPUtil.getInstagramUserId(mContext);
 		AdvancedInstagram ig = InstagramHelper.getInstance()
 				.getAuthedInstagram(app.getInstagramAuthToken());
 		List<Author> users = new ArrayList<Author>();

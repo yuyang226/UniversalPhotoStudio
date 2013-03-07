@@ -16,7 +16,6 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.github.yuyang226.j500px.users.User;
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.R;
 import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.Author;
@@ -208,10 +207,8 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		// now we have the user information, we need to check the relationship.
-		PicornerApplication app = (PicornerApplication) getActivity()
-				.getApplication();
 		if (mMediaSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
-			if (app.getInstagramUserId() == null) {
+			if (SPUtil.getInstagramUserId(getActivity()) == null) {
 				mShowFollowMenuItem = false;
 				getActivity().invalidateOptionsMenu();
 			} else {

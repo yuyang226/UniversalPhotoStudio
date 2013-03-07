@@ -322,9 +322,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 
 			commands.add(command);
 
-			PicornerApplication app = (PicornerApplication) getActivity()
-					.getApplication();
-			String myUserId = app.getInstagramUserId();
+			String myUserId = SPUtil.getInstagramUserId(getActivity());
 			Author a = new Author();
 			a.setUserId(myUserId);
 			command = new InstagramUserPhotosCommand(ctx, a) {

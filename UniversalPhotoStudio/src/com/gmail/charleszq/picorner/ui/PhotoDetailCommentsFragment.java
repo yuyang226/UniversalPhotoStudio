@@ -156,8 +156,8 @@ public class PhotoDetailCommentsFragment extends
 			a.setUserName(SPUtil.getFlickrUserName(getActivity()));
 			break;
 		case INSTAGRAM:
-			a.setUserId(String.valueOf(app.getInstagramUserId()));
-			a.setBuddyIconUrl(app.getInstagramUserBuddyIconUrl());
+			a.setUserId(String.valueOf(SPUtil.getInstagramUserId(getActivity())));
+			a.setBuddyIconUrl(SPUtil.getInstagramUserBuddyIconUrl(getActivity()));
 			break;
 		case PX500:
 			Author pxProfile = app.getPxUserProfile();
@@ -230,14 +230,12 @@ public class PhotoDetailCommentsFragment extends
 
 	private boolean isUserLoggedIn() {
 		boolean result = false;
-		PicornerApplication app = (PicornerApplication) getActivity()
-				.getApplication();
 		switch (mCurrentPhoto.getMediaSource()) {
 		case FLICKR:
 			result = SPUtil.isFlickrAuthed(getActivity());
 			break;
 		case INSTAGRAM:
-			result = app.getInstagramUserId() != null;
+			result = SPUtil.getInstagramUserId(getActivity()) != null;
 			break;
 		case PX500:
 			result = SPUtil.getPx500OauthToken(getActivity()) != null;

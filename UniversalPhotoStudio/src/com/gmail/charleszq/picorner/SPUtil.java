@@ -108,4 +108,12 @@ public final class SPUtil {
 		return getSharedPreferences(ctx).getString(
 				IConstants.PX500_OAUTH_TOKEN_SECRET_KEY, null);
 	}
+
+	public static String getInstagramUserId(Context ctx) {
+		return getSharedPreferences(ctx).getString(IConstants.IG_USER_ID, null);
+	}
+	
+	public static String getInstagramUserBuddyIconUrl(Context ctx) {
+		return getSharedPreferences(ctx).getString(IConstants.IG_USER_BUDDY_ICON_URL, null);
+	}
 }

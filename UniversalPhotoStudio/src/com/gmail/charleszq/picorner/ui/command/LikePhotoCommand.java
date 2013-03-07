@@ -3,10 +3,8 @@
  */
 package com.gmail.charleszq.picorner.ui.command;
 
-import android.app.Activity;
 import android.content.Context;
 
-import com.gmail.charleszq.picorner.PicornerApplication;
 import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.task.flickr.FlickrLikeTask;
@@ -33,8 +31,6 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 		}
 		MediaObject photo = (MediaObject) params[0];
 
-		PicornerApplication app = (PicornerApplication) ((Activity) mContext)
-				.getApplication();
 		switch (photo.getMediaSource()) {
 		case FLICKR:
 			if (!SPUtil.isFlickrAuthed(mContext)) {
@@ -45,7 +41,7 @@ public class LikePhotoCommand extends AbstractCommand<Boolean> {
 			task.execute(photo.getId());
 			break;
 		case INSTAGRAM:
-			if (app.getInstagramUserId() == null) {
+			if (SPUtil.getInstagramUserId(mContext) == null) {
 				return false;
 			}
 			InstagramLikePhotoTask igLikeTask = new InstagramLikePhotoTask(

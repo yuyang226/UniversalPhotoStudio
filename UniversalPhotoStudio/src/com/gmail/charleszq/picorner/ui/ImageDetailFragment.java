@@ -350,8 +350,6 @@ public class ImageDetailFragment extends Fragment implements
 		ProgressBar pb = new ProgressBar(getActivity());
 		item.setActionView(pb);
 
-		PicornerApplication app = (PicornerApplication) getActivity()
-				.getApplication();
 		switch (mPhoto.getMediaSource()) {
 		case PX500:
 			if (SPUtil.getPx500OauthTokenSecret(getActivity()) == null) {
@@ -370,7 +368,7 @@ public class ImageDetailFragment extends Fragment implements
 			}
 			break;
 		case INSTAGRAM:
-			if (app.getInstagramUserId() == null) {
+			if (SPUtil.getInstagramUserId(getActivity()) == null) {
 				Toast.makeText(getActivity(),
 						getString(R.string.pls_sing_in_first),
 						Toast.LENGTH_SHORT).show();
