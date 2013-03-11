@@ -28,8 +28,13 @@ public class PxUserPhotosService extends AbstractPxPhotoListService {
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
 		J500px px = getJ500px();
-		List<Photo> photos = px.getPhotosInterface().getUserPhotos(GlobalFeatures.USER,
-				mUserId, null, null, PhotoCategory.Uncategorized.equals(mPhotoCategory) ? null : mPhotoCategory, null, ImageSize.LARGEST, pageNo + 1,
+		List<Photo> photos = px.getPhotosInterface().getUserPhotos(
+				GlobalFeatures.USER,
+				mUserId,
+				null,
+				null,
+				PhotoCategory.Uncategorized.equals(mPhotoCategory) ? null
+						: mPhotoCategory, null, ImageSize.LARGEST, pageNo + 1,
 				pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}

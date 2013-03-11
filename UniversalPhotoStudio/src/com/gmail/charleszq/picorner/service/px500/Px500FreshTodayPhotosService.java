@@ -14,7 +14,7 @@ import com.gmail.charleszq.picorner.utils.ModelUtils;
 
 /**
  * @author charles(charleszq@gmail.com)
- *
+ * 
  */
 public class Px500FreshTodayPhotosService extends AbstractPxPhotoListService {
 
@@ -30,8 +30,10 @@ public class Px500FreshTodayPhotosService extends AbstractPxPhotoListService {
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
 		J500px px = getJ500px();
-		List<Photo> photos = px.getPhotosInterface().getPhotos(GlobalFeatures.FRESH_TODAY, 
-				null, mPhotoCategory, null, new ImageSize[]{ImageSize.LARGEST}, null, false, false, false, pageNo + 1, pageSize);
+		List<Photo> photos = px.getPhotosInterface().getPhotos(
+				GlobalFeatures.FRESH_TODAY, null, mPhotoCategory, null,
+				new ImageSize[] { ImageSize.LARGE, ImageSize.LARGEST }, null,
+				false, false, false, pageNo + 1, pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 
