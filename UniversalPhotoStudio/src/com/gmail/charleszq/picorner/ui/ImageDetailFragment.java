@@ -398,9 +398,10 @@ public class ImageDetailFragment extends Fragment implements
 							mUserLikeThePhoto);
 					MessageBus.broadcastMessage(msg);
 				} else {
-					Toast.makeText(getActivity(),
-							getString(R.string.msg_like_photo_fail),
-							Toast.LENGTH_SHORT).show();
+					if (getActivity() != null)
+						Toast.makeText(getActivity(),
+								getString(R.string.msg_like_photo_fail),
+								Toast.LENGTH_SHORT).show();
 				}
 			}
 		};

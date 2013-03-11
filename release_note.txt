@@ -1,3 +1,6 @@
+2.1.4
+1, 500px phot grid performance tunning;
+
 2.1.3
 1, 500px photo category support;
 2, i18n for Simplified Chinese;

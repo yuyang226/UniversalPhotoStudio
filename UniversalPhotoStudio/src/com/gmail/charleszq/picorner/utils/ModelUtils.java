@@ -48,7 +48,7 @@ import com.googlecode.flickrjandroid.tags.Tag;
  * 
  */
 public final class ModelUtils {
-	
+
 	private static final String TAG = ModelUtils.class.getSimpleName();
 
 	private static MediaObject convertFlickrPhoto(Photo p) {
@@ -60,12 +60,12 @@ public final class ModelUtils {
 		if (size == null) {
 			size = photo.getMediumSize();
 			if (size != null) {
-				if( BuildConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Use medium url: " + photo.getMediumUrl()); //$NON-NLS-1$
 				return photo.getMediumUrl();
 			}
 		} else {
-			if( BuildConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Use large url: " + photo.getLargeUrl()); //$NON-NLS-1$
 			return photo.getLargeUrl();
 		}
@@ -332,9 +332,17 @@ public final class ModelUtils {
 			com.github.yuyang226.j500px.photos.Photo p) {
 		MediaObject photo = new MediaObject();
 		photo.setId(String.valueOf(p.getId()));
-		photo.setThumbUrl(p.getImageUrl());
+
+		int length = p.getImageUrls().size();
+		if (length > 1) {
+			photo.setThumbUrl(p.getImageUrls().get(0).getImageUrl());
+		} else {
+			photo.setThumbUrl(p.getImageUrl());
+		}
 		if (!p.getImageUrls().isEmpty()) {
-			photo.setLargeUrl(p.getImageUrls().get(0).getImageUrl());
+			photo.setLargeUrl(p.getImageUrls().get(length - 1).getImageUrl());
+		} else {
+			photo.setLargeUrl(photo.getThumbUrl());
 		}
 		photo.setTitle(p.getName());
 
@@ -423,9 +431,9 @@ public final class ModelUtils {
 		}
 		return photo;
 	}
-	
+
 	private static String replaceNullInExif(String value) {
-		if( "null".equals(value.toLowerCase().trim())) //$NON-NLS-1$
+		if ("null".equals(value.toLowerCase().trim())) //$NON-NLS-1$
 		{
 			value = ""; //$NON-NLS-1$
 		}

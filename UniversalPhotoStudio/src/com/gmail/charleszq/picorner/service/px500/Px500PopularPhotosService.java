@@ -32,7 +32,7 @@ public class Px500PopularPhotosService extends AbstractPxPhotoListService {
 		J500px px = getJ500px();
 		List<Photo> photos = px.getPhotosInterface().getPhotos(
 				GlobalFeatures.POPULAR, null, mPhotoCategory, null,
-				new ImageSize[]{ImageSize.LARGEST}, null, false, false, false, pageNo + 1, pageSize);
+				new ImageSize[]{ImageSize.LARGE, ImageSize.LARGEST}, null, false, false, false, pageNo + 1, pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 
