@@ -74,7 +74,6 @@ public class FlickrGroupInfoDialog extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setProgressBarIndeterminateVisibility(true);
 		setContentView(R.layout.flickr_group_info);
 
 		Intent intent = getIntent();
@@ -109,7 +108,6 @@ public class FlickrGroupInfoDialog extends Activity {
 				onGroupInfoFetch(result);
 			}
 		});
-		this.setProgressBarIndeterminate(true);
 		task.execute(mGroupId);
 
 	}
@@ -125,7 +123,6 @@ public class FlickrGroupInfoDialog extends Activity {
 				ModelUtils.formatHtmlString(result.getRules(), mRules);
 			}
 		}
-		this.setProgressBarIndeterminate(false);
 	}
 
 }
