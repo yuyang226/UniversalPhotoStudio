@@ -46,8 +46,9 @@ public class PxMyFavPhotosService extends AbstractPxPhotoListService {
 				null,
 				SearchSort.CREATED_AT,
 				PhotoCategory.Uncategorized.equals(mPhotoCategory) ? null
-						: mPhotoCategory, null, ImageSize.LARGEST, pageNo + 1,
-				pageSize);
+						: mPhotoCategory, null,
+				new ImageSize[] { ImageSize.LARGE, ImageSize.LARGEST },
+				pageNo + 1, pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 

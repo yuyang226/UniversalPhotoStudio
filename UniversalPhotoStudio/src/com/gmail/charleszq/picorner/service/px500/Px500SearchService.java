@@ -40,7 +40,8 @@ public class Px500SearchService extends AbstractPxPhotoListService {
 		J500px px = this.getJ500px();
 		PhotosInterface pi = px.getPhotosInterface();
 		List<Photo> photos = pi.searchPhotos(mTerm, mTag, false,
-				ImageSize.LARGEST, pageNo + 1, pageSize);
+				new ImageSize[] { ImageSize.LARGE, ImageSize.LARGEST },
+				pageNo + 1, pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 

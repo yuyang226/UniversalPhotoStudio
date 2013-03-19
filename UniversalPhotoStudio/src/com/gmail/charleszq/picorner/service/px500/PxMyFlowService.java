@@ -14,7 +14,7 @@ import com.gmail.charleszq.picorner.utils.ModelUtils;
 
 /**
  * @author charles(charleszq@gmail.com)
- *
+ * 
  */
 public class PxMyFlowService extends AbstractPxPhotoListService {
 
@@ -24,21 +24,25 @@ public class PxMyFlowService extends AbstractPxPhotoListService {
 	 * constructor.
 	 */
 	public PxMyFlowService(String token, String secret, String userId) {
-		super(token,secret);
+		super(token, secret);
 		this.mUserId = userId;
 	}
 
-
-	/* (non-Javadoc)
-	 * @see com.gmail.charleszq.picorner.service.IPhotoService#getPhotos(int, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.gmail.charleszq.picorner.service.IPhotoService#getPhotos(int,
+	 * int)
 	 */
 	@Override
 	public MediaObjectCollection getPhotos(int pageSize, int pageNo)
 			throws Exception {
 		J500px px = getJ500px();
 		List<Photo> photos = px.getPhotosInterface().getUserPhotos(
-				GlobalFeatures.USER_FRIENDS, mUserId, null, null, mPhotoCategory, null,
-				ImageSize.LARGEST, pageNo + 1, pageSize);
+				GlobalFeatures.USER_FRIENDS, mUserId, null, null,
+				mPhotoCategory, null,
+				new ImageSize[] { ImageSize.LARGE, ImageSize.LARGEST },
+				pageNo + 1, pageSize);
 		return ModelUtils.convertPx500Photos(photos);
 	}
 
