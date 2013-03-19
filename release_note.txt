@@ -1,3 +1,7 @@
+2.1.5
+1, big picture rss supported, experimental;
+2, put a flickr photo into my gallery;
+
 2.1.4
 1, 500px phot grid performance tunning;
 

@@ -172,6 +172,8 @@
     <string name="try_swipe_left">Try swipe left</string>
     <string name="try_swipe_right">Try swipe right</string>
     <string name="cmd_help_label">Help</string>
+    <string name="cmd_labs_label">Labs</string>
+    <string name="cmd_big_picture">Big Picture</string>
 
     <!-- Command descritions -->
     <!-- flickr -->

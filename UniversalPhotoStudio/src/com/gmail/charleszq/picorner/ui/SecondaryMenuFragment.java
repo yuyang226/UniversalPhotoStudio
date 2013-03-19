@@ -45,6 +45,7 @@ import com.gmail.charleszq.picorner.ui.command.ig.InstagramFollowingPhotosComman
 import com.gmail.charleszq.picorner.ui.command.ig.InstagramSearchNearPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.Px500FriendPhotosCommand;
 import com.gmail.charleszq.picorner.ui.command.px500.TermTagSearchCommand;
+import com.gmail.charleszq.picorner.ui.command.rss.BigPictureRssCommand;
 import com.gmail.charleszq.picorner.ui.helper.CommandSectionListAdapter;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView;
 import com.gmail.charleszq.picorner.ui.helper.IHiddenView.IHiddenViewActionListener;
@@ -208,6 +209,12 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 					getString(R.string.menu_header_friends));
 			commands.add(index, command);
 		}
+		
+		//labs
+		command = new MenuSectionHeaderCommand(getActivity(), getString(R.string.cmd_labs_label)); 
+		commands.add(command);
+		command = new BigPictureRssCommand(getActivity());
+		commands.add(command);
 
 		// help & about
 		command = new MenuSectionHeaderCommand(getActivity(),

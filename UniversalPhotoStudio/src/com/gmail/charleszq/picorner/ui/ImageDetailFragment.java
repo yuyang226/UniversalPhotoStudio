@@ -527,6 +527,7 @@ public class ImageDetailFragment extends Fragment implements
 		MenuItem commentItem = menu.findItem(R.id.menu_item_comment);
 		MenuItem mapItem = menu.findItem(R.id.menu_item_view_on_map);
 		MenuItem exifItem = menu.findItem(R.id.menu_item_view_exif);
+		MenuItem detailItem = menu.findItem(R.id.menu_item_detail);
 
 		PicornerApplication app = (PicornerApplication) getActivity()
 				.getApplication();
@@ -546,6 +547,14 @@ public class ImageDetailFragment extends Fragment implements
 			commentItem.setVisible(false);
 			exifItem.setVisible(false);
 			menu.setGroupVisible(R.id.group_my_flickr_photo, false);
+			break;
+		case RSS:
+			menu.setGroupVisible(R.id.group_my_flickr_photo, false);
+			likeItem.setVisible(false);
+			exifItem.setVisible(false);
+			commentItem.setVisible(false);
+			ownerPhotoItem.setVisible(false);
+			detailItem.setVisible(false);
 			break;
 		}
 

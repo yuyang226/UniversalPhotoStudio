@@ -8,5 +8,5 @@ package com.gmail.charleszq.picorner.model;
  * 
  */
 public enum MediaSourceType {
-	FLICKR, INSTAGRAM, PX500
+	FLICKR, INSTAGRAM, PX500, RSS
 }

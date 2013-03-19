@@ -171,6 +171,8 @@
     <string name="try_swipe_left">试试向左滑动</string>
     <string name="try_swipe_right">试试向右滑动</string>
     <string name="cmd_help_label">帮助</string>
+    <string name="cmd_labs_label">实验室</string>
+    <string name="cmd_big_picture">Big Picture</string>
 
     <!-- Command descritions -->
     <!-- flickr -->
