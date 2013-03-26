@@ -63,6 +63,12 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	private CommandSectionListAdapter mSectionAdapter;
 
 	private ProgressDialog mProgressDialog;
+	
+	/**
+	 * Records the latest command user clicks, then when the command finishes, we know
+	 * which one to load.
+	 */
+	private ICommand<?> mCurrentCommand;
 
 	/**
 	 * The listener to cancel the hidden view.
@@ -94,6 +100,8 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 		@Override
 		public void onCommandDone(ICommand<Object> command, Object t) {
+			if( command != mCurrentCommand )
+				return;
 			MainSlideMenuActivity act = (MainSlideMenuActivity) SecondaryMenuFragment.this
 					.getActivity();
 			if (act == null) {
@@ -265,6 +273,9 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 							.getString(R.string.loading_photos));
 			mProgressDialog.setCanceledOnTouchOutside(true);
 		}
+		if( mCurrentCommand != null )
+			mCurrentCommand.cancel();
+		mCurrentCommand = command;
 		command.setCommndDoneListener(mCommandDoneListener);
 		command.execute(params);
 		// close the menu.

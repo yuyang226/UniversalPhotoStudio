@@ -95,6 +95,12 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 	private ProgressDialog mProgressDialog = null;
 	private FrameLayout mBackViewContainer;
 	private ListView mListView;
+	
+	/**
+	 * Records the latest command user clicks, then when the command finishes, we know
+	 * which one to load.
+	 */
+	private ICommand<?> mCurrentCommand;
 
 	/**
 	 * The command done listener
@@ -103,6 +109,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 
 		@Override
 		public void onCommandDone(ICommand<Object> command, Object t) {
+			if( command != mCurrentCommand )
+				return;
+			
 			MainSlideMenuActivity act = (MainSlideMenuActivity) MainMenuFragment.this
 					.getActivity();
 			if (act == null) {
@@ -225,6 +234,9 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 	}
 	
 	private void doPhotoListCommand(ICommand<Object> cmd) {
+		if( mCurrentCommand != null )
+			mCurrentCommand.cancel();
+		this.mCurrentCommand = cmd;
 		cmd.setCommndDoneListener(mCommandDoneListener);
 		cmd.execute();
 		if (PhotoListCommand.class.isInstance(cmd)) {
