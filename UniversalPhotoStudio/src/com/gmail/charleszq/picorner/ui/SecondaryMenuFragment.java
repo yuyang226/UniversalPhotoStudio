@@ -4,6 +4,7 @@
 package com.gmail.charleszq.picorner.ui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import android.animation.Animator;
@@ -69,6 +70,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	 * which one to load.
 	 */
 	private ICommand<?> mCurrentCommand;
+	private Object mCommandComparator;
 
 	/**
 	 * The listener to cancel the hidden view.
@@ -100,8 +102,23 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 
 		@Override
 		public void onCommandDone(ICommand<Object> command, Object t) {
-			if( command != mCurrentCommand )
+
+			if (mProgressDialog != null && mProgressDialog.isShowing()) {
+				try {
+					mProgressDialog.cancel();
+				} catch (Exception e) {
+				}
+			}
+			
+			if (command != mCurrentCommand)
 				return;
+			else {
+				Object comparator = command.getAdapter(Comparator.class);
+				if (comparator != null && mCommandComparator != null
+						&& comparator != mCommandComparator)
+					return;
+			}
+			
 			MainSlideMenuActivity act = (MainSlideMenuActivity) SecondaryMenuFragment.this
 					.getActivity();
 			if (act == null) {
@@ -113,12 +130,6 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 			if (act != null)
 				act.onCommandDone(command, t);
 
-			if (mProgressDialog != null && mProgressDialog.isShowing()) {
-				try {
-					mProgressDialog.cancel();
-				} catch (Exception e) {
-				}
-			}
 		}
 	};
 
@@ -246,6 +257,13 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		ICommand<Object> command = (ICommand<Object>) parent.getAdapter()
 				.getItem(position);
 		Context ctx = (Context) command.getAdapter(Context.class);
+		
+		//save the current command
+		if( mCurrentCommand != null )
+			mCurrentCommand.cancel();
+		mCurrentCommand = command;
+		mCommandComparator = mCurrentCommand.getAdapter(Comparator.class);
+		
 
 		IHiddenView hiddenView = (IHiddenView) command
 				.getAdapter(IHiddenView.class);
@@ -273,9 +291,7 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 							.getString(R.string.loading_photos));
 			mProgressDialog.setCanceledOnTouchOutside(true);
 		}
-		if( mCurrentCommand != null )
-			mCurrentCommand.cancel();
-		mCurrentCommand = command;
+		
 		command.setCommndDoneListener(mCommandDoneListener);
 		command.execute(params);
 		// close the menu.

@@ -4,6 +4,7 @@
 package com.gmail.charleszq.picorner.ui;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.jinstagram.auth.model.Token;
@@ -89,18 +90,20 @@ import com.googlecode.flickrjandroid.people.User;
  * 
  */
 @SuppressLint("DefaultLocale")
-public class MainMenuFragment extends AbstractFragmentWithImageFetcher implements IMessageConsumer  {
+public class MainMenuFragment extends AbstractFragmentWithImageFetcher
+		implements IMessageConsumer {
 
 	private CommandSectionListAdapter mSectionAdapter;
 	private ProgressDialog mProgressDialog = null;
 	private FrameLayout mBackViewContainer;
 	private ListView mListView;
-	
+
 	/**
-	 * Records the latest command user clicks, then when the command finishes, we know
-	 * which one to load.
+	 * Records the latest command user clicks, then when the command finishes,
+	 * we know which one to load.
 	 */
 	private ICommand<?> mCurrentCommand;
+	private Object mCommandComparator;
 
 	/**
 	 * The command done listener
@@ -109,9 +112,23 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 
 		@Override
 		public void onCommandDone(ICommand<Object> command, Object t) {
-			if( command != mCurrentCommand )
-				return;
+			if (mProgressDialog != null && mProgressDialog.isShowing()) {
+				try {
+					mProgressDialog.cancel();
+				} catch (Exception ex) {
+					// do nothing.
+				}
+			}
 			
+			if (command != mCurrentCommand)
+				return;
+			else {
+				Object comparator = command.getAdapter(Comparator.class);
+				if (comparator != null && mCommandComparator != null
+						&& comparator != mCommandComparator)
+					return;
+			}
+
 			MainSlideMenuActivity act = (MainSlideMenuActivity) MainMenuFragment.this
 					.getActivity();
 			if (act == null) {
@@ -125,13 +142,6 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 			}
 			if (act != null)
 				act.onCommandDone(command, t);
-			if (mProgressDialog != null && mProgressDialog.isShowing()) {
-				try {
-					mProgressDialog.cancel();
-				} catch (Exception ex) {
-					// do nothing.
-				}
-			}
 		}
 
 	};
@@ -202,6 +212,13 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 				@SuppressWarnings("unchecked")
 				ICommand<Object> command = (ICommand<Object>) adapter
 						.getItem(pos);
+				
+				// cancel the previous command and save the clicked one.
+				if (mCurrentCommand != null)
+					mCurrentCommand.cancel();
+				mCurrentCommand = command;
+				mCommandComparator = mCurrentCommand.getAdapter(Comparator.class);
+				
 				Context ctx = (Context) command.getAdapter(Context.class);
 
 				IHiddenView hiddenView = (IHiddenView) command
@@ -232,22 +249,15 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 		});
 		return v;
 	}
-	
+
 	private void doPhotoListCommand(ICommand<Object> cmd) {
-		if( mCurrentCommand != null )
-			mCurrentCommand.cancel();
-		this.mCurrentCommand = cmd;
 		cmd.setCommndDoneListener(mCommandDoneListener);
 		cmd.execute();
 		if (PhotoListCommand.class.isInstance(cmd)) {
-			Message msg = new Message(Message.CANCEL_COMMAND, null,
-					null, cmd);
+			Message msg = new Message(Message.CANCEL_COMMAND, null, null, cmd);
 			MessageBus.broadcastMessage(msg);
-			mProgressDialog = ProgressDialog.show(
-					getActivity(),
-					"", //$NON-NLS-1$
-					getActivity().getString(
-							R.string.loading_photos));
+			mProgressDialog = ProgressDialog.show(getActivity(), "", //$NON-NLS-1$
+					getActivity().getString(R.string.loading_photos));
 			mProgressDialog.setCancelable(true);
 		}
 	}
@@ -290,7 +300,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 			public void onAnimationEnd(Animator animation) {
 				mListView.setVisibility(View.INVISIBLE);
 			}
-			
+
 		});
 		set.start();
 	}
@@ -659,7 +669,7 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 
 	@Override
 	public boolean consumeMessage(Message msg) {
-		if( msg.getMessageType() == Message.PX500_CHG_CAT) {
+		if (msg.getMessageType() == Message.PX500_CHG_CAT) {
 			@SuppressWarnings("unchecked")
 			ICommand<Object> cmd = (ICommand<Object>) msg.getCoreData();
 			doPhotoListCommand(cmd);
@@ -673,7 +683,5 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher implement
 		super.onDetach();
 		MessageBus.removeConsumer(this);
 	}
-	
-	
 
 }
