@@ -672,6 +672,13 @@ public class MainMenuFragment extends AbstractFragmentWithImageFetcher
 		if (msg.getMessageType() == Message.PX500_CHG_CAT) {
 			@SuppressWarnings("unchecked")
 			ICommand<Object> cmd = (ICommand<Object>) msg.getCoreData();
+			
+			// cancel the previous command and save the clicked one.
+			if (mCurrentCommand != null)
+				mCurrentCommand.cancel();
+			mCurrentCommand = cmd;
+			mCommandComparator = mCurrentCommand.getAdapter(Comparator.class);
+			
 			doPhotoListCommand(cmd);
 			return true;
 		}
