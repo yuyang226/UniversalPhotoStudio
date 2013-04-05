@@ -4,7 +4,6 @@
 package com.gmail.charleszq.picorner.ui;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import android.animation.Animator;
@@ -70,7 +69,6 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 	 * which one to load.
 	 */
 	private ICommand<?> mCurrentCommand;
-	private Object mCommandComparator;
 
 	/**
 	 * The listener to cancel the hidden view.
@@ -112,12 +110,6 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 			
 			if (command != mCurrentCommand)
 				return;
-			else {
-				Object comparator = command.getAdapter(Comparator.class);
-				if (comparator != null && mCommandComparator != null
-						&& comparator != mCommandComparator)
-					return;
-			}
 			
 			MainSlideMenuActivity act = (MainSlideMenuActivity) SecondaryMenuFragment.this
 					.getActivity();
@@ -262,7 +254,6 @@ public class SecondaryMenuFragment extends AbstractFragmentWithImageFetcher
 		if( mCurrentCommand != null )
 			mCurrentCommand.cancel();
 		mCurrentCommand = command;
-		mCommandComparator = mCurrentCommand.getAdapter(Comparator.class);
 		
 
 		IHiddenView hiddenView = (IHiddenView) command
