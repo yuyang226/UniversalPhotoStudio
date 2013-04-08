@@ -118,14 +118,8 @@
             android:permission="android.permission.INTERNET" >
             <intent-filter>
                 <action android:name="android.service.dreams.DreamService" />
-
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
-
-            <meta-data
-                android:name="android.service.dream"
-                android:resource="@xml/dream_setting" >
-            </meta-data>
         </service>
 
         <activity android:name=".ui.SettingsActivity" >

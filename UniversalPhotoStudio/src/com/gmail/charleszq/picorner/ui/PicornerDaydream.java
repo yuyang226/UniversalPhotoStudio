@@ -39,19 +39,19 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 
 /**
- * @author charleszq
+ * @author charleszq@gmail.com
  * 
  */
 @TargetApi(17)
 public class PicornerDaydream extends DreamService {
 
-	private List<String>		mPhotoUrls;
-	private DisplayImageOptions	mImageDisplayOption			= null;
-	private ImageLoader			mImageLoader;
-	private ImageView			mImageView1, mImageView2;
-	private int					mCurrentShowingPhotoIndex	= 0;
-	private AnimatorSet			mAnimatorSet;
-	private ImageView			mFadeView, mInView;
+	private List<String> mPhotoUrls;
+	private DisplayImageOptions mImageDisplayOption = null;
+	private ImageLoader mImageLoader;
+	private ImageView mImageView1, mImageView2;
+	private int mCurrentShowingPhotoIndex = 0;
+	private AnimatorSet mAnimatorSet;
+	private ImageView mFadeView, mInView;
 
 	/*
 	 * (non-Javadoc)
@@ -173,23 +173,16 @@ public class PicornerDaydream extends DreamService {
 	private static class PhotoTask extends
 			AbstractGeneralTask<Void, Integer, List<String>> {
 
-		private Context	mContext;
+		private Context mContext;
 
 		PhotoTask(Context ctx) {
 			this.mContext = ctx;
 		}
 
-		private int getMainPhotoSource() {
-			SharedPreferences sp = mContext.getSharedPreferences(
-					IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
-			String src = sp.getString(IConstants.PREF_DAY_DREAM_MAIN_SRC, "0"); //$NON-NLS-1$
-			return Integer.parseInt(src);
-		}
-
 		private int getSecondaryPhotoSource() {
 			SharedPreferences sp = mContext.getSharedPreferences(
 					IConstants.DEF_PREF_NAME, Context.MODE_APPEND);
-			String src = sp.getString(IConstants.PREF_DAY_DREAM_SECONDARY_SRC,
+			String src = sp.getString(IConstants.PREF_DEFAULT_PHOTO_LIST,
 					"1"); //$NON-NLS-1$
 			return Integer.parseInt(src);
 		}
@@ -224,29 +217,24 @@ public class PicornerDaydream extends DreamService {
 
 		@Override
 		protected List<String> doInBackground(Void... params) {
-			int mainSource = getMainPhotoSource();
-			if (mainSource == 0) {
-				List<String> urls = new ArrayList<String>();
-				File[] files = mContext.getFilesDir().listFiles();
-				for (File f : files) {
-					String name = f.getName();
-					if (name.contains(".png")) { //$NON-NLS-1$
-						String url = Uri.fromFile(f).toString();
-						urls.add(url);
-						if (BuildConfig.DEBUG) {
-							Log.d(TAG, "foudn offline photo: " + url); //$NON-NLS-1$
-						}
+			List<String> urls = new ArrayList<String>();
+			File[] files = mContext.getFilesDir().listFiles();
+			for (File f : files) {
+				String name = f.getName();
+				if (name.contains(".png")) { //$NON-NLS-1$
+					String url = Uri.fromFile(f).toString();
+					urls.add(url);
+					if (BuildConfig.DEBUG) {
+						Log.d(TAG, "foudn offline photo: " + url); //$NON-NLS-1$
 					}
 				}
-
-				if (urls.isEmpty()) {
-					return getNetworkPhotos(getSecondaryPhotoSource());
-				} else
-					return urls;
-
-			} else {
-				return getNetworkPhotos(mainSource);
 			}
+
+			if (urls.isEmpty()) {
+				return getNetworkPhotos(getSecondaryPhotoSource());
+			} else
+				return urls;
+
 		}
 
 		private List<String> getNetworkPhotos(int which) {

@@ -1,3 +1,7 @@
+2.1.7
+1, Simplify the daydream settings, now try using offline photos first, if no photos downloaded, then goes to the default photo list;
+2, bug fixes.
+
 2.1.6
 1, Bug fix: photo list messed up bug fix;
 

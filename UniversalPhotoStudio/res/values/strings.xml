@@ -265,13 +265,6 @@
     <string name="photo_grid_max_size">Photo grid size</string>
     <string name="photo_grid_max_size">Max photo grid size</string>
     <string name="summary_photo_grid_max_size">The maxinum photos to be shown in the photo grid, large size might impact the performance.</string>
-    <string name="pref_cat_day_dream">Daydream</string>
-    <string name="pref_daydream_main_src_dlg_title">Primary Photo Source</string>
-    <string name="pref_daydream_main_src">Main Photo Source</string>
-    <string name="summary_pref_daydream_main_src">The main photo source</string>
-    <string name="pref_daydream_secondary_src_dlg_title">Secondary Photo Source</string>
-    <string name="pref_daydream_secondary_src">Secondary Photo Source</string>
-    <string name="summary_pref_daydream_secondary_src">Secondary photo source will be used if you set offline photos as the main source, but there are no offline photos downloaded yet.</string>
 	<string name="pref_default_photo_list">Default photo list</string>
 	<string name="summary_pref_default_photo_list">When app starts, which photo list to load by default.</string>
 </resources>
