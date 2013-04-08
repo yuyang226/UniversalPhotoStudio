@@ -213,9 +213,14 @@ public class OrganizeMyFlickrPhotoFragment extends
 									Toast.LENGTH_SHORT).show();
 							return;
 						}
-						CreatePhotoSetTask t = new CreatePhotoSetTask(getActivity());
+						CreatePhotoSetTask t = new CreatePhotoSetTask(
+								getActivity());
 						t.execute(name, mCurrentPhoto.getId());
-						dlg.dismiss();
+						try {
+							dlg.dismiss();
+						} catch (Exception e) {
+
+						}
 					}
 				});
 			}

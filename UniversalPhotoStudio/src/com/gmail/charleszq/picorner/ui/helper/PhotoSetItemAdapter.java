@@ -336,7 +336,8 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 								public void onClick(View v) {
 									String foldername = editPath.getText()
 											.toString();
-									boolean overwrite = overwriteCheckBox.isChecked();
+									boolean overwrite = overwriteCheckBox
+											.isChecked();
 									if (foldername == null
 											|| foldername.trim().length() == 0) {
 										Toast.makeText(
@@ -345,7 +346,7 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 												Toast.LENGTH_SHORT).show();
 										return;
 									}
-									//notify the service to export photos
+									// notify the service to export photos
 									Intent exportPhotos = new Intent(mContext,
 											OfflineHandleService.class);
 									exportPhotos
@@ -356,10 +357,20 @@ public class PhotoSetItemAdapter extends PhotoCollectionItemAdapter {
 											.putExtra(
 													IOfflineViewParameter.OFFLINE_PARAM_INTENT_ADD_REMOVE_REFRESH_KEY,
 													OfflineHandleService.EXPORT_OFFLINE_PHOTO_PARAM);
-									exportPhotos.putExtra(IOfflineViewParameter.OFFLINE_EXPORT_FOLDER_NAME_KEY, foldername);
-									exportPhotos.putExtra(IOfflineViewParameter.OFFLINE_EXPORT_OVERWRITE_KEY, overwrite);
+									exportPhotos
+											.putExtra(
+													IOfflineViewParameter.OFFLINE_EXPORT_FOLDER_NAME_KEY,
+													foldername);
+									exportPhotos
+											.putExtra(
+													IOfflineViewParameter.OFFLINE_EXPORT_OVERWRITE_KEY,
+													overwrite);
 									mContext.startService(exportPhotos);
-									dlg.dismiss();
+									try {
+										dlg.dismiss();
+									} catch (Exception e) {
+
+									}
 								}
 							});
 						}

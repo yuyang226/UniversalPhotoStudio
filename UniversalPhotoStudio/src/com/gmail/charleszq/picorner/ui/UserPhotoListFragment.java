@@ -139,7 +139,11 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 				@Override
 				public void onTaskDone(Boolean result) {
 					if (dialog1 != null && dialog1.isShowing()) {
-						dialog1.dismiss();
+						try {
+							dialog1.dismiss();
+						} catch (Exception e) {
+
+						}
 					}
 					if (result) {
 						mFollowing = mFollowing == 1 ? 2 : 1;
@@ -152,7 +156,7 @@ public class UserPhotoListFragment extends AbstractPhotoGridFragment {
 					}
 				}
 			};
-			AbstractContextAwareTask<String, Integer,Boolean> followTask = null;
+			AbstractContextAwareTask<String, Integer, Boolean> followTask = null;
 			if (mMediaSourceType == MediaSourceType.INSTAGRAM.ordinal()) {
 				followTask = new InstagramFollowUserTask(getActivity());
 			} else if (mMediaSourceType == MediaSourceType.PX500.ordinal()) {
