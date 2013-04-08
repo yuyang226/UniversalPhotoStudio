@@ -1,5 +1,5 @@
 2.1.6
-1, Bug fix: photo list messed up if switch to another photo list before the previous finished loading;
+1, Bug fix: photo list messed up bug fix;
 
 2.1.5
 1, 500px performance improvement;
