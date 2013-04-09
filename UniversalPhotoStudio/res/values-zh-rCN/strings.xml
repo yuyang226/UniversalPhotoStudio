@@ -264,13 +264,6 @@
     <string name="photo_grid_max_size">照片网格大小</string>
     <string name="photo_grid_max_size">网格最大的照片数量</string>
     <string name="summary_photo_grid_max_size">网格中最大的照片数量，过大的数值会影响性能.</string>
-    <string name="pref_cat_day_dream">白日梦</string>
-    <string name="pref_daydream_main_src_dlg_title">第一照片源</string>
-    <string name="pref_daydream_main_src">第一照片源</string>
-    <string name="summary_pref_daydream_main_src">第一照片源</string>
-    <string name="pref_daydream_secondary_src_dlg_title">第二照片源</string>
-    <string name="pref_daydream_secondary_src">第二照片源</string>
-    <string name="summary_pref_daydream_secondary_src">如果你设置了离线照片作为第一照片源，在有照片下载之前，第二照片源会作为白日梦的照片源.</string>
 	<string name="pref_default_photo_list">默认照片列表</string>
 	<string name="summary_pref_default_photo_list">应用启动时，默认显示那个照片列表.</string>
 </resources>

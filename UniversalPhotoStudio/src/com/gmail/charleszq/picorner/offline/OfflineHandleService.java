@@ -108,8 +108,10 @@ public class OfflineHandleService extends IntentService {
 					Log.e(TAG, "missing folder name."); //$NON-NLS-1$
 					foldername = param.getTitle();
 				}
-				boolean overwrite = intent.getBooleanExtra(IOfflineViewParameter.OFFLINE_EXPORT_OVERWRITE_KEY, false);
-				exportPhotos(param, foldername, overwrite );
+				boolean overwrite = intent.getBooleanExtra(
+						IOfflineViewParameter.OFFLINE_EXPORT_OVERWRITE_KEY,
+						false);
+				exportPhotos(param, foldername, overwrite);
 				break;
 			}
 		}
@@ -121,14 +123,18 @@ public class OfflineHandleService extends IntentService {
 	 * @param param
 	 * @param foldername
 	 */
-	private void exportPhotos(IOfflineViewParameter param, String foldername, boolean overwrite ) {
+	private void exportPhotos(IOfflineViewParameter param, String foldername,
+			boolean overwrite) {
 		IOfflinePhotoCollectionProcessor p = param
 				.getPhotoCollectionProcessor();
 		String msg = getString(R.string.msg_offline_exporting);
-		sendNotification(EXPORT_OFFLINE_PHOTOS_MSG_ID, msg);
+		NotificationCompat.Builder builder = sendNotification(
+				EXPORT_OFFLINE_PHOTOS_MSG_ID, msg);
 		msg = getString(R.string.msg_offline_export_photos_error);
 		try {
-			int count = p.exportCachedPhotos(this, param, foldername, overwrite );
+			IProgressReporter reporter = new ProgressReporter(builder, EXPORT_OFFLINE_PHOTOS_MSG_ID );
+			int count = p.exportCachedPhotos(this, param, foldername,
+					overwrite, reporter);
 			msg = getString(R.string.msg_offline_export_photos);
 			msg = String.format(msg, foldername);
 			msg = count + " " + msg; //$NON-NLS-1$
@@ -196,8 +202,9 @@ public class OfflineHandleService extends IntentService {
 		}
 
 		// nofify user in status bar.
-		sendNotification(DOWNLOAD_NOTIF_ID,
+		NotificationCompat.Builder builder = sendNotification(DOWNLOAD_NOTIF_ID,
 				getString(R.string.msg_offline_downloading));
+		IProgressReporter reporter = new ProgressReporter(builder,DOWNLOAD_NOTIF_ID);
 
 		List<IOfflineViewParameter> params = OfflineControlFileUtil
 				.getExistingOfflineParameters(this);
@@ -212,14 +219,14 @@ public class OfflineHandleService extends IntentService {
 				offline = params.get(pos);
 				((AbstractOfflineParameter) offline).setLastUpdateTime(System
 						.currentTimeMillis());
-				processOfflineParameter(offline, true, redownload);
+				processOfflineParameter(offline, true, redownload, reporter);
 			} else {
 				// not enabled, just return
 				return;
 			}
 		} else {
 			for (IOfflineViewParameter param : params) {
-				this.processOfflineParameter(param, false, redownload);
+				this.processOfflineParameter(param, false, redownload, reporter);
 			}
 		}
 		try {
@@ -231,14 +238,14 @@ public class OfflineHandleService extends IntentService {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
-	private void sendNotification(int id, String msg) {
-		NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
+	private NotificationCompat.Builder sendNotification(int id, String msg) {
+		NotificationCompat.Builder builder = new NotificationCompat.Builder(
 				this).setSmallIcon(R.drawable.ic_launcher)
 				.setContentTitle(getString(R.string.app_name))
 				.setContentText(msg);
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-		mNotificationManager.notify(id, mBuilder.getNotification());
+		mNotificationManager.notify(id, builder.build());
+		return builder;
 	}
 
 	/**
@@ -275,14 +282,14 @@ public class OfflineHandleService extends IntentService {
 	 * @param param
 	 */
 	private void processOfflineParameter(IOfflineViewParameter param,
-			boolean doitnow, boolean redownload) {
+			boolean doitnow, boolean redownload, IProgressReporter reporter) {
 		if (doitnow || longerThanFiveHours(param)) {
 			// do it.
 			IOfflinePhotoCollectionProcessor p = param
 					.getPhotoCollectionProcessor();
 			((AbstractOfflineParameter) param).setLastUpdateTime(System
 					.currentTimeMillis());
-			p.process(this, param, redownload);
+			p.process(this, param, redownload, reporter);
 		}
 	}
 
@@ -307,6 +314,39 @@ public class OfflineHandleService extends IntentService {
 		NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 		mNotificationManager.cancel(DOWNLOAD_NOTIF_ID);
 		super.onDestroy();
+	}
+
+	/**
+	 * Represents the interface to set progress on notification bar.
+	 * @author charles(charleszq@gmail.com)
+	 *
+	 */
+	public interface IProgressReporter {
+		void reportProgress(int total, int progress);
+	}
+
+	/**
+	 * Represents the status bar progress report.
+	 * @author charles(charleszq@gmail.com)
+	 *
+	 */
+	private class ProgressReporter implements IProgressReporter {
+
+		private NotificationCompat.Builder mBuilder;
+		private int mNotificationId;
+
+		ProgressReporter(NotificationCompat.Builder builder, int id) {
+			this.mBuilder = builder;
+			this.mNotificationId = id;
+		}
+
+		@Override
+		public void reportProgress(int total, int progress) {
+			mBuilder.setProgress(total, progress, false);
+			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			nm.notify(mNotificationId, mBuilder.build());
+		}
+
 	}
 
 }

@@ -57,8 +57,7 @@
 	    <item>60000</item>
 	</string-array>
 	
-	<string-array name="daydream_main_photo_source_label">
-	    <item>离线照片</item>
+	<string-array name="default_photo_source_label">
 	    <item>500px精选照片</item>
 	    <item>500px编辑推荐</item>
 	    <item>500px优秀照片</item>
@@ -67,26 +66,7 @@
 	    <item>Instagram精选照片</item>
 	</string-array>
 	
-	<string-array name="daydream_main_photo_source_values">
-	    <item>0</item>
-	    <item>1</item>
-	    <item>2</item>
-	    <item>3</item>
-	    <item>4</item>
-	    <item>5</item>
-	    <item>6</item>
-	</string-array>
-	
-	<string-array name="daydream_secondary_photo_source_label">
-	    <item>500px精选照片</item>
-	    <item>500px编辑推荐</item>
-	    <item>500px优秀照片</item>
-	    <item>500px今天最新</item>
-	    <item>Flickr精选照片</item>
-	    <item>Instagram精选照片</item>
-	</string-array>
-	
-	<string-array name="daydream_secondary_photo_source_values">
+	<string-array name="default_photo_source_values">
 	    <item>1</item>
 	    <item>2</item>
 	    <item>3</item>
