@@ -9,6 +9,7 @@ import java.util.List;
 import android.content.Context;
 
 import com.gmail.charleszq.picorner.model.MediaObject;
+import com.gmail.charleszq.picorner.offline.OfflineHandleService.IProgressReporter;
 
 /**
  * Represents the service to get the photo collection information back from
@@ -31,8 +32,10 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * @param download
 	 *            <code>true</code> to download photos even if there is no
 	 *            update; <code>false</code> otherwise.
+	 * @param reporter
 	 */
-	void process(Context ctx, IOfflineViewParameter param, boolean download);
+	void process(Context ctx, IOfflineViewParameter param, boolean download,
+			IProgressReporter reporter);
 
 	/**
 	 * Returns the cached photos. if the photo collection information is not
@@ -54,6 +57,7 @@ public interface IOfflinePhotoCollectionProcessor {
 
 	/**
 	 * Exports the cached photos to a folder.
+	 * 
 	 * @param ctx
 	 * @param param
 	 * @param foldername
@@ -61,6 +65,7 @@ public interface IOfflinePhotoCollectionProcessor {
 	 * @return the number of how many photos exported.
 	 */
 	int exportCachedPhotos(Context ctx, IOfflineViewParameter param,
-			String foldername, boolean overwrite) throws IOException;
+			String foldername, boolean overwrite, IProgressReporter reporter)
+			throws IOException;
 
 }

@@ -24,6 +24,7 @@ import com.gmail.charleszq.picorner.BuildConfig;
 import com.gmail.charleszq.picorner.SPUtil;
 import com.gmail.charleszq.picorner.model.MediaObject;
 import com.gmail.charleszq.picorner.model.MediaObjectCollection;
+import com.gmail.charleszq.picorner.offline.OfflineHandleService.IProgressReporter;
 import com.gmail.charleszq.picorner.utils.FlickrHelper;
 import com.gmail.charleszq.picorner.utils.IConstants;
 import com.gmail.charleszq.picorner.utils.ImageUtils;
@@ -58,7 +59,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 	 */
 	@Override
 	public void process(Context ctx, IOfflineViewParameter param,
-			boolean download) {
+			boolean download, IProgressReporter reporter) {
 
 		String controlFileName = param.getControlFileName();
 		boolean isControlFileExist = OfflineControlFileUtil.isFileExist(ctx,
@@ -86,6 +87,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 
 		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Begin to download photos."); //$NON-NLS-1$
+		int progress = 0;
 		for (MediaObject photo : photos) {
 			if (BuildConfig.DEBUG)
 				Log.d(TAG,
@@ -97,6 +99,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 				if (BuildConfig.DEBUG)
 					Log.d(TAG, String.format(
 							"photo %s was downloaded before.", photo.getId())); //$NON-NLS-1$
+				reporter.reportProgress(photos.size(), progress++);
 				continue;
 			}
 
@@ -120,6 +123,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 					Log.e(TAG,
 							"error to download and save photo: " + e.getMessage()); //$NON-NLS-1$
 			}
+			reporter.reportProgress(photos.size(), progress++);
 		}
 	}
 
@@ -355,7 +359,7 @@ public class FlickrPhotoSetOfflineProcessor implements
 
 	@Override
 	public int exportCachedPhotos(Context ctx, IOfflineViewParameter param,
-			String foldername, boolean overwrite ) throws IOException {
+			String foldername, boolean overwrite, IProgressReporter reporter ) throws IOException {
 		List<MediaObject> photos = readPhotos(ctx, param);
 		int count = 0;
 		if (photos != null) {
@@ -370,11 +374,13 @@ public class FlickrPhotoSetOfflineProcessor implements
 					throw new IOException("unable to create the folder."); //$NON-NLS-1$
 				}
 
+			int progress = 0;
 			for (MediaObject photo : photos) {
 				String filename = OfflineControlFileUtil
 						.getOfflinePhotoFileName(photo);
 				File sourceFile = ctx.getFileStreamPath(filename);
 				File targetFile = new File(targetFolder, filename);
+				reporter.reportProgress(photos.size(), progress++);
 				if( targetFile.exists() && !overwrite ) 
 					continue;
 				try {
