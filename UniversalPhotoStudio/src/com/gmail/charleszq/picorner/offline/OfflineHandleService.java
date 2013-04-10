@@ -343,6 +343,7 @@ public class OfflineHandleService extends IntentService {
 		@Override
 		public void reportProgress(int total, int progress) {
 			mBuilder.setProgress(total, progress, false);
+			mBuilder.setContentInfo( progress + "/" + total ); //$NON-NLS-1$
 			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.notify(mNotificationId, mBuilder.build());
 		}
