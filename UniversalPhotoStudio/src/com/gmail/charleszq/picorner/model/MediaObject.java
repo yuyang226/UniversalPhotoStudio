@@ -34,6 +34,11 @@ public final class MediaObject implements Serializable {
 	 * 500px
 	 */
 	private boolean isUserVoted = false;
+	
+	/**
+	 * For instagram photo, save the link here.
+	 */
+	private String mImageLink;
 
 	public boolean isUserVoted() {
 		return isUserVoted;
@@ -239,6 +244,14 @@ public final class MediaObject implements Serializable {
 		sb.append(getMediaSource().toString());
 		sb.append(getId());
 		return sb.toString();
+	}
+
+	public String getImageLink() {
+		return mImageLink;
+	}
+
+	public void setImageLink(String mImageLink) {
+		this.mImageLink = mImageLink;
 	}
 
 }

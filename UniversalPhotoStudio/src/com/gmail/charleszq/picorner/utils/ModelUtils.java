@@ -142,6 +142,7 @@ public final class ModelUtils {
 
 	public static MediaObject convertInstagramPhoto(MediaFeedData feed) {
 		MediaObject photo = new MediaObject();
+		photo.setImageLink(feed.getLink());
 
 		String title = ""; //$NON-NLS-1$
 		if (feed.getCaption() != null) {

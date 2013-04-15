@@ -26,6 +26,7 @@ import android.graphics.BitmapFactory;
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
 
+import com.gmail.charleszq.picorner.model.MediaObject;
 import com.nostra13.universalimageloader.core.assist.FlushedInputStream;
 
 /**
@@ -175,5 +176,29 @@ public final class ImageUtils {
 			}
 		}
 		return false;
+	}
+
+	public static String getPhotoShareLink(MediaObject photo) {
+		String url = photo.getLargeUrl();
+		StringBuilder sb = new StringBuilder();
+		switch (photo.getMediaSource()) {
+		case FLICKR:
+			if (photo.getAuthor() != null) {
+				sb.append("http://www.flickr.com/photos/"); //$NON-NLS-1$
+				sb.append(photo.getAuthor().getUserId());
+				sb.append("/").append(photo.getId()); //$NON-NLS-1$
+				url = sb.toString();
+			}
+			break;
+		case PX500:
+			sb.append("http://500px.com/photo/"); //$NON-NLS-1$
+			sb.append(photo.getId());
+			url = sb.toString();
+			break;
+		case INSTAGRAM:
+			url = photo.getImageLink();
+			break;
+		}
+		return url;
 	}
 }
