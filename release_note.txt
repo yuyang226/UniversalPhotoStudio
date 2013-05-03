@@ -1,3 +1,7 @@
+2.1.8
+1, minor icon change;
+2, bug fixes
+
 2.1.7
 1, Simplify the daydream settings, now try using offline photos first, if no photos downloaded, then goes to the default photo list;
 2, add progress information in status bar when downloading/exporting offline photos;
