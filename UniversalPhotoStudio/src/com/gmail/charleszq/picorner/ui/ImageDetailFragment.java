@@ -784,7 +784,8 @@ public class ImageDetailFragment extends Fragment implements
 		File shareFile = getShareImageFile(filename);
 		Uri uri = Uri.fromFile(shareFile);
 
-		StringBuilder sb = new StringBuilder(mImageUrl);
+		StringBuilder sb = new StringBuilder();
+		sb.append(ImageUtils.getPhotoShareLink(mPhoto));
 		sb.append(" ").append(getString(R.string.share_via)).append(" "); //$NON-NLS-1$//$NON-NLS-2$
 		sb.append(getString(R.string.app_name));
 		sb.append(" ").append(IConstants.APP_GL_STORE_URL); //$NON-NLS-1$
