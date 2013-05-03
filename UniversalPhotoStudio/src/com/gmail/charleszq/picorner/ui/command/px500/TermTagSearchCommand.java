@@ -49,7 +49,7 @@ public class TermTagSearchCommand extends AbstractPx500PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		return android.R.drawable.ic_menu_search;
+		return R.drawable.ic_action_500px_search;
 	}
 
 	/*

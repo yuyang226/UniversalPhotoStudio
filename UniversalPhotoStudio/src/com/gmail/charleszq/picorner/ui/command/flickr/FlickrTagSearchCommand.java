@@ -40,7 +40,7 @@ public class FlickrTagSearchCommand extends PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		return android.R.drawable.ic_menu_search;
+		return R.drawable.ic_action_f_tag_search;
 	}
 
 	@Override
