@@ -303,7 +303,13 @@ public class ImageDetailFragment extends Fragment implements
 						IConstants.MAX_PHOTO_TITLE_LEN) + "..."; //$NON-NLS-1$
 			}
 		}
-		mPhotoTitle.setText(photoTitle);
+		StringBuilder pt = new StringBuilder();
+		if (mPhoto.getMediaSource() == MediaSourceType.PX500) {
+			pt.append(getString(R.string.px500_rating))
+					.append(" ").append(mPhoto.getRating()).append("\n"); //$NON-NLS-1$//$NON-NLS-2$
+		}
+		pt.append(photoTitle);
+		mPhotoTitle.setText(pt.toString());
 		mUserName = (TextView) v.findViewById(R.id.photo_detail_author_name);
 		StringBuilder sb = new StringBuilder();
 		sb.append(getString(R.string.msg_by_author_name));

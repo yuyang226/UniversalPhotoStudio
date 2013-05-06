@@ -346,6 +346,7 @@ public final class ModelUtils {
 			photo.setLargeUrl(photo.getThumbUrl());
 		}
 		photo.setTitle(p.getName());
+		photo.setRating(p.getRating());
 
 		if (p.getAuthor() != null) {
 			Author a = new Author();

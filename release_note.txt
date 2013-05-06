@@ -1,5 +1,6 @@
 2.1.8
-1, bug fix;
+1, show 500px photo's rating in detail page;
+2, bug fix
 
 2.1.7
 1, Simplify the daydream settings, now try using offline photos first, if no photos downloaded, then goes to the default photo list;

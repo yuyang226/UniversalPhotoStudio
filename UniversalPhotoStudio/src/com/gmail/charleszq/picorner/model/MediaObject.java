@@ -34,6 +34,7 @@ public final class MediaObject implements Serializable {
 	 * 500px
 	 */
 	private boolean isUserVoted = false;
+	private double mRating = -1.0d;
 	
 	/**
 	 * For instagram photo, save the link here.
@@ -254,4 +255,11 @@ public final class MediaObject implements Serializable {
 		this.mImageLink = mImageLink;
 	}
 
+	public double getRating() {
+		return mRating;
+	}
+
+	public void setRating(double mRating) {
+		this.mRating = mRating;
+	}
 }

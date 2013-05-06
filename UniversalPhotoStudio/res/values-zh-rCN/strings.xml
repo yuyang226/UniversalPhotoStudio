@@ -166,6 +166,7 @@
     <string name="msg_500px_tag">标签:</string>
     <string name="msg_pls_input_term_and_tag">请输入关键词或标签进行搜索.</string>
     <string name="cd_500px_search_cmd">500px搜索: %s</string>
+    <string name="px500_rating">分数:</string>
 
     <!-- help -->
     <string name="try_swipe_left">试试向左滑动</string>
