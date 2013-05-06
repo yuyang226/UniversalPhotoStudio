@@ -41,7 +41,7 @@ public class GroupSearchPhotosCommand extends PhotoListCommand {
 	 */
 	@Override
 	public int getIconResourceId() {
-		return R.drawable.ic_action_f_group_search;
+		return android.R.drawable.ic_menu_search;
 	}
 
 	/*
