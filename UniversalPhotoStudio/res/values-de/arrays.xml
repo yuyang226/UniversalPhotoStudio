@@ -58,12 +58,12 @@
 </string-array>
 
 <string-array name="default_photo_source_label">
-<item>500px Populär</item>
+<item>500px PopulÃ¤r</item>
 <item>500px Editoren\' Choice</item>
 <item>500px Anstehend</item>
 <item>500px Heute Neu</item>
 <item>Flickr Interessant</item>
-<item>Instagram Populär</item>
+<item>Instagram Populï¿½r</item>
 </string-array>
 
 <string-array name="default_photo_source_values">
@@ -79,8 +79,8 @@
 <item>Alle Kategorien</item>
 <item>Abstrakt</item>
 <item>Tiere</item>
-<item>Schwarzweiß</item>
-<item>Berühmtheiten</item>
+<item>Schwarzweiï¿½</item>
+<item>Berï¿½hmtheiten</item>
 <item>Stadt und Architektur</item>
 <item>Gewerbe</item>
 <item>Konzert</item>
