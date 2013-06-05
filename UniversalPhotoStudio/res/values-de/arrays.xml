@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="photo_cache_size">
+<item>50</item>
+<item>100</item>
+<item>200</item>
+<item>300</item>
+</string-array>
+
+<string-array name="photo_cache_size_values">
+<item>50000000</item>
+<item>100000000</item>
+<item>200000000</item>
+<item>300000000</item>
+</string-array>
+
+<string-array name="offline_schedule_label">
+<item>Einmal pro Tag</item>
+<item>Einmal alle zwei Tage</item>
+<item>Einmal pro Woche</item>
+</string-array>
+
+<string-array name="offline_schedule_value">
+<item>24</item>
+<item>48</item>
+<item>168</item>
+</string-array>
+
+<string-array name="photo_grid_max_size">
+<item>200</item>
+<item>300</item>
+<item>400</item>
+<item>500</item>
+</string-array>
+
+<string-array name="slideshow_interval_label">
+<item>3 Sekunden</item>
+<item>5 Sekunden</item>
+<item>8 Sekunden</item>
+<item>10 Sekunden</item>
+<item>12 Sekunden</item>
+<item>15 Sekunden</item>
+<item>20 Sekunden</item>
+<item>30 Sekunden</item>
+<item>1 minute</item>
+</string-array>
+
+<string-array name="slideshow_interval_values">
+<item>3000</item>
+<item>5000</item>
+<item>8000</item>
+<item>10000</item>
+<item>12000</item>
+<item>15000</item>
+<item>20000</item>
+<item>30000</item>
+<item>60000</item>
+</string-array>
+
+<string-array name="default_photo_source_label">
+<item>500px Populär</item>
+<item>500px Editoren\' Choice</item>
+<item>500px Anstehend</item>
+<item>500px Heute Neu</item>
+<item>Flickr Interessant</item>
+<item>Instagram Populär</item>
+</string-array>
+
+<string-array name="default_photo_source_values">
+<item>1</item>
+<item>2</item>
+<item>3</item>
+<item>4</item>
+<item>5</item>
+<item>6</item>
+</string-array>
+
+<string-array name="px500_categories">
+<item>Alle Kategorien</item>
+<item>Abstrakt</item>
+<item>Tiere</item>
+<item>Schwarzweiß</item>
+<item>Berühmtheiten</item>
+<item>Stadt und Architektur</item>
+<item>Gewerbe</item>
+<item>Konzert</item>
+<item>Familie</item>
+<item>Mode</item>
+<item>Film</item>
+<item>Bildende Kunst</item>
+<item>Essen</item>
+<item>Journalismus</item>
+<item>Landschaften</item>
+<item>Kleinstaufnahmen</item>
+<item>Natur</item>
+<item>Nackt</item>
+<item>Leute</item>
+<item>Darstellende Kunst</item>
+<item>Sport</item>
+<item>Stillleben</item>
+<item>Strasse</item>
+<item>Transport</item>
+<item>Reise</item>
+<item>Unterwasser</item>
+<item>Urbane Exploration</item>
+<item>Hochzeit</item>
+</string-array>
+</resources>

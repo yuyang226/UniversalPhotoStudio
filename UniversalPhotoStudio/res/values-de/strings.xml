@@ -1,0 +1,269 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="about_file_name">about.html</string>
+    <string name="help_file_name">help.html</string>
+    <string name="about_file_encoding">utf-8</string>
+    <string name="app_name">PiCorner</string>
+    <string name="no_network_connection_toast">Keine Netzwerkverbindung gefunden</string>
+    <string name="secondary_menus_general">Hauptgruppe</string>
+    <string name="secondary_menus_search">Suche</string>
+    <string name="f_interesting_photos">Entdecke</string>
+    <string name="f_login">Anmelden</string>
+    <string name="f_my_photos">Mein Foto Stream</string>
+    <string name="f_my_fav">Meine Favoriten</string>
+    <string name="f_my_contacts">Fotos meiner Freunde</string>
+    <string name="f_my_popular">Meine Populären</string>
+    <string name="ig_my_feeds">Meine Feeds</string>
+    <string name="ig_my_likes">Meine Likes</string>
+    <string name="ig_my_photos">Meine Fotos</string>
+    <string name="menu_item_text_default">Standard</string>
+    <string name="menu_item_text_offline">Offline</string>
+    <string name="px_editors">Editors Auswahl</string>
+    <string name="px_upcoming">Bald erscheinende</string>
+    <string name="px_fresh_today">Neuerscheinungen</string>
+    <string name="px_my_flow">Fotos meiner Freunde</string>
+    <string name="menu_header_flickr">Flickr</string>
+    <string name="menu_header_flickr_sets">Fotoserien</string>
+    <string name="menu_header_flickr_groups">Fotogruppen</string>
+    <string name="ig_popular">Populäre Fotos</string>
+    <string name="menu_header_ig">Instagram</string>
+    <string name="menu_header_px500">500px</string>
+    <string name="menu_header_friends">Freunde</string>
+    <string name="cmd_name_about">Über</string>
+    <string name="f_my_photo_sets">Meine Fotoserien</string>
+    <string name="f_my_groups">Meine Gruppen</string>
+    <string name="f_my_galleries">Meine Galerien</string>
+
+    <!-- search menu items -->
+    <string name="cmd_name_flickr_tag_search">Flickr Tag Suche</string>
+    <string name="cmd_name_ig_loc_search">Instagram: Fotos in der Nähe</string>
+    <string name="cmd_name_500px_search">500px Suche</string>
+
+    <!-- auth process -->
+    <string name="fail_to_oauth">Auf Ihr Account konnte nicht zugregriffen werden. Bitte versuchen Sie es erneut</string>
+    <string name="auth_gen_req_token">Generiere die Anmeldeanfrage</string>
+
+    <!-- option menu items -->
+    <string name="menu_item_save">Sichern</string>
+    <string name="menu_item_save_local">Auf dem Gerät sichern</string>
+    <string name="menu_item_share">Teilen</string>
+    <string name="menu_item_like_photo">Like</string>
+    <string name="menu_item_set_wallpaper">Als Hintergrundbild benutzen</string>
+    <string name="menu_item_detail">Details</string>
+    <string name="menu_item_ig_follow_user">Folge</string>
+    <string name="menu_item_ig_unfollow_user">Folge nicht mehr</string>
+    <string name="menu_item_owner_photos">Fotos des Besitzers</string>
+    <string name="menu_item_org_my_flickr_photo">Serien</string>
+    <string name="menu_item_mng_my_flickr_group">Gruppen</string>
+    <string name="menu_item_f_user_web_site">Website des Besitzers</string>
+    <string name="menu_item_vote">Abstimmen</string>
+    <string name="main_menu_filter_hint">Menufilter</string>
+    <string name="menu_item_offline_on_off">Offline</string>
+    <string name="menu_item_refresh">Aktualisieren</string>
+    <string name="menu_item_slide_show">Diashow</string>
+    <string name="menu_item_back">Zurück</string>
+    <string name="menu_item_offline_download">Herunterladen</string>
+    <string name="menu_item_offline_export_photos">Exportieren</string>
+    <string name="menu_item_offline_delete_photos">Löschen</string>
+    <string name="menu_item_my_frequently_used_tags">Meine Flickr Tags</string>
+    <string name="menu_item_rate">Quote</string>
+    <string name="menu_item_crt_ps" tools:ignore="TypographyEllipsis">Neue Fotoserie...</string>
+    <string name="menu_item_flickr_group_search">Flickr Gruppensuche</string>
+    <string name="menu_item_flickr_group_info" tools:ignore="TypographyEllipsis">Gruppendetail...</string>
+    
+    <string name="menu_item_org_photo_set">Organisiere in Fotoserien</string>
+    <string name="menu_item_add_to_group">Zu Gruppen hinzufügen</string>
+    <string name="menu_item_view_exif">EXIF ansehen</string>
+    <string name="menu_item_view_on_map">Auf Karte ansehen</string>
+    <string name="menu_item_comment">Kommentar</string>
+
+    <!-- messages -->
+    <string name="wait_for_image_loading" tools:ignore="TypographyEllipsis">Ladevorgang, bitte warten...</string>
+    <string name="share_via">geteilt von</string>
+    <string name="loading_photos" tools:ignore="TypographyEllipsis">Ladevorgang...</string>
+    <string name="msg_wallpaper_changed">Hintergrundbild geändert.</string>
+    <string name="like_photo_done">Liked!</string>
+    <string name="msg_pls_input_photo_set_name">Bitte geben Sie den Namen der Fotoserie an.</string>
+    <string name="msg_creating_photo_set" tools:ignore="TypographyEllipsis">Erstelle Fotoserie...</string>
+    <string name="msg_photo_set_crted">Fotoserie \'%s\' erstellt.</string>
+    <string name="msg_photo_set_creation_fail">Fotoserie \'%s\' konnte nicht erstellt werden.</string>
+
+    <!-- photo detail pager titles -->
+    <string name="flickr_detail_general_title">Hauptgruppe</string>
+    <string name="flickr_detail_comments_title">Kommentare</string>
+    <string name="flickr_detail_exif_title">EXIF</string>
+    <string name="flickr_detail_map">Karte</string>
+    <string name="ig_like_users">Like Benutzer</string>
+    <string name="detail_gen_title_section">Titel</string>
+    <string name="detail_flickr_group_rules">Regeln</string>
+    <string name="detail_gen_author_section">Autor</string>
+    <string name="detail_gen_description_section">Beschreibung</string>
+    <string name="photo_no_title">KEIN TITEL</string>
+    <string name="flickr_group_no_rules">KEINE REGELN</string>
+    <string name="photo_no_desc">KEINE BESCHREIBUNG</string>
+    <string name="photo_no_comments">Jetzt kein Kommentar.</string>
+    <string name="photo_no_exif">Keine EXIF Information.</string>
+    <string name="photo_no_like_users">Jetzt keine likes.</string>
+    <string name="msg_comment_added">Kommentar hinzugefügt.</string>
+    <string name="hint_add_comment">Kommentar hier.</string>
+    <string name="pls_sing_in_first">Bitte erst anmelden.</string>
+
+    <!-- general messages -->
+    <string name="msg_pls_turn_on_location">Bitte die Ortsbestimmungsoption anstellen.</string>
+    <string name="msg_like_photo_fail" tools:ignore="TypographyEllipsis">Ooops...</string>
+    <string name="msg_working" tools:ignore="TypographyEllipsis">Am arbeiten...</string>
+    <string name="msg_loading_more_photo_of_user" tools:ignore="TypographyEllipsis">Lade Fotos von %s...</string>
+    <string name="msg_by_author_name">von</string>
+    <string name="msg_your_own_photo">Dies bist Du</string>
+    <string name="msg_ig_chg_relationship_failed">Nicht möglich das Verfolgen an- oder abzustellen.</string>
+    <string name="msg_no_photo_returned">Ooops, kein Foto gefunden für \'%s\'</string>
+    <string name="msg_photo_saved_locally">Foto gespeichert als \'%s\'</string>
+    <string name="msg_photo_save_exists">Foto ist bereits gespeichert.</string>
+    <string name="msg_photo">Foto</string>
+    <string name="msg_px500_auth_fail">Anmeldung bei 500px fehlgeschlagen.</string>
+    <string name="msg_px_error_fetch_user_profile">Fehler beim Laden des 500px Benutzerprofils.</string>
+    <string name="msg_500px_photo_voted">Abgestimmt!</string>
+    <string name="msg_500px_photo_vote_failed">Du hast vielleicht schon abgestimmt!</string>
+    <string name="msg_fail_get_f_perm">Nicht möglich die Sichtbarkeitsinformationen des Fotos zu erhalten.</string>
+    <string name="msg_pls_input_photo_title">Bitte gib den Titel des Fotos an.</string>
+    <string name="msg_photo_meta_save_done">Foto-Metainformationen aktualisiert!</string>
+    <string name="msg_photo_meta_save_fail">Fehler beim Aktualisieren der Fotoinformationen.</string>
+    <string name="msg_pls_enable_offline_first">Zuerst musst Du die Offline-Ansichtoption aktivieren. Klick \'OK\', um zu den Einstellungen zu gelangen.</string>
+    <string name="msg_pls_enable_offline_for_ps">Zuerst musst Du die Offline-Ansichtoption dieser Fotoserie aktivieren.</string>
+    <string name="msg_loading_my_friends" tools:ignore="TypographyEllipsis">Lade Freunde...</string>
+    <string name="msg_loading_my_tags" tools:ignore="TypographyEllipsis">Lade meine Tags...</string>
+    <string name="msg_tag_filter">Tag filter</string>
+    <string name="msg_contact_filter">Filter</string>
+    <string name="msg_thanks_rating">Danke für die Bewertung.</string>
+    <string name="msg_loading_photo_sets" tools:ignore="TypographyEllipsis">Lade meine Fotoserien...</string>
+    <string name="msg_loading_my_groups" tools:ignore="TypographyEllipsis">Lade meine Fotogruppen...</string>
+    <string name="msg_loading_my_galleries" tools:ignore="TypographyEllipsis">Lade meine Galerien...</string>
+    <string name="msg_no_photo_sets">Keine Fotoserien vorhanden.</string>
+    <string name="msg_no_photo_groups">Keine Fotogruppen vorhanden.</string>
+    <string name="msg_no_photo_galleries">Keine Galerien orhanden.</string>
+    <string name="msg_crt_ps_hint">Titel</string>
+    <string name="msg_searching_flickr_group" tools:ignore="TypographyEllipsis">Durchsuche Gruppens...</string>
+<string name="msg_no_groups_found">Keine Gruppe(n) gefunden.</string>
+<string name="msg_join_group_condition">Vor dem Beitritt zur Gruppe bitte zuerst die Gruppenregeln lesen und diesen zustimmen. Der Gruppe beitreten?</string>
+<string name="msg_join_group_succeeded">Du bist der Gruppe beigetreten.</string>
+    
+    <!-- flickr tag search -->
+    <string name="msg_flickr_tag_search_label">Flickr SchlagwortSuche</string>
+    <string name="msg_flickr_tag_search_tags">Schlagwörter:</string>
+    <string name="msg_flickr_tag_search_mode">Suchmodus:</string>
+    <string name="msg_flickr_tag_search_hint">mit Leerzeichen trennen</string>
+    <string name="msg_flickr_tag_search_empty_tag">Bitte Schlagwort zur Suche eingeben.</string>
+    <string name="msg_flickr_my_tag_search">Bitte mindestens ein Schlagwort zur Suche auswählen.</string>
+    <string name="msg_flickr_tag_search_mode_and">und</string>
+    <string name="msg_flickr_tag_search_mode_or">oder</string>
+    <string name="msg_flickr_tag_search_in_common">Suche in Commons</string>
+    <string name="msg_flickr_tag_search_has_geo">Hat GEO-Informationen</string>
+    
+    <!-- 500px search -->
+    <string name="msg_500px_search_title">500px Suche</string>
+    <string name="msg_500px_teram">Begriff:</string>
+    <string name="msg_500px_tag">Schlagwort:</string>
+    <string name="msg_pls_input_term_and_tag">Bitte entweder Begriff oder Schlagwort eingeben.</string>
+    <string name="cd_500px_search_cmd">500px sucht: %s</string>
+    <string name="px500_rating">Bewertung:</string>
+    
+    <!-- help -->
+    <string name="try_swipe_left">Versuche links zu wischen</string>
+    <string name="try_swipe_right">Versuche rechts zu wischen</string>
+    <string name="cmd_help_label">Hilfe</string>
+    <string name="cmd_labs_label">Entwicklung</string>
+    <string name="cmd_big_picture">Grosses Bild</string>
+
+    <!-- Command descritions -->
+    <!-- flickr -->
+    <string name="cd_flickr_interesting">flickr: Entdecken</string>
+    <string name="cd_flickr_user_photos">flickr: Fotos von \'%s\'</string>
+    <string name="cd_flickr_my_favs">flickr: Meine Favoriten</string>
+    <string name="cd_flickr_my_populars">flickr: Meine populären Fotos</string>
+    <string name="cd_flickr_my_contact_photos">flickr: Fotos meiner Freunde</string>
+    <string name="cd_flickr_photo_set_photos">flickr: Fotoserie \'%s\'</string>
+    <string name="cd_flickr_group_photos">flickr: Fotogruppe \'%s\'</string>
+    <string name="cd_flickr_gallery_photos">flickr: Fotogalerie \'%s\'</string>
+    <string name="cd_flickr_my_photos">flickr: Mein Foto Stream</string>
+    <string name="cd_flickr_tag_search">flickr: Suchergebnis für Schlagwort \'%s\'</string>
+    <string name="cd_flickr_my_tags">Flickr: Meine Schlagwörter \'%s\'</string>
+
+    <!-- 500px -->
+    <string name="cd_500px_popular">500px: populär</string>
+    <string name="cd_500px_editor">500px: Auswahl des Editors</string>
+    <string name="cd_500px_upcoming">500px: Demnächst</string>
+    <string name="cd_500px_fresh_today">500px: Von heute</string>
+    <string name="cd_500px_user_photos">500px: Fotos von \'%s\'</string>
+    <string name="cd_500px_my_photos">500px: Meine Fotos</string>
+    <string name="cd_500px_my_favs">500px: Meine Favoriten</string>
+    <string name="cd_500px_my_flow">500px: Fotos meiner Freunde</string>
+
+    <!-- Instagram -->
+    <string name="cd_ig_popular">instagram: populär</string>
+    <string name="cd_ig_my_feeds">instagram: Meine Feeds</string>
+    <string name="cd_ig_my_likes">instagram: Meine Likes</string>
+    <string name="cd_ig_my_photos">instagram: Meine Fotos</string>
+    <string name="cd_ig_user_photos">instagram: Fotos von \'%s\'</string>
+    <string name="cd_ig_photos_nearby">instagram: Fotos aus der Umgebung</string>
+
+    <!-- Licensing Check -->
+    <string name="application_error">Applikationsfehler: %1$s</string>
+    <!-- Unlicensed dialog messages -->
+    <string name="unlicensed_dialog_title">Applikation ist nicht lizeniert</string>
+    <string name="unlicensed_dialog_body">Diese Applikation ist nicht lizeniert. Bitte im Google Play Store kaufen.</string>
+    <string name="buy_button">Kaufen</string>
+    <string name="quit_button">Ende</string>
+    <string name="button_join_flickr_group">Beitreten</string>
+
+    <!-- change my flickr photo properties -->
+    <string name="flickr_photo_perm_private">Nur Du</string>
+    <string name="flickr_photo_perm_friend">Nur Freunde</string>
+    <string name="flickr_photo_perm_family">Nur Familie</string>
+    <string name="flickr_photo_perm_public">Jeder</string>
+    <string name="flickr_photo_perm_title">Wer soll dieses Foto sehen dürfen:</string>
+    <string name="msg_flickr_photo_perm_hint">Achtung: Der Wechsel von public nach private wird alle Favoriten entfernen.</string>
+
+    <!-- organize flickr photo -->
+    <string name="msg_org_flickr_photo_title">Ordne Foto</string>
+    <string name="msg_org_my_f_photo_progress" tools:ignore="TypographyEllipsis">Ordne mein Foto ein...</string>
+    <string name="msg_org_my_f_photo_done">Foto eingeordnet.</string>
+    <string name="msg_org_my_f_photo_fail">Fehler beim Einordnen des Fotos.</string>
+    <string name="msg_org_my_f_photo_partail_success">Foto wurde mit Fehlern eingeordnet.</string>
+    <string name="msg_f_crt_photo_set_title_hint">Name der Fotoserie</string>
+
+    <!-- offline notification messages -->
+    <string name="msg_offline_downloading" tools:ignore="TypographyEllipsis">Lade Fotos zur Offline-Ansicht...</string>
+    <string name="msg_offline_delete_photos">%d cached Offline-Fotos wurden gelöscht.</string>
+    <string name="msg_offline_delete_photos_minus_one">Für diese Fotoserie wurden noch keine Fotos herunter geladen.</string>
+    <string name="msg_offline_delete_photo_dialog_msg">Sollen alle herunter geladenen Fotos dieser Serie wirklich gelöscht werden?</string>
+    <string name="msg_offline_export_path_dlg_title">Exportieren</string>
+    <string name="msg_offline_export_path_hint">EPfad exportieren</string>
+    <string name="msg_offline_export_path_label">Bitte den Verzeichnisnamen angeben. Sollte das Verzeichnis in \'%s\' nicht existieren, so wird es angelegt.</string>
+    <string name="msg_offline_export_empty_path"Bitte den Verzeichnisnamen angeben.</string>
+    <string name="msg_offline_export_photos">Foto(s) wurden in das Verzeichnis \'%s\' exportiert.</string>
+    <string name="msg_offline_export_photos_error">Das Verzeichnis konnte nicht angelegt werden.</string>
+    <string name="msg_offline_exporting" tools:ignore="TypographyEllipsis">Exportiere Offline-Fotos...</string>
+    <string name="msg_offline_export_overwrite">Überschreibe vorhandene Fotos.</string>
+
+    <!-- preference setting related -->
+    <string name="cmd_setting_label">Einstellungen</string>
+    <string name="pref_cat_general">Allgemein</string>
+    <string name="photo_grid_cache_size">Foto Cache Grösse (MB)</string>
+    <string name="summary_photo_grid_cache_size">Der Foto cache verbessert die Performanz, wenn Du Fotos durchblätterst. Du kannst angeben, wieviel Speicherplatz dafür benutzt werden soll.</string>
+    <string name="pref_cat_offline">Offline</string>
+    <string name="pref.enable.offfline">Offline-Betrachtung ermöglichen</string>
+    <string name="summary_pref.enable.offfline">Fotoserien können herunter geladen werden, um sie Offline anzusehen. Das benötigt viel Speicherplatz auf den Telefon.</string>
+    <string name="pref_only_user_wifi">Nur WIFI</string>
+    <string name="summary_pref_only_user_wifi">Fotos sollen nur bei Wifi-Nutzung herunter geladen werden. De-Aktivierung dieser Option wird die Fotos auch herunterladen, wenn nur eine Telefonverbindung besteht.</string>
+    <string name="pref_download_when_charging">Herunterladen während des Ladevorgangs</string>
+    <string name="summary_pref_download_when_charging">Foto sollen nur herunter geladen werden, während das Telefon aufgeladen wird.</string>
+    <string name="offline_download_timer">Offline Zeitangabe</string>
+    <string name="summary_offline_download_timer">Wie oft soll nach Aktualisierung von Fotoserien gesehen werden.</string>
+    <string name="pref_slideshow_interval">Diashow Zeitintervall</string>
+    <string name="summary_pref_slideshow_interval">Setze das Zeitintervall für die Diashow</string>
+    <string name="photo_grid_max_size">Grösse des Fotogitters</string>
+    <string name="photo_grid_max_size">Grösse des Fotogitters</string>
+    <string name="summary_photo_grid_max_size">Die maximale Anzahl der Fotos, die im Gitter angezeigt werden sollen. Eine grosse Zahl kann die Performanz beeinträchtigen.</string>
+<string name="pref_default_photo_list">Standard-Fotoliste</string>
+<string name="summary_pref_default_photo_list">Wenn die App startet, wird diese Liste angezeigt.</string>
+</resources>
