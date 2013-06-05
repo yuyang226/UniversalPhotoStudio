@@ -63,7 +63,7 @@
 <item>500px Anstehend</item>
 <item>500px Heute Neu</item>
 <item>Flickr Interessant</item>
-<item>Instagram Popul�r</item>
+<item>Instagram Populär</item>
 </string-array>
 
 <string-array name="default_photo_source_values">
@@ -79,8 +79,8 @@
 <item>Alle Kategorien</item>
 <item>Abstrakt</item>
 <item>Tiere</item>
-<item>Schwarzwei�</item>
-<item>Ber�hmtheiten</item>
+<item>Schwarzweiß</item>
+<item>Berühmtheiten</item>
 <item>Stadt und Architektur</item>
 <item>Gewerbe</item>
 <item>Konzert</item>
