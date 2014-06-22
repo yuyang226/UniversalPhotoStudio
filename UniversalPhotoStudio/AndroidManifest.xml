@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.gmail.charleszq.picorner"
     android:installLocation="auto"
-    android:versionCode="17"
-    android:versionName="2.1.9" >
+    android:versionCode="18"
+    android:versionName="2.2.0" >
 
     <uses-sdk
         android:minSdkVersion="14"
